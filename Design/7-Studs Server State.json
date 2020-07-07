@@ -1,0 +1,29 @@
+{
+	"game_id": "123456",
+	"initial_chip_quantity": 1000,
+	"ante": 1,
+	"current_dealer": 3,
+	"cards_dealt": 3,
+	"last_event_number": 7,
+	"last_event_description": "Robert folded",
+	"next_action": "Phil to bet",
+	"player_to_take_next_action": 3,
+	"pots": [
+		{ "pot_number": 1, "covered": "no", "player_contributions": [51, 1, 1] }
+	],
+	"players": [
+		{ 
+			"name": "Adam" ,  "number": 1, "ip": "111.121.131.1", 
+			"chips": 949, "bet_on_current_card": 51, "folded": "no", "all_in": "no", "cards": [ "AS", "KS", "QC" ]
+		},
+		{ 
+			"name": "Robert" ,"number": 2, "ip": "222.232.242.55", 
+			"chips": 999, "bet_on_current_card": 1, "folded": "yes", "all_in": "no", "cards": [ "4H", "9D", "2C" ]
+		},
+		{ 
+			"name": "Phil" ,  "number": 3, "ip": "103.104.105.66", 
+			"chips": 999, "bet_on_current_card": 1, "folded": "no", "all_in": "no", "cards": [ "9S", "9H", "AC" ]
+		}
+	],
+	"undealt_cards" : [ "3C", "4C" , "5C" , "etc. etc.", "10S", "JS", "QS" ]
+}

@@ -1,0 +1,144 @@
+@startuml
+' Paste into http://www.plantuml.com/plantuml to view diagram
+' See https://plantuml.com/class-diagram for help
+title 7-Studs class diagram for managing game state
+hide empty members
+hide circle
+
+class game {
+    {field} game_id (PK, guid)
+    initial_chip_quantity
+    ante
+    number_of_decks
+}
+
+class player {
+    {field} player_id (PK, guid)
+    {field} game_id (FK)
+	player_name
+    player_order
+    chips_remaining
+	ip_address
+    chips_already_played_into_current_round
+    has_folded_in_current_round
+}
+
+game "1" --> "0 .. n" player
+
+note right of player  
+Note: this is intended to manage 
+the game state on the server.
+
+Each player's view in the UI can be 
+generated from this (probably based on
+the current betting round)
+
+Basic security (?):
+Each player's client will know the game_id
+and their own player_id (which they will be
+assigned when they join the game from a
+given IP address). Other players won't be
+able to use that player_id to view the
+game (i.e. avoiding the possibility of 
+sneakily looking at another player's view
+of the game
+end note
+
+class card {
+    {field} card_id (PK, int)
+    deck_number
+    suit
+    rank
+}
+
+note right of card
+This is the full set of 
+cards being used in this game. 
+Multiples of a single pack.
+Whether or not a card has been
+dealt in a given game round is tracked
+in the players_card table
+end note
+
+class game_round {
+    {field} game_round_id (PK, int)
+    {field} game_id (FK)
+	{field} dealer_player_id (FK)
+	{field} to_bet_player_id (FK)
+	current_betting_round_number
+}
+
+game "1" <-- "1 .. n" game_round 
+player "1" <-- "1 .. n" game_round 
+
+note left of game_round
+A 'game round' (or 'hand'?)
+represents a full round of 
+shuffling, dealing and betting
+until someone wins the round
+end note
+
+note right of game_round
+Within a game round, a 'betting round' 
+represents a round of betting following
+the dealing of the third, fourth, fifth,
+sixth or seventh card.
+
+When it's your turn to bet the required
+amount to stay in the round is the highest
+amount yet put into the pot by any player
+in this round of betting
+end note
+
+class pot {
+    {field} pot_id (PK, int)
+    {field} game_round_id (FK)
+	pot_number
+}
+
+game_round "1" <-- "1 .. n" pot 
+
+class pot_contribution {
+    {field} contribution_id (PK, int)
+    {field} pot_id (FK)
+    {field} player_id (FK)	
+	amount_contributed_to_pot
+}
+
+pot  "1" <-- "1 .. n" pot_contribution 
+player  "1" <-- "1 .. n" pot_contribution 
+
+note top of pot
+TO DO: Need to allow for
+multiple pots, i.e. each 
+time someone covers the pot
+in a single betting round
+end note
+
+game_round "1" <-- "52" card 
+
+class players_card {
+    {field} players_card_id (PK, int)
+    {field} game_round_id (FK)
+    {field} player_id (FK)
+    {field} card_id (FK)
+	position_in_hand
+}
+
+note left of players_card
+One entry for each card held
+by each player in this round
+end note
+
+game_round "1" <-- "1 .. n" players_card 
+card "1" <-- "1 .. n" players_card 
+player "1" <-- "1 .. n" players_card 
+
+
+note as N2
+TO DO: 
+- Fix the cardinality 
+... haven't done much on this at all
+
+end note
+@enduml

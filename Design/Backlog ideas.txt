@@ -1,0 +1,59 @@
+Notes:
+
+- Hierarchy is Game > Deal (or hand) > Betting Round (or card(s) dealt)
+- Could add Session above Game but don't see need at moment
+
+Backlog ideas
+-------------
+
+Investigate:
+- How does https://github.com/deck-of-cards/deck-of-cards represent its cards? We should use that if possible
+- Comms component: SignalR
+
+Server:
+- Process request to join new game
+- Create new game, obtain link to invite people in (return to UI for cut/paste)
+- Process applications to join game
+- Commence game
+  - No longer accept applications
+  - Set player order (e.g. randomly)
+  - Send out start situation to all players
+- Process player moves (assumption: only one player has any options open to them at any one point in time)
+  - Fold 
+  - Check (start round with zero bet, or match zero bet)
+  - Call (match current bet)
+  - Raise (match current bet and increase it)
+  - All-in (like raise but uses all of player's remaining funds)
+  - Cover pot (already all-in, but cannot match further raises)
+- Handle end of a round
+  - Divvy up pots to various players
+  - Send round summary (all players have to acknowledge?)
+- How does a game end? Timeout, until only two players left, ...
+  - Probably depends on how many people get prize money
+- Start new game with same players (reinitialise decks, pots etc.)
+- Handle pot covering: create new covered pot, covering all bets currently placed up to all-in amount of covering player
+  - Note: further people could cover that pot with a lesser amount, requiring the covered pot to be split further
+  - Create new, active, uncovered pot to contain any excesses over the covered amount, and to contain any further raises
+
+Utility functions:
+- Identify best hand where each hand has from 3 - 7 cards (allow for ties)
+  - Use same algorithm to determine (a) first person to bet in a round and (b) overall hand winner(s)
+- Deal random card to 'n' players (allowing for cards already in players' hands)
+- Log activities to enable games to be replayed (e.g. for testing) ... standard game log format?
+  - Is this just a series of simple events?
+  - e.g. event #1 = player 1 raises 'n'; event #2 = player 2 calls; event #2 = player 3 folds; etc.
+
+UI
+- Continuously receive game state updates from server: 
+  - Entire state sent in one go to enable screen to be rebuild from scratch
+  - Display own cards
+  - Display other players card 
+  - Show players reserves
+  - Show players contributions to pot(s)
+  - Activate all options currently open to player (none, check, call, raise, all-in, cover pot, fold)
+- Process player actions (send to server for processing)
+- Display end of round summary (who won what) before allowing next round to proceed
+
+- Talk to Chris Jones? He was part of a poker site development team at one time
+
+-- https://techeplanet.com/json-example/
