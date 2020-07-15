@@ -1,19 +1,40 @@
 "use strict";
 
 var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
-
+var sendButton = document.getElementById("sendButton");
 //Disable send button until connection is established
-document.getElementById("sendButton").disabled = true;
+sendButton.disabled = true;
 
 // Original demo function
+
+function appendToMessagesList(el) {
+    var li = document.createElement("li");
+    li.append(el);
+    document.getElementById("messagesList").appendChild(li);
+}
+
+function logError (err) {
+    appendToMessagesList('Error: ' + err);
+    return console.error(err.toString());
+}
+
+function getGameId() {
+    return document.getElementById("gameId").value;
+}
+
+function getMessage() {
+    return document.getElementById("messageInput").value;
+}
+
+function getUser() {
+    return document.getElementById("userInput").value;
+}
 
 connection.on("ReceiveMessage", 
     function (user, message) {
         var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
         var encodedMsg = user + " says " + msg;
-        var li = document.createElement("li");
-        li.textContent = encodedMsg;
-        document.getElementById("messagesList").appendChild(li);
+        appendToMessagesList(encodedMsg);
     }
 );
 
@@ -21,28 +42,49 @@ connection.on("ReceiveMessage",
 connection.on("ReceiveUpdatedGameState", 
     function (user, message) {
         var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-        var encodedMsg = user + " changed game state which is now: " + msg;
-        var li = document.createElement("li");
-        li.textContent = encodedMsg;
-        document.getElementById("messagesList").appendChild(li);
+        var encodedMsg = user + " changed game state which is now: \n" + msg;
+        
+        var pre = document.createElement("pre");
+        pre.textContent = encodedMsg;
+        appendToMessagesList(pre);
     }
 );
 
 connection.start().then(function () {
-    document.getElementById("sendButton").disabled = false;
-}).catch(function (err) {
-    return console.error(err.toString());
-});
+    sendButton.disabled = false;
+}).catch(logError);
 
-document.getElementById("sendButton").addEventListener("click", 
+sendButton.addEventListener("click", 
     function (event) {
-        var user = document.getElementById("userInput").value;
-        var message = document.getElementById("messageInput").value;
-        connection.invoke("ProcessActionAndSendUpdatedGameState", user, message).catch(
-            function (err) {
-            return console.error(err.toString());
-            }
-        );
-    event.preventDefault();
+        var user = getUser();
+        var message = getMessage();
+        connection.invoke("ProcessActionAndSendUpdatedGameState", user, message).catch(logError);
+        event.preventDefault();
     }
 );
+
+document.getElementById("actionCall").addEventListener("click", function (event) {
+    var gameId = getGameId();    
+    var user = getUser();
+
+    connection.invoke("UserDidCall", gameId, user).catch(logError);
+    event.preventDefault();
+});
+
+document.getElementById("actionRaise").addEventListener("click", function (event) {
+    var gameId = getGameId();    
+    var user = getUser();
+    var amount = 20;
+
+    connection.invoke("UserDidRaise", gameId, user, amount).catch(logError);
+    event.preventDefault();
+});
+
+document.getElementById("actionFold").addEventListener("click", function (event) {
+    var gameId = getGameId();    
+    var user = getUser();
+
+    connection.invoke("UserDidFold", gameId, user).catch(logError);
+    event.preventDefault();
+});
+
