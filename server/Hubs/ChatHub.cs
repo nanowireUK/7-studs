@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.SignalR;
 using System.Threading.Tasks;
 using System.Text.Json;
 
-namespace SignalRChat.Hubs
+namespace SevenStuds.Hubs
 {
     public class ChatHub : Hub
     {
@@ -12,7 +12,7 @@ namespace SignalRChat.Hubs
             // Process commands
             if (message == "g") {
                 // Request to create a new game (probably best to do most of this in the constructor)
-                SignalRChat.Models.Game g = new SignalRChat.Models.Game();
+                SevenStuds.Models.Game g = new SevenStuds.Models.Game();
                 g.Participants.Add(new Models.Participant(user));
                 var options = new JsonSerializerOptions
                 {

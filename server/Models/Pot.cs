@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
 
-namespace SignalRChat.Models
+namespace SevenStuds.Models
 {
     public class Pot
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace SignalRChat.Models
+namespace SevenStuds.Models
 {
     public class Event
     {

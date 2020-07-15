@@ -8,9 +8,9 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using SignalRChat.Hubs; // new
+using SevenStuds.Hubs; // new
 
-namespace SignalRChat
+namespace SevenStuds
 {
     public class Startup
     {

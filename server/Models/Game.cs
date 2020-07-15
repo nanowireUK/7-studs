@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
 
-namespace SignalRChat.Models
+namespace SevenStuds.Models
 {
     public class Game
     {
@@ -11,7 +11,7 @@ namespace SignalRChat.Models
         public Game() {
             Guid guid = System.Guid.NewGuid();
             id = guid;
-            SignalRChat.Models.ServerState.GameList.Add(id, this); // Maps the game guid to the game itself (possibly better than just iterating through a list?)
+            SevenStuds.Models.ServerState.GameList.Add(id, this); // Maps the game guid to the game itself (possibly better than just iterating through a list?)
             Participants = new List<Participant>();
         }
 

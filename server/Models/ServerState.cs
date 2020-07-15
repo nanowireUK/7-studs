@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Collections;
 
-namespace SignalRChat.Models
+namespace SevenStuds.Models
 {
     public static class ServerState
     {
