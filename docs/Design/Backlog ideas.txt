@@ -35,7 +35,18 @@ Server:
   - Note: further people could cover that pot with a lesser amount, requiring the covered pot to be split further
   - Create new, active, uncovered pot to contain any excesses over the covered amount, and to contain any further raises
 
+Test server functions:
+- All via console? How to get that started
+- Game initialisation:
+  - Create game (returns initial game state to first player, enables him to share game id with others)
+  - Join game (new player sends join request; updated, personalised game state shared with all other players) ... repeat until all players have joined
+  - Commence game (initial player only can close new registrations and start the game; everyone receives updated, personalised game state)
+  - Rejoin game (any player can ask to rejoin in case e.g. they lose network ... will need their rejoin key; player will receive latest game state)
+- Process events:
+  - Receive and process action (process action; everyone receives updated, personalised game state)
+- 
 Utility functions:
+- JSON serialiser/deserialiser
 - Identify best hand where each hand has from 3 - 7 cards (allow for ties)
   - Use same algorithm to determine (a) first person to bet in a round and (b) overall hand winner(s)
 - Deal random card to 'n' players (allowing for cards already in players' hands)
