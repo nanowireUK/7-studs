@@ -1,13 +1,13 @@
 
 
-chat.js      - client-side code
+ChatHub.cs   - server-side code  (in \server\Hubs)               
+                - implements ProcessActionAndSendUpdatedGameState, which sends RPC (e.g. "ReceiveUpdatedGameState") to one or more clients
+
+chat.js      - client-side code (in \server\wwwroot\js)
                 - handles remote procedure calls (RPC's) from server (such as "ReceiveUpdatedGameState")
                 - sets up event handler for button that sends RPC to server (e.g. "ProcessActionAndSendUpdatedGameState")
-
-ChatHub.cs   - server-side code                 
-                - implements ProcessActionAndSendUpdatedGameState, which sends RPC (e.g. "ReceiveUpdatedGameState") to one or more clients
                 
-index.cshtml - client-side HTML
+index.cshtml - client-side HTML (in \server\pages)
 
 
 

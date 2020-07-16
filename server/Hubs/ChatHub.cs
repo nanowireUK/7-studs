@@ -1,30 +1,28 @@
 using Microsoft.AspNetCore.SignalR;
 using System.Threading.Tasks;
-using System.Text.Json;
+using SevenStuds.Models;
 
 namespace SevenStuds.Hubs
 {
     public class ChatHub : Hub
     {
-        // This is the server-side code that is called by connection.invoke("ProcessActionAndSendUpdatedGameState") in chat.js on the client
-        public async Task ProcessActionAndSendUpdatedGameState(string user, string message)
+        // This is the server-side code that is called by connection.invoke("xxx") in chat.js on the client
+
+        // ---- JOIN GAME
+        public async Task UserClickedJoin(string gameId, string user)
         {
-            // Process commands
-            if (message == "g") {
-                // Request to create a new game (probably best to do most of this in the constructor)
-                SevenStuds.Models.Game g = new SevenStuds.Models.Game();
-                g.Participants.Add(new Models.Participant(user));
-                var options = new JsonSerializerOptions
-                {
-                    WriteIndented = true,
-                };
-                string jsonString = JsonSerializer.Serialize(g, options);
-                await Clients.All.SendAsync("ReceiveUpdatedGameState", user, jsonString);
-            }
-            else {
-                // Standard behaviour from sample code
-                await Clients.All.SendAsync("ReceiveMessage", user, message);
-            }
+            Game g = Game.FindOrCreateGame(gameId); // find our game or create a new one if required
+            g.Participants.Add(new Participant(user, Context.ConnectionId));
+            g.LastEvent = user + " joined game";
+            await Clients.All.SendAsync("ReceiveUpdatedGameState", g.AsJson());
         }
+
+        public async Task UserClickedStart(string gameId, string user)
+        {
+            Game g = Game.FindOrCreateGame(gameId); // find our game or create a new one if required
+            g.Initialise();
+            g.LastEvent = user + " started game";
+            await Clients.All.SendAsync("ReceiveUpdatedGameState", g.AsJson());
+        }        
     }
 }

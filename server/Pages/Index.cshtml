@@ -2,28 +2,29 @@
     <div class="container">
         <div class="row">&nbsp;</div>
         <div class="row">
+            <div class="col-2">Game</div>
+            <div class="col-4">7Studs Main Event</div>
+            <div class="col-3"><input type="button" id="actionJoin" value="Join This Game (username required)" /></div>
+            <div class="col-3"><input type="button" id="actionStart" value="Start This Game (with current players)" /></div>
+        </div>  
+        <div class="row">&nbsp;</div>          
+        <div class="row">
             <div class="col-2">User</div>
             <div class="col-4"><input type="text" id="userInput" /></div>
         </div>
-        <div class="row">
-            <div class="col-2">Command</div>
-            <div class="col-4"><input type="text" id="messageInput" /></div>
-        </div>
-        <div class="row">
-            <div class="col-2">Game Id</div>
-            <div class="col-4"><input type="text" id="gameId" /></div>
-        </div>        
         <div class="row">&nbsp;</div>
         <div class="row">
-            <div class="col-2">
-                <input type="button" id="sendButton" value="Send Command" />
-            </div>
+            <div class="col-2">Action </div>
             <div class="col-4">
                 <input type="button" id="actionCall" value="Call" />
                 <input type="button" id="actionRaise" value="Raise" />
                 <input type="button" id="actionFold" value="Fold" />
             </div>
         </div>
+        <div class="row">
+            <div class="col-2">Amount (if required)</div>
+            <div class="col-4"><input type="text" id="actionModifiers" /></div>
+        </div>        
     </div>
     <div class="row">
         <div class="col-12">
