@@ -9,7 +9,7 @@ namespace SevenStuds.Models
         // Enables a game object to be found from its ID 
         public static Hashtable GameList = new Hashtable();
 
-        public static PokerHandRankingTable RankingTable = new PokerHandRankingTable();
+        public static PokerHandRankingTable RankingTable = new PokerHandRankingTable(); // Only need one of these
 
         public static Card DummyCard = new Card(CardEnum.Dummy, SuitEnum.Clubs);
     }

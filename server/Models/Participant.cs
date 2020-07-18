@@ -15,10 +15,10 @@ namespace SevenStuds.Models
         public string Name { get; set; }
         public string ConnectionId { get; set; } // e.g. 3 alphanumeric characters that enables a disconnected player to rejoin as the same person
         [Required]
-        public string VisibleHandDescription { get; set; }
-        public int VisibleHandRank { get; set; }
-        public string FullHandDescription { get; set; }
-        public int FullHandRank { get; set; }
+        public string _VisibleHandDescription { get; set; }
+        public int _VisibleHandRank { get; set; }
+        public string _FullHandDescription { get; set; }
+        public int _FullHandRank { get; set; }
         public int UncommittedChips { get; set; }
         public int ChipsCommittedToCurrentBettingRound { get; set; }
         public Boolean HasFolded { get; set; }
@@ -41,16 +41,16 @@ namespace SevenStuds.Models
                 ServerState.DummyCard, 
                 ServerState.DummyCard, 
                 ServerState.DummyCard, ServerState.RankingTable);
-            this.VisibleHandDescription = visibleHand.ToString(HandToStringFormatEnum.ShortCardsHeld) + ": " + visibleHand.ToString(HandToStringFormatEnum.HandDescription);
-            this.VisibleHandRank = visibleHand.Rank;
+            this._VisibleHandDescription = visibleHand.ToString(HandToStringFormatEnum.ShortCardsHeld) + ": " + visibleHand.ToString(HandToStringFormatEnum.HandDescription);
+            this._VisibleHandRank = visibleHand.Rank;
             PokerHand fullHand = new PokerHand(
                 this.Hand[0], 
                 this.Hand[1], 
                 this.Hand[2], 
                 ServerState.DummyCard, 
                 ServerState.DummyCard, ServerState.RankingTable);
-            this.FullHandDescription = fullHand.ToString(HandToStringFormatEnum.ShortCardsHeld) + ": " + fullHand.ToString(HandToStringFormatEnum.HandDescription);
-            this.FullHandRank = fullHand.Rank;  
+            this._FullHandDescription = fullHand.ToString(HandToStringFormatEnum.ShortCardsHeld) + ": " + fullHand.ToString(HandToStringFormatEnum.HandDescription);
+            this._FullHandRank = fullHand.Rank;  
         }                 
     }
 }

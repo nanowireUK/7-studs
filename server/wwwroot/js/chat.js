@@ -81,6 +81,7 @@ document.getElementById("actionJoin").addEventListener("click",
 );
 
 // --------------- START
+
 document.getElementById("actionStart").addEventListener("click", 
     function (event) {
         var gameId = getGameId();    
@@ -90,6 +91,17 @@ document.getElementById("actionStart").addEventListener("click",
     }
 );
 
+// --------------- RAISE
+
+document.getElementById("actionRaise").addEventListener("click", function (event) {
+    var gameId = getGameId();    
+    var user = getUser();
+    var amount = getMessage();
+
+    connection.invoke("UserClickedRaise", gameId, user, amount).catch(logError);
+    event.preventDefault();
+});
+
 document.getElementById("actionCall").addEventListener("click", function (event) {
     var gameId = getGameId();    
     var user = getUser();
@@ -98,14 +110,7 @@ document.getElementById("actionCall").addEventListener("click", function (event)
     event.preventDefault();
 });
 
-document.getElementById("actionRaise").addEventListener("click", function (event) {
-    var gameId = getGameId();    
-    var user = getUser();
-    var amount = 20;
 
-    connection.invoke("UserClickedRaise", gameId, user, amount).catch(logError);
-    event.preventDefault();
-});
 
 document.getElementById("actionFold").addEventListener("click", function (event) {
     var gameId = getGameId();    
