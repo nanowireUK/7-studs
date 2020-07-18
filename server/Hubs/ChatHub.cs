@@ -14,14 +14,16 @@ namespace SevenStuds.Hubs
             Game g = Game.FindOrCreateGame(gameId); // find our game or create a new one if required
             g.Participants.Add(new Participant(user, Context.ConnectionId));
             g.LastEvent = user + " joined game";
+            g.NextAction = "Await new player or start the game";
             await Clients.All.SendAsync("ReceiveUpdatedGameState", g.AsJson());
         }
 
         public async Task UserClickedStart(string gameId, string user)
         {
             Game g = Game.FindOrCreateGame(gameId); // find our game or create a new one if required
-            g.Initialise();
-            g.LastEvent = user + " started game";
+            g.InitialiseGame();
+            g.LastEvent = user + " started game (player order now randomised)";
+            g.NextAction = "Await new player or start the game";
             await Clients.All.SendAsync("ReceiveUpdatedGameState", g.AsJson());
         }        
     }

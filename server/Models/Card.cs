@@ -5,11 +5,113 @@ namespace SevenStuds.Models
 {
     public class Card
     {
-        public Guid Id { get; set; }
-        public string Suit { get; set; } // C, D, H, S: Could make an object out of this but can't see any benefit yet
-        public string Rank { get; set; } // 2 - 10, J, Q ,K, A: Could make an object out of this but can't see any benefit yet
-        public string Description { get; set; } // e.g 2D, KS, etc., or perhaps 'Two of Diamonds', etc.
 
-        // Might want some way of linking each card to its UI representation
+        private CardEnum cardValue;
+        private SuitEnum cardSuit;
+
+        public Card(CardEnum CV, SuitEnum CS)
+        {
+            cardValue = CV;
+            cardSuit = CS;
+        }
+
+        public CardEnum CardValue { get => cardValue; }
+        public SuitEnum CardSuit { get => cardSuit; }
+
+        public override string ToString()
+        {
+            return ToString(CardToStringFormatEnum.LongCardName);
+        }
+
+        public string ToString(CardToStringFormatEnum format)
+        {
+            switch (format)
+            {
+                case CardToStringFormatEnum.LongCardName:
+                    {
+                        return CardValue.ToString() + " of " + CardSuit.ToString();
+                    }
+
+                case CardToStringFormatEnum.ShortCardName:
+                    {
+                        switch (CardValue)
+                        {
+                            case CardEnum.Dummy:
+                                {
+                                    return "";
+                                }
+
+                            case CardEnum.Two:
+                                {
+                                    return "2" + CardSuit.ToString().Substring(0, 1).ToLower();
+                                }                                
+
+                            case CardEnum.Three:
+                                {
+                                    return "3" + CardSuit.ToString().Substring(0, 1).ToLower();
+                                }
+
+                            case CardEnum.Four:
+                                {
+                                    return "4" + CardSuit.ToString().Substring(0, 1).ToLower();
+                                }
+
+                            case CardEnum.Five:
+                                {
+                                    return "5" + CardSuit.ToString().Substring(0, 1).ToLower();
+                                }
+
+                            case CardEnum.Six:
+                                {
+                                    return "6" + CardSuit.ToString().Substring(0, 1).ToLower();
+                                }
+
+                            case CardEnum.Seven:
+                                {
+                                    return "7" + CardSuit.ToString().Substring(0, 1).ToLower();
+                                }
+
+                            case CardEnum.Eight:
+                                {
+                                    return "8" + CardSuit.ToString().Substring(0, 1).ToLower();
+                                }
+
+                            case CardEnum.Nine:
+                                {
+                                    return "9" + CardSuit.ToString().Substring(0, 1).ToLower();
+                                }
+
+                            case CardEnum.Ten:
+                                {
+                                    return "T" + CardSuit.ToString().Substring(0, 1).ToLower();
+                                }
+
+                            case CardEnum.Jack:
+                                {
+                                    return "J" + CardSuit.ToString().Substring(0, 1).ToLower();
+                                }
+
+                            case CardEnum.Queen:
+                                {
+                                    return "Q" + CardSuit.ToString().Substring(0, 1).ToLower();
+                                }
+
+                            case CardEnum.King:
+                                {
+                                    return "K" + CardSuit.ToString().Substring(0, 1).ToLower();
+                                }
+
+                            case CardEnum.Ace:
+                                {
+                                    return "A" + CardSuit.ToString().Substring(0, 1).ToLower();
+                                }
+                        }
+
+                        break;
+                    }
+            }
+
+            return "<Card value not set>";
+        }
     }
 }
