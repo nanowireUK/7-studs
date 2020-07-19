@@ -15,9 +15,10 @@ namespace SevenStuds.Models
         // Game state 
         public string LastEvent { get; set; }
         public string NextAction { get; set; }
-        public int CurrentHand { get; set; } // 0 = game not yet started
+        public int HandsPlayedIncludingCurrent { get; set; } // 0 = game not yet started
         public int IndexOfParticipantDealingThisHand { get; set; } // Rotates from player 0
         public int IndexOfParticipantToTakeNextAction { get; set; } // Determined by cards showing (at start of round) then on player order
+        public int _CardsDealtIncludingCurrent { get; set; } // 0 = hand not started
         public int _IndexOfLastPlayerToRaise { get; set; } 
         public int _IndexOfLastPlayerToStartChecking { get; set; } 
         public bool _CheckIsAvailable { get; set; } 
@@ -35,7 +36,7 @@ namespace SevenStuds.Models
             Participants = new List<Participant>(); // start with empty list of participants
             InitialChipQuantity = 1000;
             Ante = 1;
-            CurrentHand = 0;
+            HandsPlayedIncludingCurrent = 0;
             CardPack = new Deck(true);
             SevenStuds.Models.ServerState.GameList.Add(GameId, this); // Maps the game id to the game itself (possibly better than just iterating through a list?)            
         }
@@ -66,8 +67,8 @@ namespace SevenStuds.Models
 
         public void InitialiseHand()
         {
-            CurrentHand++;
-            IndexOfParticipantDealingThisHand = (CurrentHand - 1) % Participants.Count; // client could work this out too
+            HandsPlayedIncludingCurrent++;
+            IndexOfParticipantDealingThisHand = (HandsPlayedIncludingCurrent - 1) % Participants.Count; // client could work this out too
 
 
             // Set up the pack again
@@ -85,24 +86,31 @@ namespace SevenStuds.Models
             _IndexOfLastPlayerToRaise = -1;
             _IndexOfLastPlayerToStartChecking = -1; 
             _CheckIsAvailable = true;
+            _CardsDealtIncludingCurrent = MaxCardsDealtSoFar();
          }
 
         public void DealNextRound()
         {
+            _CardsDealtIncludingCurrent += 1;
+            foreach (Participant p in Participants)
+            {
+                p.PrepareForNextBettingRound(this, _CardsDealtIncludingCurrent);
+            }
+            this.IndexOfParticipantToTakeNextAction = GetIndexOfPlayerToBetFirst();
+            _CheckIsAvailable = true;
+
+        }
+
+        private int MaxCardsDealtSoFar() {
             int maxCardsDealtSoFar = 0;
             foreach (Participant p in Participants)
             {
                 if ( p.Hand.Count > maxCardsDealtSoFar ) {
                     maxCardsDealtSoFar = p.Hand.Count;
                 }  
-            }
-            foreach (Participant p in Participants)
-            {
-                p.PrepareForNextBettingRound(this, maxCardsDealtSoFar + 1);
-            }
-
-            this.IndexOfParticipantToTakeNextAction = GetIndexOfPlayerToBetFirst();
-         }
+            }   
+            return maxCardsDealtSoFar  ;      
+        }
         int GetIndexOfPlayerToBetFirst()
         {
             // Determine who starts betting in a given round (i.e. after a round of cards have been dealt)
@@ -138,14 +146,15 @@ namespace SevenStuds.Models
             { 
                 int ZbiOfNextPlayerToInspect = (currentPlayer + 1 + i) % Participants.Count;
                 if ( ZbiOfNextPlayerToInspect == _IndexOfLastPlayerToRaise 
-                    || ( this._CheckIsAvailable && ZbiOfNextPlayerToInspect == _IndexOfLastPlayerToStartChecking )
-                ) {
-                    return -1; // Have got back round to last player who raised or started a round of checking, so this is the end of the round 
+                    || ( this._CheckIsAvailable && ZbiOfNextPlayerToInspect == _IndexOfLastPlayerToStartChecking ) ) 
+                {
+                    // Have got back round to last player who raised or started a round of checking, so this is the end of the round 
+                    return -1; 
                 }
                 if ( Participants[ZbiOfNextPlayerToInspect].HasFolded == false // i.e. player has not folded out of this hand
-                    && this.ChipsInThePotForSpecifiedPlayer(ZbiOfNextPlayerToInspect) > 0 // i.e. player was still in the hand to start off with
-                )
+                    && this.ChipsInThePotForSpecifiedPlayer(ZbiOfNextPlayerToInspect) > 0 ) 
                 {
+                    // i.e. player was still in the hand to start off with
                     return ZbiOfNextPlayerToInspect;
                 }
             }

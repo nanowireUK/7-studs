@@ -111,7 +111,7 @@ namespace SevenStuds.Hubs
                     if ( g.IndexOfParticipantToTakeNextAction > -1 ){
                         g.NextAction = g.Participants[g.IndexOfParticipantToTakeNextAction].Name + " to bet"; 
                     }
-                    else if (g.CurrentHand < 7 ) {
+                    else if ( g._CardsDealtIncludingCurrent < 7 ) { 
                         g.DealNextRound();
                         g.NextAction = "Started next round, " + g.Participants[g.IndexOfParticipantToTakeNextAction].Name + " to bet"; 
                     }
@@ -148,7 +148,7 @@ namespace SevenStuds.Hubs
                 if ( g.IndexOfParticipantToTakeNextAction > -1 ){
                     g.NextAction = g.Participants[g.IndexOfParticipantToTakeNextAction].Name + " to bet"; 
                 }
-                else if (g.CurrentHand < 7 ) {
+                else if ( g._CardsDealtIncludingCurrent < 7 ) {
                     g.DealNextRound();
                     g.NextAction = "Everyone checked; started next round, " + g.Participants[g.IndexOfParticipantToTakeNextAction].Name + " to bet"; 
                 }
@@ -159,6 +159,41 @@ namespace SevenStuds.Hubs
             }
             // Return updated status to all the clients 
             await Clients.All.SendAsync("ReceiveUpdatedGameState", g.AsJson());
-        }                         
+        } 
+
+        public async Task UserClickedFold(string gameId, string user)
+        {
+            Game g = Game.FindOrCreateGame(gameId); // find our game or create a new one if required (shouldn't be )
+            int playerIndex = g.PlayerIndexFromName(user);
+            if ( playerIndex == -1 ) {
+                g.LastEvent = user + " tried to fold but is not a participant in this game";
+            }
+            else if ( playerIndex != g.IndexOfParticipantToTakeNextAction ) {
+                g.LastEvent = user + " tried to fold but it is not their turn";
+            }
+            else {
+                // Handle the fold
+                Participant p = g.Participants[playerIndex];
+                p.HasFolded = true;
+                g.LastEvent = user + " folded";
+                // Find and set next player (could be no one if all players have now called or folded)
+                g.IndexOfParticipantToTakeNextAction = g.GetIndexOfPlayerToBetNext(playerIndex);
+                if ( g.IndexOfParticipantToTakeNextAction > -1 ){
+                    g.NextAction = g.Participants[g.IndexOfParticipantToTakeNextAction].Name + " to bet"; 
+                }
+                // TO DO: if only one player is left in then they have won (easy)
+                else if ( g._CardsDealtIncludingCurrent < 7 ) {
+                    g.DealNextRound();
+                    g.NextAction = "Started next round, " + g.Participants[g.IndexOfParticipantToTakeNextAction].Name + " to bet"; 
+                }
+                else  {
+                    // TODO: handle end of game
+                    g.NextAction = "Final round of betting ended ... need to handle end of game"; 
+                }
+            }
+            // Return updated status to all the clients 
+            await Clients.All.SendAsync("ReceiveUpdatedGameState", g.AsJson());
+        }   
+
     }
 }

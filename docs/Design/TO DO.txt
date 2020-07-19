@@ -4,11 +4,12 @@ DONE * Move Pots up above Hand
 DONE * Handle raise (easiest as doesn't trigger end of round)
 DONE * Handle call/see (match current pot, could trigger end of round)
 DONE * Handle check (as first player to bet, or to 'call' a previous player's check, could trigger end of round)
+* Handle fold (could trigger end of round or end of game)
 * Handle evaluation of hand > 5 cards
   * Just hard-code the 6 or 21 combinations of 5 or 6 from 7 and work though them
   * i.e. no need for clever combination generators
   * note the best hand in each case
-* Handle fold (could trigger end of round)
+
 * Handle end game (end of seventh round) (sort out winners, ties, split pots etc.)
 * Handle covering the pot
 * Plurals ... e.g. Sixs

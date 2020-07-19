@@ -13,15 +13,16 @@ namespace SevenStuds.Models
         [Required]
         
         public string Name { get; set; }
-        public string ConnectionId { get; set; } // e.g. 3 alphanumeric characters that enables a disconnected player to rejoin as the same person
-        [Required]
-        public string _VisibleHandDescription { get; set; }
-        public int _VisibleHandRank { get; set; }
-        public string _FullHandDescription { get; set; }
-        public int _FullHandRank { get; set; }
         public int UncommittedChips { get; set; }
         public int ChipsCommittedToCurrentBettingRound { get; set; }
         public Boolean HasFolded { get; set; }
+        public string ConnectionId { get; set; } // e.g. 3 alphanumeric characters that enables a disconnected player to rejoin as the same person
+        [Required]
+        public int _VisibleHandRank { get; set; }
+        public int _FullHandRank { get; set; }
+        public string _VisibleHandDescription { get; set; }
+        public string _FullHandDescription { get; set; }
+        public string _HandSummary { get; set; }
         public List<Card> Hand { get; set; }
         public Boolean IsAllIn() {
             return UncommittedChips == 0 & ChipsCommittedToCurrentBettingRound > 0;
@@ -68,7 +69,7 @@ namespace SevenStuds.Models
                 this._VisibleHandRank = visibleHand.Rank;
 
                 PokerHand fullHand;
-                if ( roundNumber < 6 ) {
+                if ( g._CardsDealtIncludingCurrent < 6 ) {
                     fullHand = new PokerHand(
                         this.Hand[0], 
                         this.Hand[1], 
@@ -77,7 +78,7 @@ namespace SevenStuds.Models
                         roundNumber >= 5 ? this.Hand[4] : ServerState.DummyCard, 
                         ServerState.RankingTable);
                 }
-                else if ( roundNumber == 6 ) {
+                else if ( g._CardsDealtIncludingCurrent == 6 ) {
                     fullHand = new PokerHand( // Start off assuming first combination is best
                         this.Hand[0], 
                         this.Hand[1], 
@@ -107,6 +108,7 @@ namespace SevenStuds.Models
                     }
                 }
                 else {
+                    // All 7 have been dealt
                     fullHand = new PokerHand( // Start off assuming first combination is best
                         this.Hand[0], 
                         this.Hand[1], 
@@ -151,7 +153,12 @@ namespace SevenStuds.Models
                     }
                 }                
                 this._FullHandDescription = fullHand.ToString(HandToStringFormatEnum.ShortCardsHeld) + ": " + fullHand.ToString(HandToStringFormatEnum.HandDescription);
-                this._FullHandRank = fullHand.Rank;  
+                this._FullHandRank = fullHand.Rank;
+                this._HandSummary = "";
+                foreach ( Card c in this.Hand) {
+                    // Is it worth sorting this?
+                    this._HandSummary += c.ToString(CardToStringFormatEnum.ShortCardName) + " ";
+                }
             }
         }              
     }
