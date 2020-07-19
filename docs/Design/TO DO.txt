@@ -4,16 +4,18 @@ DONE * Move Pots up above Hand
 DONE * Handle raise (easiest as doesn't trigger end of round)
 DONE * Handle call/see (match current pot, could trigger end of round)
 DONE * Handle check (as first player to bet, or to 'call' a previous player's check, could trigger end of round)
-* Handle fold (could trigger end of round or end of game)
-* Handle evaluation of hand > 5 cards
-  * Just hard-code the 6 or 21 combinations of 5 or 6 from 7 and work though them
-  * i.e. no need for clever combination generators
-  * note the best hand in each case
-
-* Handle end game (end of seventh round) (sort out winners, ties, split pots etc.)
+DONE * Handle fold (could trigger end of round or end of game)
+DONE * Handle evaluation of hand of 6 or 7 cards (work out which is the best 5 card hand of all 6 or 21 combinations)
+DONE * Show a one-line representation of the full set of cards, not just the best hand of 5
+DONE * Fix plurals, esp. "Sixs"
+DONE * Handle end of hand (i.e. end of seventh round) -> simple case with one winner
+DONE * Handle fold triggering end of hand
+DONE * Handle end of hand (i.e. end of seventh round) -> multiple winners (shared pot)
+DONE * Show final hand in summary
+* Handle end of hand (i.e. end of seventh round) -> split pots
+* Handle end of game (time limit, number of rounds, less than 'n' players left in)
 * Handle covering the pot
-* Plurals ... e.g. Sixs
-* Show a representation of the full set of cards, not just the best hand of 5
+* Handle no one being able to bet (auto-check?)
 
 https://thomaslevesque.com/2020/05/15/things-every-csharp-developer-should-know-1-hash-codes/
 

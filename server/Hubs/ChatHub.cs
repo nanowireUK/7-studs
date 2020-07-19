@@ -116,8 +116,8 @@ namespace SevenStuds.Hubs
                         g.NextAction = "Started next round, " + g.Participants[g.IndexOfParticipantToTakeNextAction].Name + " to bet"; 
                     }
                     else  {
-                        // TODO: handle end of game
-                        g.NextAction = "Final round of betting ended ... need to handle end of game"; 
+                        // This is the end of the hand
+                        g.NextAction = g.ProcessEndGame(user + " called, hand ended");
                     }
                 }
             }
@@ -153,8 +153,8 @@ namespace SevenStuds.Hubs
                     g.NextAction = "Everyone checked; started next round, " + g.Participants[g.IndexOfParticipantToTakeNextAction].Name + " to bet"; 
                 }
                 else  {
-                    // TODO: handle end of game
-                    g.NextAction = "Final round of betting ended with everyone checking ... need to handle end of game"; 
+                    // This is the end of the hand
+                    g.NextAction = g.ProcessEndGame(user + " checked, hand ended");
                 }
             }
             // Return updated status to all the clients 
@@ -176,19 +176,25 @@ namespace SevenStuds.Hubs
                 Participant p = g.Participants[playerIndex];
                 p.HasFolded = true;
                 g.LastEvent = user + " folded";
-                // Find and set next player (could be no one if all players have now called or folded)
-                g.IndexOfParticipantToTakeNextAction = g.GetIndexOfPlayerToBetNext(playerIndex);
-                if ( g.IndexOfParticipantToTakeNextAction > -1 ){
-                    g.NextAction = g.Participants[g.IndexOfParticipantToTakeNextAction].Name + " to bet"; 
+                // Check for scenario where only one active player is left
+                if ( g.CountOfPlayersLeftIn() == 1 ) {
+                    // Everyone has folded except one player
+                    g.NextAction = g.ProcessEndGame(user + " folded, hand ended");
                 }
-                // TO DO: if only one player is left in then they have won (easy)
-                else if ( g._CardsDealtIncludingCurrent < 7 ) {
-                    g.DealNextRound();
-                    g.NextAction = "Started next round, " + g.Participants[g.IndexOfParticipantToTakeNextAction].Name + " to bet"; 
-                }
-                else  {
-                    // TODO: handle end of game
-                    g.NextAction = "Final round of betting ended ... need to handle end of game"; 
+                else {
+                    // Find and set next player (could be no one if all players have now called or folded)
+                    g.IndexOfParticipantToTakeNextAction = g.GetIndexOfPlayerToBetNext(playerIndex);
+                    if ( g.IndexOfParticipantToTakeNextAction > -1 ){
+                        g.NextAction = g.Participants[g.IndexOfParticipantToTakeNextAction].Name + " to bet"; 
+                    }
+                    else if ( g._CardsDealtIncludingCurrent < 7 ) {
+                        g.DealNextRound();
+                        g.NextAction = "Started next round, " + g.Participants[g.IndexOfParticipantToTakeNextAction].Name + " to bet"; 
+                    }
+                    else  {
+                        // All 7 cards have now been bet on, so this is the end of the hand
+                        g.NextAction = g.ProcessEndGame(user + " folded, hand ended");
+                    }
                 }
             }
             // Return updated status to all the clients 

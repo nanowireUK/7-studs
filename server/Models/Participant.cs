@@ -23,14 +23,15 @@ namespace SevenStuds.Models
         public string _VisibleHandDescription { get; set; }
         public string _FullHandDescription { get; set; }
         public string _HandSummary { get; set; }
+        private PokerHand _PokerHand { get; set; }
         public List<Card> Hand { get; set; }
         public Boolean IsAllIn() {
             return UncommittedChips == 0 & ChipsCommittedToCurrentBettingRound > 0;
         }
         
-        public void StartNewHand(Game g) {
+        public void StartNewHandForActivePlayer(Game g) {
             this.ChipsCommittedToCurrentBettingRound = g.Ante;
-            this.UncommittedChips = g.InitialChipQuantity - g.Ante;
+            this.UncommittedChips -= g.Ante;
             this.HasFolded = false;
             this.Hand = new List<Card>();
             this.Hand.Add(g.DealCard()); // 1st random card
@@ -44,15 +45,30 @@ namespace SevenStuds.Models
                 ServerState.DummyCard, ServerState.RankingTable);
             this._VisibleHandDescription = visibleHand.ToString(HandToStringFormatEnum.ShortCardsHeld) + ": " + visibleHand.ToString(HandToStringFormatEnum.HandDescription);
             this._VisibleHandRank = visibleHand.Rank;
-            PokerHand fullHand = new PokerHand(
+            _PokerHand = new PokerHand(
                 this.Hand[0], 
                 this.Hand[1], 
                 this.Hand[2], 
                 ServerState.DummyCard, 
                 ServerState.DummyCard, ServerState.RankingTable);
-            this._FullHandDescription = fullHand.ToString(HandToStringFormatEnum.ShortCardsHeld) + ": " + fullHand.ToString(HandToStringFormatEnum.HandDescription);
-            this._FullHandRank = fullHand.Rank;  
-        }  
+            this._FullHandDescription = _PokerHand.ToString(HandToStringFormatEnum.ShortCardsHeld) + ": " + _PokerHand.ToString(HandToStringFormatEnum.HandDescription);
+            this._FullHandRank = _PokerHand.Rank;  
+            this._HandSummary = "";
+            foreach ( Card c in this.Hand) {
+                this._HandSummary += c.ToString(CardToStringFormatEnum.ShortCardName) + " ";
+            }
+        }
+
+        public void StartNewHandForBankruptPlayer(Game g) {
+            this.ChipsCommittedToCurrentBettingRound = 0;
+            this.HasFolded = false;
+            this.Hand = new List<Card>();
+            this._VisibleHandDescription = null;
+            this._VisibleHandRank = int.MaxValue;
+            this._FullHandDescription = null;
+            this._FullHandRank = int.MaxValue;  
+            this._HandSummary = "";
+        } 
 
         public void PrepareForNextBettingRound(Game g, int roundNumber) {
             // Check whether player is still in, and deal them a new card if so
@@ -68,9 +84,8 @@ namespace SevenStuds.Models
                 this._VisibleHandDescription = visibleHand.ToString(HandToStringFormatEnum.ShortCardsHeld) + ": " + visibleHand.ToString(HandToStringFormatEnum.HandDescription);
                 this._VisibleHandRank = visibleHand.Rank;
 
-                PokerHand fullHand;
                 if ( g._CardsDealtIncludingCurrent < 6 ) {
-                    fullHand = new PokerHand(
+                    _PokerHand = new PokerHand(
                         this.Hand[0], 
                         this.Hand[1], 
                         this.Hand[2], 
@@ -79,7 +94,7 @@ namespace SevenStuds.Models
                         ServerState.RankingTable);
                 }
                 else if ( g._CardsDealtIncludingCurrent == 6 ) {
-                    fullHand = new PokerHand( // Start off assuming first combination is best
+                    _PokerHand = new PokerHand( // Start off assuming first combination is best
                         this.Hand[0], 
                         this.Hand[1], 
                         this.Hand[2], 
@@ -102,14 +117,14 @@ namespace SevenStuds.Models
                             this.Hand[combos[i][3]], 
                             this.Hand[combos[i][4]], 
                             ServerState.RankingTable);                        
-                        if ( testHand.Rank < fullHand.Rank) {
-                            fullHand = testHand;
+                        if ( testHand.Rank < _PokerHand.Rank) {
+                            _PokerHand = testHand;
                         }
                     }
                 }
                 else {
                     // All 7 have been dealt
-                    fullHand = new PokerHand( // Start off assuming first combination is best
+                    _PokerHand = new PokerHand( // Start off assuming first combination is best
                         this.Hand[0], 
                         this.Hand[1], 
                         this.Hand[2], 
@@ -147,16 +162,15 @@ namespace SevenStuds.Models
                             this.Hand[combos[i][3]], 
                             this.Hand[combos[i][4]], 
                             ServerState.RankingTable);                        
-                        if ( testHand.Rank < fullHand.Rank) {
-                            fullHand = testHand;
+                        if ( testHand.Rank < _PokerHand.Rank) {
+                            _PokerHand = testHand;
                         }
                     }
                 }                
-                this._FullHandDescription = fullHand.ToString(HandToStringFormatEnum.ShortCardsHeld) + ": " + fullHand.ToString(HandToStringFormatEnum.HandDescription);
-                this._FullHandRank = fullHand.Rank;
+                this._FullHandDescription = _PokerHand.ToString(HandToStringFormatEnum.ShortCardsHeld) + ": " + _PokerHand.ToString(HandToStringFormatEnum.HandDescription);
+                this._FullHandRank = _PokerHand.Rank;
                 this._HandSummary = "";
                 foreach ( Card c in this.Hand) {
-                    // Is it worth sorting this?
                     this._HandSummary += c.ToString(CardToStringFormatEnum.ShortCardName) + " ";
                 }
             }

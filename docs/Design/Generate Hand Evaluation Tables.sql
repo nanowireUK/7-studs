@@ -215,16 +215,15 @@ create table #card_positions (
 	p int
 )
 
+insert #card_positions values(0)
 insert #card_positions values(1)
 insert #card_positions values(2)
 insert #card_positions values(3)
 insert #card_positions values(4)
 insert #card_positions values(5)
-insert #card_positions values(6)
-
 
 select p1.p as cp1, p2.p as cp2, p3.p as cp3, p4.p as cp4, p5.p as cp5,
-	'{'+LTRIM(STR(p1.p))+', '+LTRIM(STR(p2.p))+', '+LTRIM(STR(p3.p))+', '+LTRIM(STR(p4.p))+', '+LTRIM(STR(p5.p))+'}' as List
+	'combos.Add(new List<int>(){'+LTRIM(STR(p1.p))+', '+LTRIM(STR(p2.p))+', '+LTRIM(STR(p3.p))+', '+LTRIM(STR(p4.p))+', '+LTRIM(STR(p5.p))+'});' as Initialiser
 from #card_positions p1
 CROSS JOIN #card_positions p2
 CROSS JOIN #card_positions p3
@@ -251,17 +250,16 @@ IF object_id('tempdb..#card_positions') IS NOT NULL DROP TABLE #card_positions
 create table #card_positions (
 	p int
 )
-
+insert #card_positions values(0)
 insert #card_positions values(1)
 insert #card_positions values(2)
 insert #card_positions values(3)
 insert #card_positions values(4)
 insert #card_positions values(5)
 insert #card_positions values(6)
-insert #card_positions values(7)
 
 select p1.p as cp1, p2.p as cp2, p3.p as cp3, p4.p as cp4, p5.p as cp5,
-	'{'+LTRIM(STR(p1.p))+', '+LTRIM(STR(p2.p))+', '+LTRIM(STR(p3.p))+', '+LTRIM(STR(p4.p))+', '+LTRIM(STR(p5.p))+'}' as List
+	'combos.Add(new List<int>(){'+LTRIM(STR(p1.p))+', '+LTRIM(STR(p2.p))+', '+LTRIM(STR(p3.p))+', '+LTRIM(STR(p4.p))+', '+LTRIM(STR(p5.p))+'});' as Initialiser
 from #card_positions p1
 CROSS JOIN #card_positions p2
 CROSS JOIN #card_positions p3

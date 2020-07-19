@@ -70,7 +70,6 @@ namespace SevenStuds.Models
             HandsPlayedIncludingCurrent++;
             IndexOfParticipantDealingThisHand = (HandsPlayedIncludingCurrent - 1) % Participants.Count; // client could work this out too
 
-
             // Set up the pack again
             CardPack.Shuffle(); // refreshes the pack and shuffles it
 
@@ -79,8 +78,13 @@ namespace SevenStuds.Models
 
             foreach (Participant p in Participants)
             {
-                p.StartNewHand(this);
-                this.Pots[0].Add(this.Ante); // TO DO: only works if player is still in
+                if ( p.UncommittedChips > 0 ) {
+                    p.StartNewHandForActivePlayer(this);
+                    this.Pots[0].Add(this.Ante); 
+                }
+                else {
+                    p.StartNewHandForBankruptPlayer(this);
+                }
             }
             this.IndexOfParticipantToTakeNextAction = GetIndexOfPlayerToBetFirst();
             _IndexOfLastPlayerToRaise = -1;
@@ -137,8 +141,23 @@ namespace SevenStuds.Models
                 }
             }
             return ZbiOfFirstToBet;
-        }  
+        } 
 
+        public int CountOfPlayersLeftIn() {
+           // Count how many players were in the round in the first place and have not folded in the meantime
+            int stillIn = 0;
+            for (int i = 0; i < Participants.Count; i++) 
+            {
+                 if ( 
+                    Participants[i].HasFolded == false // i.e. player has not folded out of this hand
+                    && this.ChipsInThePotForSpecifiedPlayer(i) > 0 // i.e. player was in the hand to start off with
+                )
+                {
+                    stillIn += 1; // This player is still in (even if they are no longer able to bet because of covering a pot)
+                }
+            }
+            return stillIn;
+        }
         public int GetIndexOfPlayerToBetNext(int currentPlayer)
         {
             // Determine who is next to bet after current player (may be -1 if no players left who can bet, i.e. end of round)
@@ -181,6 +200,17 @@ namespace SevenStuds.Models
                 }
             }
             return currentMax;
+        }  
+        public int TotalPot () {
+            int totalPot = 0;
+            for (int i = 0; i < this.Participants.Count; i++) {
+                int playerTotal = 0;
+                for (int j = 0; j < this.Pots.Count; j++) {
+                    playerTotal += this.Pots[j][i];
+                }
+                totalPot += playerTotal;
+            }
+            return totalPot;
         }    
         public void AddAmountToCurrentPotForSpecifiedPlayer  (int playerIndex, int amt){
              this.Pots[this.Pots.Count-1][playerIndex] += amt;
@@ -198,6 +228,56 @@ namespace SevenStuds.Models
         //     this.UndealtCards.RemoveAt(rInt);
         //     return selectedCard;
         // }
+
+        public string ProcessEndGame(string Trigger) {
+            // Something has triggered the end of the game ... process the pots and summarise each player's results
+            // Start with simple case of one winner
+            int winningPlayerIndex = -1;
+            int winningPlayersHandRank = int.MaxValue; // Low values will win so this is guaranteed to be beaten
+            int winningPlayers = 1;
+            for (int i = 0; i < Participants.Count ; i++) {
+                if ( Participants[i].HasFolded == false && ChipsInThePotForSpecifiedPlayer(i) > 0 ) {
+                    if ( winningPlayerIndex == -1) {
+                        // First player who is still in, so assume they are the winner until we find out otherwise
+                        winningPlayerIndex = i;
+                        winningPlayersHandRank = Participants[i]._FullHandRank;
+                    }
+                    else if ( winningPlayersHandRank == Participants[i]._FullHandRank) {
+                        // Record the fact of two or more players at this rank
+                        winningPlayers += 1;
+                        winningPlayersHandRank = Participants[i]._FullHandRank;                        
+                    }
+                    else if ( winningPlayersHandRank < Participants[i]._FullHandRank) {
+                        // New winner
+                        winningPlayerIndex = i;
+                        winningPlayers = 1;
+                        winningPlayersHandRank = Participants[i]._FullHandRank;
+                    }
+                }
+            }
+            string resultsList = "";
+            if ( winningPlayers == 1) {
+                // Give the whole pot to one player and record how much everyone won or lost
+                for (int i = 0; i < Participants.Count ; i++) {
+                    Participant p = Participants[i];
+                    if ( winningPlayerIndex == i ) {
+                        // Give them the whole pot (which includes their investment back)
+                        int tp = TotalPot();
+                        p.UncommittedChips += tp;
+                        int inPot = ChipsInThePotForSpecifiedPlayer(i);
+                        resultsList += p.Name + "(" + p._FullHandDescription + ") won " + ( tp - inPot ) + ", ";
+                    }
+                    else {
+                        // Record the loss of their investment
+                        int inPot = ChipsInThePotForSpecifiedPlayer(i);
+                        resultsList += p.Name + "(" + p._FullHandDescription + ") lost " + inPot + ", ";
+                    }
+                }
+                resultsList = resultsList.Substring(0, resultsList.Length-2);
+            }
+            InitialiseHand();
+            return Trigger + ". " + resultsList + ". " + this.Participants[this.IndexOfParticipantToTakeNextAction].Name + " to bet";
+        }
 
         public int PlayerIndexFromName(string SearchName) {
             for (int i = 0; i < Participants.Count ; i++) {
