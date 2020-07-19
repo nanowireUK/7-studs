@@ -206,4 +206,77 @@ ORDER BY eval_rank
 
 
 
+-------------------------------------------------------------------------------------------
+-- (5) Extract combinations of 5 from 6
+
+IF object_id('tempdb..#card_positions') IS NOT NULL DROP TABLE #card_positions
+
+create table #card_positions (
+	p int
+)
+
+insert #card_positions values(1)
+insert #card_positions values(2)
+insert #card_positions values(3)
+insert #card_positions values(4)
+insert #card_positions values(5)
+insert #card_positions values(6)
+
+
+select p1.p as cp1, p2.p as cp2, p3.p as cp3, p4.p as cp4, p5.p as cp5,
+	'{'+LTRIM(STR(p1.p))+', '+LTRIM(STR(p2.p))+', '+LTRIM(STR(p3.p))+', '+LTRIM(STR(p4.p))+', '+LTRIM(STR(p5.p))+'}' as List
+from #card_positions p1
+CROSS JOIN #card_positions p2
+CROSS JOIN #card_positions p3
+CROSS JOIN #card_positions p4
+CROSS JOIN #card_positions p5
+WHERE ( 
+	p1.p <> p2.p AND p1.p <> p3.p AND p1.p <> p4.p AND p1.p <> p5.p
+		         AND p2.p <> p3.p AND p2.p <> p4.p AND p2.p <> p5.p
+		                          AND p3.p <> p4.p AND p3.p <> p5.p
+		                                           AND p4.p <> p5.p
+) -- don't allow a position to be combined with itself
+AND ( 
+	p1.p < p2.p AND
+	p2.p < p3.p AND
+	p3.p < p4.p AND
+	p4.p < p5.p 
+) -- consider only the combinations where the positions are in ascending order from left to right
+
+-------------------------------------------------------------------------------------------
+-- (6) Extract combinations of 5 from 7
+
+IF object_id('tempdb..#card_positions') IS NOT NULL DROP TABLE #card_positions
+
+create table #card_positions (
+	p int
+)
+
+insert #card_positions values(1)
+insert #card_positions values(2)
+insert #card_positions values(3)
+insert #card_positions values(4)
+insert #card_positions values(5)
+insert #card_positions values(6)
+insert #card_positions values(7)
+
+select p1.p as cp1, p2.p as cp2, p3.p as cp3, p4.p as cp4, p5.p as cp5,
+	'{'+LTRIM(STR(p1.p))+', '+LTRIM(STR(p2.p))+', '+LTRIM(STR(p3.p))+', '+LTRIM(STR(p4.p))+', '+LTRIM(STR(p5.p))+'}' as List
+from #card_positions p1
+CROSS JOIN #card_positions p2
+CROSS JOIN #card_positions p3
+CROSS JOIN #card_positions p4
+CROSS JOIN #card_positions p5
+WHERE ( 
+	p1.p <> p2.p AND p1.p <> p3.p AND p1.p <> p4.p AND p1.p <> p5.p
+		         AND p2.p <> p3.p AND p2.p <> p4.p AND p2.p <> p5.p
+		                          AND p3.p <> p4.p AND p3.p <> p5.p
+		                                           AND p4.p <> p5.p
+) -- don't allow a position to be combined with itself
+AND ( 
+	p1.p < p2.p AND
+	p2.p < p3.p AND
+	p3.p < p4.p AND
+	p4.p < p5.p 
+) -- consider only the combinations where the positions are in ascending order from left to right
 

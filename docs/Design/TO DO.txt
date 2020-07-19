@@ -1,0 +1,38 @@
+TO DO:
+
+DONE * Move Pots up above Hand
+DONE * Handle raise (easiest as doesn't trigger end of round)
+DONE * Handle call/see (match current pot, could trigger end of round)
+DONE * Handle check (as first player to bet, or to 'call' a previous player's check, could trigger end of round)
+* Handle evaluation of hand > 5 cards
+  * Just hard-code the 6 or 21 combinations of 5 or 6 from 7 and work though them
+  * i.e. no need for clever combination generators
+  * note the best hand in each case
+* Handle fold (could trigger end of round)
+* Handle end game (end of seventh round) (sort out winners, ties, split pots etc.)
+* Handle covering the pot
+* Plurals ... e.g. Sixs
+* Show a representation of the full set of cards, not just the best hand of 5
+
+https://thomaslevesque.com/2020/05/15/things-every-csharp-developer-should-know-1-hash-codes/
+
+* Check performance of HashTable: consider making GetHashCode cleverer
+* Cross check his 5-card rankings with mine
+* Allow for 6 and 7 card hands (need to find PokerHand with best ranking)
+* Split hand description out into two parts: main bit e.g. "Ace High" and countback e.g. "with King ..."
+* Game name to be pulled from URL
+* Find out how to send a message to any one game participant, who may not be the caller
+
+Validation (on client and/or server)
+* Prevent player from changing name after joining
+* Allow player to rejoin
+
+Find and return next player? Or analyse whole state and determine next action based on e.g. pot contributions?
+
+Check is a pain ... need a whole round of people betting nothing
+- keep track of player who last raised or checked, to prevent round continuing endlessly
+
+Covered pots are a pain: player is still in but may not be up to current level of betting
+
+
+

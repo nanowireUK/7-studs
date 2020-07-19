@@ -18,7 +18,9 @@ namespace SevenStuds.Models
         public int CurrentHand { get; set; } // 0 = game not yet started
         public int IndexOfParticipantDealingThisHand { get; set; } // Rotates from player 0
         public int IndexOfParticipantToTakeNextAction { get; set; } // Determined by cards showing (at start of round) then on player order
-        public int _IndexOfLastPlayerToRaiseOrStartChecking { get; set; } 
+        public int _IndexOfLastPlayerToRaise { get; set; } 
+        public int _IndexOfLastPlayerToStartChecking { get; set; } 
+        public bool _CheckIsAvailable { get; set; } 
         public List<List<int>> Pots { get; set; } // pots built up in the current hand (over multiple rounds of betting)
         public List<Participant> Participants { get; set; } // ordered list of participants (order represents order around the table)
         //public List<Event> Events { get; set; } // ordered list of events associated with the game
@@ -65,7 +67,8 @@ namespace SevenStuds.Models
         public void InitialiseHand()
         {
             CurrentHand++;
-            IndexOfParticipantDealingThisHand = (CurrentHand - 1) % Participants.Count; // client could work this out too 
+            IndexOfParticipantDealingThisHand = (CurrentHand - 1) % Participants.Count; // client could work this out too
+
 
             // Set up the pack again
             CardPack.Shuffle(); // refreshes the pack and shuffles it
@@ -76,11 +79,29 @@ namespace SevenStuds.Models
             foreach (Participant p in Participants)
             {
                 p.StartNewHand(this);
-                this.Pots[0].Add(this.Ante);
+                this.Pots[0].Add(this.Ante); // TO DO: only works if player is still in
+            }
+            this.IndexOfParticipantToTakeNextAction = GetIndexOfPlayerToBetFirst();
+            _IndexOfLastPlayerToRaise = -1;
+            _IndexOfLastPlayerToStartChecking = -1; 
+            _CheckIsAvailable = true;
+         }
+
+        public void DealNextRound()
+        {
+            int maxCardsDealtSoFar = 0;
+            foreach (Participant p in Participants)
+            {
+                if ( p.Hand.Count > maxCardsDealtSoFar ) {
+                    maxCardsDealtSoFar = p.Hand.Count;
+                }  
+            }
+            foreach (Participant p in Participants)
+            {
+                p.PrepareForNextBettingRound(this, maxCardsDealtSoFar + 1);
             }
 
             this.IndexOfParticipantToTakeNextAction = GetIndexOfPlayerToBetFirst();
-
          }
         int GetIndexOfPlayerToBetFirst()
         {
@@ -94,17 +115,17 @@ namespace SevenStuds.Models
             int ZbiOfFirstToBet = -1;
             for (int i = 0; i < Participants.Count; i++) // Note dealer needs to be checked too, but last
             {
-                int ZbiOfNextPlayerToCheck = (ZbiLeftOfDealer + 1 + i) % Participants.Count;
+                int ZbiOfNextPlayerToInspect = (ZbiLeftOfDealer + 1 + i) % Participants.Count;
                 if (
-                    Participants[ZbiOfNextPlayerToCheck].HasFolded == false // i.e. player has not folded out of this hand
-                    && this.ChipsInThePotForSpecifiedPlayer(ZbiOfNextPlayerToCheck) > 0 // i.e. player was in the hand to start off with
+                    Participants[ZbiOfNextPlayerToInspect].HasFolded == false // i.e. player has not folded out of this hand
+                    && this.ChipsInThePotForSpecifiedPlayer(ZbiOfNextPlayerToInspect) > 0 // i.e. player was in the hand to start off with
                     && ( // players hand is the first to be checked or is better than any checked so far
                         ZbiOfFirstToBet == -1
-                        || Participants[ZbiOfNextPlayerToCheck]._VisibleHandRank < Participants[ZbiOfFirstToBet]._VisibleHandRank
+                        || Participants[ZbiOfNextPlayerToInspect]._VisibleHandRank < Participants[ZbiOfFirstToBet]._VisibleHandRank
                     )
                 )
                 {
-                    ZbiOfFirstToBet = ZbiOfNextPlayerToCheck; // This player is still in and has a better hand 
+                    ZbiOfFirstToBet = ZbiOfNextPlayerToInspect; // This player is still in and has a better hand 
                 }
             }
             return ZbiOfFirstToBet;
@@ -115,15 +136,17 @@ namespace SevenStuds.Models
             // Determine who is next to bet after current player (may be -1 if no players left who can bet, i.e. end of round)
             for (int i = 0; i < Participants.Count - 1 ; i++) // Check all except current player
             { 
-                int ZbiOfNextPlayerToCheck = (currentPlayer + 1 + i) % Participants.Count;
-                if ( ZbiOfNextPlayerToCheck == _IndexOfLastPlayerToRaiseOrStartChecking ) {
+                int ZbiOfNextPlayerToInspect = (currentPlayer + 1 + i) % Participants.Count;
+                if ( ZbiOfNextPlayerToInspect == _IndexOfLastPlayerToRaise 
+                    || ( this._CheckIsAvailable && ZbiOfNextPlayerToInspect == _IndexOfLastPlayerToStartChecking )
+                ) {
                     return -1; // Have got back round to last player who raised or started a round of checking, so this is the end of the round 
                 }
-                if ( Participants[ZbiOfNextPlayerToCheck].HasFolded == false // i.e. player has not folded out of this hand
-                    && this.ChipsInThePotForSpecifiedPlayer(ZbiOfNextPlayerToCheck) > 0 // i.e. player was still in the hand to start off with
+                if ( Participants[ZbiOfNextPlayerToInspect].HasFolded == false // i.e. player has not folded out of this hand
+                    && this.ChipsInThePotForSpecifiedPlayer(ZbiOfNextPlayerToInspect) > 0 // i.e. player was still in the hand to start off with
                 )
                 {
-                    return ZbiOfNextPlayerToCheck;
+                    return ZbiOfNextPlayerToInspect;
                 }
             }
             return -1;
