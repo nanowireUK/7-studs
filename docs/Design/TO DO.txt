@@ -14,9 +14,12 @@ DONE * Add a new field Commentary as list of strings (to replace LastEvent event
 DONE * Handle end of hand (i.e. end of seventh round) -> multiple winners (shared pot)
 DONE * Show final hand in summary
 DONE * Handle end of hand (i.e. end of seventh round) -> allow for multiple pots
-* Handle covering the pot (is this only when the player cannot match the current bet?)
+DONE * Handle covering the pot (is this only when the player cannot match the current bet?)
+* Prevent blank or duplicate players joining
+* Prevent players joining during the game
 * Handle no one being able to bet (auto-check?)
 * Handle end of overall game (time limit, number of rounds, less than 'n' players left in)
+* Think about regression test framework that processes command in sequence and checks relevant parts of results
 
 
 https://thomaslevesque.com/2020/05/15/things-every-csharp-developer-should-know-1-hash-codes/

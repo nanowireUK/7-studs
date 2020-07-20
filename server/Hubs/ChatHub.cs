@@ -60,7 +60,7 @@ namespace SevenStuds.Hubs
                     g.AddCommentary(g.LastEvent);                    
                 }
                 else if ( p.UncommittedChips == catchupAmount ) {
-                    g.LastEvent = user + " tried to raise but only has enough to call";
+                    g.LastEvent = user + " tried to raise but only has enough to cover";
                     g.AddCommentary(g.LastEvent);                                        
                 }               
                 else if ( p.UncommittedChips < ( catchupAmount + amountAsInt ) ) {
@@ -69,10 +69,9 @@ namespace SevenStuds.Hubs
                 }               
                 else {
                     // Implement the raise
-                    p.UncommittedChips -= (catchupAmount + amountAsInt);
                     string msg = user;
-                    // Add this amount to current pot for this player
-                    g.AddAmountToCurrentPotForSpecifiedPlayer(playerIndex, catchupAmount + amountAsInt);
+                    // Add this amount to the pot for this player
+                    g.MoveAmountToPotForSpecifiedPlayer(playerIndex, catchupAmount + amountAsInt);
                     if ( catchupAmount > 0 ) {
                         msg += " paid " + catchupAmount + " to stay in and";
                     }
@@ -112,11 +111,14 @@ namespace SevenStuds.Hubs
                     g.LastEvent = user + " tried to call but does not have enough to stay in (consider covering pot)";
                     g.AddCommentary(g.LastEvent);                                                        
                 }
+                else if ( catchupAmount == 0 ) {
+                    g.LastEvent = user + " tried to call but this is not valid with no bets in current round (consider check or raise)";
+                    g.AddCommentary(g.LastEvent);                                                        
+                }                
                 else {
                     // Implement the call
-                    p.UncommittedChips -= catchupAmount;
-                    // Add this amount to current pot for this player
-                    g.AddAmountToCurrentPotForSpecifiedPlayer(playerIndex, catchupAmount);
+                    // Add this amount to the pot for this player
+                    g.MoveAmountToPotForSpecifiedPlayer(playerIndex, catchupAmount);
                     g.LastEvent = user + " paid " + catchupAmount + " to call";
                     g.AddCommentary(g.LastEvent);                                                        
                     g._CheckIsAvailable = false;
@@ -133,6 +135,53 @@ namespace SevenStuds.Hubs
                     else  {
                         // This is the end of the hand
                         g.NextAction = g.ProcessEndGame(user + " called, hand ended");
+                    }
+                }
+            }
+            // Return updated status to all the clients 
+            await Clients.All.SendAsync("ReceiveUpdatedGameState", g.AsJson());
+        }   
+public async Task UserClickedCover(string gameId, string user)
+        {
+            Game g = Game.FindOrCreateGame(gameId); // find our game or create a new one if required (shouldn't be possible)
+            g.ClearCommentary();
+            int playerIndex = g.PlayerIndexFromName(user);
+            if ( playerIndex == -1 ) {
+                g.LastEvent = user + " tried to cover but is not a participant in this game";
+                g.AddCommentary(g.LastEvent);                                    
+            }
+            else if ( playerIndex != g.IndexOfParticipantToTakeNextAction ) {
+                g.LastEvent = user + " tried to cover but it is not their turn";
+                g.AddCommentary(g.LastEvent);                                                    
+            }
+            else {
+                // Handle the cover (like a call but where player doesn't have enough to cover the current raise)
+                Participant p = g.Participants[playerIndex];
+                int catchupAmount = g.MaxChipsInThePotForAnyPlayer() - g.ChipsInAllPotsForSpecifiedPlayer(playerIndex);
+                if ( p.UncommittedChips >= catchupAmount ) {
+                    g.LastEvent = user + " tried to cover the pot but has enough to continue playing (consider calling or raising instead)";
+                    g.AddCommentary(g.LastEvent);                                                        
+                }
+                else {
+                    // Implement the cover (has to be done pot-by-pot, and could involve splitting a pot)
+                    g.LastEvent = user + " paid " + p.UncommittedChips + " to cover the pot";
+                    g.AddCommentary(g.LastEvent);   
+                    g.MoveAmountToPotForSpecifiedPlayer(playerIndex, p.UncommittedChips);
+                    g._CheckIsAvailable = false;
+                    // Find and set next player (could be no one if all players have now called or covered)
+                    g.IndexOfParticipantToTakeNextAction = g.GetIndexOfPlayerToBetNext(playerIndex);
+                    if ( g.IndexOfParticipantToTakeNextAction > -1 ) {
+                        g.NextAction = g.Participants[g.IndexOfParticipantToTakeNextAction].Name + " to bet"; 
+                        g.AddCommentary(g.NextAction );  
+                    }
+                    else if ( g._CardsDealtIncludingCurrent < 7 ) { 
+                        g.DealNextRound();
+                        g.NextAction = "Started next round, " + g.Participants[g.IndexOfParticipantToTakeNextAction].Name + " to bet"; 
+                        g.AddCommentary("End of round. Next card dealt. " + g.Participants[g.IndexOfParticipantToTakeNextAction].Name + " to bet");   
+                    }
+                    else  {
+                        // This is the end of the hand
+                        g.NextAction = g.ProcessEndGame(user + " covered the pot, hand ended");
                     }
                 }
             }

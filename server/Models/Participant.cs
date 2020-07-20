@@ -14,7 +14,7 @@ namespace SevenStuds.Models
         
         public string Name { get; set; }
         public int UncommittedChips { get; set; }
-        public int ChipsCommittedToCurrentBettingRound { get; set; }
+        //public int ChipsCommittedToCurrentBettingRound { get; set; }
         public Boolean HasFolded { get; set; }
         public string ConnectionId { get; set; } // e.g. 3 alphanumeric characters that enables a disconnected player to rejoin as the same person
         [Required]
@@ -25,12 +25,12 @@ namespace SevenStuds.Models
         public string _HandSummary { get; set; }
         private PokerHand _PokerHand { get; set; }
         public List<Card> Hand { get; set; }
-        public Boolean IsAllIn() {
-            return UncommittedChips == 0 & ChipsCommittedToCurrentBettingRound > 0;
-        }
+        // public Boolean IsAllIn() {
+        //     return UncommittedChips == 0 & ChipsCommittedToCurrentBettingRound > 0;
+        // }
         
         public void StartNewHandForActivePlayer(Game g) {
-            this.ChipsCommittedToCurrentBettingRound = g.Ante;
+            //this.ChipsCommittedToCurrentBettingRound = g.Ante;
             this.UncommittedChips -= g.Ante;
             this.HasFolded = false;
             this.Hand = new List<Card>();
@@ -60,7 +60,7 @@ namespace SevenStuds.Models
         }
 
         public void StartNewHandForBankruptPlayer(Game g) {
-            this.ChipsCommittedToCurrentBettingRound = 0;
+            //this.ChipsCommittedToCurrentBettingRound = 0;
             this.HasFolded = false;
             this.Hand = new List<Card>();
             this._VisibleHandDescription = null;

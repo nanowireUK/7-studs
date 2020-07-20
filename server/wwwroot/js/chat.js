@@ -124,8 +124,16 @@ document.getElementById("actionCheck").addEventListener("click", function (event
 document.getElementById("actionFold").addEventListener("click", function (event) {
     var gameId = getGameId();    
     var user = getUser();
-
     connection.invoke("UserClickedFold", gameId, user).catch(logError);
+    event.preventDefault();
+});
+
+// --------------- COVER
+
+document.getElementById("actionCover").addEventListener("click", function (event) {
+    var gameId = getGameId();    
+    var user = getUser();
+    connection.invoke("UserClickedCover", gameId, user).catch(logError);
     event.preventDefault();
 });
 

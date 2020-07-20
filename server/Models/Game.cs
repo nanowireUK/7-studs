@@ -15,7 +15,7 @@ namespace SevenStuds.Models
         // Game state 
         public string LastEvent { get; set; }
         public string NextAction { get; set; }
-         public List<string> HandCommentary { get; set; }
+        public List<string> HandCommentary { get; set; }
         public int HandsPlayedIncludingCurrent { get; set; } // 0 = game not yet started
         public int IndexOfParticipantDealingThisHand { get; set; } // Rotates from player 0
         public int IndexOfParticipantToTakeNextAction { get; set; } // Determined by cards showing (at start of round) then on player order
@@ -207,6 +207,17 @@ namespace SevenStuds.Models
             }
             return currentMax;
         }  
+
+        public int MaxChipsInSpecifiedPotForAnyPlayer (int pot) {
+            int currentMax = 0;
+            for (int i = 0; i < this.Participants.Count; i++) {
+
+                if ( ChipsInSpecifiedPotForSpecifiedPlayer(pot, i) > currentMax) {
+                    currentMax = ChipsInSpecifiedPotForSpecifiedPlayer(pot, i);
+                }
+            }
+            return currentMax;
+        }  
         public int TotalInSpecifiedPot (int pot) {
             int totalPot = 0;
             for (int player = 0; player < this.Participants.Count; player++) {
@@ -214,8 +225,72 @@ namespace SevenStuds.Models
             }
             return totalPot;
         }    
-        public void AddAmountToCurrentPotForSpecifiedPlayer  (int playerIndex, int amt){
-             this.Pots[this.Pots.Count-1][playerIndex] += amt;
+        public void MoveAmountToPotForSpecifiedPlayer  (int playerIndex, int amt) {
+            // Add amount to pots, filling up earlier pots before adding to open one,
+            // and splitting the pot here automatically if player comes up short of total pot so far
+            int amountLeftToAdd = amt;
+            this.Participants[playerIndex].UncommittedChips -= amt; // Reduce the player's pile of chips before adding them to the various pots
+            AddCommentary("Adding "+ amountLeftToAdd +" to the pot (existing pot structure will be analysed)");
+            for ( int pot = 0; pot < Pots.Count; pot++) {
+                if ( amountLeftToAdd > 0) {
+                    int maxContributionToThisPotByAnyPlayer = MaxChipsInSpecifiedPotForAnyPlayer(pot);
+                    AddCommentary("Max chips in pot " + (pot+1) + " = " + maxContributionToThisPotByAnyPlayer);
+                    int myExistingContributionToThisPot = ChipsInSpecifiedPotForSpecifiedPlayer (pot, playerIndex);
+                    if ( pot == Pots.Count - 1) {
+                        // This is the open pot
+                        if ( amountLeftToAdd >= ( maxContributionToThisPotByAnyPlayer - myExistingContributionToThisPot ) ) {
+                            // Player is calling or raising
+                            AddCommentary("Adding "+ amountLeftToAdd +" to open pot");
+                            this.Pots[pot][playerIndex] += amountLeftToAdd;
+                            amountLeftToAdd = 0;
+                        }
+                        else {
+                            // User is short of the amount required to stay in and is covering the pot
+                            AddCommentary("Adding "+ amountLeftToAdd +" to open pot (should be as a result of covering the pot)");
+                            this.Pots[pot][playerIndex] += amountLeftToAdd;
+                            amountLeftToAdd = 0;
+                            SplitPotAbovePlayersAmount(pot,  playerIndex); // Will change pot structure but this loop will end anyway as nothing left to add
+                        }                        
+                    }
+                    else {
+                        // We are currently filling pots that have already been superseded by the open pot
+                        int shortfallForThisPot = ( maxContributionToThisPotByAnyPlayer - myExistingContributionToThisPot );
+                        if ( shortfallForThisPot == 0 ) {
+                            AddCommentary("Player is already fully paid in to pot #" + (pot+1));
+                        }
+                        else if ( amountLeftToAdd >= shortfallForThisPot ) {
+                            // Player has at least enough to complete his commitment to this pot
+                            AddCommentary("Adding "+ shortfallForThisPot +" to complete commitment to pot #" + (pot+1));
+                            this.Pots[pot][playerIndex] += shortfallForThisPot;
+                            amountLeftToAdd -= shortfallForThisPot;
+                        }
+                        else {
+                            // Player does not have enough to complete their contribution to this pot
+                            AddCommentary("Adding "+ amountLeftToAdd +" to partially satisfy commitment to pot #" + (pot+1));
+                            this.Pots[pot][playerIndex] += amountLeftToAdd;
+                            amountLeftToAdd = 0;
+                            SplitPotAbovePlayersAmount(pot,  playerIndex); // Will change pot structure but this loop will end anyway as nothing left to add
+                        }
+                    }
+                }
+            }
+        }
+
+        public void SplitPotAbovePlayersAmount(int potIndex, int playerIndex) {
+            // Find out how much the given player has in the given pot, and split the pot so that higher contributions are moved to a new pot
+            int potLimit = ChipsInSpecifiedPotForSpecifiedPlayer(potIndex, playerIndex);
+            AddCommentary("Splitting pot " + (potIndex+1));
+            Pots.Insert(potIndex+1, new List<int>());
+            for ( int player = 0; player < Pots[potIndex].Count; player++) {
+                // Move any surplus amounts from old pot to new for each player
+                if ( Pots[potIndex][player] > potLimit ) {
+                    Pots[potIndex+1].Add( Pots[potIndex][player] - potLimit); // Move surplus to new pot
+                    Pots[potIndex][player] = potLimit; //Limit current pot contribution
+                }
+                else {
+                    Pots[potIndex+1].Add(0); // No surplus to move for this player
+                }
+            }
         }
 
         public Card DealCard() {
@@ -290,7 +365,7 @@ namespace SevenStuds.Models
                 }                
             }
             InitialiseHand();
-            AddCommentary("started new hand. " + this.Participants[this.IndexOfParticipantToTakeNextAction].Name + " to bet");
+            AddCommentary("End game complete. Started new hand. " + this.Participants[this.IndexOfParticipantToTakeNextAction].Name + " to bet");
             return this.Participants[this.IndexOfParticipantToTakeNextAction].Name + " to bet";
         }
 
