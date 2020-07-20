@@ -119,6 +119,8 @@ document.getElementById("actionCheck").addEventListener("click", function (event
     event.preventDefault();
 });
 
+// --------------- FOLD
+
 document.getElementById("actionFold").addEventListener("click", function (event) {
     var gameId = getGameId();    
     var user = getUser();

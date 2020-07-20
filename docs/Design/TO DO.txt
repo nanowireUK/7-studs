@@ -10,17 +10,19 @@ DONE * Show a one-line representation of the full set of cards, not just the bes
 DONE * Fix plurals, esp. "Sixs"
 DONE * Handle end of hand (i.e. end of seventh round) -> simple case with one winner
 DONE * Handle fold triggering end of hand
+DONE * Add a new field Commentary as list of strings (to replace LastEvent eventually)
 DONE * Handle end of hand (i.e. end of seventh round) -> multiple winners (shared pot)
 DONE * Show final hand in summary
-* Handle end of hand (i.e. end of seventh round) -> split pots
-* Handle end of game (time limit, number of rounds, less than 'n' players left in)
-* Handle covering the pot
+DONE * Handle end of hand (i.e. end of seventh round) -> allow for multiple pots
+* Handle covering the pot (is this only when the player cannot match the current bet?)
 * Handle no one being able to bet (auto-check?)
+* Handle end of overall game (time limit, number of rounds, less than 'n' players left in)
+
 
 https://thomaslevesque.com/2020/05/15/things-every-csharp-developer-should-know-1-hash-codes/
 
 * Check performance of HashTable: consider making GetHashCode cleverer
-* Cross check his 5-card rankings with mine
+* Cross check his 5-card rankings with mine ... not convinced by his flush logic
 * Allow for 6 and 7 card hands (need to find PokerHand with best ranking)
 * Split hand description out into two parts: main bit e.g. "Ace High" and countback e.g. "with King ..."
 * Game name to be pulled from URL

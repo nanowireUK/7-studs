@@ -15,6 +15,7 @@ namespace SevenStuds.Models
         // Game state 
         public string LastEvent { get; set; }
         public string NextAction { get; set; }
+         public List<string> HandCommentary { get; set; }
         public int HandsPlayedIncludingCurrent { get; set; } // 0 = game not yet started
         public int IndexOfParticipantDealingThisHand { get; set; } // Rotates from player 0
         public int IndexOfParticipantToTakeNextAction { get; set; } // Determined by cards showing (at start of round) then on player order
@@ -38,7 +39,8 @@ namespace SevenStuds.Models
             Ante = 1;
             HandsPlayedIncludingCurrent = 0;
             CardPack = new Deck(true);
-            SevenStuds.Models.ServerState.GameList.Add(GameId, this); // Maps the game id to the game itself (possibly better than just iterating through a list?)            
+            SevenStuds.Models.ServerState.GameList.Add(GameId, this); // Maps the game id to the game itself (possibly better than just iterating through a list?)
+            HandCommentary = new List<string>();
         }
         public static Game FindOrCreateGame(string gameId) {
             if ( SevenStuds.Models.ServerState.GameList.ContainsKey(gameId) ) {
@@ -56,9 +58,9 @@ namespace SevenStuds.Models
             }
             // Randomise player order here? Pick a random player, delete and add at end, repeat a few times
             int players = Participants.Count;
-            for (int i = 0; i < players; i++) {
-                Participant p = Participants[i]; // Get reference to player to be moved
-                Participants.RemoveAt(i); // Remove it from the current list
+            for (int player = 0; player < players; player++) {
+                Participant p = Participants[player]; // Get reference to player to be moved
+                Participants.RemoveAt(player); // Remove it from the current list
                 Participants.Insert(0, p); // Move to front of the queue
             }
 
@@ -101,8 +103,9 @@ namespace SevenStuds.Models
                 p.PrepareForNextBettingRound(this, _CardsDealtIncludingCurrent);
             }
             this.IndexOfParticipantToTakeNextAction = GetIndexOfPlayerToBetFirst();
+            _IndexOfLastPlayerToRaise = -1;
+            _IndexOfLastPlayerToStartChecking = -1;             
             _CheckIsAvailable = true;
-
         }
 
         private int MaxCardsDealtSoFar() {
@@ -130,7 +133,7 @@ namespace SevenStuds.Models
                 int ZbiOfNextPlayerToInspect = (ZbiLeftOfDealer + 1 + i) % Participants.Count;
                 if (
                     Participants[ZbiOfNextPlayerToInspect].HasFolded == false // i.e. player has not folded out of this hand
-                    && this.ChipsInThePotForSpecifiedPlayer(ZbiOfNextPlayerToInspect) > 0 // i.e. player was in the hand to start off with
+                    && this.ChipsInAllPotsForSpecifiedPlayer(ZbiOfNextPlayerToInspect) > 0 // i.e. player was in the hand to start off with
                     && ( // players hand is the first to be checked or is better than any checked so far
                         ZbiOfFirstToBet == -1
                         || Participants[ZbiOfNextPlayerToInspect]._VisibleHandRank < Participants[ZbiOfFirstToBet]._VisibleHandRank
@@ -150,7 +153,7 @@ namespace SevenStuds.Models
             {
                  if ( 
                     Participants[i].HasFolded == false // i.e. player has not folded out of this hand
-                    && this.ChipsInThePotForSpecifiedPlayer(i) > 0 // i.e. player was in the hand to start off with
+                    && this.ChipsInAllPotsForSpecifiedPlayer(i) > 0 // i.e. player was in the hand to start off with
                 )
                 {
                     stillIn += 1; // This player is still in (even if they are no longer able to bet because of covering a pot)
@@ -171,7 +174,7 @@ namespace SevenStuds.Models
                     return -1; 
                 }
                 if ( Participants[ZbiOfNextPlayerToInspect].HasFolded == false // i.e. player has not folded out of this hand
-                    && this.ChipsInThePotForSpecifiedPlayer(ZbiOfNextPlayerToInspect) > 0 ) 
+                    && this.ChipsInAllPotsForSpecifiedPlayer(ZbiOfNextPlayerToInspect) > 0 ) 
                 {
                     // i.e. player was still in the hand to start off with
                     return ZbiOfNextPlayerToInspect;
@@ -180,13 +183,16 @@ namespace SevenStuds.Models
             return -1;
         }  
 
-        public int ChipsInThePotForSpecifiedPlayer (int PlayerIndex ) {
+        public int ChipsInAllPotsForSpecifiedPlayer (int PlayerIndex ) {
             int totalCommitted = 0;
             foreach ( List<int> pot in this.Pots ) {
                 totalCommitted += pot[PlayerIndex];
             }
             return totalCommitted;
         }   
+        public int ChipsInSpecifiedPotForSpecifiedPlayer (int PotIndex, int PlayerIndex ) {
+            return this.Pots[PotIndex][PlayerIndex];
+        }           
 
         public int MaxChipsInThePotForAnyPlayer () {
             int currentMax = 0;
@@ -201,14 +207,10 @@ namespace SevenStuds.Models
             }
             return currentMax;
         }  
-        public int TotalPot () {
+        public int TotalInSpecifiedPot (int pot) {
             int totalPot = 0;
-            for (int i = 0; i < this.Participants.Count; i++) {
-                int playerTotal = 0;
-                for (int j = 0; j < this.Pots.Count; j++) {
-                    playerTotal += this.Pots[j][i];
-                }
-                totalPot += playerTotal;
+            for (int player = 0; player < this.Participants.Count; player++) {
+                totalPot += this.Pots[pot][player];
             }
             return totalPot;
         }    
@@ -230,62 +232,83 @@ namespace SevenStuds.Models
         // }
 
         public string ProcessEndGame(string Trigger) {
-            // Something has triggered the end of the game ... process the pots and summarise each player's results
-            // Start with simple case of one winner
-            int winningPlayerIndex = -1;
-            int winningPlayersHandRank = int.MaxValue; // Low values will win so this is guaranteed to be beaten
-            int winningPlayers = 1;
-            for (int i = 0; i < Participants.Count ; i++) {
-                if ( Participants[i].HasFolded == false && ChipsInThePotForSpecifiedPlayer(i) > 0 ) {
-                    if ( winningPlayerIndex == -1) {
-                        // First player who is still in, so assume they are the winner until we find out otherwise
-                        winningPlayerIndex = i;
-                        winningPlayersHandRank = Participants[i]._FullHandRank;
-                    }
-                    else if ( winningPlayersHandRank == Participants[i]._FullHandRank) {
-                        // Record the fact of two or more players at this rank
-                        winningPlayers += 1;
-                        winningPlayersHandRank = Participants[i]._FullHandRank;                        
-                    }
-                    else if ( winningPlayersHandRank < Participants[i]._FullHandRank) {
-                        // New winner
-                        winningPlayerIndex = i;
-                        winningPlayers = 1;
-                        winningPlayersHandRank = Participants[i]._FullHandRank;
+            // Something has triggered the end of the game. Distribute each pot according to winner(s) of that pot.
+            // Start with oldest pot and work forwards. 
+            // Only players who have contributed to a pot and have not folded are to be considered
+            AddCommentary(Trigger);
+            List<int> currentWinners = new List<int>();
+            for (int pot = 0; pot < Pots.Count ; pot++) {
+                // Identify the player or players who is/are winning this pot
+                int winningPlayersHandRank = int.MaxValue; // Low values will win so this is guaranteed to be beaten
+                AddCommentary("Determining winner(s) of pot #"+ (pot+1));
+                for (int player = 0; player < Participants.Count ; player++) {
+                    if ( Participants[player].HasFolded == false && ChipsInSpecifiedPotForSpecifiedPlayer(pot, player) > 0 ) {
+                        if ( currentWinners.Count == 0 ) {
+                            // First player who is still in, so assume they are the winner until we find out otherwise
+                            currentWinners.Add(player);
+                            winningPlayersHandRank = Participants[player]._FullHandRank;
+                        }
+                        else if ( Participants[player]._FullHandRank == winningPlayersHandRank ) {
+                            // Record the fact of two or more players at this rank
+                            currentWinners.Add(player);
+                        }
+                        else if ( Participants[player]._FullHandRank < winningPlayersHandRank ) {
+                            // New winner
+                            currentWinners.Clear(); // Remove details of players winning up to now
+                            currentWinners.Add(player);
+                            winningPlayersHandRank = Participants[player]._FullHandRank;
+                        }
                     }
                 }
-            }
-            string resultsList = "";
-            if ( winningPlayers == 1) {
-                // Give the whole pot to one player and record how much everyone won or lost
-                for (int i = 0; i < Participants.Count ; i++) {
-                    Participant p = Participants[i];
-                    if ( winningPlayerIndex == i ) {
-                        // Give them the whole pot (which includes their investment back)
-                        int tp = TotalPot();
-                        p.UncommittedChips += tp;
-                        int inPot = ChipsInThePotForSpecifiedPlayer(i);
-                        resultsList += p.Name + "(" + p._FullHandDescription + ") won " + ( tp - inPot ) + ", ";
+                // Split the pot across the winning player(s) and record how much everyone won or lost (doing winners first)
+                for (int player = 0; player < Participants.Count ; player++) {
+                    Participant p = Participants[player];
+                    if ( currentWinners.Contains(player) ) {
+                        // Give them their share of this pot
+                        int tp = TotalInSpecifiedPot(pot);
+                        int share = tp / currentWinners.Count; // Discards any fractional winnings ... not sure how else to handle this
+                        p.UncommittedChips += share;
+                        int inPot = ChipsInSpecifiedPotForSpecifiedPlayer(pot, player);
+                        AddCommentary(p.Name + " won " + ( share - inPot ) + " with " + p._HandSummary + " (" + p._FullHandDescription + ")");
                     }
-                    else {
+                }
+                for (int player = 0; player < Participants.Count ; player++) {
+                    Participant p = Participants[player];
+                    if ( ! currentWinners.Contains(player) ) {
                         // Record the loss of their investment
-                        int inPot = ChipsInThePotForSpecifiedPlayer(i);
-                        resultsList += p.Name + "(" + p._FullHandDescription + ") lost " + inPot + ", ";
+                        int inPot = ChipsInSpecifiedPotForSpecifiedPlayer(pot, player);
+                        if ( inPot == 0 ) {
+                            AddCommentary(p.Name + " had nothing in this pot");
+                        }
+                        else if ( p.HasFolded ) {
+                            AddCommentary(p.Name + " lost " + ( inPot ) + " after folding");
+                        }
+                        else {
+                            AddCommentary(p.Name + " lost " + ( inPot ) + " with " + p._HandSummary + " [rank=" + p._FullHandRank + "] (" + p._FullHandDescription + ")");
+                        }
                     }
-                }
-                resultsList = resultsList.Substring(0, resultsList.Length-2);
+                }                
             }
             InitialiseHand();
-            return Trigger + ". " + resultsList + ". " + this.Participants[this.IndexOfParticipantToTakeNextAction].Name + " to bet";
+            AddCommentary("started new hand. " + this.Participants[this.IndexOfParticipantToTakeNextAction].Name + " to bet");
+            return this.Participants[this.IndexOfParticipantToTakeNextAction].Name + " to bet";
         }
 
         public int PlayerIndexFromName(string SearchName) {
-            for (int i = 0; i < Participants.Count ; i++) {
-                if ( Participants[i].Name == SearchName ) {
-                    return i;
+            for (int player = 0; player < Participants.Count ; player++) {
+                if ( Participants[player].Name == SearchName ) {
+                    return player;
                 }
             }
             return -1;
+        }
+
+        public void AddCommentary (string c){
+            this.HandCommentary.Add(c);
+        }
+
+        public void ClearCommentary (){
+            this.HandCommentary.Clear();
         }
         public string AsJson()
         {
