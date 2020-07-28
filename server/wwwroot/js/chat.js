@@ -57,6 +57,7 @@ connection.start().then(
         actionCall.disabled = false;
         actionRaise.disabled = false;
         actionFold.disabled = false;
+        actionCover.disabled = false;
     }
 ).catch(logError);
 
@@ -75,7 +76,7 @@ document.getElementById("actionJoin").addEventListener("click",
     function (event) {
         var gameId = getGameId();    
         var user = getUser();
-        connection.invoke("UserClickedJoin", gameId, user).catch(logError);
+        connection.invoke("UserClickedActionButton", /* SevenStuds.Models.ActionEnum.Join */ 1, gameId, user).catch(logError);
         event.preventDefault();
     }
 );
@@ -86,7 +87,7 @@ document.getElementById("actionStart").addEventListener("click",
     function (event) {
         var gameId = getGameId();    
         var user = getUser();
-        connection.invoke("UserClickedStart", gameId, user).catch(logError);
+        connection.invoke("UserClickedActionButton", /* SevenStuds.Models.ActionEnum.Start */ 4, gameId, user).catch(logError);
         event.preventDefault();
     }
 );

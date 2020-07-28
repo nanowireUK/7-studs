@@ -8,24 +8,17 @@ namespace SevenStuds.Hubs
     {
         // This is the server-side code that is called by connection.invoke("xxx") in chat.js on the client
 
-        // ---- JOIN GAME
-        public async Task UserClickedJoin(string gameId, string user)
-        {
-            Game g = Game.FindOrCreateGame(gameId); // find our game or create a new one if required
-            g.Participants.Add(new Participant(user, Context.ConnectionId));
-            g.LastEvent = user + " joined game";
-            g.NextAction = "Await new player or start the game";
-            await Clients.All.SendAsync("ReceiveUpdatedGameState", g.AsJson());
-        }
+        // In each case the game will process the action and the updated game state will be returned to the client
 
+        public async Task UserClickedActionButton(ActionEnum actionType, string gameId, string user)
+        {
+            Action a = ActionFactory.NewAction(actionType, gameId, user, Context.ConnectionId);
+            await Clients.All.SendAsync("ReceiveUpdatedGameState", a.ProcessActionAndReturnUpdatedGameStateAsJson());
+        }
         public async Task UserClickedStart(string gameId, string user)
         {
             Game g = Game.FindOrCreateGame(gameId); // find our game or create a new one if required
-            g.InitialiseGame();
-            g.LastEvent = user + " started game (player order now randomised)";
-            g.NextAction = g.Participants[g.IndexOfParticipantToTakeNextAction].Name + " to bet"; 
-            
-            // Find next player: Need to allow for next player being out
+            //g.ProcessStart(user, Context.ConnectionId);
             await Clients.All.SendAsync("ReceiveUpdatedGameState", g.AsJson());
         }   
 

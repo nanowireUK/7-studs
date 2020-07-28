@@ -1,6 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
+using System.Collections;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System;
 
 namespace SevenStuds.Models
@@ -22,10 +24,15 @@ namespace SevenStuds.Models
         public int _CardsDealtIncludingCurrent { get; set; } // 0 = hand not started
         public int _IndexOfLastPlayerToRaise { get; set; } 
         public int _IndexOfLastPlayerToStartChecking { get; set; } 
-        public bool _CheckIsAvailable { get; set; } 
-        public List<List<int>> Pots { get; set; } // pots built up in the current hand (over multiple rounds of betting)
+        public bool _CheckIsAvailable { get; set; }
+
+        //public List<ActionEnum> _ActionsNowAvailableToCurrentPlayer { get; set; }
+        //public List<ActionEnum> _ActionsNowAvailableToAnyPlayer { get; set; }
+        public List<List<int>> Pots { get; set; } // pot(s) built up in the current hand (over multiple rounds of betting)
         public List<Participant> Participants { get; set; } // ordered list of participants (order represents order around the table)
         //public List<Event> Events { get; set; } // ordered list of events associated with the game
+        private Dictionary<ActionEnum, ActionAvailability> _ActionAvailability { get; set; } // Can't be public as JSON serialiser can't handle it
+        public List<ActionAvailability> _ActionAvailabilityList { get; set; } // This list contains references to the same objects as in the Dictionary       
         public List<Boolean> CardPositionIsVisible { get; } = new List<Boolean>{false, false, true, true, true, true, false};
 
         //public List<int> contributionsPerPlayer;
@@ -41,6 +48,13 @@ namespace SevenStuds.Models
             CardPack = new Deck(true);
             SevenStuds.Models.ServerState.GameList.Add(GameId, this); // Maps the game id to the game itself (possibly better than just iterating through a list?)
             HandCommentary = new List<string>();
+            _ActionAvailability = new Dictionary<ActionEnum, ActionAvailability>();
+            _ActionAvailabilityList = new List<ActionAvailability>();
+            foreach ( ActionEnum e in Enum.GetValues(typeof(ActionEnum)) ) 
+            {
+                SetActionAvailability(e, AvailabilityEnum.NotAvailable); // All commands initially unavailable
+            }
+            SetActionAvailability(ActionEnum.Join, AvailabilityEnum.AnyPlayer); // Open up JOIN to anyone
         }
         public static Game FindOrCreateGame(string gameId) {
             if ( SevenStuds.Models.ServerState.GameList.ContainsKey(gameId) ) {
@@ -50,6 +64,86 @@ namespace SevenStuds.Models
                 return new Game(gameId);
             }
         }
+
+        public void SetActionAvailability(ActionEnum ac, AvailabilityEnum av) 
+        {
+            ActionAvailability aa;
+            if ( _ActionAvailability.TryGetValue(ac, out aa) )
+            {
+                aa.Availability = av;
+            }
+            else 
+            {
+                aa = new ActionAvailability(ac, av);
+                _ActionAvailability.Add(ac, aa); // Note we are adding the ActionAvailability object as the value
+                _ActionAvailabilityList.Add(aa); // Also add it to the list that is in included in the JSON export 
+
+            }
+        }
+
+        public bool ActionIsAvailableToThisPlayerAtThisPoint( ActionEnum ac, int playerIndex ) 
+        {
+            return true;
+        }
+        // public void ProcessJoin(string user, string connectionId)
+        // {
+
+        //     // Ensure name is not blank
+        //     if ( user == "" ) {
+        //         this.LastEvent = "Someone attempted to join game with a blank name";
+        //         return; // No update to game status other than this
+        //     }
+        //     // Test whether player name already exists
+        //     if ( this.Participants.Count > 0 ) {
+        //         for (int player = 0; player < Participants.Count; player++) {
+        //             Participant p = Participants[player]; // Get reference to player to be moved
+        //             if ( p.Name == user ) {
+        //                 this.LastEvent = user + " attempted to join game but is already registered";
+        //                 return; // No update to game status other than this
+        //             }
+        //         }
+        //     }
+
+        //     // Add player
+        //     this.Participants.Add(new Participant(user, connectionId));
+        //     this.LastEvent = user + " joined game";
+        //     this.NextAction = "Await new player or start the game";
+        //     this.SetAvailableActions();
+        // }
+        // public void ProcessStart(string user, string connectionId)
+        // {
+        //     // Ensure name is not blank
+        //     if ( user == "" ) {
+        //         this.LastEvent = "Someone attempted to join game with a blank name";
+        //         return; // No update to game status other than this
+        //     }
+        //     // // Test whether player name already exists
+        //     // if ( this.Participants.Count > 0 ) {
+        //     //     for (int player = 0; player < Participants.Count; player++) {
+        //     //         Participant p = Participants[player]; // Get reference to player to be moved
+        //     //         if ( p.Name == user ) {
+        //     //             this.LastEvent = user + " attempted to join game but is already registered";
+        //     //             return; // No update to game status other than this
+        //     //         }
+        //     //     }
+        //     // }
+        //     // Add player
+        //     //Game g = Game.FindOrCreateGame(gameId); // find our game or create a new one if required
+        //     this.InitialiseGame();
+        //     this.LastEvent = user + " started game (player order now randomised)";
+        //     this.NextAction = this.Participants[this.IndexOfParticipantToTakeNextAction].Name + " to bet"; 
+            
+        //     // Find next player: Need to allow for next player being out
+        //     this.SetAvailableActions();
+        // }
+        // private void SetAvailableActions() {
+        //     // Will be used to set the actions available to the current player and to any player
+        //     // based on the current game state
+        //     // Can test using e.g. if ( xxx.Contains(ActionEnum.Leave) ) {}
+        //     this._ActionsNowAvailableToCurrentPlayer = new List<ActionEnum>();
+        //     this._ActionsNowAvailableToAnyPlayer = new List<ActionEnum>();
+        //     this._ActionsNowAvailableToAnyPlayer.Add(ActionEnum.Leave);
+        // }
         public void InitialiseGame()
         {
             foreach ( Participant p in Participants )
@@ -390,7 +484,9 @@ namespace SevenStuds.Models
             var options = new JsonSerializerOptions
             {
                 WriteIndented = true,
+                
             };
+            options.Converters.Add(new JsonStringEnumConverter(null /*JsonNamingPolicy.CamelCase*/));
             string jsonString = JsonSerializer.Serialize(this, options);
             return jsonString;
         }   
