@@ -223,12 +223,14 @@ namespace SevenStuds.Models
             int ZbiOfFirstToBet = -1;
             for (int i = 0; i < Participants.Count; i++) 
             {
-                int ZbiOfNextPlayerToInspect = (this.IndexOfParticipantDealingThisHand + 1 + i) % Participants.Count;
+                int ZbiOfNextPlayerToInspect = (this.IndexOfParticipantDealingThisHand + 1 + i) % Participants.Count; // starts one to left of dealer
                 if (
                     Participants[ZbiOfNextPlayerToInspect].HasFolded == false // i.e. player has not folded out of this hand
                     && Participants[ZbiOfNextPlayerToInspect].HasCovered == false // i.e. player has not covered the pot 
-                    && this.ChipsInAllPotsForSpecifiedPlayer(ZbiOfNextPlayerToInspect) > 0 // i.e. player was in the hand to start off with
-                    && ( // players hand is the first to be checked or is better than any checked so far
+                    && Participants[ZbiOfNextPlayerToInspect].IsOutOfThisGame == false // i.e. player was in the hand to start off with
+                    //&& this.ChipsInAllPotsForSpecifiedPlayer(ZbiOfNextPlayerToInspect) > 0 // i.e. player was in the hand to start off with
+                    && 
+                    ( // players hand is the first to be checked or is better than any checked so far
                         ZbiOfFirstToBet == -1
                         || Participants[ZbiOfNextPlayerToInspect]._VisibleHandRank < Participants[ZbiOfFirstToBet]._VisibleHandRank
                     )
@@ -247,6 +249,7 @@ namespace SevenStuds.Models
             {
                  if ( 
                     Participants[i].HasFolded == false // i.e. player has not folded out of this hand
+                    && Participants[i].IsOutOfThisGame == false // i.e. player has not yet lost all of their funds
                     && this.ChipsInAllPotsForSpecifiedPlayer(i) > 0 // i.e. player was in the hand to start off with
                 )
                 {
@@ -270,7 +273,8 @@ namespace SevenStuds.Models
                 }
                 if ( Participants[ZbiOfNextPlayerToInspect].HasFolded == false // i.e. player has not folded out of this hand
                     && Participants[ZbiOfNextPlayerToInspect].HasCovered == false // i.e. player has not covered the pot
-                    && this.ChipsInAllPotsForSpecifiedPlayer(ZbiOfNextPlayerToInspect) > 0 // player has been involved in this hand (i.e. is not out)
+                    && Participants[ZbiOfNextPlayerToInspect].IsOutOfThisGame == false // i.e. player has not yet lost all of their funds
+                    //&& this.ChipsInAllPotsForSpecifiedPlayer(ZbiOfNextPlayerToInspect) > 0 // player has been involved in this hand (i.e. is not out)
                 ) {
                     return ZbiOfNextPlayerToInspect;
                 }

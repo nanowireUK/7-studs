@@ -17,6 +17,7 @@ namespace SevenStuds.Models
         //public int ChipsCommittedToCurrentBettingRound { get; set; }
         public Boolean HasFolded { get; set; }
         public Boolean HasCovered { get; set; }
+        public Boolean IsOutOfThisGame { get; set; } // Can work this out but possibly cleaner to record it explicitly
         public string ConnectionId { get; set; } // e.g. 3 alphanumeric characters that enables a disconnected player to rejoin as the same person
         [Required]
         public int _VisibleHandRank { get; set; }
@@ -35,6 +36,7 @@ namespace SevenStuds.Models
             this.UncommittedChips -= g.Ante;
             this.HasFolded = false;
             this.HasCovered = false;
+            this.IsOutOfThisGame = false;
             this.Hand = new List<Card>();
             this.Hand.Add(g.DealCard()); // 1st random card
             this.Hand.Add(g.DealCard()); // 2nd random card
@@ -65,6 +67,7 @@ namespace SevenStuds.Models
             //this.ChipsCommittedToCurrentBettingRound = 0;
             this.HasFolded = false;
             this.HasCovered = false;
+            this.IsOutOfThisGame = true;
             this.Hand = new List<Card>();
             this._VisibleHandDescription = null;
             this._VisibleHandRank = int.MaxValue;
@@ -75,7 +78,7 @@ namespace SevenStuds.Models
 
         public void PrepareForNextBettingRound(Game g, int roundNumber) {
             // Check whether player is still in, and deal them a new card if so
-            if ( this.HasFolded == false ) {
+            if ( this.HasFolded == false & this.IsOutOfThisGame == false ) {
                 this.Hand.Add(g.DealCard()); // random card
                 PokerHand visibleHand = new PokerHand(
                     this.Hand[2], 
