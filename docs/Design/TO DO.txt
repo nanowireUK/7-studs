@@ -15,16 +15,19 @@ DONE * Handle end of hand (i.e. end of seventh round) -> multiple winners (share
 DONE * Show final hand in summary
 DONE * Handle end of hand (i.e. end of seventh round) -> allow for multiple pots
 DONE * Handle covering the pot (is this only when the player cannot match the current bet?)
+DONE * Prevent blank or duplicate players joining
+DONE * Prevent players joining during the game
+DONE * Add ActionAvailabilityList to JSON, showing which actions are available to which players at any time
 * Define a cleaner interface between client and server
   - Game state should include:
     - Index of player to make move (done already)
-    - List of commands specified player can use (from Join, Start, Check, Raise <n>, Call, Cover, Fold)
+    - List of commands specified player can use (from Join, Start, Check, Raise, Call, Cover, Fold)
     - List of commands any player can use (from Join, Rejoin, Refresh? Leave)
+    - Max raise by current player based on funds available
     - Server has to check this anyway on receipt of a command, so might as well do this up front too
 * Hand-roll the JSON to make it more compact and readable (and also to support the possibility of JSON targeted to an individual user)
 * Test ability to send a message to one player (preserve their connect, and have them wait on individual messages not just on the updated game state)
-* Prevent blank or duplicate players joining
-* Prevent players joining during the game
+* Look into Flux for .NET  (state management framework?) (also Redux which is JS implementation for React)
 * Prevent player from changing name after joining
 * Allow player to rejoin
 * Handle no one being able to bet (i.e. auto-check, or other auto-enabled actions)
@@ -34,16 +37,4 @@ DONE * Handle covering the pot (is this only when the player cannot match the cu
 * Game name to be pulled from URL
 * Find out how to send a message to any one game participant, who may not be the caller
 * Check performance of HashTable: consider making GetHashCode cleverer https://thomaslevesque.com/2020/05/15/things-every-csharp-developer-should-know-1-hash-codes/
-Validation (on client and/or server)
-
-Find and return next player? Or analyse whole state and determine next action based on e.g. pot contributions?
-
-Use a Hashtable with key = action and value = ActivePlayerOnly, NotAvailable, AnyPlayer
-
-If true then query second hastable with max raise
-
-Should an Action be a class () ... the action could be a superclass with a basic check of user name etc, with subclasses based on the action type
-
-ActionFactory -> instantiates object of type Action based on the action Enum , e.g. ActionJoin
-
 

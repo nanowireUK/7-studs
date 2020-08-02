@@ -16,6 +16,7 @@ namespace SevenStuds.Models
         public int UncommittedChips { get; set; }
         //public int ChipsCommittedToCurrentBettingRound { get; set; }
         public Boolean HasFolded { get; set; }
+        public Boolean HasCovered { get; set; }
         public string ConnectionId { get; set; } // e.g. 3 alphanumeric characters that enables a disconnected player to rejoin as the same person
         [Required]
         public int _VisibleHandRank { get; set; }
@@ -33,6 +34,7 @@ namespace SevenStuds.Models
             //this.ChipsCommittedToCurrentBettingRound = g.Ante;
             this.UncommittedChips -= g.Ante;
             this.HasFolded = false;
+            this.HasCovered = false;
             this.Hand = new List<Card>();
             this.Hand.Add(g.DealCard()); // 1st random card
             this.Hand.Add(g.DealCard()); // 2nd random card
@@ -62,6 +64,7 @@ namespace SevenStuds.Models
         public void StartNewHandForBankruptPlayer(Game g) {
             //this.ChipsCommittedToCurrentBettingRound = 0;
             this.HasFolded = false;
+            this.HasCovered = false;
             this.Hand = new List<Card>();
             this._VisibleHandDescription = null;
             this._VisibleHandRank = int.MaxValue;

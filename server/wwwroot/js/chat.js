@@ -24,11 +24,15 @@ function getGameId() {
     return "7Studs Main Event"; // We'll set this from the URL at a later date
 }
 
-function getMessage() {
+function getModifiers() {
     return document.getElementById("actionModifiers").value;
 }
 
 function getUser() {
+    return document.getElementById("userInput").value;
+}
+
+function getAmount() {
     return document.getElementById("userInput").value;
 }
 
@@ -76,7 +80,8 @@ document.getElementById("actionJoin").addEventListener("click",
     function (event) {
         var gameId = getGameId();    
         var user = getUser();
-        connection.invoke("UserClickedActionButton", /* SevenStuds.Models.ActionEnum.Join */ 1, gameId, user).catch(logError);
+        connection.invoke("UserClickedActionButton", /* SevenStuds.Models.ActionEnum.Join */ 1, gameId, user, "").catch(logError);
+        //        public async Task UserClickedActionButton(ActionEnum actionType, string gameId, string user, string amount)
         event.preventDefault();
     }
 );
@@ -87,18 +92,17 @@ document.getElementById("actionStart").addEventListener("click",
     function (event) {
         var gameId = getGameId();    
         var user = getUser();
-        connection.invoke("UserClickedActionButton", /* SevenStuds.Models.ActionEnum.Start */ 4, gameId, user).catch(logError);
+        connection.invoke("UserClickedActionButton", /* SevenStuds.Models.ActionEnum.Start */ 4, gameId, user, "").catch(logError);
         event.preventDefault();
     }
 );
 
-// --------------- RAISE
+// --------------- CHECK
 
-document.getElementById("actionRaise").addEventListener("click", function (event) {
+document.getElementById("actionCheck").addEventListener("click", function (event) {
     var gameId = getGameId();    
     var user = getUser();
-    var amount = getMessage();
-    connection.invoke("UserClickedRaise", gameId, user, amount).catch(logError);
+    connection.invoke("UserClickedActionButton", /* SevenStuds.Models.ActionEnum.Check */ 10, gameId, user, "").catch(logError);
     event.preventDefault();
 });
 
@@ -107,16 +111,28 @@ document.getElementById("actionRaise").addEventListener("click", function (event
 document.getElementById("actionCall").addEventListener("click", function (event) {
     var gameId = getGameId();    
     var user = getUser();
-    connection.invoke("UserClickedCall", gameId, user).catch(logError);
+    connection.invoke("UserClickedActionButton", /* SevenStuds.Models.ActionEnum.Call */ 11, gameId, user, "").catch(logError);
     event.preventDefault();
 });
 
-// --------------- CHECK
+// --------------- RAISE
 
-document.getElementById("actionCheck").addEventListener("click", function (event) {
+document.getElementById("actionRaise").addEventListener("click", 
+    function (event) {
+        var gameId = getGameId();    
+        var user = getUser();
+        var amount = getModifiers();
+        connection.invoke("UserClickedActionButton", /* SevenStuds.Models.ActionEnum.Raise */ 12, gameId, user, amount).catch(logError);
+        event.preventDefault();
+    }
+);
+
+// --------------- COVER
+
+document.getElementById("actionCover").addEventListener("click", function (event) {
     var gameId = getGameId();    
     var user = getUser();
-    connection.invoke("UserClickedCheck", gameId, user).catch(logError);
+    connection.invoke("UserClickedActionButton", /* SevenStuds.Models.ActionEnum.Cover */ 13, gameId, user, "").catch(logError);
     event.preventDefault();
 });
 
@@ -125,18 +141,6 @@ document.getElementById("actionCheck").addEventListener("click", function (event
 document.getElementById("actionFold").addEventListener("click", function (event) {
     var gameId = getGameId();    
     var user = getUser();
-    connection.invoke("UserClickedFold", gameId, user).catch(logError);
+    connection.invoke("UserClickedActionButton", /* SevenStuds.Models.ActionEnum.Fold */ 14, gameId, user, "").catch(logError);
     event.preventDefault();
 });
-
-// --------------- COVER
-
-document.getElementById("actionCover").addEventListener("click", function (event) {
-    var gameId = getGameId();    
-    var user = getUser();
-    connection.invoke("UserClickedCover", gameId, user).catch(logError);
-    event.preventDefault();
-});
-
-
-

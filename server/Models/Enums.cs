@@ -30,7 +30,8 @@ namespace SevenStuds.Models
     {
         NotAvailable = 0,
         ActivePlayerOnly = 1,
-        AnyPlayer = 2
+        AnyRegisteredPlayer = 2,
+        AnyUnregisteredPlayer = 3
     }
    
     /// <summary>

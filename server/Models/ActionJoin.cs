@@ -11,29 +11,16 @@ namespace SevenStuds.Models
 
         public override string ProcessActionAndReturnUpdatedGameStateAsJson()
         {
-            // Ensure name is not blank
-            if ( this.UserName == "" ) {
-                G.LastEvent = "Someone attempted to join game with a blank name";
-                return G.AsJson(); // No update to game status other than this
+            if ( G.LastEvent != "" ) {
+                return G.AsJson(); // Base class set an error message so return without checking anything else
             }
-            // Test whether player name already exists
-            if ( G.Participants.Count > 0 ) {
-                for (int player = 0; player < G.Participants.Count; player++) {
-                    Participant p = G.Participants[player]; // Get reference to player to be moved
-                    if ( p.Name == this.UserName ) {
-                        G.LastEvent = this.UserName + " attempted to join game but is already registered";
-                        return G.AsJson(); // No update to game status other than this
-                    }
-                }
-            }
-
-            // Add player
+            // Add player (note that the base class has already checked the player's eligibility for this action)
             G.Participants.Add(new Participant(this.UserName, this.ConnectionId));
             G.LastEvent = this.UserName + " joined game";
             G.NextAction = "Await new player or start the game";
             if ( G.Participants.Count >= 2)
             {
-                G.SetActionAvailability(ActionEnum.Start, AvailabilityEnum.AnyPlayer); // Open up START to anyone
+                G.SetActionAvailability(ActionEnum.Start, AvailabilityEnum.AnyRegisteredPlayer); // Open up START to anyone
             }
             return G.AsJson();
         }
