@@ -121,6 +121,7 @@ namespace SevenStuds.Models
                 }
                 else {
                     p.StartNewHandForBankruptPlayer(this);
+                    this.Pots[0].Add(0); // record their place in the pot, but with a zero contribution
                 }
             }
             this.IndexOfParticipantToTakeNextAction = GetIndexOfPlayerToBetFirst();
@@ -138,10 +139,12 @@ namespace SevenStuds.Models
             int playerIndex = this.IndexOfParticipantToTakeNextAction;
             Participant p = this.Participants[playerIndex];
 
-            // Decide whether the player can fold at this stage (always available as player becomes inactive on folding)
+            // Decide whether the player can fold at this stage
+            // (always available as player becomes inactive on folding and so will never be current player)
             SetActionAvailability(ActionEnum.Fold, AvailabilityEnum.ActivePlayerOnly); 
 
-            // Decide whether the player can check at this stage (possible until someone does something else)
+            // Decide whether the player can check at this stage
+            // (possible until someone does something other than checking)
             SetActionAvailability(
                 ActionEnum.Check, 
                 _CheckIsAvailable ? AvailabilityEnum.ActivePlayerOnly: AvailabilityEnum.NotAvailable
@@ -212,15 +215,15 @@ namespace SevenStuds.Models
         {
             // Determine who starts betting in a given round (i.e. after a round of cards have been dealt)
             // Don't assume this is the start of the hand, i.e. this could be after first three cards, or fourth through to seventh.
-            // Start to left of dealer and check everyone (who is still in) for highest visible hand
+            // Start to left of dealer and check everyone (who is still in, and including dealer) for highest visible hand
             // Assumption: a player is still in if they have money in the pot and have not folded.
             // Assumption: someone else other than the dealer must still be in otherwise the hand has ended. 
             // Note: the dealer could be out too.
-            int ZbiLeftOfDealer = (this.IndexOfParticipantDealingThisHand + 1) % Participants.Count;
+            //int ZbiLeftOfDealer = (this.IndexOfParticipantDealingThisHand + 1) % Participants.Count;
             int ZbiOfFirstToBet = -1;
-            for (int i = 0; i < Participants.Count; i++) // Note dealer needs to be checked too, but last
+            for (int i = 0; i < Participants.Count; i++) 
             {
-                int ZbiOfNextPlayerToInspect = (ZbiLeftOfDealer + 1 + i) % Participants.Count;
+                int ZbiOfNextPlayerToInspect = (this.IndexOfParticipantDealingThisHand + 1 + i) % Participants.Count;
                 if (
                     Participants[ZbiOfNextPlayerToInspect].HasFolded == false // i.e. player has not folded out of this hand
                     && Participants[ZbiOfNextPlayerToInspect].HasCovered == false // i.e. player has not covered the pot 
@@ -319,14 +322,14 @@ namespace SevenStuds.Models
         }    
         public void MoveAmountToPotForSpecifiedPlayer  (int playerIndex, int amt) {
             // Add amount to pots, filling up earlier pots before adding to open one,
-            // and splitting the pot here automatically if player comes up short of total pot so far
+            // and splitting the pot automatically if player comes up short of total pot so far
             int amountLeftToAdd = amt;
             this.Participants[playerIndex].UncommittedChips -= amt; // Reduce the player's pile of chips before adding them to the various pots
             AddCommentary("Adding "+ amountLeftToAdd +" to the pot (existing pot structure will be analysed)");
             for ( int pot = 0; pot < Pots.Count; pot++) {
                 if ( amountLeftToAdd > 0) {
                     int maxContributionToThisPotByAnyPlayer = MaxChipsInSpecifiedPotForAnyPlayer(pot);
-                    AddCommentary("Max chips in pot " + (pot+1) + " = " + maxContributionToThisPotByAnyPlayer);
+                    AddCommentary("Max chips currently in pot " + (pot+1) + " = " + maxContributionToThisPotByAnyPlayer);
                     int myExistingContributionToThisPot = ChipsInSpecifiedPotForSpecifiedPlayer (pot, playerIndex);
                     if ( pot == Pots.Count - 1) {
                         // This is the open pot
@@ -371,7 +374,7 @@ namespace SevenStuds.Models
         public void SplitPotAbovePlayersAmount(int potIndex, int playerIndex) {
             // Find out how much the given player has in the given pot, and split the pot so that higher contributions are moved to a new pot
             int potLimit = ChipsInSpecifiedPotForSpecifiedPlayer(potIndex, playerIndex);
-            AddCommentary("Splitting pot " + (potIndex+1));
+            AddCommentary("Splitting pot " + (potIndex+1) + " with contribution cap of " + potLimit);
             Pots.Insert(potIndex+1, new List<int>());
             for ( int player = 0; player < Pots[potIndex].Count; player++) {
                 // Move any surplus amounts from old pot to new for each player
