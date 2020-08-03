@@ -18,13 +18,11 @@ DONE * Handle covering the pot (is this only when the player cannot match the cu
 DONE * Prevent blank or duplicate players joining
 DONE * Prevent players joining during the game
 DONE * Add ActionAvailabilityList to JSON, showing which actions are available to which players at any time
-* Define a cleaner interface between client and server
-  - Game state should include:
-    - Index of player to make move (done already)
-    - List of commands specified player can use (from Join, Start, Check, Raise, Call, Cover, Fold)
-    - List of commands any player can use (from Join, Rejoin, Refresh? Leave)
-    - Max raise by current player based on funds available
-    - Server has to check this anyway on receipt of a command, so might as well do this up front too
+* Test mode: pass in players, player order, pre-sorted deck(s) plus list of commands to get game to a given state?
+  - Use web client, to enable game state to be picked up once pre-arranged moves all carried out
+  - Record games moves to enable scenarios to be saved
+  - Would need to check that results of each command is as expected (selected state checking?)
+* Game state to include max raise by current player based on catchup amount and funds available (or let client work this out?)
 * Hand-roll the JSON to make it more compact and readable (and also to support the possibility of JSON targeted to an individual user)
 * Test ability to send a message to one player (preserve their connect, and have them wait on individual messages not just on the updated game state)
 * Look into Flux for .NET  (state management framework?) (also Redux which is JS implementation for React)
@@ -32,7 +30,6 @@ DONE * Add ActionAvailabilityList to JSON, showing which actions are available t
 * Allow player to rejoin
 * Handle no one being able to bet (i.e. auto-check, or other auto-enabled actions)
 * Handle end of overall game (time limit, number of rounds, less than 'n' players left in)
-* Think about regression test framework that processes command in sequence and checks relevant parts of results
 * Split hand description out into two parts: main bit e.g. "Ace High" and countback e.g. "with King ..."
 * Game name to be pulled from URL
 * Find out how to send a message to any one game participant, who may not be the caller
