@@ -8,15 +8,11 @@ namespace SevenStuds.Models
         public ActionFold(ActionEnum actionType, string gameId, string user, string connectionId) : base(actionType, gameId, user, connectionId)
         {
         }
-        public override string ProcessActionAndReturnUpdatedGameStateAsJson()
+        public override void ProcessAction()
         {
-            if ( G.LastEvent != "" ) {
-                return G.AsJson(); // Base class set an error message so return without checking anything else
-            }            
             // Handle the Fold (note that the base class has already checked the player's eligibility for this action)
             Participant p = G.Participants[PlayerIndex];
 
-            
             // Implement the Fold
             G.ClearCommentary(); 
             p.HasFolded = true;
@@ -45,7 +41,6 @@ namespace SevenStuds.Models
                 G.SetActionAvailabilityBasedOnCurrentPlayer();
 
             }
-            return G.AsJson();
         }
     }     
 }  

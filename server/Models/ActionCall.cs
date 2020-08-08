@@ -8,11 +8,8 @@ namespace SevenStuds.Models
         public ActionCall(ActionEnum actionType, string gameId, string user, string connectionId) : base(actionType, gameId, user, connectionId)
         {
         }
-        public override string ProcessActionAndReturnUpdatedGameStateAsJson()
-        {
-            if ( G.LastEvent != "" ) {
-                return G.AsJson(); // Base class set an error message so return without checking anything else
-            }            
+        public override void ProcessAction()
+        {         
             int playerIndex = G.PlayerIndexFromName(this.UserName);
 
             // Handle the Call (note that the base class has already checked the player's eligibility for this action)
@@ -45,7 +42,6 @@ namespace SevenStuds.Models
                 G.NextAction = G.ProcessEndOfHand(UserName + " called, hand ended");
             }
             G.SetActionAvailabilityBasedOnCurrentPlayer();
-            return G.AsJson();
         }
     }     
 }  

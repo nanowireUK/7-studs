@@ -5,20 +5,14 @@ namespace SevenStuds.Models
     /// </summary>  
     public class ActionRaise : Action
     {  
-        public ActionRaise(ActionEnum actionType, string gameId, string user, string raiseAmount, string connectionId) : base(actionType, gameId, user, connectionId)
+        public ActionRaise(ActionEnum actionType, string gameId, string user, string raiseAmount, string connectionId) 
+            : base(actionType, gameId, user, connectionId, raiseAmount)
         {
-            RaiseAmount = raiseAmount;
         }
-
-        private string RaiseAmount { get; set; }
-
-        public override string ProcessActionAndReturnUpdatedGameStateAsJson()
+        public override void ProcessAction()
         {
-            if ( G.LastEvent != "" ) {
-                return G.AsJson(); // Base class set an error message so return without checking anything else
-            }            
             int amountAsInt;
-            if ( int.TryParse(RaiseAmount, out amountAsInt) == false ) {
+            if ( int.TryParse(Parameters, out amountAsInt) == false ) {
                 G.LastEvent = this.UserName + " entered a non-numeric amount to raise by";
             }
             else if ( amountAsInt < 1 ) {
@@ -29,7 +23,7 @@ namespace SevenStuds.Models
                 Participant p = G.Participants[PlayerIndex];
                 int catchupAmount = G.MaxChipsInAllPotsForAnyPlayer() - G.ChipsInAllPotsForSpecifiedPlayer(PlayerIndex);
                 if ( p.UncommittedChips < ( catchupAmount + amountAsInt ) ) {
-                    G.LastEvent = this.UserName + " tried to raise by " +  RaiseAmount + " but maximum raise would be " + ( p.UncommittedChips - catchupAmount );
+                    G.LastEvent = this.UserName + " tried to raise by " +  amountAsInt + " but maximum raise would be " + ( p.UncommittedChips - catchupAmount );
                 }               
                 else {
                     // Implement the raise
@@ -56,7 +50,6 @@ namespace SevenStuds.Models
                     G.SetActionAvailabilityBasedOnCurrentPlayer();
                 }
             }
-            return G.AsJson();
         }
     }     
 }  

@@ -20,8 +20,12 @@ namespace SevenStuds.Models
         Call = 11,
         Raise = 12,
         Cover = 13,
-        Fold = 14
-    }
+        Fold = 14,
+        // Admin or test functions not intended for general use
+        GetState = 20,
+        GetLog = 21,
+        Replay = 22
+        }
 
     /// <summary>
     /// AvailabilityEnum: Enumeration values are used to communicate availability of actions between client and server

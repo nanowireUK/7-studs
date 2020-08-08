@@ -144,3 +144,32 @@ document.getElementById("actionFold").addEventListener("click", function (event)
     connection.invoke("UserClickedActionButton", /* SevenStuds.Models.ActionEnum.Fold */ 14, gameId, user, "").catch(logError);
     event.preventDefault();
 });
+
+
+// --------------- Get Game State (test feature)
+
+document.getElementById("actionGetState").addEventListener("click", function (event) {
+    var gameId = getGameId();    
+    var user = getUser(); 
+    connection.invoke("UserClickedActionButton", /* SevenStuds.Models.ActionEnum.GetState */ 20, gameId, user, "").catch(logError);
+    event.preventDefault();
+});
+
+// --------------- Get Game Log (test feature)
+
+document.getElementById("actionGetLog").addEventListener("click", function (event) {
+    var gameId = getGameId();    
+    var user = getUser();  
+    connection.invoke("UserClickedActionButton", /* SevenStuds.Models.ActionEnum.GetLog */ 21, gameId, user, "").catch(logError);
+    event.preventDefault();
+});
+
+// --------------- Reply game from game log (test feature)
+
+document.getElementById("actionReplay").addEventListener("click", function (event) {
+    var gameId = getGameId();    
+    var user = getUser();
+    var gameLog = getModifiers();   
+    connection.invoke("UserClickedActionButton", /* SevenStuds.Models.ActionEnum.Replay */ 22, gameId, user, gameLog).catch(logError);
+    event.preventDefault();
+});

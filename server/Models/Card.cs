@@ -15,8 +15,12 @@ namespace SevenStuds.Models
             cardSuit = CS;
         }
 
-        public CardEnum CardValue { get => cardValue; }
-        public SuitEnum CardSuit { get => cardSuit; }
+        public Card()
+        {
+            // Constructor without parameters is required to deserialise
+        }
+        public CardEnum CardValue { get => cardValue; set => cardValue = value; }
+        public SuitEnum CardSuit { get => cardSuit; set => cardSuit = value;}
 
         public override string ToString()
         {

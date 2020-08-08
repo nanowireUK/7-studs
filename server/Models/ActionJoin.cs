@@ -9,11 +9,8 @@ namespace SevenStuds.Models
         {
         }
 
-        public override string ProcessActionAndReturnUpdatedGameStateAsJson()
+        public override void ProcessAction()
         {
-            if ( G.LastEvent != "" ) {
-                return G.AsJson(); // Base class set an error message so return without checking anything else
-            }
             // Add player (note that the base class has already checked the player's eligibility for this action)
             G.Participants.Add(new Participant(this.UserName, this.ConnectionId));
             G.LastEvent = this.UserName + " joined game";
@@ -22,7 +19,6 @@ namespace SevenStuds.Models
             {
                 G.SetActionAvailability(ActionEnum.Start, AvailabilityEnum.AnyRegisteredPlayer); // Open up START to anyone
             }
-            return G.AsJson();
         }
     }     
 }  

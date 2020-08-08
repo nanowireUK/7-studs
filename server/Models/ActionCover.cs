@@ -8,11 +8,8 @@ namespace SevenStuds.Models
         public ActionCover(ActionEnum actionType, string gameId, string user, string connectionId) : base(actionType, gameId, user, connectionId)
         {
         }
-        public override string ProcessActionAndReturnUpdatedGameStateAsJson()
+        public override void ProcessAction()
         {
-            if ( G.LastEvent != "" ) {
-                return G.AsJson(); // Base class set an error message so return without checking anything else
-            }            
             // Handle the cover (like a call but where player doesn't have enough to cover the current raise)
             // (note that the base class has already checked the player's eligibility for this action)
             Participant p = G.Participants[PlayerIndex];
@@ -38,7 +35,6 @@ namespace SevenStuds.Models
                 G.NextAction = G.ProcessEndOfHand(UserName + " covered the pot, hand ended");
             }  
             G.SetActionAvailabilityBasedOnCurrentPlayer();
-            return G.AsJson();            
         }
     }     
 }  

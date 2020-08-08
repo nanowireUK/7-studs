@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
-using System.Collections;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System;
@@ -25,6 +24,8 @@ namespace SevenStuds.Models
         public int _IndexOfLastPlayerToRaise { get; set; } 
         public int _IndexOfLastPlayerToStartChecking { get; set; } 
         public bool _CheckIsAvailable { get; set; }
+        protected GameLog _GameLog { get; set; }
+        protected GameLog _TestContext { get; set; }
 
         //public List<ActionEnum> _ActionsNowAvailableToCurrentPlayer { get; set; }
         //public List<ActionEnum> _ActionsNowAvailableToAnyPlayer { get; set; }
@@ -41,27 +42,44 @@ namespace SevenStuds.Models
 
         public Game(string gameId) {
             GameId = gameId;
+            this.InitialiseGame(null);
+        }
+
+        public void InitialiseGame(GameLog testContext)
+        {
+            SetTestContext(testContext);
             Participants = new List<Participant>(); // start with empty list of participants
             InitialChipQuantity = 1000;
             Ante = 1;
             HandsPlayedIncludingCurrent = 0;
             CardPack = new Deck(true);
-            SevenStuds.Models.ServerState.GameList.Add(GameId, this); // Maps the game id to the game itself (possibly better than just iterating through a list?)
             HandCommentary = new List<string>();
             _ActionAvailability = new Dictionary<ActionEnum, ActionAvailability>();
             ActionAvailabilityList = new List<ActionAvailability>();
-            foreach ( ActionEnum e in Enum.GetValues(typeof(ActionEnum)) ) 
+            foreach (ActionEnum e in Enum.GetValues(typeof(ActionEnum)))
             {
                 SetActionAvailability(e, AvailabilityEnum.NotAvailable); // All commands initially unavailable
             }
             SetActionAvailability(ActionEnum.Join, AvailabilityEnum.AnyUnregisteredPlayer); // Open up JOIN to anyone who has not yet joined
+            SetActionAvailability(ActionEnum.GetState, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who joined
+            SetActionAvailability(ActionEnum.GetLog, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who joined
+            SetActionAvailability(ActionEnum.Replay, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who joined
+            this._GameLog = new GameLog(); // Initially empty, will be added to as game actions take place
         }
+
+        public void SetTestContext(GameLog testContext)
+        {
+            _TestContext = testContext; // Note: this affects some system behaviour ... need to search for TextContext to see where
+        }
+
         public static Game FindOrCreateGame(string gameId) {
             if ( SevenStuds.Models.ServerState.GameList.ContainsKey(gameId) ) {
                 return (Game) SevenStuds.Models.ServerState.GameList[gameId];
             }
             else {
-                return new Game(gameId);
+                Game newGame = new Game(gameId);
+                SevenStuds.Models.ServerState.GameList.Add(gameId, newGame);
+                return newGame;
             }
         }
 
@@ -85,19 +103,36 @@ namespace SevenStuds.Models
         {
             return true;
         }
-        public void InitialiseGame()
+        public void StartGame()
         {
             foreach ( Participant p in Participants )
             {
                 p.UncommittedChips = this.InitialChipQuantity;
             }
-            // Randomise player order: pick a random player, delete and move to front, repeat a few times
-            int players = Participants.Count;
-            for (int player = 0; player < players; player++) {
-                Participant p = Participants[player]; // Get reference to player to be moved
-                Participants.RemoveAt(player); // Remove it from the current list
-                Participants.Insert(0, p); // Move to front of the queue
+            if ( this._TestContext == null ) {
+                // Normal game, so randomise player order by picking a random player, deleting and moving to front, repeating a few times
+                for (int player = 0; player < Participants.Count; player++) {
+                    Participant p = Participants[player]; // Get reference to player to be moved
+                    Participants.RemoveAt(player); // Remove it from the current list
+                    Participants.Insert(0, p); // Move to front of the queue
+                }
             }
+            else {
+                // We are running in test mode (i.e. under the control of an ActionReply command) so set the original player order
+                for ( int requiredPos = 0; requiredPos < this._TestContext.playersInOrder.Count; requiredPos++ ) {
+                    // Find that player who should be at this position and move them to it
+                    string playerToMove = this._TestContext.playersInOrder[requiredPos];
+                    int currentIndexOfPlayerToMove = PlayerIndexFromName(playerToMove);
+                    if ( requiredPos != currentIndexOfPlayerToMove ) {
+                        // We need to remove them from current pos and reinsert them at the required pos
+                        Participant p = Participants[currentIndexOfPlayerToMove];
+                        Participants.RemoveAt(currentIndexOfPlayerToMove); // Remove it from the current list
+                        Participants.Insert(requiredPos, p);
+                    }
+                }
+            }
+
+            this.LogPlayers(); // record the modified player order
 
             InitialiseHand(); // Start the first hand
         }
@@ -108,7 +143,16 @@ namespace SevenStuds.Models
             IndexOfParticipantDealingThisHand = (HandsPlayedIncludingCurrent - 1) % Participants.Count; // client could work this out too
 
             // Set up the pack again
-            CardPack.Shuffle(); // refreshes the pack and shuffles it
+
+            if ( this._TestContext == null) {
+                CardPack.Shuffle(); // refreshes the pack and shuffles it
+            }
+            else {
+                // Need to replace the pack with the next one from the historical game log
+                CardPack = this._TestContext.decks[HandsPlayedIncludingCurrent - 1].Clone();
+            }
+
+            this.LogSnapshotOfGameDeck();
 
             this.Pots = new List<List<int>>();
             this.Pots.Add(new List<int>());
@@ -494,7 +538,24 @@ namespace SevenStuds.Models
             options.Converters.Add(new JsonStringEnumConverter(null /*JsonNamingPolicy.CamelCase*/));
             string jsonString = JsonSerializer.Serialize(this, options);
             return jsonString;
-        }   
-          
+        }  
+
+        public void LogPlayers(){
+            foreach ( Participant p in this.Participants ) {
+                this._GameLog.playersInOrder.Add(p.Name);
+            }
+        } 
+
+        public void LogSnapshotOfGameDeck(){
+            this._GameLog.decks.Add(this.CardPack.Clone());
+        } 
+
+        public void LogActionWithResults(Action a) {
+            this._GameLog.actions.Add(new GameLogAction(a, this.LastEvent, this.HandCommentary));
+        }
+
+        public string GameLogAsJson() {
+            return "Game log currently contains:" + Environment.NewLine + this._GameLog.AsJson();
+        }
     }
 }

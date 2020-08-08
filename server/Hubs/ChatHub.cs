@@ -10,9 +10,9 @@ namespace SevenStuds.Hubs
 
         // In each case the game will process the action and the updated game state will be returned to the client
 
-        public async Task UserClickedActionButton(ActionEnum actionType, string gameId, string user, string amount)
+        public async Task UserClickedActionButton(ActionEnum actionType, string gameId, string user, string parameters)
         {
-            Action a = ActionFactory.NewAction(actionType, gameId, user, amount, Context.ConnectionId);
+            Action a = ActionFactory.NewAction(actionType, gameId, user, parameters, Context.ConnectionId);
             await Clients.All.SendAsync("ReceiveUpdatedGameState", a.ProcessActionAndReturnUpdatedGameStateAsJson());
         }
     }

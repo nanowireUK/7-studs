@@ -8,11 +8,8 @@ namespace SevenStuds.Models
         public ActionCheck(ActionEnum actionType, string gameId, string user, string connectionId) : base(actionType, gameId, user, connectionId)
         {
         }
-        public override string ProcessActionAndReturnUpdatedGameStateAsJson()
-        {
-            if ( G.LastEvent != "" ) {
-                return G.AsJson(); // Base class set an error message so return without checking anything else
-            }            
+        public override void ProcessAction()
+        {          
             // Handle the Check (note that the base class has already checked the player's eligibility for this action)
             if ( G._IndexOfLastPlayerToStartChecking == -1 ){
                 // If this player is the first to check then note this (noting that players can only do this at the start of a betting round)
@@ -39,7 +36,6 @@ namespace SevenStuds.Models
                 G.NextAction = G.ProcessEndOfHand(UserName + " checked, hand ended");
             }
             G.SetActionAvailabilityBasedOnCurrentPlayer();
-            return G.AsJson();
         }
     }     
 }  

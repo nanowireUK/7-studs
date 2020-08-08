@@ -3,19 +3,33 @@ namespace SevenStuds.Models
     /// <summary>  
     /// The 'Action' Abstract Class  
     /// </summary>  
-    public class Action  
-    {  
+    public abstract class Action  
+    { 
+        protected Action () 
+        {
+            // Implemented only to enable serialisation
+        }
+
         protected Action ( ActionEnum actionType, string gameId, string user, string connectionId )
+        {
+            this.Initialise(actionType, gameId, user, connectionId, null);
+        }
+        protected Action ( ActionEnum actionType, string gameId, string user, string connectionId, string parameters )
+        {
+            this.Initialise(actionType, gameId, user, connectionId, parameters);
+        }
+        protected void Initialise ( ActionEnum actionType, string gameId, string user, string connectionId, string parameters )
         {
             G = Game.FindOrCreateGame(gameId); // find our game or create a new one if required
             ActionType = actionType;
             UserName = user;
             ConnectionId = connectionId;
+            Parameters = parameters;
             PlayerIndex = -1;
             G.LastEvent = ""; // Clear this before running standard verifications. 
 
             // This constructor does some basic validation and sets G.LastEvent if any errors are found.
-            // If this variable has a value, the Action subclass's ProcessActionAndReturnUpdatedGameStateAsJson implementation
+            // If this variable has a value, the Action subclass's ProcessAction implementation
             // should 'return G.AsJson();' immediately (see sample implementation below).
             // TODO: There's probably a cleaner OOP way of doing this but this will do for now
 
@@ -31,22 +45,29 @@ namespace SevenStuds.Models
                 return;
             }
         }
-        protected Game G { get; }  
-        protected ActionEnum ActionType { get; set; }
-        protected string UserName { get; set; }
+        protected Game G { get; set; }  
+        public ActionEnum ActionType { get; set; }
+        public string UserName { get; set; }
+        public string Parameters { get; set; }
         protected int PlayerIndex { get; set; }
         protected string ConnectionId { get; set; }
         public virtual string ProcessActionAndReturnUpdatedGameStateAsJson()
         {
-            // This method should be overridden. It should contain the following code as a minimum:
-
             if ( G.LastEvent != "" ) {
-                return G.AsJson(); // Base class set an error message so return without checking anything else
+                return G.AsJson(); // If the base class (i.e. this class) set an error message in the constructor then return without checking anything else
             }
-            /*
-                Actual implementation of the action goes here
-            */
-            return G.AsJson(); // subclass should override this method 
+
+            this.ProcessAction(); // Use the subclass to implement the specifics of the actionhis
+
+            if ( this.ActionType != ActionEnum.Replay 
+                & this.ActionType != ActionEnum.GetLog
+                & this.ActionType != ActionEnum.GetState ) 
+            {
+                G.LogActionWithResults(this); // only do this for real game actions (not GetState, GetLog, Replay)
+            }
+
+            return G.AsJson();
         }
+        public abstract void ProcessAction();
     }     
 }  

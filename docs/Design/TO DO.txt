@@ -18,6 +18,7 @@ DONE * Handle covering the pot (is this only when the player cannot match the cu
 DONE * Prevent blank or duplicate players joining
 DONE * Prevent players joining during the game
 DONE * Add ActionAvailabilityList to JSON, showing which actions are available to which players at any time
+DONE * Create GameLog and GameLogAction objects on the Game and populate them as the game progresses
 * Test mode: pass in players, player order, pre-sorted deck(s) plus list of commands to get game to a given state?
   - Use web client, to enable game state to be picked up once pre-arranged moves all carried out
   - Record games moves to enable scenarios to be saved
