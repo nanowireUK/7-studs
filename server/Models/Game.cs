@@ -373,7 +373,7 @@ namespace SevenStuds.Models
             // and splitting the pot automatically if player comes up short of total pot so far
             int amountLeftToAdd = amt;
             this.Participants[playerIndex].UncommittedChips -= amt; // Reduce the player's pile of chips before adding them to the various pots
-            AddCommentary("Adding "+ amountLeftToAdd +" to the pot (existing pot structure will be analysed)");
+            AddCommentary(amountLeftToAdd +" is to be added to the pot (or pots)");
             for ( int pot = 0; pot < Pots.Count; pot++) {
                 if ( amountLeftToAdd > 0) {
                     int maxContributionToThisPotByAnyPlayer = MaxChipsInSpecifiedPotForAnyPlayer(pot);
@@ -551,9 +551,24 @@ namespace SevenStuds.Models
         } 
 
         public void LogActionWithResults(Action a) {
-            this._GameLog.actions.Add(new GameLogAction(a, this.LastEvent, this.HandCommentary));
+
+            this._GameLog.actions.Add(new GameLogAction(a, this.LastEvent, this.NextAction, this.HandCommentary, this.HandSummaries()));
         }
 
+        public List<string> HandSummaries()
+        {
+            List<string> r = new List<string>();
+            foreach ( Participant p in this.Participants ) {
+                r.Add(
+                    p.Name 
+                    + " Folded=" + p.HasFolded
+                    + " Covered=" + p.HasCovered
+                    + " Out=" + p.IsOutOfThisGame
+                    + " Cards=" + p._HandSummary
+                );
+            }
+            return r;
+        }
         public string GameLogAsJson() {
             return "Game log currently contains:" + Environment.NewLine + this._GameLog.AsJson();
         }

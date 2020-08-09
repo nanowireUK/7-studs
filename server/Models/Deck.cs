@@ -153,9 +153,9 @@ namespace SevenStuds.Models
             while ( myClone.Count > 0 ) {
                 myClone.Pop(); // remove cards until all gone (thought Clear() would do this but not convinced)
             }            
-            Card[] cards = this.ToArray(); // does this preserve the order?
+            Card[] cards = this.ToArray();
             for ( int i = 0; i < cards.Length; i++ ) {
-                myClone.Push(cards[cards.Length - 1 - i]);
+                myClone.Push(cards[i]);
             }
             return myClone;
         }
