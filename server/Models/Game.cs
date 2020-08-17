@@ -20,6 +20,7 @@ namespace SevenStuds.Models
         public int HandsPlayedIncludingCurrent { get; set; } // 0 = game not yet started
         public int IndexOfParticipantDealingThisHand { get; set; } // Rotates from player 0
         public int IndexOfParticipantToTakeNextAction { get; set; } // Determined by cards showing (at start of round) then on player order
+        public int MaxRaiseForParticipantToTakeNextAction { get; set; } // So that client doesn't need to work this out
         public int _CardsDealtIncludingCurrent { get; set; } // 0 = hand not started
         public int _IndexOfLastPlayerToRaise { get; set; } 
         public int _IndexOfLastPlayerToStartChecking { get; set; } 
@@ -200,7 +201,8 @@ namespace SevenStuds.Models
             // To raise they need more than the matching amount
             SetActionAvailability(
                 ActionEnum.Raise, 
-                p.UncommittedChips > catchupAmount ? AvailabilityEnum.ActivePlayerOnly: AvailabilityEnum.NotAvailable); 
+                p.UncommittedChips > catchupAmount ? AvailabilityEnum.ActivePlayerOnly: AvailabilityEnum.NotAvailable);
+            MaxRaiseForParticipantToTakeNextAction = p.UncommittedChips > catchupAmount ? p.UncommittedChips - catchupAmount: 0;
             // To call the matching amount needs to be more than zero and they need at least the matching amount
             SetActionAvailability(
                 ActionEnum.Call, 
