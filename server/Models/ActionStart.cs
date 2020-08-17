@@ -5,7 +5,7 @@ namespace SevenStuds.Models
     /// </summary>  
     public class ActionStart : Action
     {  
-        public ActionStart(ActionEnum actionType, string gameId, string user, string connectionId) : base(actionType, gameId, user, connectionId)
+        public ActionStart(ActionEnum actionType, string gameId, string user) : base(actionType, gameId, user)
         {
         }
 

@@ -5,7 +5,7 @@ namespace SevenStuds.Models
     /// </summary>  
     public class ActionCheck : Action
     {  
-        public ActionCheck(ActionEnum actionType, string gameId, string user, string connectionId) : base(actionType, gameId, user, connectionId)
+        public ActionCheck(ActionEnum actionType, string gameId, string user) : base(actionType, gameId, user)
         {
         }
         public override void ProcessAction()

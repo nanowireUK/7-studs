@@ -10,20 +10,19 @@ namespace SevenStuds.Models
             // Implemented only to enable serialisation
         }
 
-        protected Action ( ActionEnum actionType, string gameId, string user, string connectionId )
+        protected Action ( ActionEnum actionType, string gameId, string user )
         {
-            this.Initialise(actionType, gameId, user, connectionId, null);
+            this.Initialise(actionType, gameId, user, null);
         }
-        protected Action ( ActionEnum actionType, string gameId, string user, string connectionId, string parameters )
+        protected Action ( ActionEnum actionType, string gameId, string user, string parameters )
         {
-            this.Initialise(actionType, gameId, user, connectionId, parameters);
+            this.Initialise(actionType, gameId, user, parameters);
         }
-        protected void Initialise ( ActionEnum actionType, string gameId, string user, string connectionId, string parameters )
+        protected void Initialise ( ActionEnum actionType, string gameId, string user, string parameters )
         {
             G = Game.FindOrCreateGame(gameId); // find our game or create a new one if required
             ActionType = actionType;
             UserName = user;
-            ConnectionId = connectionId;
             Parameters = parameters;
             PlayerIndex = -1;
             G.LastEvent = ""; // Clear this before running standard verifications. 
@@ -50,7 +49,7 @@ namespace SevenStuds.Models
         public string UserName { get; set; }
         public string Parameters { get; set; }
         protected int PlayerIndex { get; set; }
-        protected string ConnectionId { get; set; }
+        protected string RejoinCode { get; set; }
         public virtual string ProcessActionAndReturnUpdatedGameStateAsJson()
         {
             if ( G.LastEvent != "" ) {

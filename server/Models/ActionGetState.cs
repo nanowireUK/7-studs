@@ -5,8 +5,8 @@ namespace SevenStuds.Models
     /// </summary>  
     public class ActionGetState : Action
     {  
-        public ActionGetState(ActionEnum actionType, string gameId, string user, string connectionId) 
-            : base(actionType, gameId, user, connectionId)
+        public ActionGetState(ActionEnum actionType, string gameId, string user) 
+            : base(actionType, gameId, user)
         {
         }
         public override void ProcessAction()

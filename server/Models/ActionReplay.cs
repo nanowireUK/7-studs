@@ -7,8 +7,8 @@ namespace SevenStuds.Models
     /// </summary>  
     public class ActionReplay : Action
     {  
-        public ActionReplay(ActionEnum actionType, string gameId, string user, string logAsJson, string connectionId) 
-            : base(actionType, gameId, user, connectionId, logAsJson)
+        public ActionReplay(ActionEnum actionType, string gameId, string user, string logAsJson) 
+            : base(actionType, gameId, user, logAsJson)
         {
         }
         public override void ProcessAction()
@@ -25,8 +25,7 @@ namespace SevenStuds.Models
                     gla.ActionType, 
                     G.GameId, 
                     gla.UserName, 
-                    gla.Parameters, 
-                    this.ConnectionId
+                    gla.Parameters
                 );
                 System.Diagnostics.Debug.WriteLine("Replaying " + gla.ActionType.ToString().ToLower() + " by " + gla.UserName);
 

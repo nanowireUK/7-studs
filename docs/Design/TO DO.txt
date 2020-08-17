@@ -19,20 +19,22 @@ DONE * Prevent blank or duplicate players joining
 DONE * Prevent players joining during the game
 DONE * Add ActionAvailabilityList to JSON, showing which actions are available to which players at any time
 DONE * Create GameLog and GameLogAction objects on the Game and populate them as the game progresses
-* Test mode: pass in players, player order, pre-sorted deck(s) plus list of commands to get game to a given state?
-  - Use web client, to enable game state to be picked up once pre-arranged moves all carried out
-  - Record games moves to enable scenarios to be saved
-  - Would need to check that results of each command is as expected (selected state checking?)
-* Game state to include max raise by current player based on catchup amount and funds available (or let client work this out?)
+DONE * Implement ActionReplay action that re-runs a game using the JSON-serialised GameLog as a script
+DONE * Game state to include max raise by current player based on catchup amount and funds available (so client doesn't have to work this out)
+DONE * Remove references to connection id and instead generate a group id and a rejoin code
+
 * Hand-roll the JSON to make it more compact and readable (and also to support the possibility of JSON targeted to an individual user)
 * Test ability to send a message to one player (preserve their connect, and have them wait on individual messages not just on the updated game state)
 * Look into Flux for .NET  (state management framework?) (also Redux which is JS implementation for React)
 * Prevent player from changing name after joining
-* Allow player to rejoin
+* Allow player to rejoin (or join multiple times) using a rejoin code
 * Handle no one being able to bet (i.e. auto-check, or other auto-enabled actions)
 * Handle end of overall game (time limit, number of rounds, less than 'n' players left in)
 * Split hand description out into two parts: main bit e.g. "Ace High" and countback e.g. "with King ..."
 * Game name to be pulled from URL
 * Find out how to send a message to any one game participant, who may not be the caller
 * Check performance of HashTable: consider making GetHashCode cleverer https://thomaslevesque.com/2020/05/15/things-every-csharp-developer-should-know-1-hash-codes/
+* Record game logs in a database
+* Automatically clear a game if there is no activity for n hours
+
 

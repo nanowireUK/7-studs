@@ -5,7 +5,7 @@ namespace SevenStuds.Models
     /// </summary>  
     public class ActionFold : Action
     {  
-        public ActionFold(ActionEnum actionType, string gameId, string user, string connectionId) : base(actionType, gameId, user, connectionId)
+        public ActionFold(ActionEnum actionType, string gameId, string user) : base(actionType, gameId, user)
         {
         }
         public override void ProcessAction()

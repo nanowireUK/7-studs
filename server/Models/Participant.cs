@@ -6,9 +6,10 @@ namespace SevenStuds.Models
 {
     public class Participant
     {
-        public Participant(string PName, string connectionId) {
+        public Participant(string PName) {
             this.Name = PName;
-            this.ConnectionId = connectionId;
+            this.RejoinCode = GenerateRejoinCode();
+            this.SignalRGroupName = PName + '.' + Guid.NewGuid().ToString(); // Unique group id for this player (who may connect) 
         }
         [Required]
         
@@ -18,7 +19,9 @@ namespace SevenStuds.Models
         public Boolean HasFolded { get; set; }
         public Boolean HasCovered { get; set; }
         public Boolean IsOutOfThisGame { get; set; } // Can work this out but possibly cleaner to record it explicitly
-        public string ConnectionId { get; set; } // e.g. 3 alphanumeric characters that enables a disconnected player to rejoin as the same person
+        public string RejoinCode { get; set; } // e.g. 3 alphanumeric characters that enables a disconnected player to rejoin as the same person
+        public string SignalRGroupName { get; set; }
+        
         [Required]
         public int _VisibleHandRank { get; set; }
         public int _FullHandRank { get; set; }
@@ -26,10 +29,20 @@ namespace SevenStuds.Models
         public string _FullHandDescription { get; set; }
         public string _HandSummary { get; set; }
         private PokerHand _PokerHand { get; set; }
+
         public List<Card> Hand { get; set; }
         // public Boolean IsAllIn() {
         //     return UncommittedChips == 0 & ChipsCommittedToCurrentBettingRound > 0;
         // }
+        public string GenerateRejoinCode() {
+            string seed = "abcdefghijklmnopqrstuvwxyz0123456789";
+            string code = "";
+            Random r = new Random();
+            for ( int i = 0; i < 4; i++) {
+                code += seed[r.Next(0, seed.Length - i)];
+            }
+            return code;
+        }
         
         public void StartNewHandForActivePlayer(Game g) {
             //this.ChipsCommittedToCurrentBettingRound = g.Ante;

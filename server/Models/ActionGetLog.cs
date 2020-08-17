@@ -5,8 +5,8 @@ namespace SevenStuds.Models
     /// </summary>  
     public class ActionGetLog : Action
     {  
-        public ActionGetLog(ActionEnum actionType, string gameId, string user, string connectionId) 
-            : base(actionType, gameId, user, connectionId)
+        public ActionGetLog(ActionEnum actionType, string gameId, string user) 
+            : base(actionType, gameId, user)
         {
         }
 

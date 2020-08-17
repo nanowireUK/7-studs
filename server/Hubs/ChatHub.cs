@@ -12,7 +12,7 @@ namespace SevenStuds.Hubs
 
         public async Task UserClickedActionButton(ActionEnum actionType, string gameId, string user, string parameters)
         {
-            Action a = ActionFactory.NewAction(actionType, gameId, user, parameters, Context.ConnectionId);
+            Action a = ActionFactory.NewAction(actionType, gameId, user, parameters);
             await Clients.All.SendAsync("ReceiveUpdatedGameState", a.ProcessActionAndReturnUpdatedGameStateAsJson());
         }
     }
