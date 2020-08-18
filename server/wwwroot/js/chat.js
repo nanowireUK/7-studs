@@ -32,8 +32,8 @@ function getUser() {
     return document.getElementById("userInput").value;
 }
 
-function getAmount() {
-    return document.getElementById("userInput").value;
+function getRejoinCode() {
+    return document.getElementById("rejoinCode").value;
 }
 
 //connection.on("ReceiveMessage", 
@@ -48,7 +48,7 @@ function getAmount() {
 connection.on("ReceiveUpdatedGameState", 
     function (gameState) {
         var msg = gameState.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-        var encodedMsg = "Game state is currently: \n" + gameState;
+        var encodedMsg = "Game state from my perspective is currently: \n" + gameState;
         var pre = document.createElement("pre");
         pre.textContent = encodedMsg;
         appendToMessagesList(pre);
@@ -81,6 +81,19 @@ document.getElementById("actionJoin").addEventListener("click",
         var gameId = getGameId();    
         var user = getUser();
         connection.invoke("UserClickedActionButton", /* SevenStuds.Models.ActionEnum.Join */ 1, gameId, user, "").catch(logError);
+        //        public async Task UserClickedActionButton(ActionEnum actionType, string gameId, string user, string amount)
+        event.preventDefault();
+    }
+);
+
+// --------------- REJOIN
+
+document.getElementById("actionRejoin").addEventListener("click", 
+    function (event) {
+        var gameId = getGameId();    
+        var user = getUser();
+        var code = getRejoinCode();
+        connection.invoke("UserClickedActionButton", /* SevenStuds.Models.ActionEnum.Rejoin */ 2, gameId, user, code).catch(logError);
         //        public async Task UserClickedActionButton(ActionEnum actionType, string gameId, string user, string amount)
         event.preventDefault();
     }

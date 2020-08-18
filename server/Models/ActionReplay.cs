@@ -7,8 +7,8 @@ namespace SevenStuds.Models
     /// </summary>  
     public class ActionReplay : Action
     {  
-        public ActionReplay(ActionEnum actionType, string gameId, string user, string logAsJson) 
-            : base(actionType, gameId, user, logAsJson)
+        public ActionReplay(string connectionId, ActionEnum actionType, string gameId, string user, string logAsJson) 
+            : base(connectionId, actionType, gameId, user, logAsJson)
         {
         }
         public override void ProcessAction()
@@ -22,6 +22,8 @@ namespace SevenStuds.Models
             foreach ( GameLogAction gla in historicalGameLog.actions ) {
                 ActionEnum actionType = gla.ActionType;
                 Action a = ActionFactory.NewAction(
+                    "", // TODO think about how to handle connection ids in test mode ... 
+                        // generate a new dummy one for each action? Users will have to rejoin anyway.
                     gla.ActionType, 
                     G.GameId, 
                     gla.UserName, 

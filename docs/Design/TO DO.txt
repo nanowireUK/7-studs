@@ -36,5 +36,6 @@ DONE * Remove references to connection id and instead generate a group id and a 
 * Check performance of HashTable: consider making GetHashCode cleverer https://thomaslevesque.com/2020/05/15/things-every-csharp-developer-should-know-1-hash-codes/
 * Record game logs in a database
 * Automatically clear a game if there is no activity for n hours
+* Allow a player to play blind (?)
 
 

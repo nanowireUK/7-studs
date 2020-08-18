@@ -9,7 +9,9 @@ namespace SevenStuds.Models
         public Participant(string PName) {
             this.Name = PName;
             this.RejoinCode = GenerateRejoinCode();
-            this.SignalRGroupName = PName + '.' + Guid.NewGuid().ToString(); // Unique group id for this player (who may connect) 
+            this.ParticipantLevelSignalRGroupName = PName + '.' + Guid.NewGuid().ToString(); // Unique group id for this player (who may connect)
+            this._ConnectionIds = new List<string>(); // This user's connection ids will be recorded here
+            this.Hand = new List<Card>();
         }
         [Required]
         
@@ -20,8 +22,9 @@ namespace SevenStuds.Models
         public Boolean HasCovered { get; set; }
         public Boolean IsOutOfThisGame { get; set; } // Can work this out but possibly cleaner to record it explicitly
         public string RejoinCode { get; set; } // e.g. 3 alphanumeric characters that enables a disconnected player to rejoin as the same person
-        public string SignalRGroupName { get; set; }
-        
+        public string ParticipantLevelSignalRGroupName { get; set; }
+        private List<string> _ConnectionIds { get; set; }
+                
         [Required]
         public int _VisibleHandRank { get; set; }
         public int _FullHandRank { get; set; }
@@ -35,13 +38,22 @@ namespace SevenStuds.Models
         //     return UncommittedChips == 0 & ChipsCommittedToCurrentBettingRound > 0;
         // }
         public string GenerateRejoinCode() {
-            string seed = "abcdefghijklmnopqrstuvwxyz0123456789";
+            string seed = "abcdefghijkmnopqrstuvwxyz023456789"; // no '1' and no 'l' as too easy to mix up
             string code = "";
             Random r = new Random();
             for ( int i = 0; i < 4; i++) {
                 code += seed[r.Next(0, seed.Length - i)];
             }
             return code;
+        }
+        public List<string> GetConnectionIds() {
+            return _ConnectionIds;
+        }
+
+        public void NoteConnectionId(string connectionId) {
+            if ( ! _ConnectionIds.Contains(connectionId)) {
+                _ConnectionIds.Add(connectionId);
+            }
         }
         
         public void StartNewHandForActivePlayer(Game g) {
@@ -68,7 +80,7 @@ namespace SevenStuds.Models
                 this.Hand[2], 
                 ServerState.DummyCard, 
                 ServerState.DummyCard, ServerState.RankingTable);
-            this._FullHandDescription = _PokerHand.ToString(HandToStringFormatEnum.ShortCardsHeld) + ": " + _PokerHand.ToString(HandToStringFormatEnum.HandDescription);
+            this._FullHandDescription = /*_PokerHand.ToString(HandToStringFormatEnum.ShortCardsHeld) + ": " + */ _PokerHand.ToString(HandToStringFormatEnum.HandDescription);
             this._FullHandRank = _PokerHand.Rank;  
             this._HandSummary = "";
             foreach ( Card c in this.Hand) {

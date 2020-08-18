@@ -5,20 +5,23 @@ namespace SevenStuds.Models
     /// </summary>  
     public class ActionJoin : Action
     {  
-        public ActionJoin(ActionEnum actionType, string gameId, string user) : base(actionType, gameId, user)
+        public ActionJoin(string connectionId, ActionEnum actionType, string gameId, string user) : base(connectionId, actionType, gameId, user)
         {
         }
 
         public override void ProcessAction()
         {
-            // Add player (note that the base class has already checked the player's eligibility for this action)
-            G.Participants.Add(new Participant(this.UserName));
+            // Add player (note that the base class has already checked the player's basic eligibility for this action)
+            Participant p = new Participant(this.UserName);
+            G.Participants.Add(p);
             G.LastEvent = this.UserName + " joined game";
             G.NextAction = "Await new player or start the game";
-            if ( G.Participants.Count >= 2)
+            if ( G.Participants.Count >= 2 )
             {
                 G.SetActionAvailability(ActionEnum.Start, AvailabilityEnum.AnyRegisteredPlayer); // Open up START to anyone
             }
+            p.NoteConnectionId(this.ConnectionId);
+            //G.LinkConnectionToParticipant(this.ConnectionId, p); /// NOTE this is done in ChatHub
         }
     }     
 }  

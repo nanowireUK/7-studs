@@ -6,6 +6,7 @@ namespace SevenStuds.Models
     public static class ActionFactory
     {
         public static Action NewAction(
+            string connectionId,
             ActionEnum actionType,
             string gameId,
             string user,
@@ -15,27 +16,29 @@ namespace SevenStuds.Models
             switch (actionType)  
             { 
                 case ActionEnum.Join:  
-                    return new ActionJoin(actionType, gameId, user);
+                    return new ActionJoin(connectionId, actionType, gameId, user);
+                case ActionEnum.Rejoin:  
+                    return new ActionRejoin(connectionId, actionType, gameId, user, parameters);
                 case ActionEnum.Start:  
-                    return new ActionStart(actionType, gameId, user);    
+                    return new ActionStart(connectionId, actionType, gameId, user);    
                 case ActionEnum.Check:  
-                    return new ActionCheck(actionType, gameId, user);   
+                    return new ActionCheck(connectionId, actionType, gameId, user);   
                 case ActionEnum.Call:  
-                    return new ActionCall(actionType, gameId, user);   
+                    return new ActionCall(connectionId, actionType, gameId, user);   
                 case ActionEnum.Raise:  
-                    return new ActionRaise(actionType, gameId, user, parameters);     
+                    return new ActionRaise(connectionId, actionType, gameId, user, parameters);     
                 case ActionEnum.Cover:  
-                    return new ActionCover(actionType, gameId, user);   
+                    return new ActionCover(connectionId, actionType, gameId, user);   
                 case ActionEnum.Fold:  
-                    return new ActionFold(actionType, gameId, user);   
+                    return new ActionFold(connectionId, actionType, gameId, user);   
                 case ActionEnum.GetState:  
-                    return new ActionGetState(actionType, gameId, user);     
+                    return new ActionGetState(connectionId, actionType, gameId, user);     
                 case ActionEnum.GetLog:  
-                    return new ActionGetLog(actionType, gameId, user);   
+                    return new ActionGetLog(connectionId, actionType, gameId, user);   
                 case ActionEnum.Replay:  
-                    return new ActionReplay(actionType, gameId, user, parameters);                                                                                                   
+                    return new ActionReplay(connectionId, actionType, gameId, user, parameters);                                                                                                   
                 default:  
-                    throw new System.Exception("Unsupported action");
+                    throw new System.Exception("7Studs User Exception: Unsupported action");
             }  
         }
     }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System;
+using Microsoft.AspNetCore.SignalR;
 
 namespace SevenStuds.Models
 {
@@ -25,11 +26,13 @@ namespace SevenStuds.Models
         public int _IndexOfLastPlayerToRaise { get; set; } 
         public int _IndexOfLastPlayerToStartChecking { get; set; } 
         public bool _CheckIsAvailable { get; set; }
+        public string GameLevelSignalRGroupName { get; set; }
         protected GameLog _GameLog { get; set; }
         protected GameLog _TestContext { get; set; }
 
         //public List<ActionEnum> _ActionsNowAvailableToCurrentPlayer { get; set; }
         //public List<ActionEnum> _ActionsNowAvailableToAnyPlayer { get; set; }
+        private Dictionary<string, Participant> _ConnectionToParticipantMap { get; set; } // Can't be public as JSON serialiser can't handle it
         public List<List<int>> Pots { get; set; } // pot(s) built up in the current hand (over multiple rounds of betting)
         public List<Participant> Participants { get; set; } // ordered list of participants (order represents order around the table)
         //public List<Event> Events { get; set; } // ordered list of events associated with the game
@@ -43,6 +46,7 @@ namespace SevenStuds.Models
 
         public Game(string gameId) {
             GameId = gameId;
+            this.GameLevelSignalRGroupName = GameId + '.' + Guid.NewGuid().ToString(); // Unique group name for all players associated with this game
             this.InitialiseGame(null);
         }
 
@@ -55,6 +59,7 @@ namespace SevenStuds.Models
             HandsPlayedIncludingCurrent = 0;
             CardPack = new Deck(true);
             HandCommentary = new List<string>();
+            _ConnectionToParticipantMap = new Dictionary<string, Participant>(); 
             _ActionAvailability = new Dictionary<ActionEnum, ActionAvailability>();
             ActionAvailabilityList = new List<ActionAvailability>();
             foreach (ActionEnum e in Enum.GetValues(typeof(ActionEnum)))
@@ -62,6 +67,7 @@ namespace SevenStuds.Models
                 SetActionAvailability(e, AvailabilityEnum.NotAvailable); // All commands initially unavailable
             }
             SetActionAvailability(ActionEnum.Join, AvailabilityEnum.AnyUnregisteredPlayer); // Open up JOIN to anyone who has not yet joined
+            SetActionAvailability(ActionEnum.Rejoin, AvailabilityEnum.AnyRegisteredPlayer); // Open up REJOIN to anyone who previously joined
             SetActionAvailability(ActionEnum.GetState, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who joined
             SetActionAvailability(ActionEnum.GetLog, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who joined
             SetActionAvailability(ActionEnum.Replay, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who joined
@@ -100,10 +106,29 @@ namespace SevenStuds.Models
             }
         }
 
-        public bool ActionIsAvailableToThisPlayerAtThisPoint( ActionEnum ac, int playerIndex ) 
+        // public bool ActionIsAvailableToThisPlayerAtThisPoint( ActionEnum ac, int playerIndex ) 
+        // {
+        //     return true;
+        // }
+
+        public void LinkConnectionToParticipant(string connectionId, Participant p) 
         {
-            return true;
+            _ConnectionToParticipantMap.Add(connectionId, p);
         }
+
+        public Participant GetParticipantFromConnection(string connectionId) 
+        {
+            Participant p;
+            if ( _ConnectionToParticipantMap.TryGetValue(connectionId, out p) )
+            {
+                return p;
+            }
+            else 
+            {
+                return null;
+            }
+        }
+
         public void StartGame()
         {
             foreach ( Participant p in Participants )
@@ -137,6 +162,8 @@ namespace SevenStuds.Models
 
             InitialiseHand(); // Start the first hand
         }
+
+
 
         public void InitialiseHand()
         {
