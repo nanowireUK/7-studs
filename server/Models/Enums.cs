@@ -5,6 +5,64 @@ using System.Text;
 namespace SevenStuds.Models
 {
     /// <summary>
+    /// ActionEnum: Enumeration values are used to communicate actions between client and server
+    /// </summary>
+    public enum ActionEnum : int
+    {
+        // Game-level actions, generally available for all players depending on game state
+        Join = 1,
+        Rejoin = 2,
+        Leave = 3,
+        Start = 4,
+        Finish = 5,
+        // Hand-level actions, available only to one player at any one time
+        Check = 10,
+        Call = 11,
+        Raise = 12,
+        Cover = 13,
+        Fold = 14,
+        // Admin or test functions not intended for general use
+        GetState = 20,
+        GetLog = 21,
+        Replay = 22
+    }
+
+    
+
+    /// <summary>
+    /// ActionResponseTypeEnum: 
+    /// </summary>
+    public enum ActionResponseTypeEnum : int
+    {
+        PlayerCentricGameState = 0,
+        OverallGameState = 1,
+        GameLog = 2
+    }
+
+    /// <summary>
+    /// ActionResponseAudienceEnum: 
+    /// </summary>
+    public enum ActionResponseAudienceEnum : int
+    {
+        Caller = 0, // The specific client that invoked this command
+        CurrentPlayer = 1, // All of the clients that the current player has used to join the game (e.g. laptop AND phone)
+        AllPlayers = 2, // All of the clients for all of the players who have joined the game
+        Admin = 3 // The administrator (currently thinking this will be the first person to have joined the game)
+    }    
+
+
+    /// <summary>
+    /// AvailabilityEnum: Enumeration values are used to communicate availability of actions between client and server
+    /// </summary>
+    public enum AvailabilityEnum : int
+    {
+        NotAvailable = 0,
+        ActivePlayerOnly = 1,
+        AnyRegisteredPlayer = 2,
+        AnyUnregisteredPlayer = 3
+    }
+   
+    /// <summary>
     /// Enumeration values are used to calculate hand rank keys
     /// </summary>
     public enum CardEnum : int

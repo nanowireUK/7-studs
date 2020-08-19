@@ -1,0 +1,202 @@
+REPLAYED GAME STATE
+{
+  "GameId": "7Studs Main Event",
+  "InitialChipQuantity": 1000,
+  "Ante": 1,
+  "LastEvent": "John raised by 50",
+  "NextAction": "Harry to bet",
+  "HandCommentary": [
+    "Adding 50 to the pot (existing pot structure will be analysed)",
+    "Max chips currently in pot 1 = 1",
+    "Adding 50 to open pot",
+    "John raised by 50"
+  ],
+  "HandsPlayedIncludingCurrent": 2,
+  "IndexOfParticipantDealingThisHand": 1,
+  "IndexOfParticipantToTakeNextAction": 0,
+  "_CardsDealtIncludingCurrent": 3,
+  "_IndexOfLastPlayerToRaise": 3,
+  "_IndexOfLastPlayerToStartChecking": -1,
+  "_CheckIsAvailable": false,
+  "Pots": [
+    [
+      1,
+      1,
+      1,
+      51
+    ]
+  ],
+  "Participants": [
+    {
+      "Name": "Harry",
+      "UncommittedChips": 498,
+      "HasFolded": false,
+      "HasCovered": false,
+      "IsOutOfThisGame": false,
+      "RejoinCode": "dfl82O45Oy_VfOGc9HKz7Q",
+      "_VisibleHandRank": 11,
+      "_FullHandRank": 273,
+      "_VisibleHandDescription": "4s: Four",
+      "_FullHandDescription": "Ks8d4s: King High with Eight, Four",
+      "_HandSummary": "Ks 8d 4s ",
+      "Hand": [
+        {
+          "CardValue": "King",
+          "CardSuit": "Spades"
+        },
+        {
+          "CardValue": "Eight",
+          "CardSuit": "Diamonds"
+        },
+        {
+          "CardValue": "Four",
+          "CardSuit": "Spades"
+        }
+      ]
+    },
+    {
+      "Name": "Phil",
+      "UncommittedChips": 998,
+      "HasFolded": false,
+      "HasCovered": false,
+      "IsOutOfThisGame": false,
+      "RejoinCode": "dfl82O45Oy_VfOGc9HKz7Q",
+      "_VisibleHandRank": 8,
+      "_FullHandRank": 276,
+      "_VisibleHandDescription": "7d: Seven",
+      "_FullHandDescription": "Kd6d7d: King High with Seven, Six",
+      "_HandSummary": "Kd 6d 7d ",
+      "Hand": [
+        {
+          "CardValue": "King",
+          "CardSuit": "Diamonds"
+        },
+        {
+          "CardValue": "Six",
+          "CardSuit": "Diamonds"
+        },
+        {
+          "CardValue": "Seven",
+          "CardSuit": "Diamonds"
+        }
+      ]
+    },
+    {
+      "Name": "Robert",
+      "UncommittedChips": 998,
+      "HasFolded": false,
+      "HasCovered": false,
+      "IsOutOfThisGame": false,
+      "RejoinCode": "dfl82O45Oy_VfOGc9HKz7Q",
+      "_VisibleHandRank": 11,
+      "_FullHandRank": 137,
+      "_VisibleHandDescription": "4c: Four",
+      "_FullHandDescription": "4hJs4c: Pair of Fours with Jack",
+      "_HandSummary": "4h Js 4c ",
+      "Hand": [
+        {
+          "CardValue": "Four",
+          "CardSuit": "Hearts"
+        },
+        {
+          "CardValue": "Jack",
+          "CardSuit": "Spades"
+        },
+        {
+          "CardValue": "Four",
+          "CardSuit": "Clubs"
+        }
+      ]
+    },
+    {
+      "Name": "John",
+      "UncommittedChips": 1452,
+      "HasFolded": false,
+      "HasCovered": false,
+      "IsOutOfThisGame": false,
+      "RejoinCode": "dfl82O45Oy_VfOGc9HKz7Q",
+      "_VisibleHandRank": 5,
+      "_FullHandRank": 202,
+      "_VisibleHandDescription": "Ts: Ten",
+      "_FullHandDescription": "Ah7sTs: Ace High with Ten, Seven",
+      "_HandSummary": "Ah 7s Ts ",
+      "Hand": [
+        {
+          "CardValue": "Ace",
+          "CardSuit": "Hearts"
+        },
+        {
+          "CardValue": "Seven",
+          "CardSuit": "Spades"
+        },
+        {
+          "CardValue": "Ten",
+          "CardSuit": "Spades"
+        }
+      ]
+    }
+  ],
+  "ActionAvailabilityList": [
+    {
+      "Action": "Join",
+      "Availability": "NotAvailable"
+    },
+    {
+      "Action": "Rejoin",
+      "Availability": "NotAvailable"
+    },
+    {
+      "Action": "Leave",
+      "Availability": "NotAvailable"
+    },
+    {
+      "Action": "Start",
+      "Availability": "NotAvailable"
+    },
+    {
+      "Action": "Finish",
+      "Availability": "NotAvailable"
+    },
+    {
+      "Action": "Check",
+      "Availability": "NotAvailable"
+    },
+    {
+      "Action": "Call",
+      "Availability": "ActivePlayerOnly"
+    },
+    {
+      "Action": "Raise",
+      "Availability": "ActivePlayerOnly"
+    },
+    {
+      "Action": "Cover",
+      "Availability": "NotAvailable"
+    },
+    {
+      "Action": "Fold",
+      "Availability": "ActivePlayerOnly"
+    },
+    {
+      "Action": "GetState",
+      "Availability": "AnyRegisteredPlayer"
+    },
+    {
+      "Action": "GetLog",
+      "Availability": "AnyRegisteredPlayer"
+    },
+    {
+      "Action": "Replay",
+      "Availability": "AnyRegisteredPlayer"
+    }
+  ],
+  "CardPositionIsVisible": [
+    false,
+    false,
+    true,
+    true,
+    true,
+    true,
+    false
+  ]
+}

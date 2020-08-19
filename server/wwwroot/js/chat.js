@@ -24,7 +24,7 @@ function getGameId() {
     return "7Studs Main Event"; // We'll set this from the URL at a later date
 }
 
-function getMessage() {
+function getModifiers() {
     return document.getElementById("actionModifiers").value;
 }
 
@@ -32,19 +32,35 @@ function getUser() {
     return document.getElementById("userInput").value;
 }
 
-//connection.on("ReceiveMessage", 
-//    function (user, message) {
-//        var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-//        var encodedMsg = user + " says " + msg;
-//        appendToMessagesList(encodedMsg);
-//    }
-//);
+function getRejoinCode() {
+    return document.getElementById("rejoinCode").value;
+}
 
 // Game-specific function
-connection.on("ReceiveUpdatedGameState", 
+connection.on("ReceiveMyGameState", 
     function (gameState) {
         var msg = gameState.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-        var encodedMsg = "Game state is currently: \n" + gameState;
+        var encodedMsg = "Game state from my perspective is currently: \n" + gameState;
+        var pre = document.createElement("pre");
+        pre.textContent = encodedMsg;
+        appendToMessagesList(pre);
+    }
+);
+
+connection.on("ReceiveGameLog", 
+    function (gameLog) {
+        var msg = gameLog.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        var encodedMsg = "Game log: \n" + gameLog;
+        var pre = document.createElement("pre");
+        pre.textContent = encodedMsg;
+        appendToMessagesList(pre);
+    }
+);
+
+connection.on("ReceiveOverallGameState", 
+    function (gameState) {
+        var msg = gameState.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        var encodedMsg = "Overall game state: \n" + gameState;
         var pre = document.createElement("pre");
         pre.textContent = encodedMsg;
         appendToMessagesList(pre);
@@ -57,6 +73,7 @@ connection.start().then(
         actionCall.disabled = false;
         actionRaise.disabled = false;
         actionFold.disabled = false;
+        actionCover.disabled = false;
     }
 ).catch(logError);
 
@@ -75,7 +92,21 @@ document.getElementById("actionJoin").addEventListener("click",
     function (event) {
         var gameId = getGameId();    
         var user = getUser();
-        connection.invoke("UserClickedJoin", gameId, user).catch(logError);
+        connection.invoke("UserClickedActionButton", /* SevenStuds.Models.ActionEnum.Join */ 1, gameId, user, "").catch(logError);
+        //        public async Task UserClickedActionButton(ActionEnum actionType, string gameId, string user, string amount)
+        event.preventDefault();
+    }
+);
+
+// --------------- REJOIN
+
+document.getElementById("actionRejoin").addEventListener("click", 
+    function (event) {
+        var gameId = getGameId();    
+        var user = getUser();
+        var code = getRejoinCode();
+        connection.invoke("UserClickedActionButton", /* SevenStuds.Models.ActionEnum.Rejoin */ 2, gameId, user, code).catch(logError);
+        //        public async Task UserClickedActionButton(ActionEnum actionType, string gameId, string user, string amount)
         event.preventDefault();
     }
 );
@@ -86,18 +117,17 @@ document.getElementById("actionStart").addEventListener("click",
     function (event) {
         var gameId = getGameId();    
         var user = getUser();
-        connection.invoke("UserClickedStart", gameId, user).catch(logError);
+        connection.invoke("UserClickedActionButton", /* SevenStuds.Models.ActionEnum.Start */ 4, gameId, user, "").catch(logError);
         event.preventDefault();
     }
 );
 
-// --------------- RAISE
+// --------------- CHECK
 
-document.getElementById("actionRaise").addEventListener("click", function (event) {
+document.getElementById("actionCheck").addEventListener("click", function (event) {
     var gameId = getGameId();    
     var user = getUser();
-    var amount = getMessage();
-    connection.invoke("UserClickedRaise", gameId, user, amount).catch(logError);
+    connection.invoke("UserClickedActionButton", /* SevenStuds.Models.ActionEnum.Check */ 10, gameId, user, "").catch(logError);
     event.preventDefault();
 });
 
@@ -106,16 +136,28 @@ document.getElementById("actionRaise").addEventListener("click", function (event
 document.getElementById("actionCall").addEventListener("click", function (event) {
     var gameId = getGameId();    
     var user = getUser();
-    connection.invoke("UserClickedCall", gameId, user).catch(logError);
+    connection.invoke("UserClickedActionButton", /* SevenStuds.Models.ActionEnum.Call */ 11, gameId, user, "").catch(logError);
     event.preventDefault();
 });
 
-// --------------- CHECK
+// --------------- RAISE
 
-document.getElementById("actionCheck").addEventListener("click", function (event) {
+document.getElementById("actionRaise").addEventListener("click", 
+    function (event) {
+        var gameId = getGameId();    
+        var user = getUser();
+        var amount = getModifiers();
+        connection.invoke("UserClickedActionButton", /* SevenStuds.Models.ActionEnum.Raise */ 12, gameId, user, amount).catch(logError);
+        event.preventDefault();
+    }
+);
+
+// --------------- COVER
+
+document.getElementById("actionCover").addEventListener("click", function (event) {
     var gameId = getGameId();    
     var user = getUser();
-    connection.invoke("UserClickedCheck", gameId, user).catch(logError);
+    connection.invoke("UserClickedActionButton", /* SevenStuds.Models.ActionEnum.Cover */ 13, gameId, user, "").catch(logError);
     event.preventDefault();
 });
 
@@ -124,18 +166,35 @@ document.getElementById("actionCheck").addEventListener("click", function (event
 document.getElementById("actionFold").addEventListener("click", function (event) {
     var gameId = getGameId();    
     var user = getUser();
-    connection.invoke("UserClickedFold", gameId, user).catch(logError);
+    connection.invoke("UserClickedActionButton", /* SevenStuds.Models.ActionEnum.Fold */ 14, gameId, user, "").catch(logError);
     event.preventDefault();
 });
 
-// --------------- COVER
 
-document.getElementById("actionCover").addEventListener("click", function (event) {
+// --------------- Get Game State (test feature)
+
+document.getElementById("actionGetState").addEventListener("click", function (event) {
+    var gameId = getGameId();    
+    var user = getUser(); 
+    connection.invoke("UserClickedActionButton", /* SevenStuds.Models.ActionEnum.GetState */ 20, gameId, user, "").catch(logError);
+    event.preventDefault();
+});
+
+// --------------- Get Game Log (test feature)
+
+document.getElementById("actionGetLog").addEventListener("click", function (event) {
+    var gameId = getGameId();    
+    var user = getUser();  
+    connection.invoke("UserClickedActionButton", /* SevenStuds.Models.ActionEnum.GetLog */ 21, gameId, user, "").catch(logError);
+    event.preventDefault();
+});
+
+// --------------- Reply game from game log (test feature)
+
+document.getElementById("actionReplay").addEventListener("click", function (event) {
     var gameId = getGameId();    
     var user = getUser();
-    connection.invoke("UserClickedCover", gameId, user).catch(logError);
+    var gameLog = getModifiers();   
+    connection.invoke("UserClickedActionButton", /* SevenStuds.Models.ActionEnum.Replay */ 22, gameId, user, gameLog).catch(logError);
     event.preventDefault();
 });
-
-
-

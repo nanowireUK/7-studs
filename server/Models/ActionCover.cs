@@ -1,0 +1,40 @@
+namespace SevenStuds.Models
+{  
+    /// <summary>  
+    /// The 'ActionCover' Class  
+    /// </summary>  
+    public class ActionCover : Action
+    {  
+        public ActionCover(string connectionId, ActionEnum actionType, string gameId, string user) : base(connectionId, actionType, gameId, user)
+        {
+        }
+        public override void ProcessAction()
+        {
+            // Handle the cover (like a call but where player doesn't have enough to cover the current raise)
+            // (note that the base class has already checked the player's eligibility for this action)
+            Participant p = G.Participants[PlayerIndex];
+            G.ClearCommentary(); 
+            // Implement the cover (has to be done pot-by-pot, and could involve splitting a pot)
+            G.LastEvent = UserName + " paid " + p.UncommittedChips + " to cover the pot";
+            p.HasCovered = true;
+            G.AddCommentary(G.LastEvent);   
+            G.MoveAmountToPotForSpecifiedPlayer(PlayerIndex, p.UncommittedChips);
+            // Find and set next player (could be no one if all players have now called or covered)
+            G.IndexOfParticipantToTakeNextAction = G.GetIndexOfPlayerToBetNext(PlayerIndex);
+            if ( G.IndexOfParticipantToTakeNextAction > -1 ) {
+                G.NextAction = G.Participants[G.IndexOfParticipantToTakeNextAction].Name + " to bet"; 
+                G.AddCommentary(G.NextAction );  
+            }
+            else if ( G._CardsDealtIncludingCurrent < 7 ) { 
+                G.DealNextRound();
+                G.NextAction = "Started next round, " + G.Participants[G.IndexOfParticipantToTakeNextAction].Name + " to bet"; 
+                G.AddCommentary("End of round. Next card dealt. " + G.Participants[G.IndexOfParticipantToTakeNextAction].Name + " to bet");   
+            }
+            else  {
+                // This is the end of the hand
+                G.NextAction = G.ProcessEndOfHand(UserName + " covered the pot, hand ended");
+            }  
+            G.SetActionAvailabilityBasedOnCurrentPlayer();
+        }
+    }     
+}  

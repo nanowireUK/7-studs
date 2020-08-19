@@ -6,9 +6,13 @@ namespace SevenStuds.Models
 {
     public class Participant
     {
-        public Participant(string PName, string connectionId) {
+        public Participant(string PName) {
             this.Name = PName;
-            this.ConnectionId = connectionId;
+            this.RejoinCode = GenerateRejoinCode();
+            this.ParticipantLevelSignalRGroupName = PName + '.' + Guid.NewGuid().ToString(); // Unique group id for this player (who may connect)
+            this._ConnectionIds = new List<string>(); // This user's connection ids will be recorded here
+            this.Hand = new List<Card>();
+            this.IsLockedOutFollowingReplay = false;
         }
         [Required]
         
@@ -16,7 +20,12 @@ namespace SevenStuds.Models
         public int UncommittedChips { get; set; }
         //public int ChipsCommittedToCurrentBettingRound { get; set; }
         public Boolean HasFolded { get; set; }
-        public string ConnectionId { get; set; } // e.g. 3 alphanumeric characters that enables a disconnected player to rejoin as the same person
+        public Boolean HasCovered { get; set; }
+        public Boolean IsOutOfThisGame { get; set; } // Can work this out but possibly cleaner to record it explicitly
+        public string RejoinCode { get; set; } // e.g. 3 alphanumeric characters that enables a disconnected player to rejoin as the same person
+        public string ParticipantLevelSignalRGroupName { get; set; }
+        private List<string> _ConnectionIds { get; set; }
+                
         [Required]
         public int _VisibleHandRank { get; set; }
         public int _FullHandRank { get; set; }
@@ -24,15 +33,37 @@ namespace SevenStuds.Models
         public string _FullHandDescription { get; set; }
         public string _HandSummary { get; set; }
         private PokerHand _PokerHand { get; set; }
+        public bool IsLockedOutFollowingReplay { get; set; }
+
         public List<Card> Hand { get; set; }
         // public Boolean IsAllIn() {
         //     return UncommittedChips == 0 & ChipsCommittedToCurrentBettingRound > 0;
         // }
+        public string GenerateRejoinCode() {
+            string seed = "abcdefghijkmnopqrstuvwxyz023456789"; // no '1' and no 'l' as too easy to mix up
+            string code = "";
+            Random r = new Random();
+            for ( int i = 0; i < 4; i++) {
+                code += seed[r.Next(0, seed.Length - i)];
+            }
+            return code;
+        }
+        public List<string> GetConnectionIds() {
+            return _ConnectionIds;
+        }
+
+        public void NoteConnectionId(string connectionId) {
+            if ( ! _ConnectionIds.Contains(connectionId)) {
+                _ConnectionIds.Add(connectionId);
+            }
+        }
         
         public void StartNewHandForActivePlayer(Game g) {
             //this.ChipsCommittedToCurrentBettingRound = g.Ante;
             this.UncommittedChips -= g.Ante;
             this.HasFolded = false;
+            this.HasCovered = false;
+            this.IsOutOfThisGame = false;
             this.Hand = new List<Card>();
             this.Hand.Add(g.DealCard()); // 1st random card
             this.Hand.Add(g.DealCard()); // 2nd random card
@@ -51,7 +82,7 @@ namespace SevenStuds.Models
                 this.Hand[2], 
                 ServerState.DummyCard, 
                 ServerState.DummyCard, ServerState.RankingTable);
-            this._FullHandDescription = _PokerHand.ToString(HandToStringFormatEnum.ShortCardsHeld) + ": " + _PokerHand.ToString(HandToStringFormatEnum.HandDescription);
+            this._FullHandDescription = /*_PokerHand.ToString(HandToStringFormatEnum.ShortCardsHeld) + ": " + */ _PokerHand.ToString(HandToStringFormatEnum.HandDescription);
             this._FullHandRank = _PokerHand.Rank;  
             this._HandSummary = "";
             foreach ( Card c in this.Hand) {
@@ -62,6 +93,8 @@ namespace SevenStuds.Models
         public void StartNewHandForBankruptPlayer(Game g) {
             //this.ChipsCommittedToCurrentBettingRound = 0;
             this.HasFolded = false;
+            this.HasCovered = false;
+            this.IsOutOfThisGame = true;
             this.Hand = new List<Card>();
             this._VisibleHandDescription = null;
             this._VisibleHandRank = int.MaxValue;
@@ -72,7 +105,7 @@ namespace SevenStuds.Models
 
         public void PrepareForNextBettingRound(Game g, int roundNumber) {
             // Check whether player is still in, and deal them a new card if so
-            if ( this.HasFolded == false ) {
+            if ( this.HasFolded == false & this.IsOutOfThisGame == false ) {
                 this.Hand.Add(g.DealCard()); // random card
                 PokerHand visibleHand = new PokerHand(
                     this.Hand[2], 
@@ -167,7 +200,7 @@ namespace SevenStuds.Models
                         }
                     }
                 }                
-                this._FullHandDescription = _PokerHand.ToString(HandToStringFormatEnum.ShortCardsHeld) + ": " + _PokerHand.ToString(HandToStringFormatEnum.HandDescription);
+                this._FullHandDescription = /*_PokerHand.ToString(HandToStringFormatEnum.ShortCardsHeld) + ": " + */ _PokerHand.ToString(HandToStringFormatEnum.HandDescription);
                 this._FullHandRank = _PokerHand.Rank;
                 this._HandSummary = "";
                 foreach ( Card c in this.Hand) {

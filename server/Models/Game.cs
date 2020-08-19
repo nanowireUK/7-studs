@@ -1,7 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System;
+using Microsoft.AspNetCore.SignalR;
 
 namespace SevenStuds.Models
 {
@@ -19,13 +21,23 @@ namespace SevenStuds.Models
         public int HandsPlayedIncludingCurrent { get; set; } // 0 = game not yet started
         public int IndexOfParticipantDealingThisHand { get; set; } // Rotates from player 0
         public int IndexOfParticipantToTakeNextAction { get; set; } // Determined by cards showing (at start of round) then on player order
+        public int MaxRaiseForParticipantToTakeNextAction { get; set; } // So that client doesn't need to work this out
         public int _CardsDealtIncludingCurrent { get; set; } // 0 = hand not started
         public int _IndexOfLastPlayerToRaise { get; set; } 
         public int _IndexOfLastPlayerToStartChecking { get; set; } 
-        public bool _CheckIsAvailable { get; set; } 
-        public List<List<int>> Pots { get; set; } // pots built up in the current hand (over multiple rounds of betting)
+        public bool _CheckIsAvailable { get; set; }
+        public string GameLevelSignalRGroupName { get; set; }
+        protected GameLog _GameLog { get; set; }
+        protected GameLog _TestContext { get; set; }
+
+        //public List<ActionEnum> _ActionsNowAvailableToCurrentPlayer { get; set; }
+        //public List<ActionEnum> _ActionsNowAvailableToAnyPlayer { get; set; }
+        private Dictionary<string, Participant> _ConnectionToParticipantMap { get; set; } // Can't be public as JSON serialiser can't handle it
+        public List<List<int>> Pots { get; set; } // pot(s) built up in the current hand (over multiple rounds of betting)
         public List<Participant> Participants { get; set; } // ordered list of participants (order represents order around the table)
         //public List<Event> Events { get; set; } // ordered list of events associated with the game
+        private Dictionary<ActionEnum, ActionAvailability> _ActionAvailability { get; set; } // Can't be public as JSON serialiser can't handle it
+        public List<ActionAvailability> ActionAvailabilityList { get; set; } // This list contains references to the same objects as in the Dictionary       
         public List<Boolean> CardPositionIsVisible { get; } = new List<Boolean>{false, false, true, true, true, true, false};
 
         //public List<int> contributionsPerPlayer;
@@ -34,35 +46,122 @@ namespace SevenStuds.Models
 
         public Game(string gameId) {
             GameId = gameId;
+            this.GameLevelSignalRGroupName = GameId + '.' + Guid.NewGuid().ToString(); // Unique group name for all players associated with this game
+            this.InitialiseGame(null);
+        }
+
+        public void InitialiseGame(GameLog testContext)
+        {
+            SetTestContext(testContext);
             Participants = new List<Participant>(); // start with empty list of participants
             InitialChipQuantity = 1000;
             Ante = 1;
             HandsPlayedIncludingCurrent = 0;
             CardPack = new Deck(true);
-            SevenStuds.Models.ServerState.GameList.Add(GameId, this); // Maps the game id to the game itself (possibly better than just iterating through a list?)
             HandCommentary = new List<string>();
+            _ConnectionToParticipantMap = new Dictionary<string, Participant>(); 
+            _ActionAvailability = new Dictionary<ActionEnum, ActionAvailability>();
+            ActionAvailabilityList = new List<ActionAvailability>();
+            foreach (ActionEnum e in Enum.GetValues(typeof(ActionEnum)))
+            {
+                SetActionAvailability(e, AvailabilityEnum.NotAvailable); // All commands initially unavailable
+            }
+            SetActionAvailability(ActionEnum.Join, AvailabilityEnum.AnyUnregisteredPlayer); // Open up JOIN to anyone who has not yet joined
+            SetActionAvailability(ActionEnum.Rejoin, AvailabilityEnum.AnyRegisteredPlayer); // Open up REJOIN to anyone who previously joined
+            SetActionAvailability(ActionEnum.GetState, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who joined
+            SetActionAvailability(ActionEnum.GetLog, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who joined
+            SetActionAvailability(ActionEnum.Replay, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who joined
+            this._GameLog = new GameLog(); // Initially empty, will be added to as game actions take place
         }
+
+        public void SetTestContext(GameLog testContext)
+        {
+            _TestContext = testContext; // Note: this affects some system behaviour ... need to search for IsRunningInTestMode() to see where
+        }
+        public bool IsRunningInTestMode() {
+            return this._TestContext != null;
+        }
+
         public static Game FindOrCreateGame(string gameId) {
             if ( SevenStuds.Models.ServerState.GameList.ContainsKey(gameId) ) {
                 return (Game) SevenStuds.Models.ServerState.GameList[gameId];
             }
             else {
-                return new Game(gameId);
+                Game newGame = new Game(gameId);
+                SevenStuds.Models.ServerState.GameList.Add(gameId, newGame);
+                return newGame;
             }
         }
-        public void InitialiseGame()
+
+        public void SetActionAvailability(ActionEnum ac, AvailabilityEnum av) 
+        {
+            ActionAvailability aa;
+            if ( _ActionAvailability.TryGetValue(ac, out aa) )
+            {
+                aa.Availability = av;
+            }
+            else 
+            {
+                aa = new ActionAvailability(ac, av);
+                _ActionAvailability.Add(ac, aa); // Note we are adding the ActionAvailability object as the value
+                ActionAvailabilityList.Add(aa); // Also add it to the list that is in included in the JSON export 
+
+            }
+        }
+
+        // public bool ActionIsAvailableToThisPlayerAtThisPoint( ActionEnum ac, int playerIndex ) 
+        // {
+        //     return true;
+        // }
+
+        public void LinkConnectionToParticipant(string connectionId, Participant p) 
+        {
+            _ConnectionToParticipantMap.Add(connectionId, p);
+        }
+
+        public Participant GetParticipantFromConnection(string connectionId) 
+        {
+            Participant p;
+            if ( _ConnectionToParticipantMap.TryGetValue(connectionId, out p) )
+            {
+                return p;
+            }
+            else 
+            {
+                return null;
+            }
+        }
+
+        public void StartGame()
         {
             foreach ( Participant p in Participants )
             {
                 p.UncommittedChips = this.InitialChipQuantity;
             }
-            // Randomise player order here? Pick a random player, delete and add at end, repeat a few times
-            int players = Participants.Count;
-            for (int player = 0; player < players; player++) {
-                Participant p = Participants[player]; // Get reference to player to be moved
-                Participants.RemoveAt(player); // Remove it from the current list
-                Participants.Insert(0, p); // Move to front of the queue
+            if ( ! this.IsRunningInTestMode() ) {
+                // Normal game, so randomise player order by picking a random player, deleting and moving to front, repeating a few times
+                for (int player = 0; player < Participants.Count; player++) {
+                    Participant p = Participants[player]; // Get reference to player to be moved
+                    Participants.RemoveAt(player); // Remove it from the current list
+                    Participants.Insert(0, p); // Move to front of the queue
+                }
             }
+            else {
+                // We are running in test mode (i.e. under the control of an ActionReply command) so set the original player order
+                for ( int requiredPos = 0; requiredPos < this._TestContext.playersInOrder.Count; requiredPos++ ) {
+                    // Find that player who should be at this position and move them to it
+                    string playerToMove = this._TestContext.playersInOrder[requiredPos];
+                    int currentIndexOfPlayerToMove = PlayerIndexFromName(playerToMove);
+                    if ( requiredPos != currentIndexOfPlayerToMove ) {
+                        // We need to remove them from current pos and reinsert them at the required pos
+                        Participant p = Participants[currentIndexOfPlayerToMove];
+                        Participants.RemoveAt(currentIndexOfPlayerToMove); // Remove it from the current list
+                        Participants.Insert(requiredPos, p);
+                    }
+                }
+            }
+
+            this.LogPlayers(); // record the modified player order
 
             InitialiseHand(); // Start the first hand
         }
@@ -73,7 +172,16 @@ namespace SevenStuds.Models
             IndexOfParticipantDealingThisHand = (HandsPlayedIncludingCurrent - 1) % Participants.Count; // client could work this out too
 
             // Set up the pack again
-            CardPack.Shuffle(); // refreshes the pack and shuffles it
+
+            if ( ! this.IsRunningInTestMode() ) {
+                CardPack.Shuffle(); // refreshes the pack and shuffles it
+            }
+            else {
+                // Need to replace the pack with the next one from the historical game log
+                CardPack = this._TestContext.decks[HandsPlayedIncludingCurrent - 1].Clone();
+            }
+
+            this.LogSnapshotOfGameDeck();
 
             this.Pots = new List<List<int>>();
             this.Pots.Add(new List<int>());
@@ -86,15 +194,72 @@ namespace SevenStuds.Models
                 }
                 else {
                     p.StartNewHandForBankruptPlayer(this);
+                    this.Pots[0].Add(0); // record their place in the pot, but with a zero contribution
                 }
             }
             this.IndexOfParticipantToTakeNextAction = GetIndexOfPlayerToBetFirst();
             _IndexOfLastPlayerToRaise = -1;
+            //_IndexOfLastPlayerToCall = -1; // not needed ... can be determined from amounts in pots
             _IndexOfLastPlayerToStartChecking = -1; 
             _CheckIsAvailable = true;
             _CardsDealtIncludingCurrent = MaxCardsDealtSoFar();
+            SetActionAvailabilityBasedOnCurrentPlayer();
          }
 
+        public void SetActionAvailabilityBasedOnCurrentPlayer() 
+        {
+            // This should be called whenever the action has passed from one player to another during a game (i.e. once game has started)
+            int playerIndex = this.IndexOfParticipantToTakeNextAction;
+            Participant p = this.Participants[playerIndex];
+
+            // Decide whether the player can fold at this stage
+            // (always available as player becomes inactive on folding and so will never be current player)
+            SetActionAvailability(ActionEnum.Fold, AvailabilityEnum.ActivePlayerOnly); 
+
+            // Decide whether the player can check at this stage
+            // (possible until someone does something other than checking)
+            SetActionAvailability(
+                ActionEnum.Check, 
+                _CheckIsAvailable ? AvailabilityEnum.ActivePlayerOnly: AvailabilityEnum.NotAvailable
+            ); 
+
+            // Decide whether player can call, raise or cover at this stage
+            // (depends on their uncommitted funds vs how much they need to match the pot)
+            int catchupAmount = MaxChipsInAllPotsForAnyPlayer() - ChipsInAllPotsForSpecifiedPlayer(playerIndex);
+            // To raise they need more than the matching amount
+            SetActionAvailability(
+                ActionEnum.Raise, 
+                p.UncommittedChips > catchupAmount ? AvailabilityEnum.ActivePlayerOnly: AvailabilityEnum.NotAvailable);
+            MaxRaiseForParticipantToTakeNextAction = p.UncommittedChips > catchupAmount ? p.UncommittedChips - catchupAmount: 0;
+            // To call the matching amount needs to be more than zero and they need at least the matching amount
+            SetActionAvailability(
+                ActionEnum.Call, 
+                ( catchupAmount > 0 & p.UncommittedChips >= catchupAmount ) ? AvailabilityEnum.ActivePlayerOnly: AvailabilityEnum.NotAvailable); 
+            // To cover they need less than the matching amount
+            SetActionAvailability(
+                ActionEnum.Cover, 
+                p.UncommittedChips < catchupAmount ? AvailabilityEnum.ActivePlayerOnly: AvailabilityEnum.NotAvailable); 
+        }
+        public bool ActionIsAvailableToPlayer(ActionEnum actionType, int playerIndex) {
+            // Check whether specified player is entitled to take this action at this stage (only valid during a started game)
+            ActionAvailability aa = this._ActionAvailability.GetValueOrDefault(actionType);
+            if ( aa.Availability == AvailabilityEnum.NotAvailable ) {
+                return false;
+            }
+            if ( aa.Availability == AvailabilityEnum.AnyUnregisteredPlayer & playerIndex == -1 ) { 
+                return true;
+            }               
+            if ( aa.Availability == AvailabilityEnum.AnyRegisteredPlayer & playerIndex != -1 ) {
+                return true;
+            }
+            if ( aa.Availability == AvailabilityEnum.ActivePlayerOnly 
+                & playerIndex == IndexOfParticipantToTakeNextAction
+                & playerIndex != -1 ) 
+            { 
+                return true;
+            }
+            return false;
+        }
         public void DealNextRound()
         {
             _CardsDealtIncludingCurrent += 1;
@@ -104,8 +269,10 @@ namespace SevenStuds.Models
             }
             this.IndexOfParticipantToTakeNextAction = GetIndexOfPlayerToBetFirst();
             _IndexOfLastPlayerToRaise = -1;
+            //_IndexOfLastPlayerToCall = -1;
             _IndexOfLastPlayerToStartChecking = -1;             
             _CheckIsAvailable = true;
+            SetActionAvailability(ActionEnum.Check, AvailabilityEnum.ActivePlayerOnly);             
         }
 
         private int MaxCardsDealtSoFar() {
@@ -122,19 +289,22 @@ namespace SevenStuds.Models
         {
             // Determine who starts betting in a given round (i.e. after a round of cards have been dealt)
             // Don't assume this is the start of the hand, i.e. this could be after first three cards, or fourth through to seventh.
-            // Start to left of dealer and check everyone (who is still in) for highest visible hand
+            // Start to left of dealer and check everyone (who is still in, and including dealer) for highest visible hand
             // Assumption: a player is still in if they have money in the pot and have not folded.
             // Assumption: someone else other than the dealer must still be in otherwise the hand has ended. 
             // Note: the dealer could be out too.
-            int ZbiLeftOfDealer = (this.IndexOfParticipantDealingThisHand + 1) % Participants.Count;
+            //int ZbiLeftOfDealer = (this.IndexOfParticipantDealingThisHand + 1) % Participants.Count;
             int ZbiOfFirstToBet = -1;
-            for (int i = 0; i < Participants.Count; i++) // Note dealer needs to be checked too, but last
+            for (int i = 0; i < Participants.Count; i++) 
             {
-                int ZbiOfNextPlayerToInspect = (ZbiLeftOfDealer + 1 + i) % Participants.Count;
+                int ZbiOfNextPlayerToInspect = (this.IndexOfParticipantDealingThisHand + 1 + i) % Participants.Count; // starts one to left of dealer
                 if (
                     Participants[ZbiOfNextPlayerToInspect].HasFolded == false // i.e. player has not folded out of this hand
-                    && this.ChipsInAllPotsForSpecifiedPlayer(ZbiOfNextPlayerToInspect) > 0 // i.e. player was in the hand to start off with
-                    && ( // players hand is the first to be checked or is better than any checked so far
+                    && Participants[ZbiOfNextPlayerToInspect].HasCovered == false // i.e. player has not covered the pot 
+                    && Participants[ZbiOfNextPlayerToInspect].IsOutOfThisGame == false // i.e. player was in the hand to start off with
+                    //&& this.ChipsInAllPotsForSpecifiedPlayer(ZbiOfNextPlayerToInspect) > 0 // i.e. player was in the hand to start off with
+                    && 
+                    ( // players hand is the first to be checked or is better than any checked so far
                         ZbiOfFirstToBet == -1
                         || Participants[ZbiOfNextPlayerToInspect]._VisibleHandRank < Participants[ZbiOfFirstToBet]._VisibleHandRank
                     )
@@ -153,6 +323,7 @@ namespace SevenStuds.Models
             {
                  if ( 
                     Participants[i].HasFolded == false // i.e. player has not folded out of this hand
+                    && Participants[i].IsOutOfThisGame == false // i.e. player has not yet lost all of their funds
                     && this.ChipsInAllPotsForSpecifiedPlayer(i) > 0 // i.e. player was in the hand to start off with
                 )
                 {
@@ -166,6 +337,7 @@ namespace SevenStuds.Models
             // Determine who is next to bet after current player (may be -1 if no players left who can bet, i.e. end of round)
             for (int i = 0; i < Participants.Count - 1 ; i++) // Check all except current player
             { 
+                // Check for a complete round of checking
                 int ZbiOfNextPlayerToInspect = (currentPlayer + 1 + i) % Participants.Count;
                 if ( ZbiOfNextPlayerToInspect == _IndexOfLastPlayerToRaise 
                     || ( this._CheckIsAvailable && ZbiOfNextPlayerToInspect == _IndexOfLastPlayerToStartChecking ) ) 
@@ -174,9 +346,10 @@ namespace SevenStuds.Models
                     return -1; 
                 }
                 if ( Participants[ZbiOfNextPlayerToInspect].HasFolded == false // i.e. player has not folded out of this hand
-                    && this.ChipsInAllPotsForSpecifiedPlayer(ZbiOfNextPlayerToInspect) > 0 ) 
-                {
-                    // i.e. player was still in the hand to start off with
+                    && Participants[ZbiOfNextPlayerToInspect].HasCovered == false // i.e. player has not covered the pot
+                    && Participants[ZbiOfNextPlayerToInspect].IsOutOfThisGame == false // i.e. player has not yet lost all of their funds
+                    //&& this.ChipsInAllPotsForSpecifiedPlayer(ZbiOfNextPlayerToInspect) > 0 // player has been involved in this hand (i.e. is not out)
+                ) {
                     return ZbiOfNextPlayerToInspect;
                 }
             }
@@ -194,7 +367,7 @@ namespace SevenStuds.Models
             return this.Pots[PotIndex][PlayerIndex];
         }           
 
-        public int MaxChipsInThePotForAnyPlayer () {
+        public int MaxChipsInAllPotsForAnyPlayer () {
             int currentMax = 0;
             for (int i = 0; i < this.Participants.Count; i++) {
                 int playerTotal = 0;
@@ -227,14 +400,14 @@ namespace SevenStuds.Models
         }    
         public void MoveAmountToPotForSpecifiedPlayer  (int playerIndex, int amt) {
             // Add amount to pots, filling up earlier pots before adding to open one,
-            // and splitting the pot here automatically if player comes up short of total pot so far
+            // and splitting the pot automatically if player comes up short of total pot so far
             int amountLeftToAdd = amt;
             this.Participants[playerIndex].UncommittedChips -= amt; // Reduce the player's pile of chips before adding them to the various pots
-            AddCommentary("Adding "+ amountLeftToAdd +" to the pot (existing pot structure will be analysed)");
+            AddCommentary(amountLeftToAdd +" is to be added to the pot (or pots)");
             for ( int pot = 0; pot < Pots.Count; pot++) {
                 if ( amountLeftToAdd > 0) {
                     int maxContributionToThisPotByAnyPlayer = MaxChipsInSpecifiedPotForAnyPlayer(pot);
-                    AddCommentary("Max chips in pot " + (pot+1) + " = " + maxContributionToThisPotByAnyPlayer);
+                    AddCommentary("Max chips currently in pot " + (pot+1) + " = " + maxContributionToThisPotByAnyPlayer);
                     int myExistingContributionToThisPot = ChipsInSpecifiedPotForSpecifiedPlayer (pot, playerIndex);
                     if ( pot == Pots.Count - 1) {
                         // This is the open pot
@@ -279,7 +452,7 @@ namespace SevenStuds.Models
         public void SplitPotAbovePlayersAmount(int potIndex, int playerIndex) {
             // Find out how much the given player has in the given pot, and split the pot so that higher contributions are moved to a new pot
             int potLimit = ChipsInSpecifiedPotForSpecifiedPlayer(potIndex, playerIndex);
-            AddCommentary("Splitting pot " + (potIndex+1));
+            AddCommentary("Splitting pot " + (potIndex+1) + " with contribution cap of " + potLimit);
             Pots.Insert(potIndex+1, new List<int>());
             for ( int player = 0; player < Pots[potIndex].Count; player++) {
                 // Move any surplus amounts from old pot to new for each player
@@ -306,7 +479,7 @@ namespace SevenStuds.Models
         //     return selectedCard;
         // }
 
-        public string ProcessEndGame(string Trigger) {
+        public string ProcessEndOfHand(string Trigger) {
             // Something has triggered the end of the game. Distribute each pot according to winner(s) of that pot.
             // Start with oldest pot and work forwards. 
             // Only players who have contributed to a pot and have not folded are to be considered
@@ -366,7 +539,7 @@ namespace SevenStuds.Models
             }
             InitialiseHand();
             AddCommentary("End game complete. Started new hand. " + this.Participants[this.IndexOfParticipantToTakeNextAction].Name + " to bet");
-            return this.Participants[this.IndexOfParticipantToTakeNextAction].Name + " to bet";
+            return                                                                                                                                                                                                                                                                                                                                                                                                                                                         this.Participants[this.IndexOfParticipantToTakeNextAction].Name + " to bet";
         }
 
         public int PlayerIndexFromName(string SearchName) {
@@ -390,10 +563,44 @@ namespace SevenStuds.Models
             var options = new JsonSerializerOptions
             {
                 WriteIndented = true,
+                
             };
+            options.Converters.Add(new JsonStringEnumConverter(null /*JsonNamingPolicy.CamelCase*/));
             string jsonString = JsonSerializer.Serialize(this, options);
             return jsonString;
-        }   
-          
+        }  
+
+        public void LogPlayers(){
+            foreach ( Participant p in this.Participants ) {
+                this._GameLog.playersInOrder.Add(p.Name);
+            }
+        } 
+
+        public void LogSnapshotOfGameDeck(){
+            this._GameLog.decks.Add(this.CardPack.Clone());
+        } 
+
+        public void LogActionWithResults(Action a) {
+
+            this._GameLog.actions.Add(new GameLogAction(a, this.LastEvent, this.NextAction, this.HandCommentary, this.HandSummaries()));
+        }
+
+        public List<string> HandSummaries()
+        {
+            List<string> r = new List<string>();
+            foreach ( Participant p in this.Participants ) {
+                r.Add(
+                    p.Name 
+                    + " Folded=" + p.HasFolded
+                    + " Covered=" + p.HasCovered
+                    + " Out=" + p.IsOutOfThisGame
+                    + " Cards=" + p._HandSummary
+                );
+            }
+            return r;
+        }
+        public string GameLogAsJson() {
+            return this._GameLog.AsJson();
+        }
     }
 }
