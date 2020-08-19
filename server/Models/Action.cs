@@ -44,7 +44,9 @@ namespace SevenStuds.Models
 
             // Ensure name is not blank
             if ( this.UserName == "" ) {
-                G.LastEvent = "Someone tried to "+ActionType.ToString().ToLower()+" but user name was blank";
+                G.LastEvent = "You tried to "+ActionType.ToString().ToLower()+" but your user name was blank";
+                this.ResponseType = ActionResponseTypeEnum.ErrorMessage; // Default response type for actions
+                this.ResponseAudience =  ActionResponseAudienceEnum.Caller; // Default audience for action response  
                 return;
             }
 
@@ -53,7 +55,9 @@ namespace SevenStuds.Models
             if ( p != null ) {
                 if ( p.Name != this.UserName ) {
                     // This connection is already being used by someone else
-                    G.LastEvent = this.UserName + " attempted to "+ActionType.ToString().ToLower()+" from a connection that is already in use by "+p.Name;
+                    G.LastEvent = "You attempted to "+ActionType.ToString().ToLower()+" (as user "+this.UserName+") from a connection that is already in use by "+p.Name;
+                    this.ResponseType = ActionResponseTypeEnum.ErrorMessage; // Default response type for actions
+                    this.ResponseAudience =  ActionResponseAudienceEnum.Caller; // Default audience for action response  
                     return;
                 }
             }
@@ -61,7 +65,9 @@ namespace SevenStuds.Models
             // Check player has permission to trigger this action
             PlayerIndex = G.PlayerIndexFromName(user);
             if ( ! G.ActionIsAvailableToPlayer(ActionType, PlayerIndex) ) {
-                G.LastEvent = "User " + UserName + " tried to "+ActionType.ToString().ToLower()+" but this option is not available to them at this stage";
+                G.LastEvent = "You attempted to "+ActionType.ToString().ToLower()+" (as user "+this.UserName+") but this option is not available to you at this point";
+                this.ResponseType = ActionResponseTypeEnum.ErrorMessage; // Default response type for actions
+                this.ResponseAudience =  ActionResponseAudienceEnum.Caller; // Default audience for action response  
                 return;
             }
 

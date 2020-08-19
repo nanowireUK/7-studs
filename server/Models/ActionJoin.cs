@@ -16,6 +16,10 @@ namespace SevenStuds.Models
             G.Participants.Add(p);
             G.LastEvent = this.UserName + " joined game";
             G.NextAction = "Await new player or start the game";
+            if ( G.Participants.Count == 1 )
+            {
+                p.IsGameAdministrator = true; // First player to join becomes the administrator (may find ways of changing this later)
+            }
             if ( G.Participants.Count >= 2 )
             {
                 G.SetActionAvailability(ActionEnum.Start, AvailabilityEnum.AnyRegisteredPlayer); // Open up START to anyone

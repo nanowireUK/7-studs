@@ -26,17 +26,17 @@ namespace SevenStuds.Models
         GetLog = 21,
         Replay = 22
     }
-
-    
+   
 
     /// <summary>
-    /// ActionResponseTypeEnum: 
+    /// ActionResponseTypeEnum: defines what data should be pass back to the server
     /// </summary>
     public enum ActionResponseTypeEnum : int
     {
         PlayerCentricGameState = 0,
         OverallGameState = 1,
-        GameLog = 2
+        GameLog = 2,
+        ErrorMessage = 3
     }
 
     /// <summary>

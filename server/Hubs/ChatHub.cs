@@ -7,11 +7,26 @@ namespace SevenStuds.Hubs
 {
     public class ChatHub : Hub
     {
-        // This is the server-side code that is called by connection.invoke("UserClickedActionButton") in chat.js on the client
+        // --------------------------------------------------------------------------------------------------
+        // This is the server-side code that is called directly by the client
 
-        // In each case the game will process the action and the updated game state will be returned to the client
+        public async Task UserClickedJoin(string gameId, string user) { await UserClickedActionButton(ActionEnum.Join, gameId,  user, ""); }
+        public async Task UserClickedRejoin(string gameId, string user, string rejoinCode) { await UserClickedActionButton(ActionEnum.Rejoin, gameId,  user, rejoinCode); }
+        public async Task UserClickedLeave(string gameId, string user) { await UserClickedActionButton(ActionEnum.Leave, gameId,  user, ""); }
+        public async Task UserClickedStart(string gameId, string user) { await UserClickedActionButton(ActionEnum.Start, gameId,  user, ""); }
+        public async Task UserClickedFinish(string gameId, string user) { await UserClickedActionButton(ActionEnum.Finish, gameId,  user, ""); }
+        public async Task UserClickedCheck(string gameId, string user) { await UserClickedActionButton(ActionEnum.Check, gameId,  user, ""); }
+        public async Task UserClickedCall(string gameId, string user) { await UserClickedActionButton(ActionEnum.Call, gameId,  user, ""); }
+        public async Task UserClickedRaise(string gameId, string user, string raiseAmount) { await UserClickedActionButton(ActionEnum.Raise, gameId,  user, raiseAmount); }
+        public async Task UserClickedCover(string gameId, string user) { await UserClickedActionButton(ActionEnum.Cover, gameId,  user, ""); }
+        public async Task UserClickedFold(string gameId, string user) { await UserClickedActionButton(ActionEnum.Fold, gameId,  user, ""); }
+        public async Task UserClickedGetState(string gameId, string user) { await UserClickedActionButton(ActionEnum.GetState, gameId,  user, ""); }
+        public async Task UserClickedGetLog(string gameId, string user) { await UserClickedActionButton(ActionEnum.GetLog, gameId,  user, ""); }
+        public async Task UserClickedReplay(string gameId, string user, string gameLog) { await UserClickedActionButton(ActionEnum.Replay, gameId,  user, gameLog); }
 
-        public async Task UserClickedActionButton(ActionEnum actionType, string gameId, string user, string parameters)
+        // --------------------------------------------------------------------------------------------------
+        // Internal methods
+        private async Task UserClickedActionButton(ActionEnum actionType, string gameId, string user, string parameters)
         {
             Action a = ActionFactory.NewAction(Context.ConnectionId, actionType, gameId, user, parameters);
             Game g = a.ProcessActionAndReturnGameReference();
@@ -37,6 +52,9 @@ namespace SevenStuds.Hubs
             string targetMethod = "ReceiveMyGameState";
             switch ( a.ResponseType )  
             { 
+                case ActionResponseTypeEnum.PlayerCentricGameState:
+                    // Result will be generated separately for each individual player so no point setting it here
+                    break;                
                 case ActionResponseTypeEnum.GameLog:  
                     resultAsJson = g.GameLogAsJson();
                     targetMethod = "ReceiveGameLog";
@@ -45,9 +63,12 @@ namespace SevenStuds.Hubs
                     resultAsJson = g.AsJson();
                     targetMethod = "ReceiveOverallGameState";
                     break;   
-                case ActionResponseTypeEnum.PlayerCentricGameState:
-                    // This will be managed below for each individual player
-                    break;
+
+                case ActionResponseTypeEnum.ErrorMessage:
+                    // 
+                    resultAsJson = "{ \"LastEvent\": \"" + g.LastEvent + "\" }"; 
+                    targetMethod = "ReceiveMyGameState";                    
+                    break;                    
                 default:  
                     throw new System.Exception("7Studs User Exception: Unsupported response type");                    
             }

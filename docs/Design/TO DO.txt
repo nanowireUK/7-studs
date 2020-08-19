@@ -1,4 +1,6 @@
 ----------------------------------------- TO DO (higher priority first) ---------------------------------
+* Handle end game better? Have an endpoint for a player to (re)view the previous hand from own perspective
+* Handle Admin activities (remove player, ...). First to join is admin? What is admin is themselves disconnected?
 * Look into Flux for .NET  (state management framework?) (also Redux which is JS implementation for React)
 * Handle no one being able to bet (i.e. auto-check, or other auto-enabled actions)
 * Handle end of overall game (time limit, number of rounds, less than 'n' players left in)
@@ -8,6 +10,7 @@
 * Automatically clear a game if there is no activity for n hours
 * Allow a player to play blind (?)
 ----------------------------------------- DONE (most recent first) ---------------------------------------
+DONE * Separate out the server-side methods for each action
 DONE * Allow actions to determine their own ActionResponseType + ActionResponseAudience, and respect that in the Hub when sending repsonse to player(s)
 DONE * Fix replay code following other changes. Simulate connection id during replay, then simulate rejoin when reconstructed players continue playing
 DONE * Get rid of ProcessActionAndReturnUpdatedGameStateAsJson

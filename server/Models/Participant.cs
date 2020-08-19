@@ -13,6 +13,7 @@ namespace SevenStuds.Models
             this._ConnectionIds = new List<string>(); // This user's connection ids will be recorded here
             this.Hand = new List<Card>();
             this.IsLockedOutFollowingReplay = false;
+            this.IsGameAdministrator = false;
         }
         [Required]
         
@@ -34,6 +35,7 @@ namespace SevenStuds.Models
         public string _HandSummary { get; set; }
         private PokerHand _PokerHand { get; set; }
         public bool IsLockedOutFollowingReplay { get; set; }
+        public bool IsGameAdministrator { get; set; }
 
         public List<Card> Hand { get; set; }
         // public Boolean IsAllIn() {
