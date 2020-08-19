@@ -76,7 +76,10 @@ namespace SevenStuds.Models
 
         public void SetTestContext(GameLog testContext)
         {
-            _TestContext = testContext; // Note: this affects some system behaviour ... need to search for TextContext to see where
+            _TestContext = testContext; // Note: this affects some system behaviour ... need to search for IsRunningInTestMode() to see where
+        }
+        public bool IsRunningInTestMode() {
+            return this._TestContext != null;
         }
 
         public static Game FindOrCreateGame(string gameId) {
@@ -135,7 +138,7 @@ namespace SevenStuds.Models
             {
                 p.UncommittedChips = this.InitialChipQuantity;
             }
-            if ( this._TestContext == null ) {
+            if ( ! this.IsRunningInTestMode() ) {
                 // Normal game, so randomise player order by picking a random player, deleting and moving to front, repeating a few times
                 for (int player = 0; player < Participants.Count; player++) {
                     Participant p = Participants[player]; // Get reference to player to be moved
@@ -163,8 +166,6 @@ namespace SevenStuds.Models
             InitialiseHand(); // Start the first hand
         }
 
-
-
         public void InitialiseHand()
         {
             HandsPlayedIncludingCurrent++;
@@ -172,7 +173,7 @@ namespace SevenStuds.Models
 
             // Set up the pack again
 
-            if ( this._TestContext == null) {
+            if ( ! this.IsRunningInTestMode() ) {
                 CardPack.Shuffle(); // refreshes the pack and shuffles it
             }
             else {
@@ -599,7 +600,7 @@ namespace SevenStuds.Models
             return r;
         }
         public string GameLogAsJson() {
-            return "Game log currently contains:" + Environment.NewLine + this._GameLog.AsJson();
+            return this._GameLog.AsJson();
         }
     }
 }

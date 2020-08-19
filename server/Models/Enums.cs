@@ -25,7 +25,31 @@ namespace SevenStuds.Models
         GetState = 20,
         GetLog = 21,
         Replay = 22
-        }
+    }
+
+    
+
+    /// <summary>
+    /// ActionResponseTypeEnum: 
+    /// </summary>
+    public enum ActionResponseTypeEnum : int
+    {
+        PlayerCentricGameState = 0,
+        OverallGameState = 1,
+        GameLog = 2
+    }
+
+    /// <summary>
+    /// ActionResponseAudienceEnum: 
+    /// </summary>
+    public enum ActionResponseAudienceEnum : int
+    {
+        Caller = 0, // The specific client that invoked this command
+        CurrentPlayer = 1, // All of the clients that the current player has used to join the game (e.g. laptop AND phone)
+        AllPlayers = 2, // All of the clients for all of the players who have joined the game
+        Admin = 3 // The administrator (currently thinking this will be the first person to have joined the game)
+    }    
+
 
     /// <summary>
     /// AvailabilityEnum: Enumeration values are used to communicate availability of actions between client and server

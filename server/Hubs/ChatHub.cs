@@ -31,20 +31,53 @@ namespace SevenStuds.Hubs
                 }
             }
 
-            // Now send the personalised game state to each player using their individual code
+            // Send the results of the action according to the ResponseType and ResponseAudience on the action object 
 
-            //System.Diagnostics.Debug.WriteLine("Sending response to all users (across all games)");
-            //await Clients.All.SendAsync("ReceiveUpdatedGameState", "BROADCAST: "+ g.AsJson());
-            //System.Diagnostics.Debug.WriteLine("Sending response to whole game group");
-            //await Clients.Group(g.GameLevelSignalRGroupName).SendAsync("ReceiveUpdatedGameState", "GAMEONLY: "+ g.AsJson());
-            for ( int i = 0; i < g.Participants.Count; i++ ) {
-                Participant p = g.Participants[i];
-                //await Clients.Group(p.ParticipantLevelSignalRGroupName).SendAsync("ReceiveUpdatedGameState", "PLAYERSPECIFIC: "+ g.AsJson());
-                string j = new PlayerCentricGameView(g, i).AsJson();
-                await Clients.Group(p.ParticipantLevelSignalRGroupName).SendAsync("ReceiveUpdatedGameState", j);
+            string resultAsJson = ""; // default will be to set the result on a per-player basis
+            string targetMethod = "ReceiveMyGameState";
+            switch ( a.ResponseType )  
+            { 
+                case ActionResponseTypeEnum.GameLog:  
+                    resultAsJson = g.GameLogAsJson();
+                    targetMethod = "ReceiveGameLog";
+                    break;
+                case ActionResponseTypeEnum.OverallGameState:  
+                    resultAsJson = g.AsJson();
+                    targetMethod = "ReceiveOverallGameState";
+                    break;   
+                case ActionResponseTypeEnum.PlayerCentricGameState:
+                    // This will be managed below for each individual player
+                    break;
+                default:  
+                    throw new System.Exception("7Studs User Exception: Unsupported response type");                    
             }
-            //await Clients.All.SendAsync("ReceiveUpdatedGameState", g.AsJson());
-            //await Clients.All.SendAsync("ReceiveUpdatedGameState", g.ProcessActionAndReturnUpdatedGameStateAsJson());
+
+            // Now send the appropriate response to the players indicated by the action's ResponseAudience setting
+            switch ( a.ResponseAudience )  
+            { 
+                case ActionResponseAudienceEnum.Caller:
+                    if ( a.ResponseType == ActionResponseTypeEnum.PlayerCentricGameState ) {
+                        resultAsJson = new PlayerCentricGameView(g, a.PlayerIndex).AsJson();
+                    }
+                    await Clients.Caller.SendAsync(targetMethod, resultAsJson);
+                    break;
+                case ActionResponseAudienceEnum.CurrentPlayer:
+                    if ( a.ResponseType == ActionResponseTypeEnum.PlayerCentricGameState ) {
+                        resultAsJson = new PlayerCentricGameView(g, a.PlayerIndex).AsJson();
+                    }
+                    await Clients.Group(g.Participants[a.PlayerIndex].ParticipantLevelSignalRGroupName).SendAsync(targetMethod, resultAsJson);
+                    break; 
+                case ActionResponseAudienceEnum.AllPlayers:                    
+                    for ( int i = 0; i < g.Participants.Count; i++ ) {
+                        if ( a.ResponseType == ActionResponseTypeEnum.PlayerCentricGameState ) {
+                            resultAsJson = new PlayerCentricGameView(g, i).AsJson();
+                        }
+                        await Clients.Group(g.Participants[i].ParticipantLevelSignalRGroupName).SendAsync(targetMethod, resultAsJson);
+                    }   
+                    break; 
+                default:  
+                    throw new System.Exception("7Studs User Exception: Unsupported response audience");  // e.g. Admin                                    
+            }  
         }
     }
 }

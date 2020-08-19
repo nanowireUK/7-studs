@@ -21,7 +21,6 @@ namespace SevenStuds.Models
                 G.SetActionAvailability(ActionEnum.Start, AvailabilityEnum.AnyRegisteredPlayer); // Open up START to anyone
             }
             p.NoteConnectionId(this.ConnectionId);
-            //G.LinkConnectionToParticipant(this.ConnectionId, p); /// NOTE this is done in ChatHub
         }
     }     
 }  

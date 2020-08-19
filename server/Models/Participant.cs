@@ -12,6 +12,7 @@ namespace SevenStuds.Models
             this.ParticipantLevelSignalRGroupName = PName + '.' + Guid.NewGuid().ToString(); // Unique group id for this player (who may connect)
             this._ConnectionIds = new List<string>(); // This user's connection ids will be recorded here
             this.Hand = new List<Card>();
+            this.IsLockedOutFollowingReplay = false;
         }
         [Required]
         
@@ -32,6 +33,7 @@ namespace SevenStuds.Models
         public string _FullHandDescription { get; set; }
         public string _HandSummary { get; set; }
         private PokerHand _PokerHand { get; set; }
+        public bool IsLockedOutFollowingReplay { get; set; }
 
         public List<Card> Hand { get; set; }
         // public Boolean IsAllIn() {
@@ -198,7 +200,7 @@ namespace SevenStuds.Models
                         }
                     }
                 }                
-                this._FullHandDescription = _PokerHand.ToString(HandToStringFormatEnum.ShortCardsHeld) + ": " + _PokerHand.ToString(HandToStringFormatEnum.HandDescription);
+                this._FullHandDescription = /*_PokerHand.ToString(HandToStringFormatEnum.ShortCardsHeld) + ": " + */ _PokerHand.ToString(HandToStringFormatEnum.HandDescription);
                 this._FullHandRank = _PokerHand.Rank;
                 this._HandSummary = "";
                 foreach ( Card c in this.Hand) {

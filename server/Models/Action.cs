@@ -28,8 +28,14 @@ namespace SevenStuds.Models
             Parameters = parameters;
             PlayerIndex = -1;
             ConnectionId = connectionId;
+            ResponseType = ActionResponseTypeEnum.PlayerCentricGameState; // Default response type for actions
+            ResponseAudience =  ActionResponseAudienceEnum.AllPlayers; // Default audience for action response          
 
             G.LastEvent = ""; // Clear this before running standard verifications. 
+
+            if ( G.IsRunningInTestMode() ) {
+                ConnectionId = UserName; // Simulate a unique connection id as there won't be a separate connection for each player
+            }
 
             // This constructor does some basic validation and sets G.LastEvent if any errors are found.
             // If this variable has a value, the Action subclass's ProcessAction implementation
@@ -43,14 +49,14 @@ namespace SevenStuds.Models
             }
 
             // Check that this connection is not being used by someone with a different user name
-            Participant p = G.GetParticipantFromConnection(connectionId);
+            Participant p = G.GetParticipantFromConnection(ConnectionId);
             if ( p != null ) {
                 if ( p.Name != this.UserName ) {
                     // This connection is already being used by someone else
-                    G.LastEvent = this.UserName + " attempted "+ActionType.ToString().ToLower()+" from a connection that is already in use by "+p.Name;
+                    G.LastEvent = this.UserName + " attempted to "+ActionType.ToString().ToLower()+" from a connection that is already in use by "+p.Name;
                     return;
                 }
-            }  
+            }
 
             // Check player has permission to trigger this action
             PlayerIndex = G.PlayerIndexFromName(user);
@@ -58,31 +64,24 @@ namespace SevenStuds.Models
                 G.LastEvent = "User " + UserName + " tried to "+ActionType.ToString().ToLower()+" but this option is not available to them at this stage";
                 return;
             }
+
+            if ( p == null /* from above */ && PlayerIndex != -1 && G.Participants[PlayerIndex].IsLockedOutFollowingReplay == true ) {
+                // This is a new connection AND the player is currently locked out following a 'replay' action, 
+                // so do an implicit Rejoin by linking the new connection to the current player
+                // (note the game will no longer be in test mode at this stage, so IsRunningInTestMode() will show false even though this is as a result of testing)
+                G.Participants[PlayerIndex].NoteConnectionId(this.ConnectionId);
+                G.Participants[PlayerIndex].IsLockedOutFollowingReplay = false;
+                // Can continue processing the command now 
+            }
         }
         protected Game G { get; set; }  
         public ActionEnum ActionType { get; set; }
         public string UserName { get; set; }
         public string Parameters { get; set; }
-        protected int PlayerIndex { get; set; }
+        public int PlayerIndex { get; set; }
         protected string ConnectionId { get; set; }
-        public virtual string ProcessActionAndReturnUpdatedGameStateAsJson()
-        {
-            if ( G.LastEvent != "" ) {
-                return G.AsJson(); // If the base class (i.e. this class) set an error message in the constructor then return without checking anything else
-            }
-
-            this.ProcessAction(); // Use the subclass to implement the specifics of the actionhis
-
-            if ( this.ActionType != ActionEnum.Replay 
-                & this.ActionType != ActionEnum.GetLog
-                & this.ActionType != ActionEnum.GetState ) 
-            {
-                G.LogActionWithResults(this); // only do this for real game actions (not GetState, GetLog, Replay)
-            }
-
-            return G.AsJson();
-        }
-
+        public ActionResponseTypeEnum ResponseType { get; set; }
+        public ActionResponseAudienceEnum ResponseAudience { get; set; }
         public virtual Game ProcessActionAndReturnGameReference()
         {
             if ( G.LastEvent != "" ) {
@@ -92,16 +91,15 @@ namespace SevenStuds.Models
             this.ProcessAction(); // Use the subclass to implement the specifics of the action
 
             if ( this.ActionType != ActionEnum.Replay 
+                & this.ActionType != ActionEnum.Rejoin
                 & this.ActionType != ActionEnum.GetLog
                 & this.ActionType != ActionEnum.GetState ) 
             {
-                G.LogActionWithResults(this); // only do this for real game actions (not GetState, GetLog, Replay)
+                G.LogActionWithResults(this); // only do this for real game actions (not GetState, GetLog, Replay, Rejoin)
             }
 
             return G;
         }        
-
-        
         public abstract void ProcessAction();
     }     
 }  

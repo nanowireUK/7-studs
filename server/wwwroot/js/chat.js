@@ -36,19 +36,31 @@ function getRejoinCode() {
     return document.getElementById("rejoinCode").value;
 }
 
-//connection.on("ReceiveMessage", 
-//    function (user, message) {
-//        var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-//        var encodedMsg = user + " says " + msg;
-//        appendToMessagesList(encodedMsg);
-//    }
-//);
-
 // Game-specific function
-connection.on("ReceiveUpdatedGameState", 
+connection.on("ReceiveMyGameState", 
     function (gameState) {
         var msg = gameState.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
         var encodedMsg = "Game state from my perspective is currently: \n" + gameState;
+        var pre = document.createElement("pre");
+        pre.textContent = encodedMsg;
+        appendToMessagesList(pre);
+    }
+);
+
+connection.on("ReceiveGameLog", 
+    function (gameLog) {
+        var msg = gameLog.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        var encodedMsg = "Game log: \n" + gameLog;
+        var pre = document.createElement("pre");
+        pre.textContent = encodedMsg;
+        appendToMessagesList(pre);
+    }
+);
+
+connection.on("ReceiveOverallGameState", 
+    function (gameState) {
+        var msg = gameState.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        var encodedMsg = "Overall game state: \n" + gameState;
         var pre = document.createElement("pre");
         pre.textContent = encodedMsg;
         appendToMessagesList(pre);

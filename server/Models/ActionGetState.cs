@@ -11,7 +11,9 @@ namespace SevenStuds.Models
         }
         public override void ProcessAction()
         {
-            // Dummy action ... the base class already does what we need
+            // Doesn't actually do anything beyond letting the hub know what to return
+            this.ResponseType = ActionResponseTypeEnum.OverallGameState;
+            this.ResponseAudience = ActionResponseAudienceEnum.Caller;
         }
     }     
 }  

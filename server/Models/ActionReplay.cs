@@ -13,6 +13,8 @@ namespace SevenStuds.Models
         }
         public override void ProcessAction()
         {
+            ResponseType = ActionResponseTypeEnum.OverallGameState; // Default response type for actions
+            ResponseAudience =  ActionResponseAudienceEnum.Caller; // Caller will have to rejoin along with all other players (each using their rejoin codes)
             GameLog historicalGameLog = JsonSerializer.Deserialize<GameLog>(this.Parameters);
             FixCardOrderInDesererialisedDecks(historicalGameLog); // (it loads them in array order, which gives a reversed deck)
 
@@ -31,7 +33,7 @@ namespace SevenStuds.Models
                 );
                 System.Diagnostics.Debug.WriteLine("Replaying " + gla.ActionType.ToString().ToLower() + " by " + gla.UserName);
 
-                string jsonResult = a.ProcessActionAndReturnUpdatedGameStateAsJson();  
+                a.ProcessActionAndReturnGameReference(); 
 
                 System.Diagnostics.Debug.WriteLine("  Commentary from replay:");
 
@@ -50,8 +52,12 @@ namespace SevenStuds.Models
                     System.Diagnostics.Debug.WriteLine("    REPLAY   : " + G.NextAction);
                 }                
             }
+            foreach ( Participant p in G.Participants ) {
+                // Mark the player as locked ... this will be unlocked once someone joins as that player using a unique new connection
+                p.IsLockedOutFollowingReplay = true;
+            }
             System.Diagnostics.Debug.WriteLine("Replay complete, game will continue under normal conditions from here");
-            G.SetTestContext(null); // Clear the test context, game will continue under normal conditions from here
+            G.SetTestContext(null); // Clear the test context, game will continue under normal conditions from here            
         }
 
         private void FixCardOrderInDesererialisedDecks(GameLog historicalGameLog) {

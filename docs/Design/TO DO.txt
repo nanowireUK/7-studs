@@ -1,41 +1,38 @@
-TO DO:
-
-DONE * Move Pots up above Hand
-DONE * Handle raise (easiest as doesn't trigger end of round)
-DONE * Handle call/see (match current pot, could trigger end of round)
-DONE * Handle check (as first player to bet, or to 'call' a previous player's check, could trigger end of round)
-DONE * Handle fold (could trigger end of round or end of game)
-DONE * Handle evaluation of hand of 6 or 7 cards (work out which is the best 5 card hand of all 6 or 21 combinations)
-DONE * Show a one-line representation of the full set of cards, not just the best hand of 5
-DONE * Fix plurals, esp. "Sixs"
-DONE * Handle end of hand (i.e. end of seventh round) -> simple case with one winner
-DONE * Handle fold triggering end of hand
-DONE * Add a new field Commentary as list of strings (to replace LastEvent eventually)
-DONE * Handle end of hand (i.e. end of seventh round) -> multiple winners (shared pot)
-DONE * Show final hand in summary
-DONE * Handle end of hand (i.e. end of seventh round) -> allow for multiple pots
-DONE * Handle covering the pot (is this only when the player cannot match the current bet?)
-DONE * Prevent blank or duplicate players joining
-DONE * Prevent players joining during the game
-DONE * Add ActionAvailabilityList to JSON, showing which actions are available to which players at any time
-DONE * Create GameLog and GameLogAction objects on the Game and populate them as the game progresses
-DONE * Implement ActionReplay action that re-runs a game using the JSON-serialised GameLog as a script
-DONE * Game state to include max raise by current player based on catchup amount and funds available (so client doesn't have to work this out)
-DONE * Remove references to connection id and instead generate a group id and a rejoin code
-
-* Hand-roll the JSON to make it more compact and readable (and also to support the possibility of JSON targeted to an individual user)
-* Test ability to send a message to one player (preserve their connect, and have them wait on individual messages not just on the updated game state)
+----------------------------------------- TO DO (higher priority first) ---------------------------------
 * Look into Flux for .NET  (state management framework?) (also Redux which is JS implementation for React)
-* Prevent player from changing name after joining
-* Allow player to rejoin (or join multiple times) using a rejoin code
 * Handle no one being able to bet (i.e. auto-check, or other auto-enabled actions)
 * Handle end of overall game (time limit, number of rounds, less than 'n' players left in)
 * Split hand description out into two parts: main bit e.g. "Ace High" and countback e.g. "with King ..."
 * Game name to be pulled from URL
-* Find out how to send a message to any one game participant, who may not be the caller
-* Check performance of HashTable: consider making GetHashCode cleverer https://thomaslevesque.com/2020/05/15/things-every-csharp-developer-should-know-1-hash-codes/
 * Record game logs in a database
 * Automatically clear a game if there is no activity for n hours
 * Allow a player to play blind (?)
-
-
+----------------------------------------- DONE (most recent first) ---------------------------------------
+DONE * Allow actions to determine their own ActionResponseType + ActionResponseAudience, and respect that in the Hub when sending repsonse to player(s)
+DONE * Fix replay code following other changes. Simulate connection id during replay, then simulate rejoin when reconstructed players continue playing
+DONE * Get rid of ProcessActionAndReturnUpdatedGameStateAsJson
+DONE * Prevent player from changing name after joining 
+DONE * Allow player to rejoin (or join multiple times) using a rejoin code
+DONE * Send each player an updated state that reflects their view of the game
+DONE * Remove references to connection id and instead generate a group id and a rejoin code
+DONE * Game state to include max raise by current player based on catchup amount and funds available (so client doesn't have to work this out)
+DONE * Implement ActionReplay action that re-runs a game using the JSON-serialised GameLog as a script
+DONE * Create GameLog and GameLogAction objects on the Game and populate them as the game progresses
+DONE * Add ActionAvailabilityList to JSON, showing which actions are available to which players at any time
+DONE * Prevent players joining during the game
+DONE * Prevent blank or duplicate players joining
+DONE * Handle covering the pot (is this only when the player cannot match the current bet?)
+DONE * Handle end of hand (i.e. end of seventh round) -> allow for multiple pots
+DONE * Show final hand in summary
+DONE * Handle end of hand (i.e. end of seventh round) -> multiple winners (shared pot)
+DONE * Add a new field Commentary as list of strings (to replace LastEvent eventually)
+DONE * Handle fold triggering end of hand
+DONE * Handle end of hand (i.e. end of seventh round) -> simple case with one winner
+DONE * Fix plurals, esp. "Sixs"
+DONE * Show a one-line representation of the full set of cards, not just the best hand of 5
+DONE * Handle evaluation of hand of 6 or 7 cards (work out which is the best 5 card hand of all 6 or 21 combinations)
+DONE * Handle fold (could trigger end of round or end of game)
+DONE * Handle check (as first player to bet, or to 'call' a previous player's check, could trigger end of round)
+DONE * Handle call/see (match current pot, could trigger end of round)
+DONE * Handle raise (easiest as doesn't trigger end of round)
+DONE * Move Pots up above Hand
