@@ -5,16 +5,27 @@ using System.Text;
 namespace SevenStuds.Models
 {
     /// <summary>
+    /// GameModeEnum: Defines the mode that the game is currently in
+    /// </summary>
+    public enum GameModeEnum
+    {
+        LobbyOpen = 0,
+        HandInProgress = 1,
+        BetweenHands = 2
+    }    
+    /// <summary>
     /// ActionEnum: Enumeration values are used to communicate actions between client and server
     /// </summary>
     public enum ActionEnum : int
     {
         // Game-level actions, generally available for all players depending on game state
+        Open = 0, // Creates a game lobby which allows players to join and the game parameters to be set (ante, start amount etc.)
         Join = 1,
         Rejoin = 2,
         Leave = 3,
-        Start = 4,
+        Start = 4, // Starts the first or subsequent hand for an open or started game
         Finish = 5,
+        Reveal = 6, // only allowed between hands (i.e. game is started and a hand has just completed)
         // Hand-level actions, available only to one player at any one time
         Check = 10,
         Call = 11,
@@ -59,7 +70,8 @@ namespace SevenStuds.Models
         NotAvailable = 0,
         ActivePlayerOnly = 1,
         AnyRegisteredPlayer = 2,
-        AnyUnregisteredPlayer = 3
+        AnyUnregisteredPlayer = 3,
+        AdministratorOnly = 4
     }
    
     /// <summary>

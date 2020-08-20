@@ -15,12 +15,16 @@ namespace SevenStuds.Models
         {
             switch (actionType)  
             { 
+                case ActionEnum.Open:  
+                    return new ActionOpen(connectionId, actionType, gameId, user);
                 case ActionEnum.Join:  
-                    return new ActionJoin(connectionId, actionType, gameId, user);
+                    return new ActionJoin(connectionId, actionType, gameId, user);                    
                 case ActionEnum.Rejoin:  
                     return new ActionRejoin(connectionId, actionType, gameId, user, parameters);
                 case ActionEnum.Start:  
-                    return new ActionStart(connectionId, actionType, gameId, user);    
+                    return new ActionStart(connectionId, actionType, gameId, user);   
+                case ActionEnum.Reveal:  
+                    return new ActionReveal(connectionId, actionType, gameId, user);                         
                 case ActionEnum.Check:  
                     return new ActionCheck(connectionId, actionType, gameId, user);   
                 case ActionEnum.Call:  

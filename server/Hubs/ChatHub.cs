@@ -10,10 +10,12 @@ namespace SevenStuds.Hubs
         // --------------------------------------------------------------------------------------------------
         // This is the server-side code that is called directly by the client
 
+        public async Task UserClickedOpen(string gameId, string user) { await UserClickedActionButton(ActionEnum.Open, gameId,  user, ""); }
         public async Task UserClickedJoin(string gameId, string user) { await UserClickedActionButton(ActionEnum.Join, gameId,  user, ""); }
         public async Task UserClickedRejoin(string gameId, string user, string rejoinCode) { await UserClickedActionButton(ActionEnum.Rejoin, gameId,  user, rejoinCode); }
         public async Task UserClickedLeave(string gameId, string user) { await UserClickedActionButton(ActionEnum.Leave, gameId,  user, ""); }
         public async Task UserClickedStart(string gameId, string user) { await UserClickedActionButton(ActionEnum.Start, gameId,  user, ""); }
+        public async Task UserClickedReveal(string gameId, string user) { await UserClickedActionButton(ActionEnum.Reveal, gameId,  user, ""); }
         public async Task UserClickedFinish(string gameId, string user) { await UserClickedActionButton(ActionEnum.Finish, gameId,  user, ""); }
         public async Task UserClickedCheck(string gameId, string user) { await UserClickedActionButton(ActionEnum.Check, gameId,  user, ""); }
         public async Task UserClickedCall(string gameId, string user) { await UserClickedActionButton(ActionEnum.Call, gameId,  user, ""); }
@@ -40,7 +42,7 @@ namespace SevenStuds.Hubs
                     string conn = conns[i];
                     if ( g.GetParticipantFromConnection(conn) == null ) {
                         g.LinkConnectionToParticipant(conn, p); 
-                        await Groups.AddToGroupAsync(conn, g.GameLevelSignalRGroupName);
+                        //await Groups.AddToGroupAsync(conn, g.GameLevelSignalRGroupName);
                         await Groups.AddToGroupAsync(conn, p.ParticipantLevelSignalRGroupName);
                     }
                 }

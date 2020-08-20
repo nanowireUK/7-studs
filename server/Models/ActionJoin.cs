@@ -22,7 +22,7 @@ namespace SevenStuds.Models
             }
             if ( G.Participants.Count >= 2 )
             {
-                G.SetActionAvailability(ActionEnum.Start, AvailabilityEnum.AnyRegisteredPlayer); // Open up START to anyone
+                G.SetActionAvailability(ActionEnum.Start, AvailabilityEnum.AdministratorOnly); // Open up START to administrator
             }
             p.NoteConnectionId(this.ConnectionId);
         }

@@ -15,7 +15,7 @@ function logError (err) {
 }
 
 function getGameId() {
-    return "7Studs Main Event"; // We'll set this from the URL at a later date
+    return document.getElementById("userInputGameId").value; // Was "7Studs Main Event" ... we'll look at setting this from the URL at a later date
 }
 
 function getModifiers() {
@@ -24,10 +24,6 @@ function getModifiers() {
 
 function getUser() {
     return document.getElementById("userInput").value;
-}
-
-function getRejoinCode() {
-    return document.getElementById("rejoinCode").value;
 }
 
 // -------------------------------------------------------------------------------------------------------------
@@ -65,16 +61,27 @@ connection.on("ReceiveOverallGameState",
 
 connection.start().then(
     function () {
-        actionJoin.disabled = false;
-        actionCall.disabled = false;
-        actionRaise.disabled = false;
-        actionFold.disabled = false;
-        actionCover.disabled = false;
+        // actionJoin.disabled = false;
+        // actionCall.disabled = false;
+        // actionRaise.disabled = false;
+        // actionFold.disabled = false;
+        // actionCover.disabled = false;
     }
 ).catch(logError);
 
 // -------------------------------------------------------------------------------------------------------------
 // Client-side actions that we want to pass to the server
+
+// --------------- OPEN
+
+document.getElementById("actionOpen").addEventListener("click", 
+    function (event) {
+        var gameId = getGameId();    
+        var user = getUser();
+        connection.invoke("UserClickedOpen", gameId, user).catch(logError);
+        event.preventDefault();
+    }
+);
 
 // --------------- JOIN
 
@@ -93,7 +100,7 @@ document.getElementById("actionRejoin").addEventListener("click",
     function (event) {
         var gameId = getGameId();    
         var user = getUser();
-        var rejoinCode = getRejoinCode();
+        var rejoinCode = getModifiers();
         connection.invoke("UserClickedRejoin", gameId, user, rejoinCode).catch(logError);
         event.preventDefault();
     }
@@ -106,6 +113,17 @@ document.getElementById("actionStart").addEventListener("click",
         var gameId = getGameId();    
         var user = getUser();
         connection.invoke("UserClickedStart", gameId, user).catch(logError);
+        event.preventDefault();
+    }
+);
+
+// --------------- REVEAL HAND
+
+document.getElementById("actionReveal").addEventListener("click", 
+    function (event) {
+        var gameId = getGameId();    
+        var user = getUser();
+        connection.invoke("UserClickedReveal", gameId, user).catch(logError);
         event.preventDefault();
     }
 );

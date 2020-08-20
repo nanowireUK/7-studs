@@ -22,23 +22,26 @@ namespace SevenStuds.Models
         public string VisibleHandDescription { get; set; }
         public List<string> Cards { get; set; }
 
-        public PlayerCentricParticipantView(Participant p, int playerCentricIndex, int playerIndex, List<Boolean> CardPositionIsVisible) {
-            // Build up this player's view of the game
-            Name = p.Name;
-            UncommittedChips  = p.UncommittedChips;
-            HasFolded = p.HasFolded;
-            HasCovered = p.HasCovered;
-            IsOutOfThisGame = p.IsOutOfThisGame ; // Can work this out but possibly cleaner to record it explicitly
-            VisibleHandDescription = p._VisibleHandDescription;
+        public PlayerCentricParticipantView(Participant viewingPlayer, Participant observedPlayer, List<Boolean> CardPositionIsVisible) {
+            // Build up this viewing player's view of the other players
+            Name = observedPlayer.Name;
+            UncommittedChips  = observedPlayer.UncommittedChips;
+            HasFolded = observedPlayer.HasFolded;
+            HasCovered = observedPlayer.HasCovered;
+            IsOutOfThisGame = observedPlayer.IsOutOfThisGame ; // Can work this out but possibly cleaner to record it explicitly
+            VisibleHandDescription = observedPlayer._VisibleHandDescription;
             // Add a list of this player's cards, substituting with '?' if the player receiving this data is not allowed to see this card
             Cards = new List<string>();
-            for ( int i = 0; i < p.Hand.Count; i++ ) {
-                if ( playerIndex != playerCentricIndex && CardPositionIsVisible[i] == false ) {
-                    // This is a view of a different player's cards and this card is currently face down
+            for ( int i = 0; i < observedPlayer.Hand.Count; i++ ) {
+                if ( observedPlayer.Name != viewingPlayer.Name
+                    && CardPositionIsVisible[i] == false 
+                    && observedPlayer.IsSharingHandDetails == false
+                    ) {
+                    // This is a view of a different player's cards and this card is currently face down and they have not consented to reveal them (at hand end)
                     Cards.Add("?");
                 }
                 else{
-                    Cards.Add(p.Hand[i].ToString(CardToStringFormatEnum.ShortCardName));
+                    Cards.Add(observedPlayer.Hand[i].ToString(CardToStringFormatEnum.ShortCardName));
                 }
             }
         }

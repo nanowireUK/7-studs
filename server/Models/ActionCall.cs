@@ -15,13 +15,11 @@ namespace SevenStuds.Models
             // Handle the Call (note that the base class has already checked the player's eligibility for this action)
             Participant p = G.Participants[playerIndex];
             int catchupAmount = G.MaxChipsInAllPotsForAnyPlayer() - G.ChipsInAllPotsForSpecifiedPlayer(playerIndex);
-            // Implement the Call
-            G.ClearCommentary(); 
-            G.LastEvent = UserName + " paid " + catchupAmount + " to call";
-            G.AddCommentary(G.LastEvent);                                                        
-            G._CheckIsAvailable = false;
-            // Add this amount to the pot for this player
             G.MoveAmountToPotForSpecifiedPlayer(playerIndex, catchupAmount);
+  
+            G.LastEvent = UserName + " paid " + catchupAmount + " to call";
+            G.ClearCommentary(); 
+            G.AddCommentary(G.LastEvent);     
 
             // No one can check from this point onwards (until next card is dealt)
             G._CheckIsAvailable = false;

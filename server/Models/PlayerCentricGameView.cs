@@ -23,9 +23,11 @@ namespace SevenStuds.Models
 
         public int InitialChipQuantity { get; set; }
         public int Ante { get; set; }
+        public string GameId { get; }
         public int HandsPlayedIncludingCurrent { get; set; } // 0 = game not yet started
         public int IndexOfParticipantDealingThisHand { get; set; } // Rotates from player 0
         public int IndexOfParticipantToTakeNextAction { get; set; } // Determined by cards showing (at start of round) then on player order
+        public int IndexOfAdministrator { get; set; }
         public List<List<int>> Pots { get; set; } // pot(s) built up in the current hand (over multiple rounds of betting)
         public List<PlayerCentricParticipantView> PlayerViewOfParticipants { get; set; } // ordered list of participants (order represents order around the table)
         public List<ActionAvailability> ActionAvailabilityList { get; set; } // This list contains references to the same objects as in the Dictionary       
@@ -43,16 +45,21 @@ namespace SevenStuds.Models
             MyMaxRaise = g.IndexOfParticipantToTakeNextAction == playerIndex ? g.MaxRaiseForParticipantToTakeNextAction : 0;
             InitialChipQuantity = g.InitialChipQuantity;
             Ante = g.Ante;
+            GameId = g.GameId;
             HandsPlayedIncludingCurrent = g.HandsPlayedIncludingCurrent;
             IndexOfParticipantDealingThisHand = g.IndexOfParticipantDealingThisHand;
             IndexOfParticipantToTakeNextAction = g.IndexOfParticipantToTakeNextAction;
             ActionAvailabilityList = g.ActionAvailabilityList;
             CardPositionIsVisible = g.CardPositionIsVisible;
             Pots = g.Pots;
+            IndexOfAdministrator = -1; 
             // Add a list of participants, with data relevant to this player
             PlayerViewOfParticipants = new List<PlayerCentricParticipantView>();
             for ( int i = 0; i < g.Participants.Count; i++ ) {
-                PlayerViewOfParticipants.Add(new PlayerCentricParticipantView(g.Participants[i], playerIndex, i, CardPositionIsVisible));
+                PlayerViewOfParticipants.Add(new PlayerCentricParticipantView(g.Participants[playerIndex], g.Participants[i], CardPositionIsVisible));
+                if ( g.Participants[i].IsGameAdministrator ) {
+                    IndexOfAdministrator = i;
+                }
             }
         }
         public string AsJson()

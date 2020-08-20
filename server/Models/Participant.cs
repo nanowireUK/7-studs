@@ -14,6 +14,7 @@ namespace SevenStuds.Models
             this.Hand = new List<Card>();
             this.IsLockedOutFollowingReplay = false;
             this.IsGameAdministrator = false;
+            this.IsSharingHandDetails = false;
         }
         [Required]
         
@@ -23,6 +24,7 @@ namespace SevenStuds.Models
         public Boolean HasFolded { get; set; }
         public Boolean HasCovered { get; set; }
         public Boolean IsOutOfThisGame { get; set; } // Can work this out but possibly cleaner to record it explicitly
+        public Boolean IsSharingHandDetails { get; set; } 
         public string RejoinCode { get; set; } // e.g. 3 alphanumeric characters that enables a disconnected player to rejoin as the same person
         public string ParticipantLevelSignalRGroupName { get; set; }
         private List<string> _ConnectionIds { get; set; }

@@ -12,6 +12,7 @@ namespace SevenStuds.Models
         [Required]
         // Fixed game properties
         public string GameId { get; }
+        public GameModeEnum GameMode { get; set; }
         public int InitialChipQuantity { get; set; }
         public int Ante { get; set; }
         // Game state 
@@ -26,7 +27,7 @@ namespace SevenStuds.Models
         public int _IndexOfLastPlayerToRaise { get; set; } 
         public int _IndexOfLastPlayerToStartChecking { get; set; } 
         public bool _CheckIsAvailable { get; set; }
-        public string GameLevelSignalRGroupName { get; set; }
+        //public string GameLevelSignalRGroupName { get; set; }
         protected GameLog _GameLog { get; set; }
         protected GameLog _TestContext { get; set; }
 
@@ -46,12 +47,13 @@ namespace SevenStuds.Models
 
         public Game(string gameId) {
             GameId = gameId;
-            this.GameLevelSignalRGroupName = GameId + '.' + Guid.NewGuid().ToString(); // Unique group name for all players associated with this game
+            //this.GameLevelSignalRGroupName = GameId + '.' + Guid.NewGuid().ToString(); // Unique SignalRgroup name for all players associated with this game
             this.InitialiseGame(null);
         }
 
         public void InitialiseGame(GameLog testContext)
         {
+            GameMode = GameModeEnum.LobbyOpen;
             SetTestContext(testContext);
             Participants = new List<Participant>(); // start with empty list of participants
             InitialChipQuantity = 1000;
@@ -66,11 +68,12 @@ namespace SevenStuds.Models
             {
                 SetActionAvailability(e, AvailabilityEnum.NotAvailable); // All commands initially unavailable
             }
-            SetActionAvailability(ActionEnum.Join, AvailabilityEnum.AnyUnregisteredPlayer); // Open up JOIN to anyone who has not yet joined
+            SetActionAvailability(ActionEnum.Open, AvailabilityEnum.AnyUnregisteredPlayer); // Open up OPEN to anyone who has not yet joined
             SetActionAvailability(ActionEnum.Rejoin, AvailabilityEnum.AnyRegisteredPlayer); // Open up REJOIN to anyone who previously joined
-            SetActionAvailability(ActionEnum.GetState, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who joined
-            SetActionAvailability(ActionEnum.GetLog, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who joined
-            SetActionAvailability(ActionEnum.Replay, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who joined
+            // Open up test functions to anyone who previously joined
+            SetActionAvailability(ActionEnum.GetState, AvailabilityEnum.AnyRegisteredPlayer); 
+            SetActionAvailability(ActionEnum.GetLog, AvailabilityEnum.AnyRegisteredPlayer); 
+            SetActionAvailability(ActionEnum.Replay, AvailabilityEnum.AnyRegisteredPlayer); 
             this._GameLog = new GameLog(); // Initially empty, will be added to as game actions take place
         }
 
@@ -138,7 +141,7 @@ namespace SevenStuds.Models
             {
                 p.UncommittedChips = this.InitialChipQuantity;
             }
-            if ( ! this.IsRunningInTestMode() ) {
+            if ( this.IsRunningInTestMode() == false ) {
                 // Normal game, so randomise player order by picking a random player, deleting and moving to front, repeating a few times
                 for (int player = 0; player < Participants.Count; player++) {
                     Participant p = Participants[player]; // Get reference to player to be moved
@@ -162,18 +165,17 @@ namespace SevenStuds.Models
             }
 
             this.LogPlayers(); // record the modified player order
-
-            InitialiseHand(); // Start the first hand
         }
 
-        public void InitialiseHand()
+        public void StartNextHand()
         {
             HandsPlayedIncludingCurrent++;
             IndexOfParticipantDealingThisHand = (HandsPlayedIncludingCurrent - 1) % Participants.Count; // client could work this out too
 
+            this.ClearCommentary();
             // Set up the pack again
 
-            if ( ! this.IsRunningInTestMode() ) {
+            if ( this.IsRunningInTestMode() == false ) {
                 CardPack.Shuffle(); // refreshes the pack and shuffles it
             }
             else {
@@ -210,35 +212,46 @@ namespace SevenStuds.Models
         {
             // This should be called whenever the action has passed from one player to another during a game (i.e. once game has started)
             int playerIndex = this.IndexOfParticipantToTakeNextAction;
-            Participant p = this.Participants[playerIndex];
 
-            // Decide whether the player can fold at this stage
-            // (always available as player becomes inactive on folding and so will never be current player)
-            SetActionAvailability(ActionEnum.Fold, AvailabilityEnum.ActivePlayerOnly); 
+            if ( playerIndex == -1 ) {
+                // It is no one's turn, (hopefully) because we are waiting on the administrator to start the (next) hand.
+                // So block all game play moves apart from 'reveal hand'
+                SetActionAvailability(ActionEnum.Fold, AvailabilityEnum.NotAvailable); 
+                SetActionAvailability(ActionEnum.Check, AvailabilityEnum.NotAvailable); 
+                SetActionAvailability(ActionEnum.Raise, AvailabilityEnum.NotAvailable); 
+                SetActionAvailability(ActionEnum.Call, AvailabilityEnum.NotAvailable); 
+                SetActionAvailability(ActionEnum.Cover, AvailabilityEnum.NotAvailable); 
+                SetActionAvailability(ActionEnum.Reveal, AvailabilityEnum.AnyRegisteredPlayer); 
+            }
+            else {
+                Participant p = this.Participants[playerIndex];
+                // Decide whether the player can fold at this stage
+                // (always available as player becomes inactive on folding and so will never be current player)
+                SetActionAvailability(ActionEnum.Fold, AvailabilityEnum.ActivePlayerOnly); 
 
-            // Decide whether the player can check at this stage
-            // (possible until someone does something other than checking)
-            SetActionAvailability(
-                ActionEnum.Check, 
-                _CheckIsAvailable ? AvailabilityEnum.ActivePlayerOnly: AvailabilityEnum.NotAvailable
-            ); 
-
-            // Decide whether player can call, raise or cover at this stage
-            // (depends on their uncommitted funds vs how much they need to match the pot)
-            int catchupAmount = MaxChipsInAllPotsForAnyPlayer() - ChipsInAllPotsForSpecifiedPlayer(playerIndex);
-            // To raise they need more than the matching amount
-            SetActionAvailability(
-                ActionEnum.Raise, 
-                p.UncommittedChips > catchupAmount ? AvailabilityEnum.ActivePlayerOnly: AvailabilityEnum.NotAvailable);
-            MaxRaiseForParticipantToTakeNextAction = p.UncommittedChips > catchupAmount ? p.UncommittedChips - catchupAmount: 0;
-            // To call the matching amount needs to be more than zero and they need at least the matching amount
-            SetActionAvailability(
-                ActionEnum.Call, 
-                ( catchupAmount > 0 & p.UncommittedChips >= catchupAmount ) ? AvailabilityEnum.ActivePlayerOnly: AvailabilityEnum.NotAvailable); 
-            // To cover they need less than the matching amount
-            SetActionAvailability(
-                ActionEnum.Cover, 
-                p.UncommittedChips < catchupAmount ? AvailabilityEnum.ActivePlayerOnly: AvailabilityEnum.NotAvailable); 
+                // Decide whether the player can check at this stage
+                // (possible until someone does something other than checking)
+                SetActionAvailability(
+                    ActionEnum.Check, 
+                    _CheckIsAvailable ? AvailabilityEnum.ActivePlayerOnly: AvailabilityEnum.NotAvailable
+                );                 
+                // Decide whether player can call, raise or cover at this stage
+                // (depends on their uncommitted funds vs how much they need to match the pot)
+                int catchupAmount = MaxChipsInAllPotsForAnyPlayer() - ChipsInAllPotsForSpecifiedPlayer(playerIndex);
+                // To raise they need more than the matching amount
+                SetActionAvailability(
+                    ActionEnum.Raise, 
+                    p.UncommittedChips > catchupAmount ? AvailabilityEnum.ActivePlayerOnly: AvailabilityEnum.NotAvailable);
+                MaxRaiseForParticipantToTakeNextAction = p.UncommittedChips > catchupAmount ? p.UncommittedChips - catchupAmount: 0;
+                // To call the matching amount needs to be more than zero and they need at least the matching amount
+                SetActionAvailability(
+                    ActionEnum.Call, 
+                    ( catchupAmount > 0 & p.UncommittedChips >= catchupAmount ) ? AvailabilityEnum.ActivePlayerOnly: AvailabilityEnum.NotAvailable); 
+                // To cover they need less than the matching amount
+                SetActionAvailability(
+                    ActionEnum.Cover, 
+                    p.UncommittedChips < catchupAmount ? AvailabilityEnum.ActivePlayerOnly: AvailabilityEnum.NotAvailable); 
+            }
         }
         public bool ActionIsAvailableToPlayer(ActionEnum actionType, int playerIndex) {
             // Check whether specified player is entitled to take this action at this stage (only valid during a started game)
@@ -246,13 +259,17 @@ namespace SevenStuds.Models
             if ( aa.Availability == AvailabilityEnum.NotAvailable ) {
                 return false;
             }
-            if ( aa.Availability == AvailabilityEnum.AnyUnregisteredPlayer & playerIndex == -1 ) { 
+            else if ( aa.Availability == AvailabilityEnum.AnyUnregisteredPlayer & playerIndex == -1 ) { 
                 return true;
             }               
-            if ( aa.Availability == AvailabilityEnum.AnyRegisteredPlayer & playerIndex != -1 ) {
+            else if ( aa.Availability == AvailabilityEnum.AnyRegisteredPlayer & playerIndex != -1 ) {
                 return true;
             }
-            if ( aa.Availability == AvailabilityEnum.ActivePlayerOnly 
+            else if ( aa.Availability == AvailabilityEnum.AdministratorOnly & playerIndex != -1 
+                && this.Participants[playerIndex].IsGameAdministrator ) {
+                return true;
+            }
+            else if ( aa.Availability == AvailabilityEnum.ActivePlayerOnly 
                 & playerIndex == IndexOfParticipantToTakeNextAction
                 & playerIndex != -1 ) 
             { 
@@ -537,9 +554,21 @@ namespace SevenStuds.Models
                     }
                 }                
             }
-            InitialiseHand();
-            AddCommentary("End game complete. Started new hand. " + this.Participants[this.IndexOfParticipantToTakeNextAction].Name + " to bet");
-            return                                                                                                                                                                                                                                                                                                                                                                                                                                                         this.Participants[this.IndexOfParticipantToTakeNextAction].Name + " to bet";
+            
+            
+            foreach (ActionEnum e in Enum.GetValues(typeof(ActionEnum)))
+            {
+                SetActionAvailability(e, AvailabilityEnum.NotAvailable); // All commands initially unavailable
+            }
+            SetActionAvailability(ActionEnum.Rejoin, AvailabilityEnum.AnyRegisteredPlayer); // Open up REJOIN to anyone who previously joined
+            SetActionAvailability(ActionEnum.GetState, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who previously joined
+            SetActionAvailability(ActionEnum.GetLog, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who previously joined
+            SetActionAvailability(ActionEnum.Replay, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who previously joined            
+            SetActionAvailability(ActionEnum.Start, AvailabilityEnum.AdministratorOnly); // Make it possible for the administrator to start the next hand
+            AddCommentary("Waiting for administrator to start next hand.");
+            NextAction = "Reveal hands if desired, or administrator to start next hand (or reopen lobby)";
+            GameMode = GameModeEnum.BetweenHands; 
+            return NextAction;
         }
 
         public int PlayerIndexFromName(string SearchName) {
