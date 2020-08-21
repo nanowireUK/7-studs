@@ -190,6 +190,7 @@ namespace SevenStuds.Models
 
             foreach (Participant p in Participants)
             {
+                p.IsSharingHandDetails = false;
                 if ( p.UncommittedChips > 0 ) {
                     p.StartNewHandForActivePlayer(this);
                     this.Pots[0].Add(this.Ante); 
