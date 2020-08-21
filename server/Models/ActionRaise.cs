@@ -41,13 +41,11 @@ namespace SevenStuds.Models
 
                     // No one can check from this point onwards (until next card is dealt)
                     G._CheckIsAvailable = false;
-                    G.SetActionAvailability(ActionEnum.Check, AvailabilityEnum.NotAvailable); 
                     
                     // Identifier player to play next and reset action message to reflect this (in all other cases it stays unchanged)
                     // Find and set next player (should always be able to find one but might be worth checking)
                     G.IndexOfParticipantToTakeNextAction = G.GetIndexOfPlayerToBetNext(PlayerIndex);
                     G.NextAction = G.Participants[G.IndexOfParticipantToTakeNextAction].Name + " to bet"; 
-                    G.SetActionAvailabilityBasedOnCurrentPlayer();
                 }
             }
         }

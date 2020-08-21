@@ -20,6 +20,7 @@ namespace SevenStuds.Models
         public int MyIndex { get; set; }
         public string MyRejoinCode { get; set; }
         public int MyMaxRaise { get; set; }
+        public string GameMode { get; set; }
 
         public int InitialChipQuantity { get; set; }
         public int Ante { get; set; }
@@ -43,6 +44,7 @@ namespace SevenStuds.Models
             MyIndex =  playerIndex;
             MyRejoinCode = g.Participants[playerIndex].RejoinCode;
             MyMaxRaise = g.IndexOfParticipantToTakeNextAction == playerIndex ? g.MaxRaiseForParticipantToTakeNextAction : 0;
+            GameMode = g.GameMode.ToString();
             InitialChipQuantity = g.InitialChipQuantity;
             Ante = g.Ante;
             GameId = g.GameId;

@@ -14,17 +14,14 @@ namespace SevenStuds.Models
             // Add player (note that the base class has already checked the player's basic eligibility for this action)
             Participant p = new Participant(this.UserName);
             G.Participants.Add(p);
-            G.LastEvent = this.UserName + " joined game";
-            G.NextAction = "Await new player or start the game";
+
             if ( G.Participants.Count == 1 )
             {
                 p.IsGameAdministrator = true; // First player to join becomes the administrator (may find ways of changing this later)
             }
-            if ( G.Participants.Count >= 2 )
-            {
-                G.SetActionAvailability(ActionEnum.Start, AvailabilityEnum.AdministratorOnly); // Open up START to administrator
-            }
             p.NoteConnectionId(this.ConnectionId);
+            G.LastEvent = this.UserName + " joined game" + ( p.IsGameAdministrator ? " as administrator" : "");
+            G.NextAction = "Await new player or start the game";            
         }
     }     
 }  

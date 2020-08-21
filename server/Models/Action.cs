@@ -57,7 +57,8 @@ namespace SevenStuds.Models
                     // This connection is already being used by someone else
                     G.LastEvent = "You attempted to "+ActionType.ToString().ToLower()+" (as user "+this.UserName+") from a connection that is already in use by "+p.Name;
                     this.ResponseType = ActionResponseTypeEnum.ErrorMessage; // Default response type for actions
-                    this.ResponseAudience =  ActionResponseAudienceEnum.Caller; // Default audience for action response  
+                    this.ResponseAudience =  ActionResponseAudienceEnum.Caller; // Default audience for action response
+                    //throw new System.Exception("Testing exception handling for following error: "+G.LastEvent);
                     return;
                 }
             }
@@ -68,6 +69,7 @@ namespace SevenStuds.Models
                 G.LastEvent = "You attempted to "+ActionType.ToString().ToLower()+" (as user "+this.UserName+") but this option is not available to you at this point";
                 this.ResponseType = ActionResponseTypeEnum.ErrorMessage; // Default response type for actions
                 this.ResponseAudience =  ActionResponseAudienceEnum.Caller; // Default audience for action response  
+                //throw new System.Exception("Testing exception handling for following error: "+G.LastEvent);
                 return;
             }
 
@@ -103,6 +105,8 @@ namespace SevenStuds.Models
             {
                 G.LogActionWithResults(this); // only do this for real game actions (not GetState, GetLog, Replay, Rejoin)
             }
+
+            G.SetActionAvailabilityBasedOnCurrentPlayer(); 
 
             return G;
         }        

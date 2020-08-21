@@ -38,8 +38,6 @@ namespace SevenStuds.Models
                     // All 7 cards have now been bet on, so this is the end of the hand
                     G.NextAction = G.ProcessEndOfHand(UserName + " folded, hand ended");  // will also update commentary with hand results
                 }
-                G.SetActionAvailabilityBasedOnCurrentPlayer();
-
             }
         }
     }     

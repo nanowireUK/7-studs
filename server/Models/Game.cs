@@ -27,12 +27,8 @@ namespace SevenStuds.Models
         public int _IndexOfLastPlayerToRaise { get; set; } 
         public int _IndexOfLastPlayerToStartChecking { get; set; } 
         public bool _CheckIsAvailable { get; set; }
-        //public string GameLevelSignalRGroupName { get; set; }
         protected GameLog _GameLog { get; set; }
         protected GameLog _TestContext { get; set; }
-
-        //public List<ActionEnum> _ActionsNowAvailableToCurrentPlayer { get; set; }
-        //public List<ActionEnum> _ActionsNowAvailableToAnyPlayer { get; set; }
         private Dictionary<string, Participant> _ConnectionToParticipantMap { get; set; } // Can't be public as JSON serialiser can't handle it
         public List<List<int>> Pots { get; set; } // pot(s) built up in the current hand (over multiple rounds of betting)
         public List<Participant> Participants { get; set; } // ordered list of participants (order represents order around the table)
@@ -40,9 +36,6 @@ namespace SevenStuds.Models
         private Dictionary<ActionEnum, ActionAvailability> _ActionAvailability { get; set; } // Can't be public as JSON serialiser can't handle it
         public List<ActionAvailability> ActionAvailabilityList { get; set; } // This list contains references to the same objects as in the Dictionary       
         public List<Boolean> CardPositionIsVisible { get; } = new List<Boolean>{false, false, true, true, true, true, false};
-
-        //public List<int> contributionsPerPlayer;
-        //private List<string> UndealtCards { get; set; } // cards not yet assigned to specific players in this hand
         private Deck CardPack { get; set; }
 
         public Game(string gameId) {
@@ -64,16 +57,7 @@ namespace SevenStuds.Models
             _ConnectionToParticipantMap = new Dictionary<string, Participant>(); 
             _ActionAvailability = new Dictionary<ActionEnum, ActionAvailability>();
             ActionAvailabilityList = new List<ActionAvailability>();
-            foreach (ActionEnum e in Enum.GetValues(typeof(ActionEnum)))
-            {
-                SetActionAvailability(e, AvailabilityEnum.NotAvailable); // All commands initially unavailable
-            }
-            SetActionAvailability(ActionEnum.Open, AvailabilityEnum.AnyUnregisteredPlayer); // Open up OPEN to anyone who has not yet joined
-            SetActionAvailability(ActionEnum.Rejoin, AvailabilityEnum.AnyRegisteredPlayer); // Open up REJOIN to anyone who previously joined
-            // Open up test functions to anyone who previously joined
-            SetActionAvailability(ActionEnum.GetState, AvailabilityEnum.AnyRegisteredPlayer); 
-            SetActionAvailability(ActionEnum.GetLog, AvailabilityEnum.AnyRegisteredPlayer); 
-            SetActionAvailability(ActionEnum.Replay, AvailabilityEnum.AnyRegisteredPlayer); 
+            SetActionAvailabilityBasedOnCurrentPlayer(); // Ensures the initial section of available actions is set
             this._GameLog = new GameLog(); // Initially empty, will be added to as game actions take place
         }
 
@@ -96,21 +80,7 @@ namespace SevenStuds.Models
             }
         }
 
-        public void SetActionAvailability(ActionEnum ac, AvailabilityEnum av) 
-        {
-            ActionAvailability aa;
-            if ( _ActionAvailability.TryGetValue(ac, out aa) )
-            {
-                aa.Availability = av;
-            }
-            else 
-            {
-                aa = new ActionAvailability(ac, av);
-                _ActionAvailability.Add(ac, aa); // Note we are adding the ActionAvailability object as the value
-                ActionAvailabilityList.Add(aa); // Also add it to the list that is in included in the JSON export 
 
-            }
-        }
 
         // public bool ActionIsAvailableToThisPlayerAtThisPoint( ActionEnum ac, int playerIndex ) 
         // {
@@ -206,28 +176,56 @@ namespace SevenStuds.Models
             _IndexOfLastPlayerToStartChecking = -1; 
             _CheckIsAvailable = true;
             _CardsDealtIncludingCurrent = MaxCardsDealtSoFar();
-            SetActionAvailabilityBasedOnCurrentPlayer();
          }
+        public void SetActionAvailability(ActionEnum ac, AvailabilityEnum av) 
+        {
+            ActionAvailability aa;
+            if ( _ActionAvailability.TryGetValue(ac, out aa) )
+            {
+                aa.Availability = av;
+            }
+            else 
+            {
+                aa = new ActionAvailability(ac, av);
+                _ActionAvailability.Add(ac, aa); // Note we are adding the ActionAvailability object as the value
+                ActionAvailabilityList.Add(aa); // Also add it to the list that is in included in the JSON export 
+
+            }
+        }         
 
         public void SetActionAvailabilityBasedOnCurrentPlayer() 
         {
-            // This should be called whenever the action has passed from one player to another during a game (i.e. once game has started)
-            int playerIndex = this.IndexOfParticipantToTakeNextAction;
+            // This should be called at the end of any action
 
-            if ( playerIndex == -1 ) {
-                // It is no one's turn, (hopefully) because we are waiting on the administrator to start the (next) hand.
-                // So block all game play moves apart from 'reveal hand'
-                SetActionAvailability(ActionEnum.Fold, AvailabilityEnum.NotAvailable); 
-                SetActionAvailability(ActionEnum.Check, AvailabilityEnum.NotAvailable); 
-                SetActionAvailability(ActionEnum.Raise, AvailabilityEnum.NotAvailable); 
-                SetActionAvailability(ActionEnum.Call, AvailabilityEnum.NotAvailable); 
-                SetActionAvailability(ActionEnum.Cover, AvailabilityEnum.NotAvailable); 
-                SetActionAvailability(ActionEnum.Reveal, AvailabilityEnum.AnyRegisteredPlayer); 
+            // First make all commands unavailable
+            foreach (ActionEnum e in Enum.GetValues(typeof(ActionEnum)))
+            {
+                SetActionAvailability(e, AvailabilityEnum.NotAvailable); // All commands initially unavailable
             }
-            else {
+
+            // Set any commands that are always available
+            SetActionAvailability(ActionEnum.Rejoin, AvailabilityEnum.AnyRegisteredPlayer); // Open up REJOIN to anyone who previously joined
+            SetActionAvailability(ActionEnum.GetState, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who previously joined
+            SetActionAvailability(ActionEnum.GetLog, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who previously joined
+            SetActionAvailability(ActionEnum.Replay, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who previously joined            
+
+            // Set different actions based on current game mode
+            if ( GameMode == GameModeEnum.LobbyOpen ) {
+                SetActionAvailability(ActionEnum.Join, AvailabilityEnum.AnyUnregisteredPlayer); // Open up JOIN to anyone who has not yet joined
+                SetActionAvailability(ActionEnum.Open, AvailabilityEnum.NotAvailable); // OPEN is no longer possible as lobby is already open
+                SetActionAvailability(ActionEnum.Start, ( this.Participants.Count >= 2 ) ? AvailabilityEnum.AdministratorOnly : AvailabilityEnum.NotAvailable ); 
+            }
+            else if ( GameMode == GameModeEnum.HandCompleted ) {
+                SetActionAvailability(ActionEnum.Open, AvailabilityEnum.AdministratorOnly); // Admin can choose to reopen lobby at this point
+                SetActionAvailability(ActionEnum.Reveal, AvailabilityEnum.AnyRegisteredPlayer); // Players may reveal their hands at the end of a hand
+                SetActionAvailability(ActionEnum.Start, AvailabilityEnum.AdministratorOnly); // Make it possible for the administrator to start the next hand            
+
+            }
+            else if ( GameMode == GameModeEnum.HandInProgress ) {
+                int playerIndex = this.IndexOfParticipantToTakeNextAction;            
                 Participant p = this.Participants[playerIndex];
                 // Decide whether the player can fold at this stage
-                // (always available as player becomes inactive on folding and so will never be current player)
+                // (actually always available as player becomes inactive on folding and so will never be current player)
                 SetActionAvailability(ActionEnum.Fold, AvailabilityEnum.ActivePlayerOnly); 
 
                 // Decide whether the player can check at this stage
@@ -287,10 +285,8 @@ namespace SevenStuds.Models
             }
             this.IndexOfParticipantToTakeNextAction = GetIndexOfPlayerToBetFirst();
             _IndexOfLastPlayerToRaise = -1;
-            //_IndexOfLastPlayerToCall = -1;
             _IndexOfLastPlayerToStartChecking = -1;             
             _CheckIsAvailable = true;
-            SetActionAvailability(ActionEnum.Check, AvailabilityEnum.ActivePlayerOnly);             
         }
 
         private int MaxCardsDealtSoFar() {
@@ -556,19 +552,9 @@ namespace SevenStuds.Models
                 }                
             }
             
-            
-            foreach (ActionEnum e in Enum.GetValues(typeof(ActionEnum)))
-            {
-                SetActionAvailability(e, AvailabilityEnum.NotAvailable); // All commands initially unavailable
-            }
-            SetActionAvailability(ActionEnum.Rejoin, AvailabilityEnum.AnyRegisteredPlayer); // Open up REJOIN to anyone who previously joined
-            SetActionAvailability(ActionEnum.GetState, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who previously joined
-            SetActionAvailability(ActionEnum.GetLog, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who previously joined
-            SetActionAvailability(ActionEnum.Replay, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who previously joined            
-            SetActionAvailability(ActionEnum.Start, AvailabilityEnum.AdministratorOnly); // Make it possible for the administrator to start the next hand
             AddCommentary("Waiting for administrator to start next hand.");
             NextAction = "Reveal hands if desired, or administrator to start next hand (or reopen lobby)";
-            GameMode = GameModeEnum.BetweenHands; 
+            GameMode = GameModeEnum.HandCompleted; 
             return NextAction;
         }
 

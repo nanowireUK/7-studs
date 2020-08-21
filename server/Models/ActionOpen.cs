@@ -19,15 +19,13 @@ namespace SevenStuds.Models
                 G.LastEvent = this.UserName + " created the game and opened the lobby";
                 G.NextAction = "Await new player or start the game";
                 p.IsGameAdministrator = true; // First player to join becomes the administrator (may need to find ways of changing this later)
-                G.SetActionAvailability(ActionEnum.Join, AvailabilityEnum.AnyUnregisteredPlayer); // Open up JOIN to anyone who has not yet joined
-                G.SetActionAvailability(ActionEnum.Open, AvailabilityEnum.NotAvailable); // OPEN is no longer possible as lobby is already open
                 p.NoteConnectionId(this.ConnectionId);
             }
             else {
-                G.GameMode = GameModeEnum.LobbyOpen;
                 G.LastEvent = this.UserName + " reopened the game lobby to allow joining/leaving";
                 G.NextAction = "Await players leaving/joining, or restart the game";
             }
+            G.GameMode = GameModeEnum.LobbyOpen;
         }
     }     
 }  

@@ -1,7 +1,7 @@
 namespace SevenStuds.Models
 {  
     /// <summary>  
-    /// The 'ActionStart' Class - used to start a new hand (noye that only the administrator can do this)
+    /// The 'ActionStart' Class - used to start a new hand (note that only the administrator can do this)
     /// </summary>  
     public class ActionStart : Action
     {  
@@ -16,14 +16,13 @@ namespace SevenStuds.Models
                 G.StartGame(); // Initialise the game
                 G.StartNextHand(); 
                 G.LastEvent = this.UserName + " started the first hand (player order now randomised)";
-                G.SetActionAvailability(ActionEnum.Join, AvailabilityEnum.NotAvailable); // JOIN no longer available once game is underway
             }
             else {
                 G.StartNextHand(); 
                 G.LastEvent = this.UserName + " started next hand";
             }            
             G.NextAction = G.Participants[G.IndexOfParticipantToTakeNextAction].Name + " to bet"; 
-            G.SetActionAvailability(ActionEnum.Start, AvailabilityEnum.NotAvailable); // START no longer available (until this hand ends)
+            G.GameMode = GameModeEnum.HandInProgress;
         }
     }     
 }  

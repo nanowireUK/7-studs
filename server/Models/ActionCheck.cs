@@ -35,7 +35,6 @@ namespace SevenStuds.Models
                 // This is the end of the hand
                 G.NextAction = G.ProcessEndOfHand(UserName + " checked, hand ended");
             }
-            G.SetActionAvailabilityBasedOnCurrentPlayer();
         }
     }     
 }  

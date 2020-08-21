@@ -23,7 +23,6 @@ namespace SevenStuds.Models
 
             // No one can check from this point onwards (until next card is dealt)
             G._CheckIsAvailable = false;
-            G.SetActionAvailability(ActionEnum.Check, AvailabilityEnum.NotAvailable); 
             
             // Find and set next player (could be no one if all players have now called)
             G.IndexOfParticipantToTakeNextAction = G.GetIndexOfPlayerToBetNext(playerIndex);
@@ -39,7 +38,6 @@ namespace SevenStuds.Models
                 // This is the end of the hand
                 G.NextAction = G.ProcessEndOfHand(UserName + " called, hand ended");
             }
-            G.SetActionAvailabilityBasedOnCurrentPlayer();
         }
     }     
 }  
