@@ -1,56 +1,65 @@
-ORIGINAL GAME STATE
 {
   "GameId": "7Studs Main Event",
+  "GameMode": "HandInProgress",
   "InitialChipQuantity": 1000,
   "Ante": 1,
-  "LastEvent": "John raised by 50",
-  "NextAction": "Harry to bet",
+  "LastEvent": "Harry raised by 50",
+  "NextAction": "Phil to bet",
   "HandCommentary": [
-    "Adding 50 to the pot (existing pot structure will be analysed)",
+    "50 is to be added to the pot (or pots)",
     "Max chips currently in pot 1 = 1",
     "Adding 50 to open pot",
-    "John raised by 50"
+    "Harry raised by 50"
   ],
   "HandsPlayedIncludingCurrent": 2,
   "IndexOfParticipantDealingThisHand": 1,
-  "IndexOfParticipantToTakeNextAction": 0,
-  "_CardsDealtIncludingCurrent": 3,
-  "_IndexOfLastPlayerToRaise": 3,
+  "IndexOfParticipantToTakeNextAction": 1,
+  "MaxRaiseForParticipantToTakeNextAction": 948,
+  "_CardsDealtIncludingCurrent": 4,
+  "_IndexOfLastPlayerToRaise": 0,
   "_IndexOfLastPlayerToStartChecking": -1,
   "_CheckIsAvailable": false,
   "Pots": [
     [
+      51,
       1,
       1,
-      1,
-      51
+      1
     ]
   ],
   "Participants": [
     {
       "Name": "Harry",
-      "UncommittedChips": 498,
+      "UncommittedChips": 1552,
       "HasFolded": false,
       "HasCovered": false,
       "IsOutOfThisGame": false,
-      "RejoinCode": "9KL8rTOtZISwCmAtJGeZBQ",
-      "_VisibleHandRank": 11,
-      "_FullHandRank": 273,
-      "_VisibleHandDescription": "4s: Four",
-      "_FullHandDescription": "Ks8d4s: King High with Eight, Four",
-      "_HandSummary": "Ks 8d 4s ",
+      "IsSharingHandDetails": false,
+      "RejoinCode": "udw5",
+      "ParticipantLevelSignalRGroupName": "Harry.b5accd00-c334-4c87-9732-7ae21f05eca5",
+      "_VisibleHandRank": 35,
+      "_FullHandRank": 1490,
+      "_VisibleHandDescription": "Kc3h: King High with Three",
+      "_FullHandDescription": "King High with Four, Three, Two",
+      "_HandSummary": "4c 2d Kc 3h ",
+      "IsLockedOutFollowingReplay": true,
+      "IsGameAdministrator": true,
       "Hand": [
         {
-          "CardValue": "King",
-          "CardSuit": "Spades"
+          "CardValue": "Four",
+          "CardSuit": "Clubs"
         },
         {
-          "CardValue": "Eight",
+          "CardValue": "Two",
           "CardSuit": "Diamonds"
         },
         {
-          "CardValue": "Four",
-          "CardSuit": "Spades"
+          "CardValue": "King",
+          "CardSuit": "Clubs"
+        },
+        {
+          "CardValue": "Three",
+          "CardSuit": "Hearts"
         }
       ]
     },
@@ -60,24 +69,32 @@ ORIGINAL GAME STATE
       "HasFolded": false,
       "HasCovered": false,
       "IsOutOfThisGame": false,
-      "RejoinCode": "9KL8rTOtZISwCmAtJGeZBQ",
-      "_VisibleHandRank": 8,
-      "_FullHandRank": 276,
-      "_VisibleHandDescription": "7d: Seven",
-      "_FullHandDescription": "Kd6d7d: King High with Seven, Six",
-      "_HandSummary": "Kd 6d 7d ",
+      "IsSharingHandDetails": false,
+      "RejoinCode": "65g6",
+      "ParticipantLevelSignalRGroupName": "Phil.c3a4efda-dfb3-4a26-b9bc-2e2c2a07c7ba",
+      "_VisibleHandRank": 85,
+      "_FullHandRank": 1154,
+      "_VisibleHandDescription": "2c6h: Six High with Two",
+      "_FullHandDescription": "Ace High with King, Six, Two",
+      "_HandSummary": "Ks As 2c 6h ",
+      "IsLockedOutFollowingReplay": true,
+      "IsGameAdministrator": false,
       "Hand": [
         {
           "CardValue": "King",
-          "CardSuit": "Diamonds"
+          "CardSuit": "Spades"
+        },
+        {
+          "CardValue": "Ace",
+          "CardSuit": "Spades"
+        },
+        {
+          "CardValue": "Two",
+          "CardSuit": "Clubs"
         },
         {
           "CardValue": "Six",
-          "CardSuit": "Diamonds"
-        },
-        {
-          "CardValue": "Seven",
-          "CardSuit": "Diamonds"
+          "CardSuit": "Hearts"
         }
       ]
     },
@@ -87,63 +104,83 @@ ORIGINAL GAME STATE
       "HasFolded": false,
       "HasCovered": false,
       "IsOutOfThisGame": false,
-      "RejoinCode": "9KL8rTOtZISwCmAtJGeZBQ",
-      "_VisibleHandRank": 11,
-      "_FullHandRank": 137,
-      "_VisibleHandDescription": "4c: Four",
-      "_FullHandDescription": "4hJs4c: Pair of Fours with Jack",
-      "_HandSummary": "4h Js 4c ",
+      "IsSharingHandDetails": false,
+      "RejoinCode": "tgjx",
+      "ParticipantLevelSignalRGroupName": "Robert.634ad90f-7563-4aeb-9bc0-98d34e4794a3",
+      "_VisibleHandRank": 82,
+      "_FullHandRank": 1742,
+      "_VisibleHandDescription": "6s5d: Six High with Five",
+      "_FullHandDescription": "Ten High with Six, Five, Three",
+      "_HandSummary": "Td 3d 6s 5d ",
+      "IsLockedOutFollowingReplay": true,
+      "IsGameAdministrator": false,
       "Hand": [
         {
-          "CardValue": "Four",
-          "CardSuit": "Hearts"
+          "CardValue": "Ten",
+          "CardSuit": "Diamonds"
         },
         {
-          "CardValue": "Jack",
+          "CardValue": "Three",
+          "CardSuit": "Diamonds"
+        },
+        {
+          "CardValue": "Six",
           "CardSuit": "Spades"
         },
         {
-          "CardValue": "Four",
-          "CardSuit": "Clubs"
+          "CardValue": "Five",
+          "CardSuit": "Diamonds"
         }
       ]
     },
     {
       "Name": "John",
-      "UncommittedChips": 1452,
+      "UncommittedChips": 398,
       "HasFolded": false,
       "HasCovered": false,
       "IsOutOfThisGame": false,
-      "RejoinCode": "9KL8rTOtZISwCmAtJGeZBQ",
-      "_VisibleHandRank": 5,
-      "_FullHandRank": 202,
-      "_VisibleHandDescription": "Ts: Ten",
-      "_FullHandDescription": "Ah7sTs: Ace High with Ten, Seven",
-      "_HandSummary": "Ah 7s Ts ",
+      "IsSharingHandDetails": false,
+      "RejoinCode": "2kaj",
+      "ParticipantLevelSignalRGroupName": "John.99a0ef7b-9a51-44d1-8077-e040c02e8991",
+      "_VisibleHandRank": 79,
+      "_FullHandRank": 736,
+      "_VisibleHandDescription": "7d4h: Seven High with Four",
+      "_FullHandDescription": "Pair of Nines with Seven, Four",
+      "_HandSummary": "9d 9c 7d 4h ",
+      "IsLockedOutFollowingReplay": true,
+      "IsGameAdministrator": false,
       "Hand": [
         {
-          "CardValue": "Ace",
-          "CardSuit": "Hearts"
+          "CardValue": "Nine",
+          "CardSuit": "Diamonds"
+        },
+        {
+          "CardValue": "Nine",
+          "CardSuit": "Clubs"
         },
         {
           "CardValue": "Seven",
-          "CardSuit": "Spades"
+          "CardSuit": "Diamonds"
         },
         {
-          "CardValue": "Ten",
-          "CardSuit": "Spades"
+          "CardValue": "Four",
+          "CardSuit": "Hearts"
         }
       ]
     }
   ],
   "ActionAvailabilityList": [
     {
+      "Action": "Open",
+      "Availability": "NotAvailable"
+    },
+    {
       "Action": "Join",
       "Availability": "NotAvailable"
     },
     {
       "Action": "Rejoin",
-      "Availability": "NotAvailable"
+      "Availability": "AnyRegisteredPlayer"
     },
     {
       "Action": "Leave",
@@ -155,6 +192,10 @@ ORIGINAL GAME STATE
     },
     {
       "Action": "Finish",
+      "Availability": "NotAvailable"
+    },
+    {
+      "Action": "Reveal",
       "Availability": "NotAvailable"
     },
     {

@@ -172,7 +172,6 @@ namespace SevenStuds.Models
             }
             this.IndexOfParticipantToTakeNextAction = GetIndexOfPlayerToBetFirst();
             _IndexOfLastPlayerToRaise = -1;
-            //_IndexOfLastPlayerToCall = -1; // not needed ... can be determined from amounts in pots
             _IndexOfLastPlayerToStartChecking = -1; 
             _CheckIsAvailable = true;
             _CardsDealtIncludingCurrent = MaxCardsDealtSoFar();
