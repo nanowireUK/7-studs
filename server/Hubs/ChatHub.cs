@@ -65,12 +65,7 @@ namespace SevenStuds.Hubs
                     resultAsJson = g.AsJson();
                     targetMethod = "ReceiveOverallGameState";
                     break;   
-
-                case ActionResponseTypeEnum.ErrorMessage:
-                    // 
-                    resultAsJson = "{ \"LastEvent\": \"" + g.LastEvent + "\" }"; 
-                    targetMethod = "ReceiveMyGameState";                    
-                    break;                    
+                
                 default:  
                     throw new System.Exception("7Studs User Exception: Unsupported response type");                    
             }

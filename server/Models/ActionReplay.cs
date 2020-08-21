@@ -13,8 +13,8 @@ namespace SevenStuds.Models
         }
         public override void ProcessAction()
         {
-            ResponseType = ActionResponseTypeEnum.OverallGameState; // Default response type for actions
-            ResponseAudience =  ActionResponseAudienceEnum.Caller; // Caller will have to rejoin along with all other players (each using their rejoin codes)
+            ResponseType = ActionResponseTypeEnum.OverallGameState; // On completion of replay, the tester will have the overall game state returned to them
+            ResponseAudience =  ActionResponseAudienceEnum.Caller; // Tester will then have to rejoin each player using their respective rejoin codes
             GameLog historicalGameLog = JsonSerializer.Deserialize<GameLog>(this.Parameters);
             FixCardOrderInDesererialisedDecks(historicalGameLog); // (it loads them in array order, which gives a reversed deck)
 
@@ -56,7 +56,8 @@ namespace SevenStuds.Models
                 // Mark the player as locked ... this will be unlocked once someone joins as that player using a unique new connection
                 p.IsLockedOutFollowingReplay = true;
             }
-            System.Diagnostics.Debug.WriteLine("Replay complete, game will continue under normal conditions from here");
+            System.Diagnostics.Debug.WriteLine("Replay complete, game will continue under normal conditions from here.");
+            System.Diagnostics.Debug.WriteLine("Use the game state to find each player and rejoin each of them from a separate browser using their respective rejoin codes.");
             G.SetTestContext(null); // Clear the test context, game will continue under normal conditions from here            
         }
 

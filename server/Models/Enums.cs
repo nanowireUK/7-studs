@@ -46,8 +46,7 @@ namespace SevenStuds.Models
     {
         PlayerCentricGameState = 0,
         OverallGameState = 1,
-        GameLog = 2,
-        ErrorMessage = 3
+        GameLog = 2
     }
 
     /// <summary>

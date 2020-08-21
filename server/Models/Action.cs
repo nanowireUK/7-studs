@@ -45,10 +45,7 @@ namespace SevenStuds.Models
             // Ensure name is not blank
             if ( this.UserName == "" ) {
                 G.LastEvent = "You tried to "+ActionType.ToString().ToLower()+" but your user name was blank";
-                this.ResponseType = ActionResponseTypeEnum.ErrorMessage; // Default response type for actions
-                this.ResponseAudience =  ActionResponseAudienceEnum.Caller; // Default audience for action response  
-                throw new HubException(G.LastEvent);
-                //return;
+                throw new HubException(G.LastEvent); // client catches this as part of action method, i.e. no call to separate client method required
             }
 
             // Check that this connection is not being used by someone with a different user name
@@ -57,10 +54,7 @@ namespace SevenStuds.Models
                 if ( p.Name != this.UserName ) {
                     // This connection is already being used by someone else
                     G.LastEvent = "You attempted to "+ActionType.ToString().ToLower()+" (as user "+this.UserName+") from a connection that is already in use by "+p.Name;
-                    this.ResponseType = ActionResponseTypeEnum.ErrorMessage; // Default response type for actions
-                    this.ResponseAudience =  ActionResponseAudienceEnum.Caller; // Default audience for action response
-                    throw new HubException(G.LastEvent);
-                    //return;
+                    throw new HubException(G.LastEvent); // client catches this as part of action method, i.e. no call to separate client method required
                 }
             }
 
@@ -68,10 +62,7 @@ namespace SevenStuds.Models
             PlayerIndex = G.PlayerIndexFromName(user);
             if ( ! G.ActionIsAvailableToPlayer(ActionType, PlayerIndex) ) {
                 G.LastEvent = "You attempted to "+ActionType.ToString().ToLower()+" (as user "+this.UserName+") but this option is not available to you at this point";
-                this.ResponseType = ActionResponseTypeEnum.ErrorMessage; // Default response type for actions
-                this.ResponseAudience =  ActionResponseAudienceEnum.Caller; // Default audience for action response  
-                throw new HubException(G.LastEvent);
-                //return;
+                throw new HubException(G.LastEvent); // client catches this as part of action method, i.e. no call to separate client method required
             }
 
             if ( p == null /* from above */ && PlayerIndex != -1 && G.Participants[PlayerIndex].IsLockedOutFollowingReplay == true ) {
