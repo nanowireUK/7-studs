@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.SignalR;
+
 namespace SevenStuds.Models
 {  
     /// <summary>  
@@ -18,9 +20,7 @@ namespace SevenStuds.Models
 
             // Check that player has supplied the correct rejoin code
             if ( this.Parameters != p.RejoinCode ) {
-                // This connection is already being used by someone else
-                G.LastEvent = this.UserName + " attempted to rejoin using an invalid rejoin code";
-                return;
+                throw new HubException("You attempted to rejoin using an invalid rejoin code");
             }
 
             G.LastEvent = this.UserName + " rejoined game";

@@ -21,20 +21,7 @@ namespace SevenStuds.Models
             G.AddCommentary(G.LastEvent);
 
             // Find and set next player (could be no one if all players have now checked)
-            G.IndexOfParticipantToTakeNextAction = G.GetIndexOfPlayerToBetNext(PlayerIndex);
-            if ( G.IndexOfParticipantToTakeNextAction > -1 ){
-                G.NextAction = G.Participants[G.IndexOfParticipantToTakeNextAction].Name + " to bet"; 
-                G.AddCommentary(G.NextAction);
-            }
-            else if ( G._CardsDealtIncludingCurrent < 7 ) {
-                G.DealNextRound();
-                G.NextAction = "Everyone checked; started next round, " + G.Participants[G.IndexOfParticipantToTakeNextAction].Name + " to bet"; 
-                G.AddCommentary(G.NextAction);
-            }
-            else  {
-                // This is the end of the hand
-                G.NextAction = G.ProcessEndOfHand(UserName + " checked, hand ended");
-            }
+            G.SetNextPlayerToActOrHandleEndOfHand(PlayerIndex, G.LastEvent);
         }
     }     
 }  

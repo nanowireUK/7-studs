@@ -53,14 +53,17 @@ namespace SevenStuds.Models
             IndexOfParticipantToTakeNextAction = g.IndexOfParticipantToTakeNextAction;
             //CardPositionIsVisible = g.CardPositionIsVisible;
             Pots = g.Pots;
+            // Determine the index of the administrator
             IndexOfAdministrator = -1; 
-            // Add a list of participants, with data relevant to this player
-            PlayerViewOfParticipants = new List<PlayerCentricParticipantView>();
             for ( int i = 0; i < g.Participants.Count; i++ ) {
-                PlayerViewOfParticipants.Add(new PlayerCentricParticipantView(g.Participants[playerIndex], g.Participants[i], g.CardPositionIsVisible));
                 if ( g.Participants[i].IsGameAdministrator ) {
                     IndexOfAdministrator = i;
                 }
+            }            
+            // Add a list of participants, with data relevant to this player
+            PlayerViewOfParticipants = new List<PlayerCentricParticipantView>();
+            for ( int i = 0; i < g.Participants.Count; i++ ) {
+                PlayerViewOfParticipants.Add(new PlayerCentricParticipantView(g, playerIndex, i, IndexOfAdministrator));
             }
             // Convert the game-level permissions into a player view of their permissions
             AvailableActions = new List<string>();

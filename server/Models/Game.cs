@@ -345,29 +345,7 @@ namespace SevenStuds.Models
             }
             return stillIn;
         }
-        public int GetIndexOfPlayerToBetNext(int currentPlayer)
-        {
-            // Determine who is next to bet after current player (may be -1 if no players left who can bet, i.e. end of round)
-            for (int i = 0; i < Participants.Count - 1 ; i++) // Check all except current player
-            { 
-                // Check for a complete round of checking
-                int ZbiOfNextPlayerToInspect = (currentPlayer + 1 + i) % Participants.Count;
-                if ( ZbiOfNextPlayerToInspect == _IndexOfLastPlayerToRaise 
-                    || ( this._CheckIsAvailable && ZbiOfNextPlayerToInspect == _IndexOfLastPlayerToStartChecking ) ) 
-                {
-                    // Have got back round to last player who raised or started a round of checking, so this is the end of the round 
-                    return -1; 
-                }
-                if ( Participants[ZbiOfNextPlayerToInspect].HasFolded == false // i.e. player has not folded out of this hand
-                    && Participants[ZbiOfNextPlayerToInspect].HasCovered == false // i.e. player has not covered the pot
-                    && Participants[ZbiOfNextPlayerToInspect].IsOutOfThisGame == false // i.e. player has not yet lost all of their funds
-                    //&& this.ChipsInAllPotsForSpecifiedPlayer(ZbiOfNextPlayerToInspect) > 0 // player has been involved in this hand (i.e. is not out)
-                ) {
-                    return ZbiOfNextPlayerToInspect;
-                }
-            }
-            return -1;
-        }  
+
 
         public int ChipsInAllPotsForSpecifiedPlayer (int PlayerIndex ) {
             int totalCommitted = 0;
@@ -491,6 +469,60 @@ namespace SevenStuds.Models
         //     this.UndealtCards.RemoveAt(rInt);
         //     return selectedCard;
         // }
+
+        public void SetNextPlayerToActOrHandleEndOfHand(int currentPlayerIndex, string Trigger) {
+            // Something has triggered the end of the game. Distribute each pot according to winner(s) of that pot.
+            // Start with oldest pot and work forwards. 
+            // Only players who have contributed to a pot and have not folded are to be considered
+
+            // Check for scenario where only one active player is left
+            if ( CountOfPlayersLeftIn() == 1 ) {
+                // Everyone has folded except one player
+                NextAction = ProcessEndOfHand(Trigger + ", only one player left in, hand ended"); // will also update commentary with hand results
+                AddCommentary(NextAction);
+            }
+            else {
+                // Find and set next player (could be no one if all players have now called or folded)
+                IndexOfParticipantToTakeNextAction = GetIndexOfPlayerToActNext(currentPlayerIndex);
+                if ( IndexOfParticipantToTakeNextAction > -1 ){
+                    NextAction = Participants[IndexOfParticipantToTakeNextAction].Name + " to bet"; 
+                    AddCommentary(NextAction);
+                }
+                else if ( _CardsDealtIncludingCurrent < 7 ) {
+                    DealNextRound();
+                    NextAction = "Started next round, " + Participants[IndexOfParticipantToTakeNextAction].Name + " to bet"; 
+                    AddCommentary(NextAction);
+                }
+                else  {
+                    // All 7 cards have now been bet on, so this is the end of the hand
+                    NextAction = ProcessEndOfHand(Trigger + ", hand ended");  // will also update commentary with hand results
+                    AddCommentary(NextAction);
+                }
+            }
+        }
+        
+        public int GetIndexOfPlayerToActNext(int currentPlayer)
+        {
+            // Determine who is next to bet after current player (may be -1 if no players left who can bet, i.e. end of round)
+            for (int i = 0; i < Participants.Count - 1 ; i++) // Check all except current player
+            { 
+                // Check for a complete round of checking
+                int ZbiOfNextPlayerToInspect = (currentPlayer + 1 + i) % Participants.Count;
+                if ( ZbiOfNextPlayerToInspect == _IndexOfLastPlayerToRaise 
+                    || ( this._CheckIsAvailable && ZbiOfNextPlayerToInspect == _IndexOfLastPlayerToStartChecking ) ) 
+                {
+                    // Have got back round to last player who raised or started a round of checking, so this is the end of the round 
+                    return -1; 
+                }
+                if ( Participants[ZbiOfNextPlayerToInspect].HasFolded == false // i.e. player has not folded out of this hand
+                    && Participants[ZbiOfNextPlayerToInspect].HasCovered == false // i.e. player has not covered the pot
+                    && Participants[ZbiOfNextPlayerToInspect].IsOutOfThisGame == false // i.e. player has not yet lost all of their funds
+                ) {
+                    return ZbiOfNextPlayerToInspect;
+                }
+            }
+            return -1;
+        }  
 
         public string ProcessEndOfHand(string Trigger) {
             // Something has triggered the end of the game. Distribute each pot according to winner(s) of that pot.

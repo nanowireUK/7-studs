@@ -10,12 +10,10 @@ namespace SevenStuds.Models
         }
         public override void ProcessAction()
         {         
-            int playerIndex = G.PlayerIndexFromName(this.UserName);
-
             // Handle the Call (note that the base class has already checked the player's eligibility for this action)
-            Participant p = G.Participants[playerIndex];
-            int catchupAmount = G.MaxChipsInAllPotsForAnyPlayer() - G.ChipsInAllPotsForSpecifiedPlayer(playerIndex);
-            G.MoveAmountToPotForSpecifiedPlayer(playerIndex, catchupAmount);
+            Participant p = G.Participants[PlayerIndex];
+            int catchupAmount = G.MaxChipsInAllPotsForAnyPlayer() - G.ChipsInAllPotsForSpecifiedPlayer(PlayerIndex);
+            G.MoveAmountToPotForSpecifiedPlayer(PlayerIndex, catchupAmount);
   
             G.LastEvent = UserName + " paid " + catchupAmount + " to call";
             G.ClearCommentary(); 
@@ -25,19 +23,7 @@ namespace SevenStuds.Models
             G._CheckIsAvailable = false;
             
             // Find and set next player (could be no one if all players have now called)
-            G.IndexOfParticipantToTakeNextAction = G.GetIndexOfPlayerToBetNext(playerIndex);
-            if ( G.IndexOfParticipantToTakeNextAction > -1 ) {
-                G.NextAction = G.Participants[G.IndexOfParticipantToTakeNextAction].Name + " to bet"; 
-            }
-            else if ( G._CardsDealtIncludingCurrent < 7 ) { 
-                G.DealNextRound();
-                G.NextAction = "Started next round, " + G.Participants[G.IndexOfParticipantToTakeNextAction].Name + " to bet"; 
-                G.AddCommentary("End of round. Next card dealt. " + G.Participants[G.IndexOfParticipantToTakeNextAction].Name + " to bet");   
-            }
-            else  {
-                // This is the end of the hand
-                G.NextAction = G.ProcessEndOfHand(UserName + " called, hand ended");
-            }
+            G.SetNextPlayerToActOrHandleEndOfHand(PlayerIndex, G.LastEvent);
         }
     }     
 }  

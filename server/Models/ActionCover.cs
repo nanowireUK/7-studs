@@ -20,20 +20,7 @@ namespace SevenStuds.Models
             G.AddCommentary(G.LastEvent);   
             G.MoveAmountToPotForSpecifiedPlayer(PlayerIndex, p.UncommittedChips);
             // Find and set next player (could be no one if all players have now called or covered)
-            G.IndexOfParticipantToTakeNextAction = G.GetIndexOfPlayerToBetNext(PlayerIndex);
-            if ( G.IndexOfParticipantToTakeNextAction > -1 ) {
-                G.NextAction = G.Participants[G.IndexOfParticipantToTakeNextAction].Name + " to bet"; 
-                G.AddCommentary(G.NextAction );  
-            }
-            else if ( G._CardsDealtIncludingCurrent < 7 ) { 
-                G.DealNextRound();
-                G.NextAction = "Started next round, " + G.Participants[G.IndexOfParticipantToTakeNextAction].Name + " to bet"; 
-                G.AddCommentary("End of round. Next card dealt. " + G.Participants[G.IndexOfParticipantToTakeNextAction].Name + " to bet");   
-            }
-            else  {
-                // This is the end of the hand
-                G.NextAction = G.ProcessEndOfHand(UserName + " covered the pot, hand ended");
-            }  
+            G.SetNextPlayerToActOrHandleEndOfHand(PlayerIndex, G.LastEvent);
         }
     }     
 }  
