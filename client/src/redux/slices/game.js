@@ -1,36 +1,99 @@
 import { createSlice } from '@reduxjs/toolkit';
-
-export const ConnectionState = Object.freeze({
-    CONNECTED: 'CONNECTED',
-    RECONNECTING: 'RECONNECTING',
-    DISCONNECTED: 'DISCONNECTED'
-});
+import { awaitingResponse } from './hub';
 
 export const gameSlice = createSlice({
     name: 'game',
-    initialState: {
-        latest: {},
-        connectionState: ConnectionState.RECONNECTING,
-        awaitingResponse: false,
-        gameId: null,
-        reconnectId: null,
-    },
+    initialState: null,
     reducers: {
-        updateGame: (state, { payload }) => { state.latest = payload },
-        awaitingResponse: (state, { payload }) => { state.awaitingResponse = payload },
-        connected: (state) => { state.connectionState = ConnectionState.CONNECTED },
-        reconnecting: (state) => { state.connectionState = ConnectionState.RECONNECTING },
-        disconnected: (state) => { state.connectionState = ConnectionState.DISCONNECTED },
+        updateGame: (state, { payload }) => (payload),
     },
 });
 
-export const { updateGame, awaitingResponse, connected, reconnecting, disconnected } = gameSlice.actions;
+export const {
+    updateGame,
+} = gameSlice.actions;
 
-export const join = (gameId, user) => (dispatch, getState, connection) => {
-    dispatch(awaitingResponse(true))
-    connection.invoke('UserClickedJoin', gameId, user);
+
+export const start = () => (dispatch, getState, connection) => {
+    const { gameId, username } = getState().hub;
+    dispatch(awaitingResponse(true));
+    connection
+        .invoke('UserClickedStart', gameId, username)
+        .then(console.log)
+        .catch(console.log);
 }
 
-export const selectGame = state => state.game;
+export const raise = (raiseAmount) => (dispatch, getState, connection) => {
+    const { gameId, username } = getState().hub;
+    dispatch(awaitingResponse(true));
+    connection
+        .invoke('UserClickedRaise', gameId, username, raiseAmount)
+        .then(console.log)
+        .catch(console.log);
+}
+
+export const check = () => (dispatch, getState, connection) => {
+    const { gameId, username } = getState().hub;
+    dispatch(awaitingResponse(true));
+    connection
+        .invoke('UserClickedCheck', gameId, username)
+        .then(console.log)
+        .catch(console.log);
+};
+
+export const fold = () => (dispatch, getState, connection) => {
+    const { gameId, username } = getState().hub;
+    dispatch(awaitingResponse(true));
+    connection
+        .invoke('UserClickedFold', gameId, username)
+        .then(console.log)
+        .catch(console.log);
+};
+
+export const selectGame = (state) => state.game;
+
+export const selectInLobby = (state) =>
+    state.game !== null && state.game.GameMode === 'LobbyOpen';
+export const selectHandInProgress = (state) =>
+    state.game !== null && state.game.GameMode === 'HandInProgress';
+export const selectHandCompleted = (state) =>
+    state.game !== null && state.game.GameMode === 'HandCompleted';
+
+export const selectIsAdmin = (state) =>
+    state.game !== null && state.game.IAmAdministrator;
+
+export const selectPlayers = (state) =>
+           (state.game !== null ? state.game.PlayerViewOfParticipants : []).map(
+               (
+                   { Name: name, UncommittedChips: chips, Cards: cards },
+                   position
+               ) => ({
+                   name,
+                   chips,
+                   cards,
+                   isMe: name === state.hub.username,
+                   isCurrentPlayer:
+                       state.game.IndexOfParticipantToTakeNextAction ===
+                       position,
+                   isDealer:
+                       state.game.IndexOfParticipantDealingThisHand ===
+                       position,
+                   isAdmin: state.game.IndexOfAdministrator === position,
+               })
+           );
+
+export const selectPots = (state) => state.game.Pots;
+
+export const selectNextAction = (state) => state.game.NextAction;
+
+export const selectCanDoAction = (action) => (state) =>
+    state.game !== null && state.game.AvailableActions.includes(action);
+
+export const PlayerActions = Object.freeze({
+    START: 'Start',
+    CHECK: 'Check',
+    RAISE: 'Raise',
+    FOLD: 'Fold'
+});
 
 export default gameSlice.reducer;

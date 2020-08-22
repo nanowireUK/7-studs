@@ -1,9 +1,25 @@
-import { LogLevel, HttpTransportType, HubConnectionBuilder, JsonHubProtocol } from '@microsoft/signalr';
-import { updateGame, awaitingResponse, connected, disconnected, reconnecting } from '../slices/game';
+import {
+    LogLevel,
+    HttpTransportType,
+    HubConnectionBuilder,
+    JsonHubProtocol,
+} from '@microsoft/signalr';
+
+import {
+    updateGame,
+    
+
+} from '../slices/game';
+import {
+    serverConnected,
+    disconnected,
+    reconnecting,
+    awaitingResponse,
+    setRejoinCode, } from '../slices/hub';
 
 export const connection = new HubConnectionBuilder()
     .configureLogging(LogLevel.Debug)
-    .withUrl("https://localhost:5001/chatHub", {
+    .withUrl('https://localhost:5001/chatHub', {
         skipNegotiation: true,
         transport: HttpTransportType.WebSockets,
     })
@@ -11,29 +27,27 @@ export const connection = new HubConnectionBuilder()
     .withAutomaticReconnect()
     .build();
 
-export default store => {
-    connection.on('ReceiveUpdatedGameState', (msg) => {
-        store.dispatch(updateGame(JSON.parse(msg)));
+export default (store) => {
+    connection.on('ReceiveMyGameState', (msg) => {
+        const { MyRejoinCode: rejoinCode, ...game } = JSON.parse(msg);
+
+        console.log(rejoinCode);
+
+        localStorage.setItem('rejoinCode', rejoinCode);
+
+        store.dispatch(setRejoinCode(rejoinCode));
+        store.dispatch(updateGame(game));
         store.dispatch(awaitingResponse(false));
     });
 
-    connection.start().then(() => {
-        store.dispatch(connected());
-    }).catch(() => {
-        store.dispatch(disconnected());
-    })
+    connection
+        .start()
+        .then(() => store.dispatch(serverConnected()))
+        .catch(() => store.dispatch(disconnected()));
 
-    connection.onreconnected(() => {
-        store.dispatch(connected());
-    });
+    connection.onreconnected(() => store.dispatch(serverConnected()));
+    connection.onreconnecting(() => store.dispatch(reconnecting()));
+    connection.onclose(() => store.dispatch(disconnected()));
 
-    connection.onreconnecting(() => {
-        store.dispatch(reconnecting());
-    });
-
-    connection.onclose(() => {
-        store.dispatch(disconnected());
-    })
-
-    return next => action => next(action);
-}
+    return (next) => (action) => next(action);
+};
