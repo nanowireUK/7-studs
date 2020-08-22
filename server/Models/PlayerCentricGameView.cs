@@ -17,7 +17,7 @@ namespace SevenStuds.Models
         public string MyHandSummary  { get; set; }
         public string MyHandDescription { get; set; }
         public List<string> HandCommentary { get; set; }        
-        public int MyIndex { get; set; }
+        //public int MyIndex { get; set; }
         public string MyRejoinCode { get; set; }
         public int MyMaxRaise { get; set; }
         public string GameMode { get; set; }
@@ -28,9 +28,9 @@ namespace SevenStuds.Models
         public int Ante { get; set; }
         public string GameId { get; }
         public int HandsPlayedIncludingCurrent { get; set; } // 0 = game not yet started
-        public int IndexOfParticipantDealingThisHand { get; set; } // Rotates from player 0
-        public int IndexOfParticipantToTakeNextAction { get; set; } // Determined by cards showing (at start of round) then on player order
-        public int IndexOfAdministrator { get; set; }
+        //public int IndexOfParticipantDealingThisHand { get; set; } // Rotates from player 0
+        //public int IndexOfParticipantToTakeNextAction { get; set; } // Determined by cards showing (at start of round) then on player order
+        //public int IndexOfAdministrator { get; set; }
         public List<string> AvailableActions { get; set; } // A player-centric view of the actions available to them
         public List<List<int>> Pots { get; set; } // pot(s) built up in the current hand (over multiple rounds of betting)
         public List<PlayerCentricParticipantView> PlayerViewOfParticipants { get; set; } // ordered list of participants (order represents order around the table)
@@ -43,40 +43,39 @@ namespace SevenStuds.Models
             MyHandSummary = g.Participants[playerIndex]._HandSummary;
             MyHandDescription = g.Participants[playerIndex]._FullHandDescription;                    
             HandCommentary = g.HandCommentary; // Not sure whether I need to do a deep copy of this (suspect not, as the view is temporary anyway)    
-            MyIndex =  playerIndex;
+            //MyIndex =  playerIndex;
             MyRejoinCode = g.Participants[playerIndex].RejoinCode;
             MyMaxRaise = g.IndexOfParticipantToTakeNextAction == playerIndex ? g.MaxRaiseForParticipantToTakeNextAction : 0;
             GameMode = g.GameMode.ToString();
-            IsMyTurn = ( playerIndex == IndexOfParticipantToTakeNextAction );
-            IAmDealer = ( playerIndex == IndexOfParticipantDealingThisHand ) ;
+            IsMyTurn = ( playerIndex == g.IndexOfParticipantToTakeNextAction );
+            IAmDealer = ( playerIndex == g.IndexOfParticipantDealingThisHand ) ;
             InitialChipQuantity = g.InitialChipQuantity;
             Ante = g.Ante;
             GameId = g.GameId;
             HandsPlayedIncludingCurrent = g.HandsPlayedIncludingCurrent;
-            IndexOfParticipantDealingThisHand = g.IndexOfParticipantDealingThisHand;
-            IndexOfParticipantToTakeNextAction = g.IndexOfParticipantToTakeNextAction;
+            //IndexOfParticipantDealingThisHand = g.IndexOfParticipantDealingThisHand;
+            //IndexOfParticipantToTakeNextAction = g.IndexOfParticipantToTakeNextAction;
             //CardPositionIsVisible = g.CardPositionIsVisible;
             Pots = g.Pots;
             // Determine the index of the administrator
-            IndexOfAdministrator = -1; 
-            for ( int i = 0; i < g.Participants.Count; i++ ) {
-                if ( g.Participants[i].IsGameAdministrator ) {
-                    IndexOfAdministrator = i;
-                }
-            } 
-            IAmAdministrator  = ( playerIndex == IndexOfAdministrator );             
+            IAmAdministrator = ( g.GetIndexOfAdministrator() == playerIndex ); 
             // Add a list of participants, with data relevant to this player
             PlayerViewOfParticipants = new List<PlayerCentricParticipantView>();
             for ( int i = 0; i < g.Participants.Count; i++ ) {
-                PlayerViewOfParticipants.Add(new PlayerCentricParticipantView(g, playerIndex, i, IndexOfAdministrator));
+                PlayerViewOfParticipants.Add(new PlayerCentricParticipantView(g, playerIndex, i));
+            }
+            // Rotate the list so that current player is first person in the list
+            for ( int i = 0; i < playerIndex; i++) {
+                PlayerViewOfParticipants.Add(PlayerViewOfParticipants[0]); // Copy first element to end of list
+                PlayerViewOfParticipants.RemoveAt(0); // Remove the first element
             }
             // Convert the game-level permissions into a player view of their permissions
             AvailableActions = new List<string>();
             foreach ( ActionAvailability aa in g.ActionAvailabilityList )
             {
                 if ( aa.Availability == AvailabilityEnum.AnyRegisteredPlayer
-                    || ( aa.Availability == AvailabilityEnum.ActivePlayerOnly & MyIndex == IndexOfParticipantToTakeNextAction )
-                    || ( aa.Availability == AvailabilityEnum.AdministratorOnly & MyIndex == IndexOfAdministrator )
+                    || ( aa.Availability == AvailabilityEnum.ActivePlayerOnly & IsMyTurn )
+                    || ( aa.Availability == AvailabilityEnum.AdministratorOnly & IAmAdministrator )
                 ) {
                     AvailableActions.Add(aa.Action.ToString());
                 }

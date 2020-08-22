@@ -24,10 +24,8 @@ namespace SevenStuds.Models
             }
 
             G.LastEvent = this.UserName + " rejoined game";
-            // G.NextAction not changing as a result of rejoin ... is this enough, or do we have to set it again?
 
             p.NoteConnectionId(this.ConnectionId);
-            //G.LinkConnectionToParticipant(this.ConnectionId, p); /// NOTE this is now done in ChatHub, not here
         }
     }     
 }  

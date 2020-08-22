@@ -25,7 +25,7 @@ namespace SevenStuds.Models
         public string VisibleHandDescription { get; set; }
         public List<string> Cards { get; set; }
 
-        public PlayerCentricParticipantView(Game g, int thisPlayersIndex, int observedPlayersIndex, int indexOfAdministrator ) {
+        public PlayerCentricParticipantView(Game g, int thisPlayersIndex, int observedPlayersIndex ) {
             Participant viewingPlayer = g.Participants[thisPlayersIndex];
             Participant observedPlayer = g.Participants[observedPlayersIndex];
             // Build up this viewing player's view of the observed player (which might be the player themselves)
@@ -34,7 +34,7 @@ namespace SevenStuds.Models
             IsMe = ( observedPlayersIndex == thisPlayersIndex );
             IsCurrentPlayer = ( observedPlayersIndex == g.IndexOfParticipantToTakeNextAction );
             IsDealer = ( observedPlayersIndex == g.IndexOfParticipantDealingThisHand ) ;
-            IsAdmin  = ( observedPlayersIndex == indexOfAdministrator );           
+            IsAdmin  = ( observedPlayersIndex == g.GetIndexOfAdministrator() );           
             HasFolded = observedPlayer.HasFolded;
             HasCovered = observedPlayer.HasCovered;
             IsOutOfThisGame = observedPlayer.IsOutOfThisGame ; // Can work this out but possibly cleaner to record it explicitly
