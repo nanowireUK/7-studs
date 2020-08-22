@@ -214,9 +214,15 @@ namespace SevenStuds.Models
                 SetActionAvailability(ActionEnum.Open, AvailabilityEnum.NotAvailable); // OPEN is no longer possible as lobby is already open
                 SetActionAvailability(ActionEnum.Start, ( this.Participants.Count >= 2 ) ? AvailabilityEnum.AdministratorOnly : AvailabilityEnum.NotAvailable ); 
             }
+            else if ( GameMode == GameModeEnum.HandsBeingRevealed ) {
+                // Player can only fold or reveal in this phase
+                SetActionAvailability(ActionEnum.Fold, AvailabilityEnum.ActivePlayerOnly); 
+                SetActionAvailability(ActionEnum.Reveal, AvailabilityEnum.ActivePlayerOnly); 
+
+            }
             else if ( GameMode == GameModeEnum.HandCompleted ) {
                 SetActionAvailability(ActionEnum.Open, AvailabilityEnum.AdministratorOnly); // Admin can choose to reopen lobby at this point
-                SetActionAvailability(ActionEnum.Reveal, AvailabilityEnum.AnyRegisteredPlayer); // Players may reveal their hands at the end of a hand
+                SetActionAvailability(ActionEnum.Reveal, AvailabilityEnum.AnyRegisteredPlayer); // Players may voluntarily reveal their hands at the end of a hand
                 SetActionAvailability(ActionEnum.Start, AvailabilityEnum.AdministratorOnly); // Make it possible for the administrator to start the next hand            
 
             }
@@ -471,37 +477,59 @@ namespace SevenStuds.Models
         // }
 
         public void SetNextPlayerToActOrHandleEndOfHand(int currentPlayerIndex, string Trigger) {
-            // Something has triggered the end of the game. Distribute each pot according to winner(s) of that pot.
-            // Start with oldest pot and work forwards. 
-            // Only players who have contributed to a pot and have not folded are to be considered
-
             // Check for scenario where only one active player is left
             if ( CountOfPlayersLeftIn() == 1 ) {
                 // Everyone has folded except one player
                 NextAction = ProcessEndOfHand(Trigger + ", only one player left in, hand ended"); // will also update commentary with hand results
                 AddCommentary(NextAction);
+                return;
             }
-            else {
+            if ( GameMode == GameModeEnum.HandInProgress ) {
                 // Find and set next player (could be no one if all players have now called or folded)
-                IndexOfParticipantToTakeNextAction = GetIndexOfPlayerToActNext(currentPlayerIndex);
+                IndexOfParticipantToTakeNextAction = GetIndexOfPlayerToBetNext(currentPlayerIndex);
                 if ( IndexOfParticipantToTakeNextAction > -1 ){
                     NextAction = Participants[IndexOfParticipantToTakeNextAction].Name + " to bet"; 
                     AddCommentary(NextAction);
+                    return;
                 }
                 else if ( _CardsDealtIncludingCurrent < 7 ) {
                     DealNextRound();
                     NextAction = "Started next round, " + Participants[IndexOfParticipantToTakeNextAction].Name + " to bet"; 
                     AddCommentary(NextAction);
+                    return;
                 }
                 else  {
-                    // All 7 cards have now been bet on, so this is the end of the hand
-                    NextAction = ProcessEndOfHand(Trigger + ", hand ended");  // will also update commentary with hand results
+                    // All 7 cards have now been bet on, so betting is completed and we now need players to reveal their hands in turn
+                    GameMode = GameModeEnum.HandsBeingRevealed;
+                    IndexOfParticipantToTakeNextAction  = ( _CheckIsAvailable ? _IndexOfLastPlayerToStartChecking : _IndexOfLastPlayerToRaise );
+                    NextAction = Trigger + ", betting completed, proceeding to hand reveal stage, " 
+                        + Participants[IndexOfParticipantToTakeNextAction].Name + " to reveal (or fold)"; 
                     AddCommentary(NextAction);
+                    return;
                 }
+            }
+            if ( GameMode == GameModeEnum.HandsBeingRevealed ) {
+                // Find and set next player to reveal their hand (or fold)
+                int firstToReveal = ( _CheckIsAvailable ? _IndexOfLastPlayerToStartChecking : _IndexOfLastPlayerToRaise );
+                for ( int i = 0; i < Participants.Count; i++ ) {
+                    int ZbiOfNextPlayerToInspect = (firstToReveal + i) % Participants.Count;
+                    if ( Participants[ZbiOfNextPlayerToInspect].IsSharingHandDetails == false
+                        && Participants[ZbiOfNextPlayerToInspect].HasFolded == false // i.e. player has not folded out of this hand
+                        && Participants[ZbiOfNextPlayerToInspect].IsOutOfThisGame == false // i.e. player has not yet lost all of their funds
+                    ) {
+                        IndexOfParticipantToTakeNextAction = ZbiOfNextPlayerToInspect;
+                        NextAction = Trigger + ", " + Participants[IndexOfParticipantToTakeNextAction].Name + " to reveal (or fold)"; 
+                        AddCommentary(NextAction);
+                        return;
+                    }
+                }
+                // If we get here there were no further people to reveal their cards, so it's time to determine the winner
+                ProcessEndOfHand(Trigger + ", all hands revealed, hand ended"); // will also update commentary with hand results
+                AddCommentary(NextAction);
             }
         }
         
-        public int GetIndexOfPlayerToActNext(int currentPlayer)
+        public int GetIndexOfPlayerToBetNext(int currentPlayer)
         {
             // Determine who is next to bet after current player (may be -1 if no players left who can bet, i.e. end of round)
             for (int i = 0; i < Participants.Count - 1 ; i++) // Check all except current player

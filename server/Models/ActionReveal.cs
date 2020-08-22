@@ -11,11 +11,12 @@ namespace SevenStuds.Models
         }
         public override void ProcessAction()
         {
-            // Note that reveal is used in two circumstances:
-            // (1) The hand is still being played but all players have completed betting and are now either showing their cards or folding
-            // (2) The hand has completed and players are revealing their full hand for other players' information
+            // Record the fact that this player has revealed their hand
             G.Participants[this.PlayerIndex].IsSharingHandDetails = true;
             G.LastEvent = this.UserName + " revealed their hand details";
+            if ( G.GameMode == GameModeEnum.HandsBeingRevealed ){
+                G.SetNextPlayerToActOrHandleEndOfHand(PlayerIndex, G.LastEvent);    
+            }
         }
     }     
 }  

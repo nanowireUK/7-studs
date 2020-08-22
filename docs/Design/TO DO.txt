@@ -1,4 +1,5 @@
 ----------------------------------------- TO DO (higher priority first) ---------------------------------
+* Handle the section at the end of a hand where players reveal their hands (or folder) in turn
 * Think about whether any hands should be automatically revealed, e.g. in hand order
 * Tidy up hand commentary (remove references to cards)
 * Handle Admin activities (remove player, ...). What if admin is themselves disconnected/indisposed?
@@ -13,6 +14,8 @@
 * Automatically clear a game if there is no activity for n hours
 * Allow a player to play blind (?)
 ----------------------------------------- DONE (most recent first) ---------------------------------------
+DONE * Make each player's player-centric view show them as the first player 
+DONE * Remove all references to indexes in the player-centric views
 DONE * Add 'Open' command that enables administrator to reopen the lobby at the end of a hand
 DONE * Allow players to choose to reveal their cards at the end of a hand
 DONE * Add game modes (LobbyOpen, HandInProgress, HandCompleted) and calculate permission in one place at the end of an action
