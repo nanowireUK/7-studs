@@ -50,6 +50,24 @@ export const fold = () => (dispatch, getState, connection) => {
         .catch(console.log);
 };
 
+export const cover = () => (dispatch, getState, connection) => {
+    const { gameId, username } = getState().hub;
+    dispatch(awaitingResponse(true));
+    connection
+        .invoke("UserClickedCover", gameId, username)
+        .then(console.log)
+        .catch(console.log);
+};
+
+export const call = () => (dispatch, getState, connection) => {
+    const { gameId, username } = getState().hub;
+    dispatch(awaitingResponse(true));
+    connection
+        .invoke("UserClickedCall", gameId, username)
+        .then(console.log)
+        .catch(console.log);
+};
+
 export const selectGame = (state) => state.game;
 
 export const selectInLobby = (state) =>
@@ -92,6 +110,8 @@ export const selectCanDoAction = (action) => (state) =>
 export const PlayerActions = Object.freeze({
     START: 'Start',
     CHECK: 'Check',
+    CALL: 'Call',
+    COVER: 'Cover',
     RAISE: 'Raise',
     FOLD: 'Fold'
 });

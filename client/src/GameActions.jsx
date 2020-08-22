@@ -3,12 +3,14 @@ import React, { useState } from 'react';
 import { Box, Button } from 'grommet';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { selectCanDoAction, selectIsAdmin, PlayerActions, raise, check, fold, selectHandInProgress, selectHandCompleted, start } from './redux/slices/game';
+import { selectCanDoAction, selectIsAdmin, PlayerActions, raise, check, fold, cover, call, selectHandInProgress, selectHandCompleted, start } from './redux/slices/game';
 
 function GameActions () {
     const canRaise = useSelector(selectCanDoAction(PlayerActions.RAISE));
     const canFold = useSelector(selectCanDoAction(PlayerActions.FOLD));
     const canCheck = useSelector(selectCanDoAction(PlayerActions.CHECK));
+    const canCall = useSelector(selectCanDoAction(PlayerActions.CALL));
+    const canCover = useSelector(selectCanDoAction(PlayerActions.COVER));
     const handInProgress = useSelector(selectHandInProgress);
     const handCompleted = useSelector(selectHandCompleted);
     const isAdmin = useSelector(selectIsAdmin);
@@ -25,6 +27,14 @@ function GameActions () {
     const clickCheck = () => {
         dispatch(check());
     };
+
+    const clickCall = () => {
+        dispatch(call());
+    }
+
+    const clickCover = () => {
+        dispatch(cover());
+    }
 
     const clickFold = () => {
         dispatch(fold());
@@ -61,7 +71,7 @@ function GameActions () {
                 />
                 <Button
                     primary
-                    label="Check [C]"
+                    label="Check [K]"
                     onClick={clickCheck}
                     disabled={!canCheck}
                 />
@@ -70,6 +80,18 @@ function GameActions () {
                     label="Fold [F]"
                     onClick={clickFold}
                     disabled={!canFold}
+                />
+                <Button
+                    primary
+                    label="Call [C]"
+                    onClick={clickCall}
+                    disabled={!canCall}
+                />
+                <Button
+                    primary
+                    label="Cover [X]"
+                    onClick={clickCover}
+                    disabled={!canCover}
                 />
             </Box>
         );
