@@ -60,15 +60,6 @@ namespace SevenStuds.Models
             SetActionAvailabilityBasedOnCurrentPlayer(); // Ensures the initial section of available actions is set
             this._GameLog = new GameLog(); // Initially empty, will be added to as game actions take place
         }
-
-        public void SetTestContext(GameLog testContext)
-        {
-            _TestContext = testContext; // Note: this affects some system behaviour ... need to search for IsRunningInTestMode() to see where
-        }
-        public bool IsRunningInTestMode() {
-            return this._TestContext != null;
-        }
-
         public static Game FindOrCreateGame(string gameId) {
             if ( SevenStuds.Models.ServerState.GameList.ContainsKey(gameId) ) {
                 return (Game) SevenStuds.Models.ServerState.GameList[gameId];
@@ -79,6 +70,15 @@ namespace SevenStuds.Models
                 return newGame;
             }
         }
+
+        public void SetTestContext(GameLog testContext)
+        {
+            _TestContext = testContext; // Note: this affects some system behaviour ... need to search for IsRunningInTestMode() to see where
+        }
+        public bool IsRunningInTestMode() {
+            return this._TestContext != null;
+        }
+
 
 
 
@@ -550,7 +550,18 @@ namespace SevenStuds.Models
                 }
             }
             return -1;
-        }  
+        }
+
+        public int GetIndexOfAdministrator()
+        {
+            for ( int i = 0; i < Participants.Count; i++ ) {
+                if ( Participants[i].IsGameAdministrator ) {
+                    return i;
+                }
+            }
+            return -1; // shouldn't be possible as long as we pass admnistratorship on if the current admin leaves the game
+            // (could consider returning 0 here and forcing a random player to be admin!)
+        } 
 
         public string ProcessEndOfHand(string Trigger) {
             // Something has triggered the end of the game. Distribute each pot according to winner(s) of that pot.
