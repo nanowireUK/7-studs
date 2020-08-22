@@ -11,7 +11,8 @@ namespace SevenStuds.Models
     {
         LobbyOpen = 0,
         HandInProgress = 1,
-        HandCompleted = 2
+        HandsBeingRevealed = 2,
+        HandCompleted = 3
     }    
     /// <summary>
     /// ActionEnum: Enumeration values are used to communicate actions between client and server

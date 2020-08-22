@@ -11,11 +11,12 @@ namespace SevenStuds.Models
         }
         public override void ProcessAction()
         {
-            // Note this players willingness to reveal their full hand (at the end of a game)
+            // Record the fact that this player has revealed their hand
             G.Participants[this.PlayerIndex].IsSharingHandDetails = true;
             G.LastEvent = this.UserName + " revealed their hand details";
-            this.ResponseType = ActionResponseTypeEnum.PlayerCentricGameState;
-            this.ResponseAudience = ActionResponseAudienceEnum.AllPlayers;
+            if ( G.GameMode == GameModeEnum.HandsBeingRevealed ){
+                G.SetNextPlayerToActOrHandleEndOfHand(PlayerIndex, G.LastEvent);    
+            }
         }
     }     
 }  
