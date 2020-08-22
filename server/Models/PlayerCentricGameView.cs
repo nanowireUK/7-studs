@@ -21,7 +21,9 @@ namespace SevenStuds.Models
         public string MyRejoinCode { get; set; }
         public int MyMaxRaise { get; set; }
         public string GameMode { get; set; }
-
+        public Boolean IsMyTurn { get; set; }
+        public Boolean IAmDealer { get; set; }
+        public Boolean IAmAdministrator { get; set; }
         public int InitialChipQuantity { get; set; }
         public int Ante { get; set; }
         public string GameId { get; }
@@ -45,6 +47,8 @@ namespace SevenStuds.Models
             MyRejoinCode = g.Participants[playerIndex].RejoinCode;
             MyMaxRaise = g.IndexOfParticipantToTakeNextAction == playerIndex ? g.MaxRaiseForParticipantToTakeNextAction : 0;
             GameMode = g.GameMode.ToString();
+            IsMyTurn = ( playerIndex == IndexOfParticipantToTakeNextAction );
+            IAmDealer = ( playerIndex == IndexOfParticipantDealingThisHand ) ;
             InitialChipQuantity = g.InitialChipQuantity;
             Ante = g.Ante;
             GameId = g.GameId;
@@ -59,7 +63,8 @@ namespace SevenStuds.Models
                 if ( g.Participants[i].IsGameAdministrator ) {
                     IndexOfAdministrator = i;
                 }
-            }            
+            } 
+            IAmAdministrator  = ( playerIndex == IndexOfAdministrator );             
             // Add a list of participants, with data relevant to this player
             PlayerViewOfParticipants = new List<PlayerCentricParticipantView>();
             for ( int i = 0; i < g.Participants.Count; i++ ) {
