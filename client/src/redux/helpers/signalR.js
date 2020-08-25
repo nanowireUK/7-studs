@@ -19,7 +19,8 @@ import {
 
 export const connection = new HubConnectionBuilder()
     .configureLogging(LogLevel.Debug)
-    .withUrl('https://localhost:5001/chatHub', {
+    //TODO parameterise this connection
+    .withUrl('https://7studsserver.azurewebsites.net/chatHub', {
         skipNegotiation: true,
         transport: HttpTransportType.WebSockets,
     })
