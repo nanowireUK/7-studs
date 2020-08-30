@@ -16,13 +16,13 @@ namespace SevenStuds.Models
                 // This is someone opening the game lobby for the first time
                 Participant p = new Participant(this.UserName);
                 G.Participants.Add(p);
-                G.LastEvent = this.UserName + " created the game and opened the lobby";
-                G.NextAction = "Await new player or start the game";
                 p.IsGameAdministrator = true; // First player to join becomes the administrator (may need to find ways of changing this later)
                 p.NoteConnectionId(this.ConnectionId);
+                G.RecordLastEvent(this.UserName + " created the game and opened the lobby");
+                G.NextAction = "Await new player or start the game";
             }
             else {
-                G.LastEvent = this.UserName + " reopened the game lobby to allow joining/leaving";
+                G.RecordLastEvent(this.UserName + " reopened the game lobby to allow joining/leaving");
                 G.NextAction = "Await players leaving/joining, or restart the game";
             }
             G.GameMode = GameModeEnum.LobbyOpen;

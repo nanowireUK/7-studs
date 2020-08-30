@@ -1,4 +1,6 @@
 ----------------------------------------- TO DO (higher priority first) ---------------------------------
+* Add a new StatusMessage field which summarises LastEvent and NextAction
+* Remove card details from the HandCommentary
 * Handle the section at the end of a hand where players reveal their hands (or folder) in turn
 * Think about whether any hands should be automatically revealed, e.g. in hand order
 * Tidy up hand commentary (remove references to cards)

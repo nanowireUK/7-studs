@@ -9,7 +9,9 @@ namespace SevenStuds.Models
     { 
         protected Action () 
         {
-            // Implemented only to enable serialisation for use in the game log
+            // This parameterless constructor is not used in the main game logic, but is required to enable
+            // the JSON deserialiser to create an empty data structure that it can then populate field-by-field 
+            // from the individual fields in the JSON structure
         }
 
         protected Action ( string connectionId, ActionEnum actionType, string gameId, string user )
@@ -22,6 +24,14 @@ namespace SevenStuds.Models
         }
         protected void Initialise ( string connectionId, ActionEnum actionType, string gameId, string user, string parameters )
         {
+            // Do any initialisation that is common to all user actions.
+
+            // If there is any failure that only needs to be reported back to the player who attempted the action, notify
+            // them by throwing a HubException with an appropriate message. The client treats a HubException as a deliberate
+            // means of feeding back details of a mistake that does not affect the game state and the user can rectify.
+
+            // The ProcessAction() method can use the same technique as long as the game state has not changed.
+
             G = Game.FindOrCreateGame(gameId); // find our game or create a new one if required
             ActionType = actionType;
             UserName = user;
@@ -29,23 +39,15 @@ namespace SevenStuds.Models
             PlayerIndex = -1;
             ConnectionId = connectionId;
             ResponseType = ActionResponseTypeEnum.PlayerCentricGameState; // Default response type for actions
-            ResponseAudience =  ActionResponseAudienceEnum.AllPlayers; // Default audience for action response          
-
-            G.LastEvent = ""; // Clear this before running standard verifications. 
+            ResponseAudience =  ActionResponseAudienceEnum.AllPlayers; // Default audience for action response    
 
             if ( G.IsRunningInTestMode() ) {
                 ConnectionId = UserName; // Simulate a unique connection id as there won't be a separate connection for each player
             }
 
-            // This constructor does some basic validation and sets G.LastEvent if any errors are found.
-            // If this variable has a value, the Action subclass's ProcessAction implementation
-            // should 'return G.AsJson();' immediately (see sample implementation below).
-            // TODO: There's probably a cleaner OOP way of doing this but this will do for now
-
             // Ensure name is not blank
             if ( this.UserName == "" ) {
-                G.LastEvent = "You tried to "+ActionType.ToString().ToLower()+" but your user name was blank";
-                throw new HubException(G.LastEvent); // client catches this as part of action method, i.e. no call to separate client method required
+                throw new HubException("You tried to "+ActionType.ToString().ToLower()+" but your user name was blank"); // client catches this as part of action method, i.e. no call to separate client method required
             }
 
             // Check that this connection is not being used by someone with a different user name
@@ -53,16 +55,14 @@ namespace SevenStuds.Models
             if ( p != null ) {
                 if ( p.Name != this.UserName ) {
                     // This connection is already being used by someone else
-                    G.LastEvent = "You attempted to "+ActionType.ToString().ToLower()+" (as user "+this.UserName+") from a connection that is already in use by "+p.Name;
-                    throw new HubException(G.LastEvent); // client catches this as part of action method, i.e. no call to separate client method required
+                    throw new HubException("You attempted to "+ActionType.ToString().ToLower()+" (as user "+this.UserName+") from a connection that is already in use by "+p.Name); // client catches this as part of action method, i.e. no call to separate client method required
                 }
             }
 
             // Check player has permission to trigger this action
             PlayerIndex = G.PlayerIndexFromName(user);
             if ( ! G.ActionIsAvailableToPlayer(ActionType, PlayerIndex) ) {
-                G.LastEvent = "You attempted to "+ActionType.ToString().ToLower()+" (as user "+this.UserName+") but this option is not available to you at this point";
-                throw new HubException(G.LastEvent); // client catches this as part of action method, i.e. no call to separate client method required
+                throw new HubException("You attempted to "+ActionType.ToString().ToLower()+" (as user "+this.UserName+") but this option is not available to you at this point"); // client catches this as part of action method, i.e. no call to separate client method required
             }
 
             if ( p == null /* from above */ && PlayerIndex != -1 && G.Participants[PlayerIndex].IsLockedOutFollowingReplay == true ) {
@@ -84,10 +84,6 @@ namespace SevenStuds.Models
         public ActionResponseAudienceEnum ResponseAudience { get; set; }
         public virtual Game ProcessActionAndReturnGameReference()
         {
-            if ( G.LastEvent != "" ) {
-                return G; // If the base class (i.e. this class) set an error message in the constructor then return without checking anything else
-            }
-
             this.ProcessAction(); // Use the subclass to implement the specifics of the action
 
             if ( this.ActionType != ActionEnum.Replay 
@@ -98,7 +94,9 @@ namespace SevenStuds.Models
                 G.LogActionWithResults(this); // only do this for real game actions (not GetState, GetLog, Replay, Rejoin)
             }
 
-            G.SetActionAvailabilityBasedOnCurrentPlayer(); 
+            // After dealing with the requested action, reset the permissions for each action to reflect the updated game state
+            G.SetActionAvailabilityBasedOnCurrentPlayer();
+            G.StatusMessage = G.LastEvent + ". " + G.NextAction; // Note that NextAction may not have changed as a result of the current action
 
             return G;
         }        

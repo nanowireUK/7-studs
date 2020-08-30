@@ -20,7 +20,8 @@ namespace SevenStuds.Models
                 p.IsGameAdministrator = true; // First player to join becomes the administrator (may find ways of changing this later)
             }
             p.NoteConnectionId(this.ConnectionId);
-            G.LastEvent = this.UserName + " joined game" + ( p.IsGameAdministrator ? " as administrator" : "");
+
+            G.RecordLastEvent(this.UserName + " joined game" + ( p.IsGameAdministrator ? " as administrator" : ""));
             G.NextAction = "Await new player or start the game";            
         }
     }     

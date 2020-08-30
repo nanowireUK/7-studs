@@ -13,13 +13,14 @@ namespace SevenStuds.Models
         {
             // Start game (note that the base class has already checked the player's eligibility for this action)
             if ( G.HandsPlayedIncludingCurrent == 0 ) {
+                G.RecordLastEvent(this.UserName + " started the first hand (player order now randomised)");
                 G.StartGame(); // Initialise the game
                 G.StartNextHand(); 
-                G.LastEvent = this.UserName + " started the first hand (player order now randomised)";
+
             }
             else {
+                G.RecordLastEvent(this.UserName + " started next hand");
                 G.StartNextHand(); 
-                G.LastEvent = this.UserName + " started next hand";
             }            
             G.NextAction = G.Participants[G.IndexOfParticipantToTakeNextAction].Name + " to bet"; 
             G.GameMode = GameModeEnum.HandInProgress;

@@ -13,12 +13,13 @@ namespace SevenStuds.Models
             // Handle the cover (like a call but where player doesn't have enough to cover the current raise)
             // (note that the base class has already checked the player's eligibility for this action)
             Participant p = G.Participants[PlayerIndex];
-            G.ClearCommentary(); 
+
+            G.RecordLastEvent(UserName + " paid " + p.UncommittedChips + " to cover the pot");
+
             // Implement the cover (has to be done pot-by-pot, and could involve splitting a pot)
-            G.LastEvent = UserName + " paid " + p.UncommittedChips + " to cover the pot";
             p.HasCovered = true;
-            G.AddCommentary(G.LastEvent);   
             G.MoveAmountToPotForSpecifiedPlayer(PlayerIndex, p.UncommittedChips);
+            
             // Find and set next player (could be no one if all players have now called or covered)
             G.SetNextPlayerToActOrHandleEndOfHand(PlayerIndex, G.LastEvent);
         }

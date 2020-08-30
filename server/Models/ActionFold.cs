@@ -13,16 +13,13 @@ namespace SevenStuds.Models
             // Handle the Fold (note that the base class has already checked the player's eligibility for this action)
             Participant p = G.Participants[PlayerIndex];
 
+            G.RecordLastEvent(UserName + " folded");
+
             // Implement the Fold
-            G.ClearCommentary(); 
             p.HasFolded = true;
-            G.LastEvent = UserName + " folded";
-            G.AddCommentary(G.LastEvent);    
 
             // Find and set next player (could be no one if all players have now folded)
             G.SetNextPlayerToActOrHandleEndOfHand(PlayerIndex, G.LastEvent);           
-         
- 
         }
     }     
 }  

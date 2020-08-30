@@ -16,9 +16,8 @@ namespace SevenStuds.Models
                 G._IndexOfLastPlayerToStartChecking = PlayerIndex;
             }
             Participant p = G.Participants[PlayerIndex];
-            G.ClearCommentary(); 
-            G.LastEvent = UserName + " checked";
-            G.AddCommentary(G.LastEvent);
+
+            G.RecordLastEvent(UserName + " checked");
 
             // Find and set next player (could be no one if all players have now checked)
             G.SetNextPlayerToActOrHandleEndOfHand(PlayerIndex, G.LastEvent);

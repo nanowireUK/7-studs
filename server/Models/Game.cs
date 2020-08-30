@@ -16,6 +16,7 @@ namespace SevenStuds.Models
         public int InitialChipQuantity { get; set; }
         public int Ante { get; set; }
         // Game state 
+        public string StatusMessage { get; set; }
         public string LastEvent { get; set; }
         public string NextAction { get; set; }
         public List<string> HandCommentary { get; set; }
@@ -636,7 +637,11 @@ namespace SevenStuds.Models
             }
             return -1;
         }
-
+        public void RecordLastEvent(string a){
+            LastEvent = a;
+            ClearCommentary(); 
+            AddCommentary(a);
+        }
         public void AddCommentary (string c){
             this.HandCommentary.Add(c);
         }

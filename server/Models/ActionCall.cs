@@ -14,11 +14,9 @@ namespace SevenStuds.Models
             Participant p = G.Participants[PlayerIndex];
             int catchupAmount = G.MaxChipsInAllPotsForAnyPlayer() - G.ChipsInAllPotsForSpecifiedPlayer(PlayerIndex);
             G.MoveAmountToPotForSpecifiedPlayer(PlayerIndex, catchupAmount);
-  
-            G.LastEvent = UserName + " paid " + catchupAmount + " to call";
-            G.ClearCommentary(); 
-            G.AddCommentary(G.LastEvent);     
 
+            G.RecordLastEvent(UserName + " paid " + catchupAmount + " to call");
+  
             // No one can check from this point onwards (until next card is dealt)
             G._CheckIsAvailable = false;
             

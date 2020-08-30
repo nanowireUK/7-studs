@@ -12,6 +12,7 @@ namespace SevenStuds.Models
         /// </summary>
         /// <remarks>A player-specific view of the game state that is suitable for passing to the client as a deserialisable JSON string</remarks>
   
+        public string StatusMessage { get; set; }
         public string LastEvent { get; set; }
         public string NextAction { get; set; }
         public string MyHandSummary  { get; set; }
@@ -38,6 +39,7 @@ namespace SevenStuds.Models
 
         public PlayerCentricGameView(Game g, int playerIndex) {
             // Build up this player's view of the game
+            StatusMessage = g.StatusMessage;
             LastEvent = g.LastEvent;
             NextAction = g.NextAction;
             MyHandSummary = g.Participants[playerIndex]._HandSummary;

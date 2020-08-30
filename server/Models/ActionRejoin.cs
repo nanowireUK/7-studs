@@ -23,7 +23,7 @@ namespace SevenStuds.Models
                 throw new HubException("You attempted to rejoin using an invalid rejoin code");
             }
 
-            G.LastEvent = this.UserName + " rejoined game";
+            G.RecordLastEvent(this.UserName + " rejoined game");
 
             p.NoteConnectionId(this.ConnectionId);
         }

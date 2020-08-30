@@ -1,0 +1,1486 @@
+{
+  "playersInOrder": [
+    "Phil",
+    "John"
+  ],
+  "actions": [
+    {
+      "ActionType": 1,
+      "UserName": "John",
+      "Parameters": null,
+      "LastEvent": "John joined game as administrator",
+      "NextAction": "Await new player or start the game",
+      "HandCommentary": [],
+      "HandSummaries": [
+        "John Folded=False Covered=False Out=False Cards="
+      ]
+    },
+    {
+      "ActionType": 1,
+      "UserName": "Phil",
+      "Parameters": null,
+      "LastEvent": "Phil joined game",
+      "NextAction": "Await new player or start the game",
+      "HandCommentary": [],
+      "HandSummaries": [
+        "John Folded=False Covered=False Out=False Cards=",
+        "Phil Folded=False Covered=False Out=False Cards="
+      ]
+    },
+    {
+      "ActionType": 4,
+      "UserName": "John",
+      "Parameters": null,
+      "LastEvent": "John started the first hand (player order now randomised)",
+      "NextAction": "John to bet",
+      "HandCommentary": [],
+      "HandSummaries": [
+        "Phil Folded=False Covered=False Out=False Cards=7d 3s 4s ",
+        "John Folded=False Covered=False Out=False Cards=3h 6h 5d "
+      ]
+    },
+    {
+      "ActionType": 12,
+      "UserName": "John",
+      "Parameters": "1",
+      "LastEvent": "John raised by 1",
+      "NextAction": "Phil to bet",
+      "HandCommentary": [
+        "1 is to be added to the pot (or pots)",
+        "Max chips currently in pot 1 = 1",
+        "Adding 1 to open pot",
+        "John raised by 1",
+        "Phil to bet"
+      ],
+      "HandSummaries": [
+        "Phil Folded=False Covered=False Out=False Cards=7d 3s 4s ",
+        "John Folded=False Covered=False Out=False Cards=3h 6h 5d "
+      ]
+    },
+    {
+      "ActionType": 11,
+      "UserName": "Phil",
+      "Parameters": null,
+      "LastEvent": "Phil paid 1 to call",
+      "NextAction": "Started next round, Phil to bet",
+      "HandCommentary": [
+        "Phil paid 1 to call",
+        "Started next round, Phil to bet"
+      ],
+      "HandSummaries": [
+        "Phil Folded=False Covered=False Out=False Cards=7d 3s 4s Js ",
+        "John Folded=False Covered=False Out=False Cards=3h 6h 5d 4c "
+      ]
+    },
+    {
+      "ActionType": 12,
+      "UserName": "Phil",
+      "Parameters": "1",
+      "LastEvent": "Phil raised by 1",
+      "NextAction": "John to bet",
+      "HandCommentary": [
+        "1 is to be added to the pot (or pots)",
+        "Max chips currently in pot 1 = 2",
+        "Adding 1 to open pot",
+        "Phil raised by 1",
+        "John to bet"
+      ],
+      "HandSummaries": [
+        "Phil Folded=False Covered=False Out=False Cards=7d 3s 4s Js ",
+        "John Folded=False Covered=False Out=False Cards=3h 6h 5d 4c "
+      ]
+    },
+    {
+      "ActionType": 12,
+      "UserName": "John",
+      "Parameters": "1",
+      "LastEvent": "John paid 1 to stay in and raised by 1",
+      "NextAction": "Phil to bet",
+      "HandCommentary": [
+        "2 is to be added to the pot (or pots)",
+        "Max chips currently in pot 1 = 3",
+        "Adding 2 to open pot",
+        "John paid 1 to stay in and raised by 1",
+        "Phil to bet"
+      ],
+      "HandSummaries": [
+        "Phil Folded=False Covered=False Out=False Cards=7d 3s 4s Js ",
+        "John Folded=False Covered=False Out=False Cards=3h 6h 5d 4c "
+      ]
+    },
+    {
+      "ActionType": 11,
+      "UserName": "Phil",
+      "Parameters": null,
+      "LastEvent": "Phil paid 1 to call",
+      "NextAction": "Started next round, Phil to bet",
+      "HandCommentary": [
+        "Phil paid 1 to call",
+        "Started next round, Phil to bet"
+      ],
+      "HandSummaries": [
+        "Phil Folded=False Covered=False Out=False Cards=7d 3s 4s Js Ts ",
+        "John Folded=False Covered=False Out=False Cards=3h 6h 5d 4c 8c "
+      ]
+    },
+    {
+      "ActionType": 10,
+      "UserName": "Phil",
+      "Parameters": null,
+      "LastEvent": "Phil checked",
+      "NextAction": "John to bet",
+      "HandCommentary": [
+        "Phil checked",
+        "John to bet"
+      ],
+      "HandSummaries": [
+        "Phil Folded=False Covered=False Out=False Cards=7d 3s 4s Js Ts ",
+        "John Folded=False Covered=False Out=False Cards=3h 6h 5d 4c 8c "
+      ]
+    },
+    {
+      "ActionType": 10,
+      "UserName": "John",
+      "Parameters": null,
+      "LastEvent": "John checked",
+      "NextAction": "Started next round, Phil to bet",
+      "HandCommentary": [
+        "John checked",
+        "Started next round, Phil to bet"
+      ],
+      "HandSummaries": [
+        "Phil Folded=False Covered=False Out=False Cards=7d 3s 4s Js Ts Ah ",
+        "John Folded=False Covered=False Out=False Cards=3h 6h 5d 4c 8c 7s "
+      ]
+    },
+    {
+      "ActionType": 10,
+      "UserName": "Phil",
+      "Parameters": null,
+      "LastEvent": "Phil checked",
+      "NextAction": "John to bet",
+      "HandCommentary": [
+        "Phil checked",
+        "John to bet"
+      ],
+      "HandSummaries": [
+        "Phil Folded=False Covered=False Out=False Cards=7d 3s 4s Js Ts Ah ",
+        "John Folded=False Covered=False Out=False Cards=3h 6h 5d 4c 8c 7s "
+      ]
+    },
+    {
+      "ActionType": 12,
+      "UserName": "John",
+      "Parameters": "1",
+      "LastEvent": "John raised by 1",
+      "NextAction": "Phil to bet",
+      "HandCommentary": [
+        "1 is to be added to the pot (or pots)",
+        "Max chips currently in pot 1 = 4",
+        "Adding 1 to open pot",
+        "John raised by 1",
+        "Phil to bet"
+      ],
+      "HandSummaries": [
+        "Phil Folded=False Covered=False Out=False Cards=7d 3s 4s Js Ts Ah ",
+        "John Folded=False Covered=False Out=False Cards=3h 6h 5d 4c 8c 7s "
+      ]
+    },
+    {
+      "ActionType": 14,
+      "UserName": "Phil",
+      "Parameters": null,
+      "LastEvent": "Phil folded",
+      "NextAction": "Reveal hands if desired, or administrator to start next hand (or reopen lobby)",
+      "HandCommentary": [
+        "Phil folded",
+        "Phil folded, only one player left in, hand ended",
+        "Determining winner(s) of pot #1",
+        "John won 4 with 3h 6h 5d 4c 8c 7s  (Eight-High Straight)",
+        "Phil lost 4 after folding",
+        "Waiting for administrator to start next hand.",
+        "Reveal hands if desired, or administrator to start next hand (or reopen lobby)"
+      ],
+      "HandSummaries": [
+        "Phil Folded=True Covered=False Out=False Cards=7d 3s 4s Js Ts Ah ",
+        "John Folded=False Covered=False Out=False Cards=3h 6h 5d 4c 8c 7s "
+      ]
+    },
+    {
+      "ActionType": 4,
+      "UserName": "John",
+      "Parameters": null,
+      "LastEvent": "John started next hand",
+      "NextAction": "Phil to bet",
+      "HandCommentary": [],
+      "HandSummaries": [
+        "Phil Folded=False Covered=False Out=False Cards=7h 8h Td ",
+        "John Folded=False Covered=False Out=False Cards=Tc Qd 5h "
+      ]
+    },
+    {
+      "ActionType": 12,
+      "UserName": "Phil",
+      "Parameters": "1",
+      "LastEvent": "Phil raised by 1",
+      "NextAction": "John to bet",
+      "HandCommentary": [
+        "1 is to be added to the pot (or pots)",
+        "Max chips currently in pot 1 = 1",
+        "Adding 1 to open pot",
+        "Phil raised by 1",
+        "John to bet"
+      ],
+      "HandSummaries": [
+        "Phil Folded=False Covered=False Out=False Cards=7h 8h Td ",
+        "John Folded=False Covered=False Out=False Cards=Tc Qd 5h "
+      ]
+    },
+    {
+      "ActionType": 12,
+      "UserName": "John",
+      "Parameters": "1",
+      "LastEvent": "John paid 1 to stay in and raised by 1",
+      "NextAction": "Phil to bet",
+      "HandCommentary": [
+        "2 is to be added to the pot (or pots)",
+        "Max chips currently in pot 1 = 2",
+        "Adding 2 to open pot",
+        "John paid 1 to stay in and raised by 1",
+        "Phil to bet"
+      ],
+      "HandSummaries": [
+        "Phil Folded=False Covered=False Out=False Cards=7h 8h Td ",
+        "John Folded=False Covered=False Out=False Cards=Tc Qd 5h "
+      ]
+    },
+    {
+      "ActionType": 12,
+      "UserName": "Phil",
+      "Parameters": "1",
+      "LastEvent": "Phil paid 1 to stay in and raised by 1",
+      "NextAction": "John to bet",
+      "HandCommentary": [
+        "2 is to be added to the pot (or pots)",
+        "Max chips currently in pot 1 = 3",
+        "Adding 2 to open pot",
+        "Phil paid 1 to stay in and raised by 1",
+        "John to bet"
+      ],
+      "HandSummaries": [
+        "Phil Folded=False Covered=False Out=False Cards=7h 8h Td ",
+        "John Folded=False Covered=False Out=False Cards=Tc Qd 5h "
+      ]
+    },
+    {
+      "ActionType": 11,
+      "UserName": "John",
+      "Parameters": null,
+      "LastEvent": "John paid 1 to call",
+      "NextAction": "Started next round, John to bet",
+      "HandCommentary": [
+        "John paid 1 to call",
+        "Started next round, John to bet"
+      ],
+      "HandSummaries": [
+        "Phil Folded=False Covered=False Out=False Cards=7h 8h Td 2d ",
+        "John Folded=False Covered=False Out=False Cards=Tc Qd 5h Ac "
+      ]
+    },
+    {
+      "ActionType": 12,
+      "UserName": "John",
+      "Parameters": "1",
+      "LastEvent": "John raised by 1",
+      "NextAction": "Phil to bet",
+      "HandCommentary": [
+        "1 is to be added to the pot (or pots)",
+        "Max chips currently in pot 1 = 4",
+        "Adding 1 to open pot",
+        "John raised by 1",
+        "Phil to bet"
+      ],
+      "HandSummaries": [
+        "Phil Folded=False Covered=False Out=False Cards=7h 8h Td 2d ",
+        "John Folded=False Covered=False Out=False Cards=Tc Qd 5h Ac "
+      ]
+    },
+    {
+      "ActionType": 11,
+      "UserName": "Phil",
+      "Parameters": null,
+      "LastEvent": "Phil paid 1 to call",
+      "NextAction": "Started next round, Phil to bet",
+      "HandCommentary": [
+        "Phil paid 1 to call",
+        "Started next round, Phil to bet"
+      ],
+      "HandSummaries": [
+        "Phil Folded=False Covered=False Out=False Cards=7h 8h Td 2d 2c ",
+        "John Folded=False Covered=False Out=False Cards=Tc Qd 5h Ac 4h "
+      ]
+    },
+    {
+      "ActionType": 12,
+      "UserName": "Phil",
+      "Parameters": "1",
+      "LastEvent": "Phil raised by 1",
+      "NextAction": "John to bet",
+      "HandCommentary": [
+        "1 is to be added to the pot (or pots)",
+        "Max chips currently in pot 1 = 5",
+        "Adding 1 to open pot",
+        "Phil raised by 1",
+        "John to bet"
+      ],
+      "HandSummaries": [
+        "Phil Folded=False Covered=False Out=False Cards=7h 8h Td 2d 2c ",
+        "John Folded=False Covered=False Out=False Cards=Tc Qd 5h Ac 4h "
+      ]
+    },
+    {
+      "ActionType": 11,
+      "UserName": "John",
+      "Parameters": null,
+      "LastEvent": "John paid 1 to call",
+      "NextAction": "Started next round, Phil to bet",
+      "HandCommentary": [
+        "John paid 1 to call",
+        "Started next round, Phil to bet"
+      ],
+      "HandSummaries": [
+        "Phil Folded=False Covered=False Out=False Cards=7h 8h Td 2d 2c Th ",
+        "John Folded=False Covered=False Out=False Cards=Tc Qd 5h Ac 4h 9c "
+      ]
+    },
+    {
+      "ActionType": 12,
+      "UserName": "Phil",
+      "Parameters": "1",
+      "LastEvent": "Phil raised by 1",
+      "NextAction": "John to bet",
+      "HandCommentary": [
+        "1 is to be added to the pot (or pots)",
+        "Max chips currently in pot 1 = 6",
+        "Adding 1 to open pot",
+        "Phil raised by 1",
+        "John to bet"
+      ],
+      "HandSummaries": [
+        "Phil Folded=False Covered=False Out=False Cards=7h 8h Td 2d 2c Th ",
+        "John Folded=False Covered=False Out=False Cards=Tc Qd 5h Ac 4h 9c "
+      ]
+    },
+    {
+      "ActionType": 14,
+      "UserName": "John",
+      "Parameters": null,
+      "LastEvent": "John folded",
+      "NextAction": "Reveal hands if desired, or administrator to start next hand (or reopen lobby)",
+      "HandCommentary": [
+        "John folded",
+        "John folded, only one player left in, hand ended",
+        "Determining winner(s) of pot #1",
+        "Phil won 6 with 7h 8h Td 2d 2c Th  (Tens and Deuces)",
+        "John lost 6 after folding",
+        "Waiting for administrator to start next hand.",
+        "Reveal hands if desired, or administrator to start next hand (or reopen lobby)"
+      ],
+      "HandSummaries": [
+        "Phil Folded=False Covered=False Out=False Cards=7h 8h Td 2d 2c Th ",
+        "John Folded=True Covered=False Out=False Cards=Tc Qd 5h Ac 4h 9c "
+      ]
+    },
+    {
+      "ActionType": 4,
+      "UserName": "John",
+      "Parameters": null,
+      "LastEvent": "John started next hand",
+      "NextAction": "Phil to bet",
+      "HandCommentary": [],
+      "HandSummaries": [
+        "Phil Folded=False Covered=False Out=False Cards=8s 4s Qc ",
+        "John Folded=False Covered=False Out=False Cards=2d 4d 8d "
+      ]
+    },
+    {
+      "ActionType": 12,
+      "UserName": "Phil",
+      "Parameters": "1",
+      "LastEvent": "Phil raised by 1",
+      "NextAction": "John to bet",
+      "HandCommentary": [
+        "1 is to be added to the pot (or pots)",
+        "Max chips currently in pot 1 = 1",
+        "Adding 1 to open pot",
+        "Phil raised by 1",
+        "John to bet"
+      ],
+      "HandSummaries": [
+        "Phil Folded=False Covered=False Out=False Cards=8s 4s Qc ",
+        "John Folded=False Covered=False Out=False Cards=2d 4d 8d "
+      ]
+    },
+    {
+      "ActionType": 12,
+      "UserName": "John",
+      "Parameters": "1",
+      "LastEvent": "John paid 1 to stay in and raised by 1",
+      "NextAction": "Phil to bet",
+      "HandCommentary": [
+        "2 is to be added to the pot (or pots)",
+        "Max chips currently in pot 1 = 2",
+        "Adding 2 to open pot",
+        "John paid 1 to stay in and raised by 1",
+        "Phil to bet"
+      ],
+      "HandSummaries": [
+        "Phil Folded=False Covered=False Out=False Cards=8s 4s Qc ",
+        "John Folded=False Covered=False Out=False Cards=2d 4d 8d "
+      ]
+    },
+    {
+      "ActionType": 12,
+      "UserName": "Phil",
+      "Parameters": "1",
+      "LastEvent": "Phil paid 1 to stay in and raised by 1",
+      "NextAction": "John to bet",
+      "HandCommentary": [
+        "2 is to be added to the pot (or pots)",
+        "Max chips currently in pot 1 = 3",
+        "Adding 2 to open pot",
+        "Phil paid 1 to stay in and raised by 1",
+        "John to bet"
+      ],
+      "HandSummaries": [
+        "Phil Folded=False Covered=False Out=False Cards=8s 4s Qc ",
+        "John Folded=False Covered=False Out=False Cards=2d 4d 8d "
+      ]
+    },
+    {
+      "ActionType": 12,
+      "UserName": "John",
+      "Parameters": "1",
+      "LastEvent": "John paid 1 to stay in and raised by 1",
+      "NextAction": "Phil to bet",
+      "HandCommentary": [
+        "2 is to be added to the pot (or pots)",
+        "Max chips currently in pot 1 = 4",
+        "Adding 2 to open pot",
+        "John paid 1 to stay in and raised by 1",
+        "Phil to bet"
+      ],
+      "HandSummaries": [
+        "Phil Folded=False Covered=False Out=False Cards=8s 4s Qc ",
+        "John Folded=False Covered=False Out=False Cards=2d 4d 8d "
+      ]
+    },
+    {
+      "ActionType": 11,
+      "UserName": "Phil",
+      "Parameters": null,
+      "LastEvent": "Phil paid 1 to call",
+      "NextAction": "Started next round, John to bet",
+      "HandCommentary": [
+        "Phil paid 1 to call",
+        "Started next round, John to bet"
+      ],
+      "HandSummaries": [
+        "Phil Folded=False Covered=False Out=False Cards=8s 4s Qc 3s ",
+        "John Folded=False Covered=False Out=False Cards=2d 4d 8d Qh "
+      ]
+    },
+    {
+      "ActionType": 10,
+      "UserName": "John",
+      "Parameters": null,
+      "LastEvent": "John checked",
+      "NextAction": "Phil to bet",
+      "HandCommentary": [
+        "John checked",
+        "Phil to bet"
+      ],
+      "HandSummaries": [
+        "Phil Folded=False Covered=False Out=False Cards=8s 4s Qc 3s ",
+        "John Folded=False Covered=False Out=False Cards=2d 4d 8d Qh "
+      ]
+    },
+    {
+      "ActionType": 12,
+      "UserName": "Phil",
+      "Parameters": "1",
+      "LastEvent": "Phil raised by 1",
+      "NextAction": "John to bet",
+      "HandCommentary": [
+        "1 is to be added to the pot (or pots)",
+        "Max chips currently in pot 1 = 5",
+        "Adding 1 to open pot",
+        "Phil raised by 1",
+        "John to bet"
+      ],
+      "HandSummaries": [
+        "Phil Folded=False Covered=False Out=False Cards=8s 4s Qc 3s ",
+        "John Folded=False Covered=False Out=False Cards=2d 4d 8d Qh "
+      ]
+    },
+    {
+      "ActionType": 11,
+      "UserName": "John",
+      "Parameters": null,
+      "LastEvent": "John paid 1 to call",
+      "NextAction": "Started next round, John to bet",
+      "HandCommentary": [
+        "John paid 1 to call",
+        "Started next round, John to bet"
+      ],
+      "HandSummaries": [
+        "Phil Folded=False Covered=False Out=False Cards=8s 4s Qc 3s 9h ",
+        "John Folded=False Covered=False Out=False Cards=2d 4d 8d Qh Qs "
+      ]
+    },
+    {
+      "ActionType": 12,
+      "UserName": "John",
+      "Parameters": "1",
+      "LastEvent": "John raised by 1",
+      "NextAction": "Phil to bet",
+      "HandCommentary": [
+        "1 is to be added to the pot (or pots)",
+        "Max chips currently in pot 1 = 6",
+        "Adding 1 to open pot",
+        "John raised by 1",
+        "Phil to bet"
+      ],
+      "HandSummaries": [
+        "Phil Folded=False Covered=False Out=False Cards=8s 4s Qc 3s 9h ",
+        "John Folded=False Covered=False Out=False Cards=2d 4d 8d Qh Qs "
+      ]
+    },
+    {
+      "ActionType": 11,
+      "UserName": "Phil",
+      "Parameters": null,
+      "LastEvent": "Phil paid 1 to call",
+      "NextAction": "Started next round, John to bet",
+      "HandCommentary": [
+        "Phil paid 1 to call",
+        "Started next round, John to bet"
+      ],
+      "HandSummaries": [
+        "Phil Folded=False Covered=False Out=False Cards=8s 4s Qc 3s 9h Kd ",
+        "John Folded=False Covered=False Out=False Cards=2d 4d 8d Qh Qs 7h "
+      ]
+    },
+    {
+      "ActionType": 12,
+      "UserName": "John",
+      "Parameters": "1",
+      "LastEvent": "John raised by 1",
+      "NextAction": "Phil to bet",
+      "HandCommentary": [
+        "1 is to be added to the pot (or pots)",
+        "Max chips currently in pot 1 = 7",
+        "Adding 1 to open pot",
+        "John raised by 1",
+        "Phil to bet"
+      ],
+      "HandSummaries": [
+        "Phil Folded=False Covered=False Out=False Cards=8s 4s Qc 3s 9h Kd ",
+        "John Folded=False Covered=False Out=False Cards=2d 4d 8d Qh Qs 7h "
+      ]
+    },
+    {
+      "ActionType": 11,
+      "UserName": "Phil",
+      "Parameters": null,
+      "LastEvent": "Phil paid 1 to call",
+      "NextAction": "Started next round, John to bet",
+      "HandCommentary": [
+        "Phil paid 1 to call",
+        "Started next round, John to bet"
+      ],
+      "HandSummaries": [
+        "Phil Folded=False Covered=False Out=False Cards=8s 4s Qc 3s 9h Kd 9s ",
+        "John Folded=False Covered=False Out=False Cards=2d 4d 8d Qh Qs 7h Jh "
+      ]
+    },
+    {
+      "ActionType": 12,
+      "UserName": "John",
+      "Parameters": "1",
+      "LastEvent": "John raised by 1",
+      "NextAction": "Phil to bet",
+      "HandCommentary": [
+        "1 is to be added to the pot (or pots)",
+        "Max chips currently in pot 1 = 8",
+        "Adding 1 to open pot",
+        "John raised by 1",
+        "Phil to bet"
+      ],
+      "HandSummaries": [
+        "Phil Folded=False Covered=False Out=False Cards=8s 4s Qc 3s 9h Kd 9s ",
+        "John Folded=False Covered=False Out=False Cards=2d 4d 8d Qh Qs 7h Jh "
+      ]
+    },
+    {
+      "ActionType": 12,
+      "UserName": "Phil",
+      "Parameters": "1",
+      "LastEvent": "Phil paid 1 to stay in and raised by 1",
+      "NextAction": "John to bet",
+      "HandCommentary": [
+        "2 is to be added to the pot (or pots)",
+        "Max chips currently in pot 1 = 9",
+        "Adding 2 to open pot",
+        "Phil paid 1 to stay in and raised by 1",
+        "John to bet"
+      ],
+      "HandSummaries": [
+        "Phil Folded=False Covered=False Out=False Cards=8s 4s Qc 3s 9h Kd 9s ",
+        "John Folded=False Covered=False Out=False Cards=2d 4d 8d Qh Qs 7h Jh "
+      ]
+    }
+  ],
+  "decks": [
+    [
+      {
+        "CardValue": 13,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 3,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 31,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 41,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 31,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 3,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 29,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 2,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 23,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 37,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 19,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 7,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 17,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 31,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 11,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 41,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 29,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 23,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 17,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 5,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 17,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 37,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 23,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 29,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 41,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 19,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 11,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 7,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 11,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 19,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 2,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 31,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 2,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 37,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 5,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 2,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 7,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 19,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 13,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 37,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 13,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 41,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 17,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 23,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 5,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 29,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 7,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 11,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 3,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 5,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 3,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 13,
+        "CardSuit": 3
+      }
+    ],
+    [
+      {
+        "CardValue": 37,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 5,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 19,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 3,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 31,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 29,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 37,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 31,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 11,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 7,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 7,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 2,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 17,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 31,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 23,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 3,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 3,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 11,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 13,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 29,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 17,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 17,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 11,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 13,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 13,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 11,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 41,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 19,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 19,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 2,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 41,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 5,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 3,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 29,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 5,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 41,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 29,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 37,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 37,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 7,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 19,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 23,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 5,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 2,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 41,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 2,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 7,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 31,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 23,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 23,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 17,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 13,
+        "CardSuit": 1
+      }
+    ],
+    [
+      {
+        "CardValue": 7,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 37,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 19,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 29,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 17,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 23,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 29,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 29,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 2,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 7,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 2,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 41,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 23,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 11,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 5,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 2,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 3,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 41,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 23,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 37,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 11,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 17,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 7,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 11,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 3,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 7,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 41,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 31,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 19,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 13,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 23,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 13,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 41,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 13,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 5,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 3,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 37,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 11,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 29,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 19,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 13,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 37,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 31,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 19,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 31,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 3,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 17,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 5,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 2,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 31,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 5,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 17,
+        "CardSuit": 0
+      }
+    ],
+    [
+      {
+        "CardValue": 19,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 3,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 17,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 31,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 13,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 37,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 11,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 17,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 31,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 2,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 13,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 5,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 23,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 19,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 5,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 5,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 13,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 2,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 7,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 23,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 29,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 3,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 17,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 41,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 3,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 31,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 17,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 11,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 2,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 23,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 2,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 7,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 41,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 29,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 29,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 19,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 23,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 3,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 7,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 31,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 41,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 37,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 37,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 11,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 29,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 19,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 41,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 13,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 7,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 37,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 5,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 11,
+        "CardSuit": 2
+      }
+    ]
+  ]
+}

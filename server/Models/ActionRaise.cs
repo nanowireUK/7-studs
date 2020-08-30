@@ -36,8 +36,7 @@ namespace SevenStuds.Models
                 msg += " paid " + catchupAmount + " to stay in and";
             }
             msg += " raised by " +  amountAsInt;
-            G.LastEvent = msg;
-            G.AddCommentary(G.LastEvent);                                        
+            G.RecordLastEvent(msg);
             G._IndexOfLastPlayerToRaise = PlayerIndex; // Note that this player was the last one to raise
 
             // No one can check from this point onwards (until next card is dealt)

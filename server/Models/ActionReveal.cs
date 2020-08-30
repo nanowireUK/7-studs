@@ -13,7 +13,8 @@ namespace SevenStuds.Models
         {
             // Record the fact that this player has revealed their hand
             G.Participants[this.PlayerIndex].IsSharingHandDetails = true;
-            G.LastEvent = this.UserName + " revealed their hand details";
+            G.RecordLastEvent(this.UserName + " revealed their hand details");
+
             if ( G.GameMode == GameModeEnum.HandsBeingRevealed ){
                 G.SetNextPlayerToActOrHandleEndOfHand(PlayerIndex, G.LastEvent);    
             }
