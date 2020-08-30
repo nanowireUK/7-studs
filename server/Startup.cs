@@ -33,7 +33,11 @@ namespace SevenStuds
                     .AllowCredentials();
             }));
             services.AddRazorPages();
-            services.AddSignalR(); // new
+            services.AddSignalR(o =>
+            {
+                //o.EnableDetailedErrors = true;
+                o.MaximumReceiveMessageSize = null; // See https://stackoverflow.com/questions/59248464/how-to-change-signalr-maximum-message-size
+            }); // new
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

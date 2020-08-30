@@ -203,3 +203,17 @@ document.getElementById("actionReplay").addEventListener("click", function (even
     connection.invoke("UserClickedReplay", gameId, user, gameLog).catch(logError);
     event.preventDefault();
 });
+
+// --------------- Test button (used for experimentation)
+
+document.getElementById("jdTest").addEventListener("click", function (event) {
+    var gameLog = getModifiers();  
+    var msg = "Length of modifiers field is "+gameLog.length
+    var escapedMsg = msg.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    var pre = document.createElement("pre");
+    pre.textContent = escapedMsg;
+    appendToMessagesList(pre);
+    event.preventDefault();
+});
+
+jdTest
