@@ -29,7 +29,8 @@ namespace SevenStuds
                 builder
                     .AllowAnyMethod()
                     .AllowAnyHeader()
-                    .WithOrigins("http://localhost:3000")
+                    // get from env variables
+                    .WithOrigins("http://localhost:3000","https://7studsserver.azurewebsites.net/")
                     .AllowCredentials();
             }));
             services.AddRazorPages();
