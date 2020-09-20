@@ -1,0 +1,243 @@
+{
+  "GameId": "7Studs Main Event",
+  "GameMode": "HandInProgress",
+  "InitialChipQuantity": 1000,
+  "Ante": 1,
+  "LastEvent": "Harry raised by 50",
+  "NextAction": "Phil to bet",
+  "HandCommentary": [
+    "50 is to be added to the pot (or pots)",
+    "Max chips currently in pot 1 = 1",
+    "Adding 50 to open pot",
+    "Harry raised by 50"
+  ],
+  "HandsPlayedIncludingCurrent": 2,
+  "IndexOfParticipantDealingThisHand": 1,
+  "IndexOfParticipantToTakeNextAction": 1,
+  "MaxRaiseForParticipantToTakeNextAction": 948,
+  "_CardsDealtIncludingCurrent": 4,
+  "_IndexOfLastPlayerToRaise": 0,
+  "_IndexOfLastPlayerToStartChecking": -1,
+  "_CheckIsAvailable": false,
+  "Pots": [
+    [
+      51,
+      1,
+      1,
+      1
+    ]
+  ],
+  "Participants": [
+    {
+      "Name": "Harry",
+      "UncommittedChips": 1552,
+      "HasFolded": false,
+      "HasCovered": false,
+      "IsOutOfThisGame": false,
+      "IsSharingHandDetails": false,
+      "RejoinCode": "udw5",
+      "ParticipantLevelSignalRGroupName": "Harry.b5accd00-c334-4c87-9732-7ae21f05eca5",
+      "_VisibleHandRank": 35,
+      "_FullHandRank": 1490,
+      "_VisibleHandDescription": "Kc3h: King High with Three",
+      "_FullHandDescription": "King High with Four, Three, Two",
+      "_HandSummary": "4c 2d Kc 3h ",
+      "IsLockedOutFollowingReplay": true,
+      "IsGameAdministrator": true,
+      "Hand": [
+        {
+          "CardValue": "Four",
+          "CardSuit": "Clubs"
+        },
+        {
+          "CardValue": "Two",
+          "CardSuit": "Diamonds"
+        },
+        {
+          "CardValue": "King",
+          "CardSuit": "Clubs"
+        },
+        {
+          "CardValue": "Three",
+          "CardSuit": "Hearts"
+        }
+      ]
+    },
+    {
+      "Name": "Phil",
+      "UncommittedChips": 998,
+      "HasFolded": false,
+      "HasCovered": false,
+      "IsOutOfThisGame": false,
+      "IsSharingHandDetails": false,
+      "RejoinCode": "65g6",
+      "ParticipantLevelSignalRGroupName": "Phil.c3a4efda-dfb3-4a26-b9bc-2e2c2a07c7ba",
+      "_VisibleHandRank": 85,
+      "_FullHandRank": 1154,
+      "_VisibleHandDescription": "2c6h: Six High with Two",
+      "_FullHandDescription": "Ace High with King, Six, Two",
+      "_HandSummary": "Ks As 2c 6h ",
+      "IsLockedOutFollowingReplay": true,
+      "IsGameAdministrator": false,
+      "Hand": [
+        {
+          "CardValue": "King",
+          "CardSuit": "Spades"
+        },
+        {
+          "CardValue": "Ace",
+          "CardSuit": "Spades"
+        },
+        {
+          "CardValue": "Two",
+          "CardSuit": "Clubs"
+        },
+        {
+          "CardValue": "Six",
+          "CardSuit": "Hearts"
+        }
+      ]
+    },
+    {
+      "Name": "Robert",
+      "UncommittedChips": 998,
+      "HasFolded": false,
+      "HasCovered": false,
+      "IsOutOfThisGame": false,
+      "IsSharingHandDetails": false,
+      "RejoinCode": "tgjx",
+      "ParticipantLevelSignalRGroupName": "Robert.634ad90f-7563-4aeb-9bc0-98d34e4794a3",
+      "_VisibleHandRank": 82,
+      "_FullHandRank": 1742,
+      "_VisibleHandDescription": "6s5d: Six High with Five",
+      "_FullHandDescription": "Ten High with Six, Five, Three",
+      "_HandSummary": "Td 3d 6s 5d ",
+      "IsLockedOutFollowingReplay": true,
+      "IsGameAdministrator": false,
+      "Hand": [
+        {
+          "CardValue": "Ten",
+          "CardSuit": "Diamonds"
+        },
+        {
+          "CardValue": "Three",
+          "CardSuit": "Diamonds"
+        },
+        {
+          "CardValue": "Six",
+          "CardSuit": "Spades"
+        },
+        {
+          "CardValue": "Five",
+          "CardSuit": "Diamonds"
+        }
+      ]
+    },
+    {
+      "Name": "John",
+      "UncommittedChips": 398,
+      "HasFolded": false,
+      "HasCovered": false,
+      "IsOutOfThisGame": false,
+      "IsSharingHandDetails": false,
+      "RejoinCode": "2kaj",
+      "ParticipantLevelSignalRGroupName": "John.99a0ef7b-9a51-44d1-8077-e040c02e8991",
+      "_VisibleHandRank": 79,
+      "_FullHandRank": 736,
+      "_VisibleHandDescription": "7d4h: Seven High with Four",
+      "_FullHandDescription": "Pair of Nines with Seven, Four",
+      "_HandSummary": "9d 9c 7d 4h ",
+      "IsLockedOutFollowingReplay": true,
+      "IsGameAdministrator": false,
+      "Hand": [
+        {
+          "CardValue": "Nine",
+          "CardSuit": "Diamonds"
+        },
+        {
+          "CardValue": "Nine",
+          "CardSuit": "Clubs"
+        },
+        {
+          "CardValue": "Seven",
+          "CardSuit": "Diamonds"
+        },
+        {
+          "CardValue": "Four",
+          "CardSuit": "Hearts"
+        }
+      ]
+    }
+  ],
+  "ActionAvailabilityList": [
+    {
+      "Action": "Open",
+      "Availability": "NotAvailable"
+    },
+    {
+      "Action": "Join",
+      "Availability": "NotAvailable"
+    },
+    {
+      "Action": "Rejoin",
+      "Availability": "AnyRegisteredPlayer"
+    },
+    {
+      "Action": "Leave",
+      "Availability": "NotAvailable"
+    },
+    {
+      "Action": "Start",
+      "Availability": "NotAvailable"
+    },
+    {
+      "Action": "Finish",
+      "Availability": "NotAvailable"
+    },
+    {
+      "Action": "Reveal",
+      "Availability": "NotAvailable"
+    },
+    {
+      "Action": "Check",
+      "Availability": "NotAvailable"
+    },
+    {
+      "Action": "Call",
+      "Availability": "ActivePlayerOnly"
+    },
+    {
+      "Action": "Raise",
+      "Availability": "ActivePlayerOnly"
+    },
+    {
+      "Action": "Cover",
+      "Availability": "NotAvailable"
+    },
+    {
+      "Action": "Fold",
+      "Availability": "ActivePlayerOnly"
+    },
+    {
+      "Action": "GetState",
+      "Availability": "AnyRegisteredPlayer"
+    },
+    {
+      "Action": "GetLog",
+      "Availability": "AnyRegisteredPlayer"
+    },
+    {
+      "Action": "Replay",
+      "Availability": "AnyRegisteredPlayer"
+    }
+  ],
+  "CardPositionIsVisible": [
+    false,
+    false,
+    true,
+    true,
+    true,
+    true,
+    false
+  ]
+}

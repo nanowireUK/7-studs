@@ -1,0 +1,62 @@
+﻿@page
+    <div class="container">
+        <div class="row">&nbsp;</div>
+        <div class="row">
+            <div class="col-2">Game</div>
+            <div class="col-auto"><input type="text" id="userInputGameId" value="7Studs Main Event"/> We'll want to show a game invite URL here</div>
+        </div>  
+        <div class="row">&nbsp;</div>
+        <div class="row">
+            <div class="col-2">User</div>
+            <div class="col-4"><input type="text" id="userInput" /></div>
+        </div>   
+        <div class="row">&nbsp;</div>
+        <div class="row">
+            <div class="col-2">Parameters</div>
+            <div class="col-auto"><input type="text" id="actionModifiers" />   i.e. amounts, codes, etc. as required by a specific action</div>
+        </div>   
+        <div class="row">&nbsp;</div>                  
+        <div class="row">
+            <div class="col-2">Game-Level Actions</div>
+            <div class="col-auto">
+                <input type="button" id="actionJoin" value="Join This Game" />
+                <input type="button" id="actionStart" value="Start This Game or Next Hand" />
+                <input type="button" id="actionRejoin" value="Rejoin This Game" />
+                <input type="button" id="actionOpen" value="Reopen Game Lobby" />                
+            </div>
+        </div>  
+        <div class="row">&nbsp;</div>
+        <div class="row">
+            <div class="col-2">Hand-Level Actions</div>
+            <div class="col-auto">
+                <input type="button" id="actionCheck" value="Check" />
+                <input type="button" id="actionRaise" value="Raise" />                
+                <input type="button" id="actionCall" value="Call" />
+                <input type="button" id="actionCover" value="Cover" />                   
+                <input type="button" id="actionFold" value="Fold" />
+                <input type="button" id="actionReveal" value="Reveal Hand" />
+            </div>
+        </div>
+        <div class="row">&nbsp;</div>     
+        <div class="row">
+            <div class="col-2">Test Actions</div>            
+            <div class="col-auto">
+                <input type="button" id="actionGetState" value="Get Game State" />
+                <input type="button" id="actionGetLog" value="Get Game Log" />
+                <input type="button" id="actionReplay" value="Replay Game From Log" />
+                <input type="button" id="jdTest" value="Test" />
+            </div> 
+        </div>        
+    </div>
+    <div class="row">
+        <div class="col-auto">
+            <hr />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-auto">
+            <ul id="messagesList"></ul>
+        </div>
+    </div>
+<script src="~/js/signalr/dist/browser/signalr.js"></script>
+<script src="~/js/chat.js"></script>

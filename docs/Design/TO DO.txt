@@ -1,0 +1,53 @@
+----------------------------------------- TO DO (higher priority first) ---------------------------------
+* Add a new StatusMessage field which summarises LastEvent and NextAction
+* Remove card details from the HandCommentary
+* Handle the section at the end of a hand where players reveal their hands (or folder) in turn
+* Think about whether any hands should be automatically revealed, e.g. in hand order
+* Tidy up hand commentary (remove references to cards)
+* Handle Admin activities (remove player, ...). What if admin is themselves disconnected/indisposed?
+* Add some parameters to game lobby (ante, stash, checkboxes for rule options e.g. randomise on restart)
+* Show hands in a clear way (e.g. full house as 333AA not A33A3)
+* Look into Flux for .NET  (state management framework?) (also Redux which is JS implementation for React)
+* Handle no one being able to bet (i.e. auto-check, or other auto-enabled actions)
+* Handle end of overall game (time limit, number of rounds, less than 'n' players left in)
+* Split hand description out into two parts: main bit e.g. "Ace High" and countback e.g. "with King ..."
+* Game name to be pulled from URL
+* Record game logs in a database
+* Automatically clear a game if there is no activity for n hours
+* Allow a player to play blind (?)
+----------------------------------------- DONE (most recent first) ---------------------------------------
+DONE * Make each player's player-centric view show them as the first player 
+DONE * Remove all references to indexes in the player-centric views
+DONE * Add 'Open' command that enables administrator to reopen the lobby at the end of a hand
+DONE * Allow players to choose to reveal their cards at the end of a hand
+DONE * Add game modes (LobbyOpen, HandInProgress, HandCompleted) and calculate permission in one place at the end of an action
+DONE * Calculate permissions for each player from their perspective (and just show command that are available to them)
+DONE * Separate out the server-side methods for each action (e.g. UserClickedJoin, UserClickStart, etc.)
+DONE * Allow actions to determine their own ActionResponseType + ActionResponseAudience, and respect that in the Hub when sending repsonse to player(s)
+DONE * Fix replay code following other changes. Simulate connection id during replay, then simulate rejoin when reconstructed players continue playing
+DONE * Get rid of ProcessActionAndReturnUpdatedGameStateAsJson
+DONE * Prevent player from changing name after joining 
+DONE * Allow player to rejoin (or join multiple times) using a rejoin code
+DONE * Send each player an updated state that reflects their view of the game
+DONE * Remove references to connection id and instead generate a group id and a rejoin code
+DONE * Game state to include max raise by current player based on catchup amount and funds available (so client doesn't have to work this out)
+DONE * Implement ActionReplay action that re-runs a game using the JSON-serialised GameLog as a script
+DONE * Create GameLog and GameLogAction objects on the Game and populate them as the game progresses
+DONE * Add ActionAvailabilityList to JSON, showing which actions are available to which players at any time
+DONE * Prevent players joining during the game
+DONE * Prevent blank or duplicate players joining
+DONE * Handle covering the pot (is this only when the player cannot match the current bet?)
+DONE * Handle end of hand (i.e. end of seventh round) -> allow for multiple pots
+DONE * Show final hand in summary
+DONE * Handle end of hand (i.e. end of seventh round) -> multiple winners (shared pot)
+DONE * Add a new field Commentary as list of strings (to replace LastEvent eventually)
+DONE * Handle fold triggering end of hand
+DONE * Handle end of hand (i.e. end of seventh round) -> simple case with one winner
+DONE * Fix plurals, esp. "Sixs"
+DONE * Show a one-line representation of the full set of cards, not just the best hand of 5
+DONE * Handle evaluation of hand of 6 or 7 cards (work out which is the best 5 card hand of all 6 or 21 combinations)
+DONE * Handle fold (could trigger end of round or end of game)
+DONE * Handle check (as first player to bet, or to 'call' a previous player's check, could trigger end of round)
+DONE * Handle call/see (match current pot, could trigger end of round)
+DONE * Handle raise (easiest as doesn't trigger end of round)
+DONE * Move Pots up above Hand
