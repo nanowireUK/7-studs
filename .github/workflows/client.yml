@@ -1,8 +1,6 @@
-name: ci
+name: Develop - Client Build and Push
 
-on:
-  push:
-    branches: develop
+on: [push, workflow_dispatch]
 
 jobs:
   path-context:
