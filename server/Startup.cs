@@ -24,13 +24,23 @@ namespace SevenStuds
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            System.Diagnostics.Debug.WriteLine("Getting env var SevenStudsOrigin");
+            string originUrl = Environment.GetEnvironmentVariable("SevenStudsOrigin", EnvironmentVariableTarget.Process);
+            if ( originUrl == null ) {
+                originUrl = "http://localhost:3000"; // or e.g. "https://7studsserver.azurewebsites.net/"                
+                System.Diagnostics.Debug.WriteLine("Env var SevenStudsOrigin not found, setting to default value, "+originUrl);
+
+            }
+            else {
+                System.Diagnostics.Debug.WriteLine("SevenStudsOrigin="+originUrl);
+            }
+
             services.AddCors(o => o.AddPolicy("CorsPolicy", builder =>
             {
                 builder
                     .AllowAnyMethod()
                     .AllowAnyHeader()
-                    // get from env variables
-                    .WithOrigins("http://localhost:3000","https://7studsserver.azurewebsites.net/")
+                    .WithOrigins(originUrl)
                     .AllowCredentials();
             }));
             services.AddRazorPages();
