@@ -1,0 +1,1284 @@
+{
+  "playersInOrder": [
+    "John",
+    "Rob"
+  ],
+  "actions": [
+    {
+      "ActionType": 1,
+      "UserName": "Rob",
+      "Parameters": null,
+      "LastEvent": "Rob joined game as administrator",
+      "NextAction": "Await new player or start the game",
+      "HandCommentary": [],
+      "HandSummaries": [
+        "Rob Folded=False Covered=False Out=False Cards="
+      ]
+    },
+    {
+      "ActionType": 1,
+      "UserName": "John",
+      "Parameters": null,
+      "LastEvent": "John joined game",
+      "NextAction": "Await new player or start the game",
+      "HandCommentary": [],
+      "HandSummaries": [
+        "Rob Folded=False Covered=False Out=False Cards=",
+        "John Folded=False Covered=False Out=False Cards="
+      ]
+    },
+    {
+      "ActionType": 4,
+      "UserName": "Rob",
+      "Parameters": null,
+      "LastEvent": "Rob started the first hand (player order now randomised)",
+      "NextAction": "Rob to bet",
+      "HandCommentary": [],
+      "HandSummaries": [
+        "John Folded=False Covered=False Out=False Cards=3s Jc 7h ",
+        "Rob Folded=False Covered=False Out=False Cards=6s 4c As "
+      ]
+    },
+    {
+      "ActionType": 12,
+      "UserName": "Rob",
+      "Parameters": "1",
+      "LastEvent": "Rob raised by 1",
+      "NextAction": "John to bet",
+      "HandCommentary": [
+        "1 is to be added to the pot (or pots)",
+        "Max chips currently in pot 1 = 1",
+        "Adding 1 to open pot",
+        "Rob raised by 1",
+        "John to bet"
+      ],
+      "HandSummaries": [
+        "John Folded=False Covered=False Out=False Cards=3s Jc 7h ",
+        "Rob Folded=False Covered=False Out=False Cards=6s 4c As "
+      ]
+    },
+    {
+      "ActionType": 12,
+      "UserName": "John",
+      "Parameters": "1",
+      "LastEvent": "John paid 1 to stay in and raised by 1",
+      "NextAction": "Rob to bet",
+      "HandCommentary": [
+        "2 is to be added to the pot (or pots)",
+        "Max chips currently in pot 1 = 2",
+        "Adding 2 to open pot",
+        "John paid 1 to stay in and raised by 1",
+        "Rob to bet"
+      ],
+      "HandSummaries": [
+        "John Folded=False Covered=False Out=False Cards=3s Jc 7h ",
+        "Rob Folded=False Covered=False Out=False Cards=6s 4c As "
+      ]
+    },
+    {
+      "ActionType": 11,
+      "UserName": "Rob",
+      "Parameters": null,
+      "LastEvent": "Rob paid 1 to call",
+      "NextAction": "Started next round, Rob to bet",
+      "HandCommentary": [
+        "Rob paid 1 to call",
+        "Started next round, Rob to bet"
+      ],
+      "HandSummaries": [
+        "John Folded=False Covered=False Out=False Cards=3s Jc 7h Ks ",
+        "Rob Folded=False Covered=False Out=False Cards=6s 4c As 3c "
+      ]
+    },
+    {
+      "ActionType": 12,
+      "UserName": "Rob",
+      "Parameters": "1",
+      "LastEvent": "Rob raised by 1",
+      "NextAction": "John to bet",
+      "HandCommentary": [
+        "1 is to be added to the pot (or pots)",
+        "Max chips currently in pot 1 = 3",
+        "Adding 1 to open pot",
+        "Rob raised by 1",
+        "John to bet"
+      ],
+      "HandSummaries": [
+        "John Folded=False Covered=False Out=False Cards=3s Jc 7h Ks ",
+        "Rob Folded=False Covered=False Out=False Cards=6s 4c As 3c "
+      ]
+    },
+    {
+      "ActionType": 11,
+      "UserName": "John",
+      "Parameters": null,
+      "LastEvent": "John paid 1 to call",
+      "NextAction": "Started next round, John to bet",
+      "HandCommentary": [
+        "John paid 1 to call",
+        "Started next round, John to bet"
+      ],
+      "HandSummaries": [
+        "John Folded=False Covered=False Out=False Cards=3s Jc 7h Ks 7d ",
+        "Rob Folded=False Covered=False Out=False Cards=6s 4c As 3c 4s "
+      ]
+    },
+    {
+      "ActionType": 12,
+      "UserName": "John",
+      "Parameters": "1",
+      "LastEvent": "John raised by 1",
+      "NextAction": "Rob to bet",
+      "HandCommentary": [
+        "1 is to be added to the pot (or pots)",
+        "Max chips currently in pot 1 = 4",
+        "Adding 1 to open pot",
+        "John raised by 1",
+        "Rob to bet"
+      ],
+      "HandSummaries": [
+        "John Folded=False Covered=False Out=False Cards=3s Jc 7h Ks 7d ",
+        "Rob Folded=False Covered=False Out=False Cards=6s 4c As 3c 4s "
+      ]
+    },
+    {
+      "ActionType": 12,
+      "UserName": "Rob",
+      "Parameters": "1",
+      "LastEvent": "Rob paid 1 to stay in and raised by 1",
+      "NextAction": "John to bet",
+      "HandCommentary": [
+        "2 is to be added to the pot (or pots)",
+        "Max chips currently in pot 1 = 5",
+        "Adding 2 to open pot",
+        "Rob paid 1 to stay in and raised by 1",
+        "John to bet"
+      ],
+      "HandSummaries": [
+        "John Folded=False Covered=False Out=False Cards=3s Jc 7h Ks 7d ",
+        "Rob Folded=False Covered=False Out=False Cards=6s 4c As 3c 4s "
+      ]
+    },
+    {
+      "ActionType": 11,
+      "UserName": "John",
+      "Parameters": null,
+      "LastEvent": "John paid 1 to call",
+      "NextAction": "Started next round, John to bet",
+      "HandCommentary": [
+        "John paid 1 to call",
+        "Started next round, John to bet"
+      ],
+      "HandSummaries": [
+        "John Folded=False Covered=False Out=False Cards=3s Jc 7h Ks 7d 9h ",
+        "Rob Folded=False Covered=False Out=False Cards=6s 4c As 3c 4s Kd "
+      ]
+    },
+    {
+      "ActionType": 10,
+      "UserName": "John",
+      "Parameters": null,
+      "LastEvent": "John checked",
+      "NextAction": "Rob to bet",
+      "HandCommentary": [
+        "John checked",
+        "Rob to bet"
+      ],
+      "HandSummaries": [
+        "John Folded=False Covered=False Out=False Cards=3s Jc 7h Ks 7d 9h ",
+        "Rob Folded=False Covered=False Out=False Cards=6s 4c As 3c 4s Kd "
+      ]
+    },
+    {
+      "ActionType": 10,
+      "UserName": "Rob",
+      "Parameters": null,
+      "LastEvent": "Rob checked",
+      "NextAction": "Started next round, John to bet",
+      "HandCommentary": [
+        "Rob checked",
+        "Started next round, John to bet"
+      ],
+      "HandSummaries": [
+        "John Folded=False Covered=False Out=False Cards=3s Jc 7h Ks 7d 9h 3h ",
+        "Rob Folded=False Covered=False Out=False Cards=6s 4c As 3c 4s Kd Ac "
+      ]
+    },
+    {
+      "ActionType": 12,
+      "UserName": "John",
+      "Parameters": "1",
+      "LastEvent": "John raised by 1",
+      "NextAction": "Rob to bet",
+      "HandCommentary": [
+        "1 is to be added to the pot (or pots)",
+        "Max chips currently in pot 1 = 6",
+        "Adding 1 to open pot",
+        "John raised by 1",
+        "Rob to bet"
+      ],
+      "HandSummaries": [
+        "John Folded=False Covered=False Out=False Cards=3s Jc 7h Ks 7d 9h 3h ",
+        "Rob Folded=False Covered=False Out=False Cards=6s 4c As 3c 4s Kd Ac "
+      ]
+    },
+    {
+      "ActionType": 12,
+      "UserName": "Rob",
+      "Parameters": "1",
+      "LastEvent": "Rob paid 1 to stay in and raised by 1",
+      "NextAction": "John to bet",
+      "HandCommentary": [
+        "2 is to be added to the pot (or pots)",
+        "Max chips currently in pot 1 = 7",
+        "Adding 2 to open pot",
+        "Rob paid 1 to stay in and raised by 1",
+        "John to bet"
+      ],
+      "HandSummaries": [
+        "John Folded=False Covered=False Out=False Cards=3s Jc 7h Ks 7d 9h 3h ",
+        "Rob Folded=False Covered=False Out=False Cards=6s 4c As 3c 4s Kd Ac "
+      ]
+    },
+    {
+      "ActionType": 12,
+      "UserName": "John",
+      "Parameters": "1",
+      "LastEvent": "John paid 1 to stay in and raised by 1",
+      "NextAction": "Rob to bet",
+      "HandCommentary": [
+        "2 is to be added to the pot (or pots)",
+        "Max chips currently in pot 1 = 8",
+        "Adding 2 to open pot",
+        "John paid 1 to stay in and raised by 1",
+        "Rob to bet"
+      ],
+      "HandSummaries": [
+        "John Folded=False Covered=False Out=False Cards=3s Jc 7h Ks 7d 9h 3h ",
+        "Rob Folded=False Covered=False Out=False Cards=6s 4c As 3c 4s Kd Ac "
+      ]
+    },
+    {
+      "ActionType": 12,
+      "UserName": "Rob",
+      "Parameters": "1",
+      "LastEvent": "Rob paid 1 to stay in and raised by 1",
+      "NextAction": "John to bet",
+      "HandCommentary": [
+        "2 is to be added to the pot (or pots)",
+        "Max chips currently in pot 1 = 9",
+        "Adding 2 to open pot",
+        "Rob paid 1 to stay in and raised by 1",
+        "John to bet"
+      ],
+      "HandSummaries": [
+        "John Folded=False Covered=False Out=False Cards=3s Jc 7h Ks 7d 9h 3h ",
+        "Rob Folded=False Covered=False Out=False Cards=6s 4c As 3c 4s Kd Ac "
+      ]
+    },
+    {
+      "ActionType": 12,
+      "UserName": "John",
+      "Parameters": "1",
+      "LastEvent": "John paid 1 to stay in and raised by 1",
+      "NextAction": "Rob to bet",
+      "HandCommentary": [
+        "2 is to be added to the pot (or pots)",
+        "Max chips currently in pot 1 = 10",
+        "Adding 2 to open pot",
+        "John paid 1 to stay in and raised by 1",
+        "Rob to bet"
+      ],
+      "HandSummaries": [
+        "John Folded=False Covered=False Out=False Cards=3s Jc 7h Ks 7d 9h 3h ",
+        "Rob Folded=False Covered=False Out=False Cards=6s 4c As 3c 4s Kd Ac "
+      ]
+    },
+    {
+      "ActionType": 12,
+      "UserName": "Rob",
+      "Parameters": "1",
+      "LastEvent": "Rob paid 1 to stay in and raised by 1",
+      "NextAction": "John to bet",
+      "HandCommentary": [
+        "2 is to be added to the pot (or pots)",
+        "Max chips currently in pot 1 = 11",
+        "Adding 2 to open pot",
+        "Rob paid 1 to stay in and raised by 1",
+        "John to bet"
+      ],
+      "HandSummaries": [
+        "John Folded=False Covered=False Out=False Cards=3s Jc 7h Ks 7d 9h 3h ",
+        "Rob Folded=False Covered=False Out=False Cards=6s 4c As 3c 4s Kd Ac "
+      ]
+    },
+    {
+      "ActionType": 12,
+      "UserName": "John",
+      "Parameters": "1",
+      "LastEvent": "John paid 1 to stay in and raised by 1",
+      "NextAction": "Rob to bet",
+      "HandCommentary": [
+        "2 is to be added to the pot (or pots)",
+        "Max chips currently in pot 1 = 12",
+        "Adding 2 to open pot",
+        "John paid 1 to stay in and raised by 1",
+        "Rob to bet"
+      ],
+      "HandSummaries": [
+        "John Folded=False Covered=False Out=False Cards=3s Jc 7h Ks 7d 9h 3h ",
+        "Rob Folded=False Covered=False Out=False Cards=6s 4c As 3c 4s Kd Ac "
+      ]
+    },
+    {
+      "ActionType": 12,
+      "UserName": "Rob",
+      "Parameters": "1",
+      "LastEvent": "Rob paid 1 to stay in and raised by 1",
+      "NextAction": "John to bet",
+      "HandCommentary": [
+        "2 is to be added to the pot (or pots)",
+        "Max chips currently in pot 1 = 13",
+        "Adding 2 to open pot",
+        "Rob paid 1 to stay in and raised by 1",
+        "John to bet"
+      ],
+      "HandSummaries": [
+        "John Folded=False Covered=False Out=False Cards=3s Jc 7h Ks 7d 9h 3h ",
+        "Rob Folded=False Covered=False Out=False Cards=6s 4c As 3c 4s Kd Ac "
+      ]
+    },
+    {
+      "ActionType": 12,
+      "UserName": "John",
+      "Parameters": "1",
+      "LastEvent": "John paid 1 to stay in and raised by 1",
+      "NextAction": "Rob to bet",
+      "HandCommentary": [
+        "2 is to be added to the pot (or pots)",
+        "Max chips currently in pot 1 = 14",
+        "Adding 2 to open pot",
+        "John paid 1 to stay in and raised by 1",
+        "Rob to bet"
+      ],
+      "HandSummaries": [
+        "John Folded=False Covered=False Out=False Cards=3s Jc 7h Ks 7d 9h 3h ",
+        "Rob Folded=False Covered=False Out=False Cards=6s 4c As 3c 4s Kd Ac "
+      ]
+    },
+    {
+      "ActionType": 12,
+      "UserName": "Rob",
+      "Parameters": "1",
+      "LastEvent": "Rob paid 1 to stay in and raised by 1",
+      "NextAction": "John to bet",
+      "HandCommentary": [
+        "2 is to be added to the pot (or pots)",
+        "Max chips currently in pot 1 = 15",
+        "Adding 2 to open pot",
+        "Rob paid 1 to stay in and raised by 1",
+        "John to bet"
+      ],
+      "HandSummaries": [
+        "John Folded=False Covered=False Out=False Cards=3s Jc 7h Ks 7d 9h 3h ",
+        "Rob Folded=False Covered=False Out=False Cards=6s 4c As 3c 4s Kd Ac "
+      ]
+    },
+    {
+      "ActionType": 11,
+      "UserName": "John",
+      "Parameters": null,
+      "LastEvent": "John paid 1 to call",
+      "NextAction": "John paid 1 to call, betting completed, proceeding to hand reveal stage, Rob to reveal (or fold)",
+      "HandCommentary": [
+        "John paid 1 to call",
+        "John paid 1 to call, betting completed, proceeding to hand reveal stage, Rob to reveal (or fold)"
+      ],
+      "HandSummaries": [
+        "John Folded=False Covered=False Out=False Cards=3s Jc 7h Ks 7d 9h 3h ",
+        "Rob Folded=False Covered=False Out=False Cards=6s 4c As 3c 4s Kd Ac "
+      ]
+    },
+    {
+      "ActionType": 6,
+      "UserName": "Rob",
+      "Parameters": null,
+      "LastEvent": "Rob revealed their hand details",
+      "NextAction": "Rob revealed their hand details, John to reveal (or fold)",
+      "HandCommentary": [
+        "John paid 1 to call",
+        "John paid 1 to call, betting completed, proceeding to hand reveal stage, Rob to reveal (or fold)",
+        "Rob revealed their hand details, John to reveal (or fold)"
+      ],
+      "HandSummaries": [
+        "John Folded=False Covered=False Out=False Cards=3s Jc 7h Ks 7d 9h 3h ",
+        "Rob Folded=False Covered=False Out=False Cards=6s 4c As 3c 4s Kd Ac "
+      ]
+    },
+    {
+      "ActionType": 14,
+      "UserName": "John",
+      "Parameters": null,
+      "LastEvent": "John folded",
+      "NextAction": "Reveal hands if desired, or administrator to start next hand (or reopen lobby)",
+      "HandCommentary": [
+        "John folded",
+        "John folded, only one player left in, hand ended",
+        "Determining winner(s) of pot #1",
+        "Rob won 16 with 6s 4c As 3c 4s Kd Ac  (Aces and Fours)",
+        "John lost 16 after folding",
+        "Waiting for administrator to start next hand.",
+        "Reveal hands if desired, or administrator to start next hand (or reopen lobby)"
+      ],
+      "HandSummaries": [
+        "John Folded=True Covered=False Out=False Cards=3s Jc 7h Ks 7d 9h 3h ",
+        "Rob Folded=False Covered=False Out=False Cards=6s 4c As 3c 4s Kd Ac "
+      ]
+    },
+    {
+      "ActionType": 6,
+      "UserName": "John",
+      "Parameters": null,
+      "LastEvent": "John revealed their hand details",
+      "NextAction": "Reveal hands if desired, or administrator to start next hand (or reopen lobby)",
+      "HandCommentary": [
+        "John folded",
+        "John folded, only one player left in, hand ended",
+        "Determining winner(s) of pot #1",
+        "Rob won 16 with 6s 4c As 3c 4s Kd Ac  (Aces and Fours)",
+        "John lost 16 after folding",
+        "Waiting for administrator to start next hand.",
+        "Reveal hands if desired, or administrator to start next hand (or reopen lobby)"
+      ],
+      "HandSummaries": [
+        "John Folded=True Covered=False Out=False Cards=3s Jc 7h Ks 7d 9h 3h ",
+        "Rob Folded=False Covered=False Out=False Cards=6s 4c As 3c 4s Kd Ac "
+      ]
+    },
+    {
+      "ActionType": 4,
+      "UserName": "Rob",
+      "Parameters": null,
+      "LastEvent": "Rob started next hand",
+      "NextAction": "John to bet",
+      "HandCommentary": [],
+      "HandSummaries": [
+        "John Folded=False Covered=False Out=False Cards=4d 2c 6c ",
+        "Rob Folded=False Covered=False Out=False Cards=Qs As 2h "
+      ]
+    },
+    {
+      "ActionType": 12,
+      "UserName": "John",
+      "Parameters": "1",
+      "LastEvent": "John raised by 1",
+      "NextAction": "Rob to bet",
+      "HandCommentary": [
+        "1 is to be added to the pot (or pots)",
+        "Max chips currently in pot 1 = 1",
+        "Adding 1 to open pot",
+        "John raised by 1",
+        "Rob to bet"
+      ],
+      "HandSummaries": [
+        "John Folded=False Covered=False Out=False Cards=4d 2c 6c ",
+        "Rob Folded=False Covered=False Out=False Cards=Qs As 2h "
+      ]
+    },
+    {
+      "ActionType": 12,
+      "UserName": "Rob",
+      "Parameters": "1",
+      "LastEvent": "Rob paid 1 to stay in and raised by 1",
+      "NextAction": "John to bet",
+      "HandCommentary": [
+        "2 is to be added to the pot (or pots)",
+        "Max chips currently in pot 1 = 2",
+        "Adding 2 to open pot",
+        "Rob paid 1 to stay in and raised by 1",
+        "John to bet"
+      ],
+      "HandSummaries": [
+        "John Folded=False Covered=False Out=False Cards=4d 2c 6c ",
+        "Rob Folded=False Covered=False Out=False Cards=Qs As 2h "
+      ]
+    },
+    {
+      "ActionType": 12,
+      "UserName": "John",
+      "Parameters": "1",
+      "LastEvent": "John paid 1 to stay in and raised by 1",
+      "NextAction": "Rob to bet",
+      "HandCommentary": [
+        "2 is to be added to the pot (or pots)",
+        "Max chips currently in pot 1 = 3",
+        "Adding 2 to open pot",
+        "John paid 1 to stay in and raised by 1",
+        "Rob to bet"
+      ],
+      "HandSummaries": [
+        "John Folded=False Covered=False Out=False Cards=4d 2c 6c ",
+        "Rob Folded=False Covered=False Out=False Cards=Qs As 2h "
+      ]
+    },
+    {
+      "ActionType": 11,
+      "UserName": "Rob",
+      "Parameters": null,
+      "LastEvent": "Rob paid 1 to call",
+      "NextAction": "Started next round, John to bet",
+      "HandCommentary": [
+        "Rob paid 1 to call",
+        "Started next round, John to bet"
+      ],
+      "HandSummaries": [
+        "John Folded=False Covered=False Out=False Cards=4d 2c 6c Th ",
+        "Rob Folded=False Covered=False Out=False Cards=Qs As 2h 5s "
+      ]
+    },
+    {
+      "ActionType": 12,
+      "UserName": "John",
+      "Parameters": "1",
+      "LastEvent": "John raised by 1",
+      "NextAction": "Rob to bet",
+      "HandCommentary": [
+        "1 is to be added to the pot (or pots)",
+        "Max chips currently in pot 1 = 4",
+        "Adding 1 to open pot",
+        "John raised by 1",
+        "Rob to bet"
+      ],
+      "HandSummaries": [
+        "John Folded=False Covered=False Out=False Cards=4d 2c 6c Th ",
+        "Rob Folded=False Covered=False Out=False Cards=Qs As 2h 5s "
+      ]
+    },
+    {
+      "ActionType": 12,
+      "UserName": "Rob",
+      "Parameters": "1",
+      "LastEvent": "Rob paid 1 to stay in and raised by 1",
+      "NextAction": "John to bet",
+      "HandCommentary": [
+        "2 is to be added to the pot (or pots)",
+        "Max chips currently in pot 1 = 5",
+        "Adding 2 to open pot",
+        "Rob paid 1 to stay in and raised by 1",
+        "John to bet"
+      ],
+      "HandSummaries": [
+        "John Folded=False Covered=False Out=False Cards=4d 2c 6c Th ",
+        "Rob Folded=False Covered=False Out=False Cards=Qs As 2h 5s "
+      ]
+    },
+    {
+      "ActionType": 12,
+      "UserName": "John",
+      "Parameters": "1",
+      "LastEvent": "John paid 1 to stay in and raised by 1",
+      "NextAction": "Rob to bet",
+      "HandCommentary": [
+        "2 is to be added to the pot (or pots)",
+        "Max chips currently in pot 1 = 6",
+        "Adding 2 to open pot",
+        "John paid 1 to stay in and raised by 1",
+        "Rob to bet"
+      ],
+      "HandSummaries": [
+        "John Folded=False Covered=False Out=False Cards=4d 2c 6c Th ",
+        "Rob Folded=False Covered=False Out=False Cards=Qs As 2h 5s "
+      ]
+    },
+    {
+      "ActionType": 11,
+      "UserName": "Rob",
+      "Parameters": null,
+      "LastEvent": "Rob paid 1 to call",
+      "NextAction": "Started next round, Rob to bet",
+      "HandCommentary": [
+        "Rob paid 1 to call",
+        "Started next round, Rob to bet"
+      ],
+      "HandSummaries": [
+        "John Folded=False Covered=False Out=False Cards=4d 2c 6c Th 3s ",
+        "Rob Folded=False Covered=False Out=False Cards=Qs As 2h 5s Ks "
+      ]
+    },
+    {
+      "ActionType": 12,
+      "UserName": "Rob",
+      "Parameters": "1",
+      "LastEvent": "Rob raised by 1",
+      "NextAction": "John to bet",
+      "HandCommentary": [
+        "1 is to be added to the pot (or pots)",
+        "Max chips currently in pot 1 = 7",
+        "Adding 1 to open pot",
+        "Rob raised by 1",
+        "John to bet"
+      ],
+      "HandSummaries": [
+        "John Folded=False Covered=False Out=False Cards=4d 2c 6c Th 3s ",
+        "Rob Folded=False Covered=False Out=False Cards=Qs As 2h 5s Ks "
+      ]
+    },
+    {
+      "ActionType": 12,
+      "UserName": "John",
+      "Parameters": "1",
+      "LastEvent": "John paid 1 to stay in and raised by 1",
+      "NextAction": "Rob to bet",
+      "HandCommentary": [
+        "2 is to be added to the pot (or pots)",
+        "Max chips currently in pot 1 = 8",
+        "Adding 2 to open pot",
+        "John paid 1 to stay in and raised by 1",
+        "Rob to bet"
+      ],
+      "HandSummaries": [
+        "John Folded=False Covered=False Out=False Cards=4d 2c 6c Th 3s ",
+        "Rob Folded=False Covered=False Out=False Cards=Qs As 2h 5s Ks "
+      ]
+    },
+    {
+      "ActionType": 12,
+      "UserName": "Rob",
+      "Parameters": "1",
+      "LastEvent": "Rob paid 1 to stay in and raised by 1",
+      "NextAction": "John to bet",
+      "HandCommentary": [
+        "2 is to be added to the pot (or pots)",
+        "Max chips currently in pot 1 = 9",
+        "Adding 2 to open pot",
+        "Rob paid 1 to stay in and raised by 1",
+        "John to bet"
+      ],
+      "HandSummaries": [
+        "John Folded=False Covered=False Out=False Cards=4d 2c 6c Th 3s ",
+        "Rob Folded=False Covered=False Out=False Cards=Qs As 2h 5s Ks "
+      ]
+    },
+    {
+      "ActionType": 11,
+      "UserName": "John",
+      "Parameters": null,
+      "LastEvent": "John paid 1 to call",
+      "NextAction": "Started next round, Rob to bet",
+      "HandCommentary": [
+        "John paid 1 to call",
+        "Started next round, Rob to bet"
+      ],
+      "HandSummaries": [
+        "John Folded=False Covered=False Out=False Cards=4d 2c 6c Th 3s 5c ",
+        "Rob Folded=False Covered=False Out=False Cards=Qs As 2h 5s Ks 4h "
+      ]
+    },
+    {
+      "ActionType": 10,
+      "UserName": "Rob",
+      "Parameters": null,
+      "LastEvent": "Rob checked",
+      "NextAction": "John to bet",
+      "HandCommentary": [
+        "Rob checked",
+        "John to bet"
+      ],
+      "HandSummaries": [
+        "John Folded=False Covered=False Out=False Cards=4d 2c 6c Th 3s 5c ",
+        "Rob Folded=False Covered=False Out=False Cards=Qs As 2h 5s Ks 4h "
+      ]
+    },
+    {
+      "ActionType": 12,
+      "UserName": "John",
+      "Parameters": "1",
+      "LastEvent": "John raised by 1",
+      "NextAction": "Rob to bet",
+      "HandCommentary": [
+        "1 is to be added to the pot (or pots)",
+        "Max chips currently in pot 1 = 10",
+        "Adding 1 to open pot",
+        "John raised by 1",
+        "Rob to bet"
+      ],
+      "HandSummaries": [
+        "John Folded=False Covered=False Out=False Cards=4d 2c 6c Th 3s 5c ",
+        "Rob Folded=False Covered=False Out=False Cards=Qs As 2h 5s Ks 4h "
+      ]
+    },
+    {
+      "ActionType": 12,
+      "UserName": "Rob",
+      "Parameters": "1",
+      "LastEvent": "Rob paid 1 to stay in and raised by 1",
+      "NextAction": "John to bet",
+      "HandCommentary": [
+        "2 is to be added to the pot (or pots)",
+        "Max chips currently in pot 1 = 11",
+        "Adding 2 to open pot",
+        "Rob paid 1 to stay in and raised by 1",
+        "John to bet"
+      ],
+      "HandSummaries": [
+        "John Folded=False Covered=False Out=False Cards=4d 2c 6c Th 3s 5c ",
+        "Rob Folded=False Covered=False Out=False Cards=Qs As 2h 5s Ks 4h "
+      ]
+    },
+    {
+      "ActionType": 12,
+      "UserName": "John",
+      "Parameters": "1",
+      "LastEvent": "John paid 1 to stay in and raised by 1",
+      "NextAction": "Rob to bet",
+      "HandCommentary": [
+        "2 is to be added to the pot (or pots)",
+        "Max chips currently in pot 1 = 12",
+        "Adding 2 to open pot",
+        "John paid 1 to stay in and raised by 1",
+        "Rob to bet"
+      ],
+      "HandSummaries": [
+        "John Folded=False Covered=False Out=False Cards=4d 2c 6c Th 3s 5c ",
+        "Rob Folded=False Covered=False Out=False Cards=Qs As 2h 5s Ks 4h "
+      ]
+    },
+    {
+      "ActionType": 12,
+      "UserName": "Rob",
+      "Parameters": "1",
+      "LastEvent": "Rob paid 1 to stay in and raised by 1",
+      "NextAction": "John to bet",
+      "HandCommentary": [
+        "2 is to be added to the pot (or pots)",
+        "Max chips currently in pot 1 = 13",
+        "Adding 2 to open pot",
+        "Rob paid 1 to stay in and raised by 1",
+        "John to bet"
+      ],
+      "HandSummaries": [
+        "John Folded=False Covered=False Out=False Cards=4d 2c 6c Th 3s 5c ",
+        "Rob Folded=False Covered=False Out=False Cards=Qs As 2h 5s Ks 4h "
+      ]
+    },
+    {
+      "ActionType": 12,
+      "UserName": "John",
+      "Parameters": "1",
+      "LastEvent": "John paid 1 to stay in and raised by 1",
+      "NextAction": "Rob to bet",
+      "HandCommentary": [
+        "2 is to be added to the pot (or pots)",
+        "Max chips currently in pot 1 = 14",
+        "Adding 2 to open pot",
+        "John paid 1 to stay in and raised by 1",
+        "Rob to bet"
+      ],
+      "HandSummaries": [
+        "John Folded=False Covered=False Out=False Cards=4d 2c 6c Th 3s 5c ",
+        "Rob Folded=False Covered=False Out=False Cards=Qs As 2h 5s Ks 4h "
+      ]
+    },
+    {
+      "ActionType": 11,
+      "UserName": "Rob",
+      "Parameters": null,
+      "LastEvent": "Rob paid 1 to call",
+      "NextAction": "Started next round, Rob to bet",
+      "HandCommentary": [
+        "Rob paid 1 to call",
+        "Started next round, Rob to bet"
+      ],
+      "HandSummaries": [
+        "John Folded=False Covered=False Out=False Cards=4d 2c 6c Th 3s 5c 8h ",
+        "Rob Folded=False Covered=False Out=False Cards=Qs As 2h 5s Ks 4h Qh "
+      ]
+    },
+    {
+      "ActionType": 10,
+      "UserName": "Rob",
+      "Parameters": null,
+      "LastEvent": "Rob checked",
+      "NextAction": "John to bet",
+      "HandCommentary": [
+        "Rob checked",
+        "John to bet"
+      ],
+      "HandSummaries": [
+        "John Folded=False Covered=False Out=False Cards=4d 2c 6c Th 3s 5c 8h ",
+        "Rob Folded=False Covered=False Out=False Cards=Qs As 2h 5s Ks 4h Qh "
+      ]
+    },
+    {
+      "ActionType": 12,
+      "UserName": "John",
+      "Parameters": "1",
+      "LastEvent": "John raised by 1",
+      "NextAction": "Rob to bet",
+      "HandCommentary": [
+        "1 is to be added to the pot (or pots)",
+        "Max chips currently in pot 1 = 15",
+        "Adding 1 to open pot",
+        "John raised by 1",
+        "Rob to bet"
+      ],
+      "HandSummaries": [
+        "John Folded=False Covered=False Out=False Cards=4d 2c 6c Th 3s 5c 8h ",
+        "Rob Folded=False Covered=False Out=False Cards=Qs As 2h 5s Ks 4h Qh "
+      ]
+    },
+    {
+      "ActionType": 11,
+      "UserName": "Rob",
+      "Parameters": null,
+      "LastEvent": "Rob paid 1 to call",
+      "NextAction": "Rob paid 1 to call, betting completed, proceeding to hand reveal stage, John to reveal (or fold)",
+      "HandCommentary": [
+        "Rob paid 1 to call",
+        "Rob paid 1 to call, betting completed, proceeding to hand reveal stage, John to reveal (or fold)"
+      ],
+      "HandSummaries": [
+        "John Folded=False Covered=False Out=False Cards=4d 2c 6c Th 3s 5c 8h ",
+        "Rob Folded=False Covered=False Out=False Cards=Qs As 2h 5s Ks 4h Qh "
+      ]
+    },
+    {
+      "ActionType": 6,
+      "UserName": "John",
+      "Parameters": null,
+      "LastEvent": "John revealed their hand details",
+      "NextAction": "John revealed their hand details, Rob to reveal (or fold)",
+      "HandCommentary": [
+        "Rob paid 1 to call",
+        "Rob paid 1 to call, betting completed, proceeding to hand reveal stage, John to reveal (or fold)",
+        "John revealed their hand details, Rob to reveal (or fold)"
+      ],
+      "HandSummaries": [
+        "John Folded=False Covered=False Out=False Cards=4d 2c 6c Th 3s 5c 8h ",
+        "Rob Folded=False Covered=False Out=False Cards=Qs As 2h 5s Ks 4h Qh "
+      ]
+    }
+  ],
+  "decks": [
+    [
+      {
+        "CardValue": 29,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 5,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 31,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 37,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 17,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 29,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 11,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 2,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 41,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 19,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 7,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 23,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 23,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 37,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 31,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 23,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 2,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 2,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 17,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 31,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 7,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 11,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 23,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 31,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 7,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 11,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 13,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 5,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 19,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 2,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 17,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 3,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 29,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 13,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 17,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 41,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 7,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 19,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 41,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 3,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 37,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 19,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 5,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 13,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 3,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 37,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 41,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 5,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 11,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 13,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 29,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 3,
+        "CardSuit": 0
+      }
+    ],
+    [
+      {
+        "CardValue": 23,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 41,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 29,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 7,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 37,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 17,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 17,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 37,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 23,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 17,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 29,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 19,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 31,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 41,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 2,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 31,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 11,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 11,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 19,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 3,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 13,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 37,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 5,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 13,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 2,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 13,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 29,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 3,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 19,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 23,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 29,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 19,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 11,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 5,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 13,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 41,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 3,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 7,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 31,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 17,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 5,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 7,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 37,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 3,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 7,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 23,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 2,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 41,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 31,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 11,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 2,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 5,
+        "CardSuit": 3
+      }
+    ]
+  ]
+}
