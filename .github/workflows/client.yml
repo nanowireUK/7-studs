@@ -12,7 +12,7 @@ jobs:
     - uses: mr-smithers-excellent/docker-build-push@v4
       name: Build & push Docker image
       with:
-        image: 7studsacr.azurecr.io/7studsserver
+        image: 7studsserver
         tag: latest
         registry: 7studsacr.azurecr.io
         dockerfile: ./client/Dockerfile
