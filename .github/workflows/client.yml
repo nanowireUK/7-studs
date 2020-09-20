@@ -15,6 +15,6 @@ jobs:
         image: 7studsclient
         tag: latest
         registry: 7studsacr.azurecr.io
-        directory: client/
+        directory: ./client
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
