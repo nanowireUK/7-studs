@@ -1,4 +1,4 @@
-name: Develop - Client Build and Push
+name: Develop - Server Build and Push
 
 on: [push, workflow_dispatch]
 
@@ -12,10 +12,10 @@ jobs:
     - uses: mr-smithers-excellent/docker-build-push@v4
       name: Build & push Docker image
       with:
-        image: 7studsclient
+        image: 7studsserver
         tag: latest
         registry: 7studsacr.azurecr.io
-        directory: ./client
-        dockerfile: ./client/Dockerfile
+        directory: ./server
+        dockerfile: ./server/Dockerfile
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
