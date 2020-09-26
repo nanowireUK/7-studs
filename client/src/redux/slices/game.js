@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { awaitingResponse } from './hub';
+import { awaitingResponse, setRejoinCode } from './hub';
 
 export const gameSlice = createSlice({
     name: 'game',
@@ -21,6 +21,12 @@ export const start = () => (dispatch, getState, connection) => {
         .invoke('UserClickedStart', gameId, username)
         .then(console.log)
         .catch(console.log);
+}
+
+export const leave = () => (dispatch) => {    
+    localStorage.setItem('rejoinCode', '');
+    dispatch(setRejoinCode(''));
+    dispatch(updateGame(null));
 }
 
 export const raise = (raiseAmount) => (dispatch, getState, connection) => {

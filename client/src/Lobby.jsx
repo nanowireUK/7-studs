@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectPlayers, selectCanDoAction, start, PlayerActions } from './redux/slices/game';
+import { selectPlayers, selectCanDoAction, start, leave, PlayerActions } from './redux/slices/game';
 import { selectUsername, selectGameId } from './redux/slices/hub';
 import { Text, Box, Button, Heading } from 'grommet';
 
@@ -15,11 +15,25 @@ function Lobby () {
         dispatch(start());
     }
 
-    return <Box>
-        <Heading>{gameId}</Heading>
+    const leaveGame = () => {
+        dispatch(leave());
+    }
+
+    return <Box
+            justify="center"
+            height="100vh"
+            direction="column"
+            width="medium"
+            gap="small"
+            margin="auto">
+        <Heading>7 Studs - {gameId}</Heading>
         {players.map(({ name }) => <Text weight={name === username ? 'bold' : 'normal'}>{name}</Text>)}
-        <Button primary label="Start game"
-            onClick={startGame} disabled={!canStart} />
+        <Box direction="row" gap="xsmall">
+            {!canStart && <Button primary label="Start game"
+                onClick={startGame} />}
+            <Button label="Leave game"
+            onClick={leaveGame} />
+        </Box>
     </Box>;
 }
 
