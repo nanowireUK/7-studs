@@ -11,6 +11,8 @@ jobs:
 
     - uses: mr-smithers-excellent/docker-build-push@v4
       name: Build & push Docker image
+      env:
+      - REACT_APP_SERVER_URL: https://7studsserver.azurewebsites.net
       with:
         image: 7studsclient
         tag: latest
