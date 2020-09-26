@@ -6,7 +6,7 @@ import {
     selectInLobby,
     selectPlayers,
     selectPots,
-    selectNextAction,
+    selectGameStatus,
     selectCanDoAction,
     PlayerActions,
     raise,
@@ -16,14 +16,14 @@ import {
 
 import Lobby from './Lobby';
 import Player from './Player';
-import { Box, Grid, Text, Button } from 'grommet';
+import { Box, Grid, Text, Button, Stack } from 'grommet';
 import GameActions from './GameActions';
 
 function Game() {
     const players = useSelector(selectPlayers);
     const inLobby = useSelector(selectInLobby);
     const pots = useSelector(selectPots);
-    const nextAction = useSelector(selectNextAction);
+    const gameStatus = useSelector(selectGameStatus);
 
     if (inLobby) return <Lobby/>
 
@@ -66,13 +66,13 @@ function Game() {
                         </Box>
                     ))}
 
-                    <Box round={true} gridArea="pot" background="accent-1">
-                        <Text>{pots[0].reduce((a, b) => a + b, 0)}</Text>
+                    <Box justify="center" align="center" alignContent="center" round={true} gridArea="pot" background="accent-1" direction="column">
+                        <Text size="xlarge" textAlign="center">{pots[0].reduce((a, b) => a + b, 0)}</Text>
                     </Box>
                 </Grid>
-                <Box gridArea="actions" background="accent-2" direction="row">
-                    <Text>{nextAction}</Text>
-                    <GameActions/>
+                <Box gridArea="actions" background="accent-2" direction="column" justify="between" pad="xsmall">
+                    <Box><Text textAlign="center">{gameStatus}</Text></Box>
+                    <Box alignSelf="end"><GameActions /></Box>
                 </Box>
             </Grid>
         </div>
