@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Box, Button } from 'grommet';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { selectCanDoAction, selectIsAdmin, PlayerActions, raise, check, fold, cover, call, selectHandInProgress, selectHandCompleted, start } from './redux/slices/game';
+import { selectCanDoAction, selectIsAdmin, PlayerActions, raise, check, fold, cover, call, reveal, selectHandInProgress, selectHandCompleted, start, selectHandsBeingRevealed } from './redux/slices/game';
 
 function GameActions () {
     const canRaise = useSelector(selectCanDoAction(PlayerActions.RAISE));
@@ -11,7 +11,9 @@ function GameActions () {
     const canCheck = useSelector(selectCanDoAction(PlayerActions.CHECK));
     const canCall = useSelector(selectCanDoAction(PlayerActions.CALL));
     const canCover = useSelector(selectCanDoAction(PlayerActions.COVER));
+    const canReveal = useSelector(selectCanDoAction(PlayerActions.REVEAL));
     const handInProgress = useSelector(selectHandInProgress);
+    const handsBeingRevealed = useSelector(selectHandsBeingRevealed);
     const handCompleted = useSelector(selectHandCompleted);
     const isAdmin = useSelector(selectIsAdmin);
 
@@ -41,7 +43,7 @@ function GameActions () {
     };
 
     const clickReveal = () => {
-        
+        dispatch(reveal());
     }
 
     const clickStartNext = () => {
@@ -50,19 +52,19 @@ function GameActions () {
     
     if (handCompleted) {
          return (
-             <Box direction="row" alignSelf="end">
+             <Box direction="row" gap="xsmall">
                  <Button
                      primary
                      label="Reveal Hand [X]"
                      onClick={clickReveal}
-                     disabled={true}
+                     disabled={!canReveal}
                  />
                  {isAdmin ? <Button primary label="Start Next Game [Enter]" onClick={clickStartNext}/> : null}
              </Box>
          );
     } else if (handInProgress) {
         return (
-            <Box direction="row" alignSelf="end">
+            <Box direction="row" gap="xsmall">
                 <Button
                     primary
                     label="Raise [R]"
@@ -95,7 +97,24 @@ function GameActions () {
                 />
             </Box>
         );
-    } else return null;
+    } else if (handsBeingRevealed) {
+        return (
+             <Box direction="row" gap="xsmall">
+                <Button
+                    primary
+                    label="Reveal Hand [X]"
+                    onClick={clickReveal}
+                    disabled={!canReveal}
+                />                
+                    <Button
+                    primary
+                    label="Fold [F]"
+                    onClick={clickFold}
+                    disabled={!canFold}
+                />
+            </Box>
+        )
+     } else return null;
    
 }
 
