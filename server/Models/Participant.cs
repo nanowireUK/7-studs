@@ -78,7 +78,7 @@ namespace SevenStuds.Models
                 ServerState.DummyCard, 
                 ServerState.DummyCard, 
                 ServerState.DummyCard, ServerState.RankingTable);
-            this._VisibleHandDescription = visibleHand.ToString(HandToStringFormatEnum.ShortCardsHeld) + ": " + visibleHand.ToString(HandToStringFormatEnum.HandDescription);
+            this._VisibleHandDescription = /*visibleHand.ToString(HandToStringFormatEnum.ShortCardsHeld) + ": " + */ visibleHand.ToString(HandToStringFormatEnum.HandDescription);
             this._VisibleHandRank = visibleHand.Rank;
             _PokerHand = new PokerHand(
                 this.Hand[0], 
@@ -118,7 +118,7 @@ namespace SevenStuds.Models
                     roundNumber >= 6 ? this.Hand[5] : ServerState.DummyCard, 
                     ServerState.DummyCard, // never more than 4 visible
                     ServerState.RankingTable);
-                this._VisibleHandDescription = visibleHand.ToString(HandToStringFormatEnum.ShortCardsHeld) + ": " + visibleHand.ToString(HandToStringFormatEnum.HandDescription);
+                this._VisibleHandDescription = /*visibleHand.ToString(HandToStringFormatEnum.ShortCardsHeld) + ": " + */ visibleHand.ToString(HandToStringFormatEnum.HandDescription);
                 this._VisibleHandRank = visibleHand.Rank;
 
                 if ( g._CardsDealtIncludingCurrent < 6 ) {
