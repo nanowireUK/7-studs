@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { awaitingResponse } from './hub';
+import { awaitingResponse, setRejoinCode } from './hub';
 
 export const gameSlice = createSlice({
     name: 'game',
@@ -21,6 +21,12 @@ export const start = () => (dispatch, getState, connection) => {
         .invoke('UserClickedStart', gameId, username)
         .then(console.log)
         .catch(console.log);
+}
+
+export const leave = () => (dispatch) => {    
+    localStorage.setItem('rejoinCode', '');
+    dispatch(setRejoinCode(''));
+    dispatch(updateGame(null));
 }
 
 export const raise = (raiseAmount) => (dispatch, getState, connection) => {
@@ -68,12 +74,23 @@ export const call = () => (dispatch, getState, connection) => {
         .catch(console.log);
 };
 
+export const reveal = () => (dispatch, getState, connection) => {
+    const { gameId, username } = getState().hub;
+    dispatch(awaitingResponse(true));
+    connection
+        .invoke("UserClickedReveal", gameId, username)
+        .then(console.log)
+        .catch(console.log);
+};
+
 export const selectGame = (state) => state.game;
 
 export const selectInLobby = (state) =>
     state.game !== null && state.game.GameMode === 'LobbyOpen';
 export const selectHandInProgress = (state) =>
     state.game !== null && state.game.GameMode === 'HandInProgress';
+export const selectHandsBeingRevealed = (state) =>
+    state.game !== null && state.game.GameMode === 'HandsBeingRevealed';
 export const selectHandCompleted = (state) =>
     state.game !== null && state.game.GameMode === 'HandCompleted';
 
@@ -102,7 +119,7 @@ export const selectPlayers = (state) =>
 
 export const selectPots = (state) => state.game.Pots;
 
-export const selectNextAction = (state) => state.game.NextAction;
+export const selectGameStatus = (state) => state.game.StatusMessage;
 
 export const selectCanDoAction = (action) => (state) =>
     state.game !== null && state.game.AvailableActions.includes(action);
@@ -113,7 +130,8 @@ export const PlayerActions = Object.freeze({
     CALL: 'Call',
     COVER: 'Cover',
     RAISE: 'Raise',
-    FOLD: 'Fold'
+    FOLD: 'Fold',
+    REVEAL: 'Reveal'
 });
 
 export default gameSlice.reducer;

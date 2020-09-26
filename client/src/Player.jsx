@@ -18,6 +18,7 @@ function Player ({ name, chips, cards, isDealer, isAdmin, isCurrentPlayer, isMe 
                             style={{
                                 width: undefined,
                                 height: '12vh',
+                                marginLeft: index ? '4px' : null
                             }}
                         />
                     );

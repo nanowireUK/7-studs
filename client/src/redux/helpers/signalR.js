@@ -7,9 +7,8 @@ import {
 
 import {
     updateGame,
-    
-
 } from '../slices/game';
+
 import {
     serverConnected,
     disconnected,
@@ -17,10 +16,14 @@ import {
     awaitingResponse,
     setRejoinCode, } from '../slices/hub';
 
+import {
+    serverUrl
+} from '../../config';
+
 export const connection = new HubConnectionBuilder()
     .configureLogging(LogLevel.Debug)
     //TODO parameterise this connection
-    .withUrl('https://7studsserver.azurewebsites.net/chatHub', {
+    .withUrl(`${serverUrl}/chatHub`, {
         skipNegotiation: true,
         transport: HttpTransportType.WebSockets,
     })
