@@ -18,7 +18,6 @@ namespace SevenStuds.Models
         public string MyHandSummary  { get; set; }
         public string MyHandDescription { get; set; }
         public List<string> HandCommentary { get; set; }        
-        //public int MyIndex { get; set; }
         public string MyRejoinCode { get; set; }
         public int MyMaxRaise { get; set; }
         public string GameMode { get; set; }
@@ -29,14 +28,9 @@ namespace SevenStuds.Models
         public int Ante { get; set; }
         public string GameId { get; }
         public int HandsPlayedIncludingCurrent { get; set; } // 0 = game not yet started
-        //public int IndexOfParticipantDealingThisHand { get; set; } // Rotates from player 0
-        //public int IndexOfParticipantToTakeNextAction { get; set; } // Determined by cards showing (at start of round) then on player order
-        //public int IndexOfAdministrator { get; set; }
         public List<string> AvailableActions { get; set; } // A player-centric view of the actions available to them
         public List<List<int>> Pots { get; set; } // pot(s) built up in the current hand (over multiple rounds of betting)
         public List<PlayerCentricParticipantView> PlayerViewOfParticipants { get; set; } // ordered list of participants (order represents order around the table)
-
-
         public PlayerCentricGameView(Game g, int playerIndex) {
             // Build up this player's view of the game
             StatusMessage = g.StatusMessage;
@@ -58,7 +52,22 @@ namespace SevenStuds.Models
             //IndexOfParticipantDealingThisHand = g.IndexOfParticipantDealingThisHand;
             //IndexOfParticipantToTakeNextAction = g.IndexOfParticipantToTakeNextAction;
             //CardPositionIsVisible = g.CardPositionIsVisible;
-            Pots = g.Pots;
+            // Reproduce the pots (the pots themselves stay in the same order, but the current player's contributions becomes the first slot in the inner array)
+            if ( g.Pots == null ) {
+                this.Pots = null;
+            }
+            else {
+                this.Pots = new List<List<int>>();
+                for ( int pot = 0; pot < g.Pots.Count; pot++ ) {
+                    // Add a pot to reflect a pot from the main game
+                    this.Pots.Add(new List<int>()); 
+                    // Add pot contributions, starting with this player and going clockwise
+                    for ( int slot = 0; slot < g.Participants.Count; slot++ ) {
+                        int sourceSlot =  ( slot + playerIndex ) % g.Participants.Count; // puts current player in slot 0 with rest following clockwise
+                        this.Pots[pot].Add(g.Pots[pot][sourceSlot]); 
+                    }
+                }  
+            }              
             // Determine the index of the administrator
             IAmAdministrator = ( g.GetIndexOfAdministrator() == playerIndex ); 
             // Add a list of participants, with data relevant to this player
