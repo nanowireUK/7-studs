@@ -381,7 +381,7 @@
         "John folded",
         "John folded, only one player left in, hand ended",
         "Determining winner(s) of pot #1",
-        "Phil won 6 with 7h 8h Td 2d 2c Th  (Tens and Deuces)",
+        "Phil won 6 with 7h 8h Td 2d 2c Th  (Tens and Twos)",
         "John lost 6 after folding",
         "Waiting for administrator to start next hand.",
         "Reveal hands if desired, or administrator to start next hand (or reopen lobby)"

@@ -353,7 +353,7 @@
         "Harry won 608 with Th Qd Tc 9d Jh 6h 8s  (Queen-High Straight)",
         "Phil lost 1 after folding",
         "Robert lost 1 after folding",
-        "John lost 606 with 2d 3c 3s Qs Js Ks Qc  [rank=2810] (Queens and Treys)",
+        "John lost 606 with 2d 3c 3s Qs Js Ks Qc  [rank=2810] (Queens and Threes)",
         "Waiting for administrator to start next hand.",
         "Reveal hands if desired, or administrator to start next hand (or reopen lobby)"
       ],
