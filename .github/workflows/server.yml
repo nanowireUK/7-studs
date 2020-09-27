@@ -1,6 +1,9 @@
 name: Develop - Server Build and Push
 
-on: [push, workflow_dispatch]
+on:
+  push:
+    branches:
+      - develop
 
 jobs:
   path-context:
