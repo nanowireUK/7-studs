@@ -1,36 +1,46 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import {
     selectInLobby,
     selectPlayers,
     selectPots,
     selectGameStatus,
-    selectCanDoAction,
-    PlayerActions,
-    raise,
-    fold,
-    check,
+    leave,
 } from './redux/slices/game';
+
+import { selectGameId, selectRejoinCode } from './redux/slices/hub';
 
 import Lobby from './Lobby';
 import Player from './Player';
-import { Box, Grid, Text, Button, Stack } from 'grommet';
+import { Box, Grid, Text, Button } from 'grommet';
 import GameActions from './GameActions';
 
 function Game() {
     const players = useSelector(selectPlayers);
     const inLobby = useSelector(selectInLobby);
     const pots = useSelector(selectPots);
+    const gameId = useSelector(selectGameId);
+    const rejoinCode = useSelector(selectRejoinCode);
     const gameStatus = useSelector(selectGameStatus);
+    const dispatch = useDispatch();
+
+    const leaveGame = () => {
+        dispatch(leave());
+    }
 
     if (inLobby) return <Lobby/>
 
     const playerArea = ((numPlayers) => (position) =>
         [
-            ['player2', 'player7'],
-            ['player1', 'player3', 'player7']
+            ['player7', 'player2'],
+            ['player7', 'player1', 'player3'],
+            ['player7', 'player4', 'player2', 'player5'],
+            ['player7', 'player4', 'player1', 'player3', 'player5'],
+            ['player7', 'player6', 'player1', 'player2', 'player3', 'player8'],
+            ['player7', 'player6', 'player4', 'player1', 'player3', 'player5', 'player8'],
+            ['player7', 'player6', 'player4', 'player1', 'player2', 'player3', 'player5', 'player8'],
         ][numPlayers][position])(players.length - 2);
 
     return (
@@ -45,7 +55,13 @@ function Game() {
                 columns={['fill']}
                 rows={['xsmall', 'auto', 'xsmall']}
             >
-                <Box gridArea="gameStatus" background="accent-1" />
+                <Box pad="small" gridArea="gameStatus" background="brand" direction="row" fill justify="between">
+                    <Text basis="full" alignSelf="center" size="xxlarge">{gameId}</Text>
+                    <Box justify="center">
+                        <Text alignSelf="center" size="large">{rejoinCode}</Text>
+                        <Button color="accent-1" onClick={leaveGame}>Leave</Button>
+                    </Box>
+                </Box>
                 <Grid
                     gridArea="gameArea"
                     fill={true}
@@ -69,11 +85,13 @@ function Game() {
                         </Box>
                     ))}
 
-                    <Box justify="center" align="center" alignContent="center" round={true} gridArea="pot" background="accent-1" direction="column">
-                        <Text size="xlarge" textAlign="center">{pots[0].reduce((a, b) => a + b, 0)}</Text>
+                    <Box justify="center" align="center" alignContent="center" round={true} gridArea="pot" background="brand" direction="column">
+                        {pots.map((pot, index) => (
+                            <Text key={index} size="xlarge" textAlign="center">{pot.reduce((a, b) => a + b, 0)}</Text>
+                        ))}
                     </Box>
                 </Grid>
-                <Box gridArea="actions" background="accent-2" direction="column" justify="between" pad="xsmall">
+                <Box gridArea="actions" border direction="column" justify="between" pad="xsmall">
                     <Box><Text textAlign="center">{gameStatus}</Text></Box>
                     <Box alignSelf="end"><GameActions /></Box>
                 </Box>
