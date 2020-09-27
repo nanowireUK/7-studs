@@ -23,7 +23,7 @@ export const start = () => (dispatch, getState, connection) => {
         .catch(console.log);
 }
 
-export const leave = () => (dispatch) => {    
+export const leave = () => (dispatch) => {
     localStorage.setItem('rejoinCode', '');
     dispatch(setRejoinCode(''));
     dispatch(updateGame(null));
@@ -100,20 +100,16 @@ export const selectIsAdmin = (state) =>
 export const selectPlayers = (state) =>
            (state.game !== null ? state.game.PlayerViewOfParticipants : []).map(
                (
-                   { Name: name, UncommittedChips: chips, Cards: cards },
-                   position
+                   { Name: name, UncommittedChips: chips, Cards: cards, IsCurrentPlayer: isCurrentPlayer, IsMe: isMe, IsAdmin: isAdmin, IsDealer: isDealer, VisibleHandDescription: handDescription },
                ) => ({
                    name,
                    chips,
                    cards,
-                   isMe: name === state.hub.username,
-                   isCurrentPlayer:
-                       state.game.IndexOfParticipantToTakeNextAction ===
-                       position,
-                   isDealer:
-                       state.game.IndexOfParticipantDealingThisHand ===
-                       position,
-                   isAdmin: state.game.IndexOfAdministrator === position,
+                   handDescription,
+                   isMe,
+                   isCurrentPlayer,
+                   isDealer,
+                   isAdmin,
                })
            );
 
@@ -123,6 +119,10 @@ export const selectGameStatus = (state) => state.game.StatusMessage;
 
 export const selectCanDoAction = (action) => (state) =>
     state.game !== null && state.game.AvailableActions.includes(action);
+
+export const selectAnte = (state) => state.game.Ante;
+
+export const selectMaxRaise = (state) => state.game.MyMaxRaise;
 
 export const PlayerActions = Object.freeze({
     START: 'Start',
