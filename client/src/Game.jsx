@@ -28,7 +28,10 @@ function Game() {
     if (inLobby) return <Lobby/>
 
     const playerArea = ((numPlayers) => (position) =>
-        [['player2', 'player7']][numPlayers][position])(players.length - 2);
+        [
+            ['player2', 'player7'],
+            ['player1', 'player3', 'player7']
+        ][numPlayers][position])(players.length - 2);
 
     return (
         <div style={{ height: '100vh' }}>

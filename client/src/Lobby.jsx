@@ -29,7 +29,7 @@ function Lobby () {
         <Heading>7 Studs - {gameId}</Heading>
         {players.map(({ name }) => <Text weight={name === username ? 'bold' : 'normal'}>{name}</Text>)}
         <Box direction="row" gap="xsmall">
-            {!canStart && <Button primary label="Start game"
+            {canStart && <Button primary label="Start game"
                 onClick={startGame} />}
             <Button label="Leave game"
             onClick={leaveGame} />
