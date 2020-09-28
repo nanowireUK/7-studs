@@ -19,6 +19,7 @@ namespace SevenStuds.Models
         public Boolean IsCurrentPlayer { get; set; }
         public Boolean IsDealer { get; set; }
         public Boolean IsAdmin { get; set; }
+        public Boolean IsSharingHandDetails { get; set; }
         public Boolean HasFolded { get; set; }
         public Boolean HasCovered { get; set; }
         public Boolean IsOutOfThisGame { get; set; } // Can work this out but possibly cleaner to record it explicitly
@@ -34,7 +35,8 @@ namespace SevenStuds.Models
             IsMe = ( observedPlayersIndex == thisPlayersIndex );
             IsCurrentPlayer = ( observedPlayersIndex == g.IndexOfParticipantToTakeNextAction );
             IsDealer = ( observedPlayersIndex == g.IndexOfParticipantDealingThisHand ) ;
-            IsAdmin  = ( observedPlayersIndex == g.GetIndexOfAdministrator() );           
+            IsAdmin  = ( observedPlayersIndex == g.GetIndexOfAdministrator() );   
+            IsSharingHandDetails = observedPlayer.IsSharingHandDetails;   
             HasFolded = observedPlayer.HasFolded;
             HasCovered = observedPlayer.HasCovered;
             IsOutOfThisGame = observedPlayer.IsOutOfThisGame ; // Can work this out but possibly cleaner to record it explicitly

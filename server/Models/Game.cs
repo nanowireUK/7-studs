@@ -72,6 +72,10 @@ namespace SevenStuds.Models
             }
         }
 
+        public static void EraseGame(string gameId) {
+            SevenStuds.Models.ServerState.GameList.Remove(gameId);
+        }
+
         public void SetTestContext(GameLog testContext)
         {
             _TestContext = testContext; // Note: this affects some system behaviour ... need to search for IsRunningInTestMode() to see where
@@ -79,14 +83,6 @@ namespace SevenStuds.Models
         public bool IsRunningInTestMode() {
             return this._TestContext != null;
         }
-
-
-
-
-        // public bool ActionIsAvailableToThisPlayerAtThisPoint( ActionEnum ac, int playerIndex ) 
-        // {
-        //     return true;
-        // }
 
         public void LinkConnectionToParticipant(string connectionId, Participant p) 
         {
@@ -212,6 +208,7 @@ namespace SevenStuds.Models
             // Set different actions based on current game mode
             if ( GameMode == GameModeEnum.LobbyOpen ) {
                 SetActionAvailability(ActionEnum.Join, AvailabilityEnum.AnyUnregisteredPlayer); // Open up JOIN to anyone who has not yet joined
+                SetActionAvailability(ActionEnum.Leave, AvailabilityEnum.AnyRegisteredPlayer); // Open up LEAVE to anyone who has joined
                 SetActionAvailability(ActionEnum.Open, AvailabilityEnum.NotAvailable); // OPEN is no longer possible as lobby is already open
                 SetActionAvailability(ActionEnum.Start, ( this.Participants.Count >= 2 ) ? AvailabilityEnum.AdministratorOnly : AvailabilityEnum.NotAvailable ); 
             }

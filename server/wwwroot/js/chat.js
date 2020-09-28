@@ -94,6 +94,17 @@ document.getElementById("actionJoin").addEventListener("click",
     }
 );
 
+// --------------- LEAVE
+
+document.getElementById("actionLeave").addEventListener("click", 
+    function (event) {
+        var gameId = getGameId();    
+        var user = getUser();
+        connection.invoke("UserClickedLeave", gameId, user).catch(logError);
+        event.preventDefault();
+    }
+);
+
 // --------------- REJOIN
 
 document.getElementById("actionRejoin").addEventListener("click", 

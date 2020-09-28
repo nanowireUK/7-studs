@@ -20,7 +20,9 @@ namespace SevenStuds.Models
                 case ActionEnum.Join:  
                     return new ActionJoin(connectionId, actionType, gameId, user);                    
                 case ActionEnum.Rejoin:  
-                    return new ActionRejoin(connectionId, actionType, gameId, user, parameters);
+                    return new ActionRejoin(connectionId, actionType, gameId, user, parameters);                
+                case ActionEnum.Leave:  
+                    return new ActionLeave(connectionId, actionType, gameId, user);
                 case ActionEnum.Start:  
                     return new ActionStart(connectionId, actionType, gameId, user);   
                 case ActionEnum.Reveal:  
