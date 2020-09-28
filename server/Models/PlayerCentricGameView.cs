@@ -31,6 +31,7 @@ namespace SevenStuds.Models
         public List<string> AvailableActions { get; set; } // A player-centric view of the actions available to them
         public List<List<int>> Pots { get; set; } // pot(s) built up in the current hand (over multiple rounds of betting)
         public List<PlayerCentricParticipantView> PlayerViewOfParticipants { get; set; } // ordered list of participants (order represents order around the table)
+        public List<Boolean> CardPositionIsVisible { get; set; }
         public PlayerCentricGameView(Game g, int playerIndex) {
             // Build up this player's view of the game
             StatusMessage = g.StatusMessage;
@@ -39,7 +40,6 @@ namespace SevenStuds.Models
             MyHandSummary = g.Participants[playerIndex]._HandSummary;
             MyHandDescription = g.Participants[playerIndex]._FullHandDescription;                    
             HandCommentary = g.HandCommentary; // Not sure whether I need to do a deep copy of this (suspect not, as the view is temporary anyway)    
-            //MyIndex =  playerIndex;
             MyRejoinCode = g.Participants[playerIndex].RejoinCode;
             MyMaxRaise = g.IndexOfParticipantToTakeNextAction == playerIndex ? g.MaxRaiseForParticipantToTakeNextAction : 0;
             GameMode = g.GameMode.ToString();
@@ -49,9 +49,7 @@ namespace SevenStuds.Models
             Ante = g.Ante;
             GameId = g.GameId;
             HandsPlayedIncludingCurrent = g.HandsPlayedIncludingCurrent;
-            //IndexOfParticipantDealingThisHand = g.IndexOfParticipantDealingThisHand;
-            //IndexOfParticipantToTakeNextAction = g.IndexOfParticipantToTakeNextAction;
-            //CardPositionIsVisible = g.CardPositionIsVisible;
+            CardPositionIsVisible = g.CardPositionIsVisible;
             // Reproduce the pots (the pots themselves stay in the same order, but the current player's contributions becomes the first slot in the inner array)
             if ( g.Pots == null ) {
                 this.Pots = null;
