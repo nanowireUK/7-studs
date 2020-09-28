@@ -247,7 +247,10 @@ namespace SevenStuds.Models
                 SetActionAvailability(
                     ActionEnum.Raise, 
                     p.UncommittedChips > catchupAmount ? AvailabilityEnum.ActivePlayerOnly: AvailabilityEnum.NotAvailable);
-                MaxRaiseForParticipantToTakeNextAction = p.UncommittedChips > catchupAmount ? p.UncommittedChips - catchupAmount: 0;
+
+                //MaxRaiseForParticipantToTakeNextAction = p.UncommittedChips > catchupAmount ? p.UncommittedChips - catchupAmount: 0;
+                MaxRaiseForParticipantToTakeNextAction = MaxRaiseInContextOfOtherPlayersFunds(playerIndex, catchupAmount);
+
                 // To call the matching amount needs to be more than zero and they need at least the matching amount
                 SetActionAvailability(
                     ActionEnum.Call, 
@@ -388,6 +391,39 @@ namespace SevenStuds.Models
                 }
             }
             return currentMax;
+        }
+        public int MaxRaiseInContextOfOtherPlayersFunds(int playerIndex, int catchupAmount) {
+            // Find the maximum level of funds available to any active player other than the specified player.
+            // This will be the absolute limit of what the specified player could put into the current hand,
+            // but we will then have to look at their own funds and what they have already contributed, as well
+            // as what they would have to pay (if any) in order to call, to then determine the maximum raise.
+            int maxAvailableToOtherActivePlayers = 0;
+            Participant p; 
+            for (int i = 0; i < this.Participants.Count; i++) {
+                p = this.Participants[i];
+                if ( i != playerIndex 
+                    && p.HasCovered == false
+                    && p.HasFolded == false
+                    && p.IsOutOfThisGame == false
+                ) {
+                    if ( ( p.UncommittedChips + ChipsInAllPotsForSpecifiedPlayer(i) ) > maxAvailableToOtherActivePlayers ) {
+                        maxAvailableToOtherActivePlayers = p.UncommittedChips + ChipsInAllPotsForSpecifiedPlayer(i);
+                    }
+                }
+            }
+            p = this.Participants[playerIndex];
+            if ( p.UncommittedChips > catchupAmount ) {
+                // Raise is theoretically possible, now make sure that the raise amount allows at least one player to match it (by going all in)
+                if ( ( p.UncommittedChips + catchupAmount ) <= maxAvailableToOtherActivePlayers ) {
+                    return p.UncommittedChips - catchupAmount; // We can raise anything up to our total (after paying anything required to catchup)
+                }
+                else {
+                    return maxAvailableToOtherActivePlayers - ( ChipsInAllPotsForSpecifiedPlayer(playerIndex) + catchupAmount );
+                }
+            }
+            else {  
+                return 0; // We can't raise at all because we don't have more than we need to just catch up
+            }
         }  
         public int TotalInSpecifiedPot (int pot) {
             int totalPot = 0;
@@ -617,7 +653,7 @@ namespace SevenStuds.Models
                             AddCommentary(p.Name + " lost " + ( inPot ) + " after folding");
                         }
                         else {
-                            AddCommentary(p.Name + " lost " + ( inPot ) + " with " + p._HandSummary + " [rank=" + p._FullHandRank + "] (" + p._FullHandDescription + ")");
+                            AddCommentary(p.Name + " lost " + ( inPot ) + " with " + p._HandSummary /* + " [rank=" + p._FullHandRank + "] "*/ + " (" + p._FullHandDescription + ")");
                         }
                     }
                 }                

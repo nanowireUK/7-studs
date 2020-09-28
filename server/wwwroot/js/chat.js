@@ -163,7 +163,7 @@ document.getElementById("actionRaise").addEventListener("click",
 document.getElementById("actionCover").addEventListener("click", function (event) {
     var gameId = getGameId();    
     var user = getUser();
-    connection.invoke("UserClickedActionCover", gameId, user).catch(logError);
+    connection.invoke("UserClickedCover", gameId, user).catch(logError);
     event.preventDefault();
 });
 
