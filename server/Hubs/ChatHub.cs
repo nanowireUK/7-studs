@@ -56,7 +56,10 @@ namespace SevenStuds.Hubs
             { 
                 case ActionResponseTypeEnum.PlayerCentricGameState:
                     // Result will be generated separately for each individual player so no point setting it here
-                    break;                
+                    break;   
+                case ActionResponseTypeEnum.ConfirmPlayerLeaving:
+                    // Result will be generated separately for each remaining player with the deleted player being notified separately
+                    break;   
                 case ActionResponseTypeEnum.GameLog:  
                     resultAsJson = g.GameLogAsJson();
                     targetMethod = "ReceiveGameLog";
@@ -64,7 +67,8 @@ namespace SevenStuds.Hubs
                 case ActionResponseTypeEnum.OverallGameState:  
                     resultAsJson = g.AsJson();
                     targetMethod = "ReceiveOverallGameState";
-                    break;   
+                    break;  
+
                 
                 default:  
                     throw new System.Exception("7Studs User Exception: Unsupported response type");                    
@@ -87,13 +91,19 @@ namespace SevenStuds.Hubs
                     break; 
                 case ActionResponseAudienceEnum.AllPlayers:                    
                     for ( int i = 0; i < g.Participants.Count; i++ ) {
-                        if ( a.ResponseType == ActionResponseTypeEnum.PlayerCentricGameState ) {
+                        if ( a.ResponseType == ActionResponseTypeEnum.PlayerCentricGameState 
+                            || a.ResponseType == ActionResponseTypeEnum.ConfirmPlayerLeaving ) {
                             resultAsJson = new PlayerCentricGameView(g, i).AsJson();
                         }
                         await Clients.Group(g.Participants[i].ParticipantLevelSignalRGroupName).SendAsync(targetMethod, resultAsJson);
-                    }   
+                    }
+                    if ( a.ResponseType == ActionResponseTypeEnum.ConfirmPlayerLeaving ) {
+                        // Extra bit to notify all of the leaving player's connections that they have left 
+                        string leavingConfirmationAsJson = "{ \"ok\" }";
+                        await Clients.Group(a.SignalRGroupNameForAdditionalNotifications).SendAsync("ReceiveLeavingConfirmation", leavingConfirmationAsJson);
+                        }
                     break; 
-                default:  
+                 default:  
                     throw new System.Exception("7Studs User Exception: Unsupported response audience");  // e.g. Admin                                    
             }  
         }

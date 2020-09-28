@@ -39,7 +39,8 @@ namespace SevenStuds.Models
             PlayerIndex = -1;
             ConnectionId = connectionId;
             ResponseType = ActionResponseTypeEnum.PlayerCentricGameState; // Default response type for actions
-            ResponseAudience =  ActionResponseAudienceEnum.AllPlayers; // Default audience for action response    
+            ResponseAudience =  ActionResponseAudienceEnum.AllPlayers; // Default audience for action response   
+            SignalRGroupNameForAdditionalNotifications = null; // Will stay that way in most cases 
 
             if ( G.IsRunningInTestMode() ) {
                 ConnectionId = UserName; // Simulate a unique connection id as there won't be a separate connection for each player
@@ -82,6 +83,7 @@ namespace SevenStuds.Models
         protected string ConnectionId { get; set; }
         public ActionResponseTypeEnum ResponseType { get; set; }
         public ActionResponseAudienceEnum ResponseAudience { get; set; }
+        public string SignalRGroupNameForAdditionalNotifications { get; set; } // a bit of a botch to allow for a player who is leaving
         public virtual Game ProcessActionAndReturnGameReference()
         {
             this.ProcessAction(); // Use the subclass to implement the specifics of the action

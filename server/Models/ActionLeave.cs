@@ -23,6 +23,10 @@ namespace SevenStuds.Models
             int playersFunds = p.UncommittedChips;
             string deletedPlayersName = p.Name;
 
+            // Set the response type
+            SignalRGroupNameForAdditionalNotifications = p.ParticipantLevelSignalRGroupName;
+            ResponseType = ActionResponseTypeEnum.ConfirmPlayerLeaving; 
+
             // Remove all traces of the player from the game
             G.Participants.RemoveAt(PlayerIndex);
             for (int i = 0; i < G.Pots.Count; i++) {
@@ -40,9 +44,9 @@ namespace SevenStuds.Models
             {
                 // Randomly nominate player 0 as the administrator now
                 G.Participants[0].IsGameAdministrator = true;
-                changeOfAdminMessage = G.Participants[0].Name + " is new game administrator. ";
+                changeOfAdminMessage = ". " + G.Participants[0].Name + " is new game administrator. ";
             }
-            G.RecordLastEvent(deletedPlayersName + " left the game. " + changeOfAdminMessage);
+            G.RecordLastEvent(deletedPlayersName + " left the game" + changeOfAdminMessage);
             G.NextAction = "Await new player or start the game";            
         }
     }     

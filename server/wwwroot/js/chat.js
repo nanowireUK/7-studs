@@ -59,6 +59,16 @@ connection.on("ReceiveOverallGameState",
     }
 );
 
+connection.on("ReceiveLeavingConfirmation", 
+    function (gameState) {
+        var msg = gameState.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        var encodedMsg = "Leaving confirmation: \n" + gameState;
+        var pre = document.createElement("pre");
+        pre.textContent = encodedMsg;
+        appendToMessagesList(pre);
+    }
+);
+
 connection.start().then(
     function () {
         // actionJoin.disabled = false;
