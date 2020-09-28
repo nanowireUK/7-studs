@@ -23,8 +23,9 @@ namespace SevenStuds.Models
             // Handle the raise (note that the base class has already checked the player's eligibility for this action)
             Participant p = G.Participants[PlayerIndex];
             int catchupAmount = G.MaxChipsInAllPotsForAnyPlayer() - G.ChipsInAllPotsForSpecifiedPlayer(PlayerIndex);
-            int maxRaise = ( p.UncommittedChips - catchupAmount );
-            if ( p.UncommittedChips < ( catchupAmount + amountAsInt ) ) {
+            int maxRaise = G.MaxRaiseForParticipantToTakeNextAction; // previously: ( p.UncommittedChips - catchupAmount );
+            
+            if ( amountAsInt > maxRaise ) {
                 throw new HubException("You tried to raise by " + amountAsInt + " but the most you can raise by is " +  maxRaise);
             }               
             // Implement the raise

@@ -241,16 +241,14 @@ namespace SevenStuds.Models
                     _CheckIsAvailable ? AvailabilityEnum.ActivePlayerOnly: AvailabilityEnum.NotAvailable
                 );                 
                 // Decide whether player can call, raise or cover at this stage
-                // (depends on their uncommitted funds vs how much they need to match the pot)
+                // (depends on their uncommitted funds, how much they need to match the pot and other people's funds)
                 int catchupAmount = MaxChipsInAllPotsForAnyPlayer() - ChipsInAllPotsForSpecifiedPlayer(playerIndex);
-                // To raise they need more than the matching amount
-                SetActionAvailability(
-                    ActionEnum.Raise, 
-                    p.UncommittedChips > catchupAmount ? AvailabilityEnum.ActivePlayerOnly: AvailabilityEnum.NotAvailable);
-
-                //MaxRaiseForParticipantToTakeNextAction = p.UncommittedChips > catchupAmount ? p.UncommittedChips - catchupAmount: 0;
                 MaxRaiseForParticipantToTakeNextAction = MaxRaiseInContextOfOtherPlayersFunds(playerIndex, catchupAmount);
 
+                // To raise they need more than the matching amount and at least one person has to be able to call or cover following the raise
+                SetActionAvailability(
+                    ActionEnum.Raise, 
+                    MaxRaiseForParticipantToTakeNextAction > 0 ? AvailabilityEnum.ActivePlayerOnly: AvailabilityEnum.NotAvailable);                
                 // To call the matching amount needs to be more than zero and they need at least the matching amount
                 SetActionAvailability(
                     ActionEnum.Call, 
