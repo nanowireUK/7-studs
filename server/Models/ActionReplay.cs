@@ -35,8 +35,9 @@ namespace SevenStuds.Models
 
                 a.ProcessActionAndReturnGameReference(); 
 
-                System.Diagnostics.Debug.WriteLine("  Commentary from replay:");
+                System.Diagnostics.Debug.WriteLine("  StatusMessage: " + G.StatusMessage);
 
+                System.Diagnostics.Debug.WriteLine("  Commentary from replay:");
                 foreach ( string c in G.HandCommentary ) {
                     System.Diagnostics.Debug.WriteLine("    " + c);                    
                 }

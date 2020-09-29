@@ -1,5 +1,7 @@
------------------------------------------ TO DO (higher priority first) ---------------------------------
-* Add a new StatusMessage field which summarises LastEvent and NextAction
+----------------------------------------- SERVER-SIDE TO DO (higher priority first) ---------------------------------
+* Fix double display in some StatusMessages
+* Don't allow someone to reveal if they have already revealed (allow for reveal in both modes)
+
 * Remove card details from the HandCommentary
 * Handle the section at the end of a hand where players reveal their hands (or folder) in turn
 * Think about whether any hands should be automatically revealed, e.g. in hand order
@@ -15,7 +17,10 @@
 * Record game logs in a database
 * Automatically clear a game if there is no activity for n hours
 * Allow a player to play blind (?)
+----------------------------------------- CLIENT-SIDE THOUGHTS ---------------------------------
+* Make it possible to toggle to a vertical view (with players stacked on top to enable a skinny side-panel view)
 ----------------------------------------- DONE (most recent first) ---------------------------------------
+DONE * Add a new StatusMessage field which summarises LastEvent and NextAction
 DONE * Make each player's player-centric view show them as the first player 
 DONE * Remove all references to indexes in the player-centric views
 DONE * Add 'Open' command that enables administrator to reopen the lobby at the end of a hand

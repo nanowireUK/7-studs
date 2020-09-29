@@ -550,7 +550,7 @@ namespace SevenStuds.Models
                         && Participants[ZbiOfNextPlayerToInspect].IsOutOfThisGame == false // i.e. player has not yet lost all of their funds
                     ) {
                         IndexOfParticipantToTakeNextAction = ZbiOfNextPlayerToInspect;
-                        NextAction = Trigger + ", " + Participants[IndexOfParticipantToTakeNextAction].Name + " to reveal (or fold)"; 
+                        NextAction = /*Trigger + ", " +*/ Participants[IndexOfParticipantToTakeNextAction].Name + " to reveal (or fold)"; 
                         AddCommentary(NextAction);
                         return;
                     }
