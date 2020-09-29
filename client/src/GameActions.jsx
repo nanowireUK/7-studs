@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
-import { Box, Button, RangeInput, TextInput } from 'grommet';
+import { Box, Button } from 'grommet';
 import { useSelector, useDispatch } from 'react-redux';
+
+import RaiseSlider from './components/RaiseSlider';
 
 import {
     selectCanDoAction, selectIsAdmin,
@@ -82,18 +84,6 @@ function GameActions () {
 
     const [isRaising, setIsRaising] = useState(false);
     const [raiseAmount, setRaiseAmount] = useState(1);
-    const [indexValue, setIndexValue] = useState(0);
-    const [raiseSteps, setRaiseSteps] = useState([1,2,3,4,5,10,15,20,25,30,40,50,75,100,150,200,250,300,400,500,600,700,800,900,1000,2000,5000,10000]);        
-
-    useEffect(() => {   
-        const initialRaiseSteps = [1,2,3,4,5,10,15,20,25,30,40,50,75,100,150,200,250,300,400,500,600,700,800,900,1000,2000,5000,10000];
-        setRaiseSteps(initialRaiseSteps.map((e) => {
-            if (e > maxRaise)                
-                return maxRaise;
-            else
-                return e;
-        }));
-    }, [maxRaise]);
 
     const endRaising = () => {
         setIsRaising(false);
@@ -110,21 +100,9 @@ function GameActions () {
             </Box>
          );
     } else if (handInProgress) {
-        if (isRaising) return <Box direction="row" gap="xsmall">            
-            <Box direction="column" gap="xsmall">                
-                <RangeInput min={0} max={raiseSteps.length-1} value={indexValue} step={1} onChange={(e) => {   
-                    setIndexValue(e.target.value);              
-                    setRaiseAmount(raiseSteps[e.target.value]);
-                }} />
-                <TextInput plain size="small" placeholder="Raise by" value={raiseAmount} onChange={(e) => {
-                    if (e.target.value.trim() === '') setRaiseAmount('');
-                    if (/^\d+$/.test(e.target.value)) {
-                        const raiseBy = Number.parseInt(e.target.value, 10);
-
-                        if (raiseBy >= ante && raiseBy <= maxRaise) setRaiseAmount(raiseBy);
-                        if (raiseBy > maxRaise) setRaiseAmount(maxRaise);
-                    }
-                }}/>
+        if (isRaising) return <Box direction="row" gap="xsmall">
+            <Box direction="column" gap="xsmall">
+                <RaiseSlider min={ante} max={maxRaise} value={raiseAmount} setValue={setRaiseAmount} />
             </Box>
             <Button primary label="Raise [Enter]" onClick={() => {
                 if (raiseIsValid) {
