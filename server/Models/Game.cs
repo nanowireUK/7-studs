@@ -151,22 +151,20 @@ namespace SevenStuds.Models
 
             HandsPlayedIncludingCurrent++;
 
-            // Change the dealer to be the next player to the left of the
+            // Change the dealer to be the next player to the left of the player who is leaving
             if ( HandsPlayedIncludingCurrent == 1) {
-                IndexOfParticipantDealingThisHand = 0; 
+                IndexOfParticipantDealingThisHand = 0; // First dealer is first player in the list
             }
             else {
-                for (int player = 0; player < Participants.Count; player++) {
-                    // Starting from the end of the player array, remove any players that have disconnected during the last hand
-                    if ( Participants[player].HasDisconnected == true ) {
-                        Participants.RemoveAt(player);
-                        for (int i = 0; i < Pots.Count; i++) {
-                            Pots[i].RemoveAt(player); // Remove this player's slot from the pot array (the pot should be empty at this point anyway)
-                        }
+                for (int i = 0; i < Participants.Count; i++) {
+                    int nextCandidateForDealer = ( i + IndexOfParticipantDealingThisHand + 1 ) % Participants.Count;
+                    if ( Participants[nextCandidateForDealer].HasDisconnected == false ) {
+                        IndexOfParticipantDealingThisHand = nextCandidateForDealer;
+                        break;
                     }
                 }                
-                IndexOfParticipantDealingThisHand = (HandsPlayedIncludingCurrent - 1) % Participants.Count; // client could work this out too
             }
+
             this.ClearCommentary();
 
             // Set up the pack again
