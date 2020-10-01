@@ -41,42 +41,42 @@ namespace SevenStuds.Hubs
                     // If the game has not yet added this connection, then link it
                     string conn = conns[i];
                     if ( g.GetParticipantFromConnection(conn) == null ) {
-                        g.LinkConnectionToParticipant(conn, p); 
+                        g.LinkConnectionToParticipant(conn, p);
                         //await Groups.AddToGroupAsync(conn, g.GameLevelSignalRGroupName);
                         await Groups.AddToGroupAsync(conn, p.ParticipantLevelSignalRGroupName);
                     }
                 }
             }
 
-            // Send the results of the action according to the ResponseType and ResponseAudience on the action object 
+            // Send the results of the action according to the ResponseType and ResponseAudience on the action object
 
             string resultAsJson = ""; // default will be to set the result on a per-player basis
             string targetMethod = "ReceiveMyGameState";
-            switch ( a.ResponseType )  
-            { 
+            switch ( a.ResponseType )
+            {
                 case ActionResponseTypeEnum.PlayerCentricGameState:
                     // Result will be generated separately for each individual player so no point setting it here
-                    break;   
+                    break;
                 case ActionResponseTypeEnum.ConfirmToPlayerLeavingAndUpdateRemainingPlayers:
                     // Result will be generated separately for each remaining player with the deleted player being notified separately
-                    break;   
-                case ActionResponseTypeEnum.GameLog:  
+                    break;
+                case ActionResponseTypeEnum.GameLog:
                     resultAsJson = g.GameLogAsJson();
                     targetMethod = "ReceiveGameLog";
                     break;
-                case ActionResponseTypeEnum.OverallGameState:  
+                case ActionResponseTypeEnum.OverallGameState:
                     resultAsJson = g.AsJson();
                     targetMethod = "ReceiveOverallGameState";
-                    break;  
+                    break;
 
-                
-                default:  
-                    throw new System.Exception("7Studs User Exception: Unsupported response type");                    
+
+                default:
+                    throw new System.Exception("7Studs User Exception: Unsupported response type");
             }
 
             // Now send the appropriate response to the players indicated by the action's ResponseAudience setting
-            switch ( a.ResponseAudience )  
-            { 
+            switch ( a.ResponseAudience )
+            {
                 case ActionResponseAudienceEnum.Caller:
                     if ( a.ResponseType == ActionResponseTypeEnum.PlayerCentricGameState ) {
                         resultAsJson = new PlayerCentricGameView(g, a.PlayerIndex).AsJson();
@@ -88,25 +88,25 @@ namespace SevenStuds.Hubs
                         resultAsJson = new PlayerCentricGameView(g, a.PlayerIndex).AsJson();
                     }
                     await Clients.Group(g.Participants[a.PlayerIndex].ParticipantLevelSignalRGroupName).SendAsync(targetMethod, resultAsJson);
-                    break; 
-                case ActionResponseAudienceEnum.AllPlayers:                    
+                    break;
+                case ActionResponseAudienceEnum.AllPlayers:
                     for ( int i = 0; i < g.Participants.Count; i++ ) {
-                        if ( a.ResponseType == ActionResponseTypeEnum.PlayerCentricGameState 
+                        if ( a.ResponseType == ActionResponseTypeEnum.PlayerCentricGameState
                             || a.ResponseType == ActionResponseTypeEnum.ConfirmToPlayerLeavingAndUpdateRemainingPlayers ) {
                             // Send each player (including any leaving player) a view of the game from their own perspective
                             resultAsJson = new PlayerCentricGameView(g, i).AsJson();
                         }
-                        await Clients.Group(g.Participants[i].ParticipantLevelSignalRGroupName).SendAsync(targetMethod, resultAsJson, g.CountOfLeavers.ToString());
+                        await Clients.Group(g.Participants[i].ParticipantLevelSignalRGroupName).SendAsync(targetMethod, resultAsJson);
                     }
                     if ( a.ResponseType == ActionResponseTypeEnum.ConfirmToPlayerLeavingAndUpdateRemainingPlayers ) {
-                        // Extra bit to notify all of the leaving player's connections that they have left 
+                        // Extra bit to notify all of the leaving player's connections that they have left
                         string leavingConfirmationAsJson = "{ \"ok\" }";
                         await Clients.Group(a.SignalRGroupNameForAdditionalNotifications).SendAsync("ReceiveLeavingConfirmation", leavingConfirmationAsJson);
                         }
-                    break; 
-                 default:  
-                    throw new System.Exception("7Studs User Exception: Unsupported response audience");  // e.g. Admin                                    
-            }  
+                    break;
+                 default:
+                    throw new System.Exception("7Studs User Exception: Unsupported response audience");  // e.g. Admin
+            }
         }
     }
 }

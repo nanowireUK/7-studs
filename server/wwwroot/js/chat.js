@@ -34,7 +34,7 @@ function getLeaverCount() {
 // Functions that the server can call and that we have to handle
 
 connection.on("ReceiveMyGameState",
-    function (gameState, leaverCount) {
+    function (gameState) {
         var game = JSON.parse(gameState);
         document.getElementById("leaverCount").value = game.CountOfLeavers;
         var encodedMsg = "Game state from my perspective is currently: \n" + gameState;
