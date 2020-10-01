@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 
-import { Box, Button, RangeInput, TextInput } from 'grommet';
+import { Box, Button } from 'grommet';
 import { useSelector, useDispatch } from 'react-redux';
+
+import RaiseSlider from './components/RaiseSlider';
 
 import {
     selectCanDoAction, selectIsAdmin,
@@ -78,7 +80,6 @@ function GameActions () {
     const ante = useSelector(selectAnte);
     const maxRaise = useSelector(selectMaxRaise);
 
-
     const dispatch = useDispatch();
 
     const [isRaising, setIsRaising] = useState(false);
@@ -101,18 +102,7 @@ function GameActions () {
     } else if (handInProgress) {
         if (isRaising) return <Box direction="row" gap="xsmall">
             <Box direction="column" gap="xsmall">
-                <RangeInput min={ante} max={maxRaise} value={raiseAmount} step={1} onChange={(e) => {
-                    setRaiseAmount(e.target.value)
-                }} />
-                <TextInput plain size="small" placeholder="Raise by" value={raiseAmount} onChange={(e) => {
-                    if (e.target.value.trim() === '') setRaiseAmount('');
-                    if (/^\d+$/.test(e.target.value)) {
-                        const raiseBy = Number.parseInt(e.target.value, 10)
-
-                        if (raiseBy >= ante && raiseBy <= maxRaise) setRaiseAmount(raiseBy)
-                        if (raiseBy > maxRaise) setRaiseAmount(maxRaise);
-                    }
-                }}/>
+                <RaiseSlider min={ante} max={maxRaise} value={raiseAmount} setValue={setRaiseAmount} />
             </Box>
             <Button primary label="Raise [Enter]" onClick={() => {
                 if (raiseIsValid) {
