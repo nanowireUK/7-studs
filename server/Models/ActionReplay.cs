@@ -7,8 +7,8 @@ namespace SevenStuds.Models
     /// </summary>  
     public class ActionReplay : Action
     {  
-        public ActionReplay(string connectionId, ActionEnum actionType, string gameId, string user, string logAsJson) 
-            : base(connectionId, actionType, gameId, user, logAsJson)
+        public ActionReplay(string connectionId, ActionEnum actionType, string gameId, string user, string leavers, string logAsJson) 
+            : base(connectionId, actionType, gameId, user, leavers, logAsJson)
         {
         }
         public override void ProcessAction()
@@ -28,7 +28,8 @@ namespace SevenStuds.Models
                         // generate a new dummy one for each action? Users will have to rejoin anyway.
                     gla.ActionType, 
                     G.GameId, 
-                    gla.UserName, 
+                    gla.UserName,
+                    G.CountOfLeavers.ToString(), 
                     gla.Parameters
                 );
                 System.Diagnostics.Debug.WriteLine("Replaying " + gla.ActionType.ToString().ToLower() + " by " + gla.UserName);

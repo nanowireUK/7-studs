@@ -10,27 +10,27 @@ namespace SevenStuds.Hubs
         // --------------------------------------------------------------------------------------------------
         // This is the server-side code that is called directly by the client
 
-        public async Task UserClickedOpen(string gameId, string user) { await UserClickedActionButton(ActionEnum.Open, gameId,  user, ""); }
-        public async Task UserClickedJoin(string gameId, string user) { await UserClickedActionButton(ActionEnum.Join, gameId,  user, ""); }
-        public async Task UserClickedRejoin(string gameId, string user, string rejoinCode) { await UserClickedActionButton(ActionEnum.Rejoin, gameId,  user, rejoinCode); }
-        public async Task UserClickedLeave(string gameId, string user) { await UserClickedActionButton(ActionEnum.Leave, gameId,  user, ""); }
-        public async Task UserClickedStart(string gameId, string user) { await UserClickedActionButton(ActionEnum.Start, gameId,  user, ""); }
-        public async Task UserClickedReveal(string gameId, string user) { await UserClickedActionButton(ActionEnum.Reveal, gameId,  user, ""); }
-        public async Task UserClickedFinish(string gameId, string user) { await UserClickedActionButton(ActionEnum.Finish, gameId,  user, ""); }
-        public async Task UserClickedCheck(string gameId, string user) { await UserClickedActionButton(ActionEnum.Check, gameId,  user, ""); }
-        public async Task UserClickedCall(string gameId, string user) { await UserClickedActionButton(ActionEnum.Call, gameId,  user, ""); }
-        public async Task UserClickedRaise(string gameId, string user, string raiseAmount) { await UserClickedActionButton(ActionEnum.Raise, gameId,  user, raiseAmount); }
-        public async Task UserClickedCover(string gameId, string user) { await UserClickedActionButton(ActionEnum.Cover, gameId,  user, ""); }
-        public async Task UserClickedFold(string gameId, string user) { await UserClickedActionButton(ActionEnum.Fold, gameId,  user, ""); }
-        public async Task UserClickedGetState(string gameId, string user) { await UserClickedActionButton(ActionEnum.GetState, gameId,  user, ""); }
-        public async Task UserClickedGetLog(string gameId, string user) { await UserClickedActionButton(ActionEnum.GetLog, gameId,  user, ""); }
-        public async Task UserClickedReplay(string gameId, string user, string gameLog) { await UserClickedActionButton(ActionEnum.Replay, gameId,  user, gameLog); }
+        public async Task UserClickedOpen(string gameId, string user, string leavers) { await UserClickedActionButton(ActionEnum.Open, gameId,  user, leavers,  ""); }
+        public async Task UserClickedJoin(string gameId, string user, string leavers) { await UserClickedActionButton(ActionEnum.Join, gameId,  user, leavers,  ""); }
+        public async Task UserClickedRejoin(string gameId, string user, string leavers, string rejoinCode) { await UserClickedActionButton(ActionEnum.Rejoin, gameId,  user, leavers,  rejoinCode); }
+        public async Task UserClickedLeave(string gameId, string user, string leavers) { await UserClickedActionButton(ActionEnum.Leave, gameId,  user, leavers,  ""); }
+        public async Task UserClickedStart(string gameId, string user, string leavers) { await UserClickedActionButton(ActionEnum.Start, gameId,  user, leavers,  ""); }
+        public async Task UserClickedReveal(string gameId, string user, string leavers) { await UserClickedActionButton(ActionEnum.Reveal, gameId,  user, leavers,  ""); }
+        public async Task UserClickedFinish(string gameId, string user, string leavers) { await UserClickedActionButton(ActionEnum.Finish, gameId,  user, leavers,  ""); }
+        public async Task UserClickedCheck(string gameId, string user, string leavers) { await UserClickedActionButton(ActionEnum.Check, gameId,  user, leavers,  ""); }
+        public async Task UserClickedCall(string gameId, string user, string leavers) { await UserClickedActionButton(ActionEnum.Call, gameId,  user, leavers,  ""); }
+        public async Task UserClickedRaise(string gameId, string user, string leavers, string raiseAmount) { await UserClickedActionButton(ActionEnum.Raise, gameId,  user, leavers,  raiseAmount); }
+        public async Task UserClickedCover(string gameId, string user, string leavers) { await UserClickedActionButton(ActionEnum.Cover, gameId,  user, leavers,  ""); }
+        public async Task UserClickedFold(string gameId, string user, string leavers) { await UserClickedActionButton(ActionEnum.Fold, gameId,  user, leavers,  ""); }
+        public async Task UserClickedGetState(string gameId, string user, string leavers) { await UserClickedActionButton(ActionEnum.GetState, gameId,  user, leavers,  ""); }
+        public async Task UserClickedGetLog(string gameId, string user, string leavers) { await UserClickedActionButton(ActionEnum.GetLog, gameId,  user, leavers,  ""); }
+        public async Task UserClickedReplay(string gameId, string user, string leavers, string gameLog) { await UserClickedActionButton(ActionEnum.Replay, gameId,  user, leavers,  gameLog); }
 
         // --------------------------------------------------------------------------------------------------
         // Internal methods
-        private async Task UserClickedActionButton(ActionEnum actionType, string gameId, string user, string parameters)
+        private async Task UserClickedActionButton(ActionEnum actionType, string gameId, string user, string leavers, string parameters)
         {
-            Action a = ActionFactory.NewAction(Context.ConnectionId, actionType, gameId, user, parameters);
+            Action a = ActionFactory.NewAction(Context.ConnectionId, actionType, gameId, user, leavers, parameters);
             Game g = a.ProcessActionAndReturnGameReference();
             // For each participant, send a personalised copy of the game state (hiding e.g. other people's cards)
 
@@ -57,7 +57,7 @@ namespace SevenStuds.Hubs
                 case ActionResponseTypeEnum.PlayerCentricGameState:
                     // Result will be generated separately for each individual player so no point setting it here
                     break;   
-                case ActionResponseTypeEnum.ConfirmPlayerLeaving:
+                case ActionResponseTypeEnum.ConfirmToPlayerLeavingAndUpdateRemainingPlayers:
                     // Result will be generated separately for each remaining player with the deleted player being notified separately
                     break;   
                 case ActionResponseTypeEnum.GameLog:  
@@ -92,12 +92,13 @@ namespace SevenStuds.Hubs
                 case ActionResponseAudienceEnum.AllPlayers:                    
                     for ( int i = 0; i < g.Participants.Count; i++ ) {
                         if ( a.ResponseType == ActionResponseTypeEnum.PlayerCentricGameState 
-                            || a.ResponseType == ActionResponseTypeEnum.ConfirmPlayerLeaving ) {
+                            || a.ResponseType == ActionResponseTypeEnum.ConfirmToPlayerLeavingAndUpdateRemainingPlayers ) {
+                            // Send each player (including any leaving player) a view of the game from their own perspective
                             resultAsJson = new PlayerCentricGameView(g, i).AsJson();
                         }
-                        await Clients.Group(g.Participants[i].ParticipantLevelSignalRGroupName).SendAsync(targetMethod, resultAsJson);
+                        await Clients.Group(g.Participants[i].ParticipantLevelSignalRGroupName).SendAsync(targetMethod, resultAsJson, g.CountOfLeavers.ToString());
                     }
-                    if ( a.ResponseType == ActionResponseTypeEnum.ConfirmPlayerLeaving ) {
+                    if ( a.ResponseType == ActionResponseTypeEnum.ConfirmToPlayerLeavingAndUpdateRemainingPlayers ) {
                         // Extra bit to notify all of the leaving player's connections that they have left 
                         string leavingConfirmationAsJson = "{ \"ok\" }";
                         await Clients.Group(a.SignalRGroupNameForAdditionalNotifications).SendAsync("ReceiveLeavingConfirmation", leavingConfirmationAsJson);

@@ -23,7 +23,8 @@ namespace SevenStuds.Models
         //public int ChipsCommittedToCurrentBettingRound { get; set; }
         public Boolean HasFolded { get; set; }
         public Boolean HasCovered { get; set; }
-        public Boolean IsOutOfThisGame { get; set; } // Can work this out but possibly cleaner to record it explicitly
+        public Boolean IsOutOfThisGame { get; set; } // i.e. had no funds at the start of the current hand
+        public Boolean HasDisconnected { get; set; } // Player has chosen to leave the game (i.e. is no longer connected and will be removed at end of hand)
         public Boolean IsSharingHandDetails { get; set; } 
         public string RejoinCode { get; set; } // e.g. 3 alphanumeric characters that enables a disconnected player to rejoin as the same person
         public string ParticipantLevelSignalRGroupName { get; set; }
@@ -38,7 +39,6 @@ namespace SevenStuds.Models
         private PokerHand _PokerHand { get; set; }
         public bool IsLockedOutFollowingReplay { get; set; }
         public bool IsGameAdministrator { get; set; }
-
         public List<Card> Hand { get; set; }
         // public Boolean IsAllIn() {
         //     return UncommittedChips == 0 & ChipsCommittedToCurrentBettingRound > 0;

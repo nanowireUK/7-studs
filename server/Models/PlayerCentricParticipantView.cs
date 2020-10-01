@@ -22,7 +22,8 @@ namespace SevenStuds.Models
         public Boolean IsSharingHandDetails { get; set; }
         public Boolean HasFolded { get; set; }
         public Boolean HasCovered { get; set; }
-        public Boolean IsOutOfThisGame { get; set; } // Can work this out but possibly cleaner to record it explicitly
+        public Boolean IsOutOfThisGame { get; set; }
+        public Boolean HasDisconnected { get; set; }
         public string VisibleHandDescription { get; set; }
         public List<string> Cards { get; set; }
 
@@ -39,7 +40,8 @@ namespace SevenStuds.Models
             IsSharingHandDetails = observedPlayer.IsSharingHandDetails;   
             HasFolded = observedPlayer.HasFolded;
             HasCovered = observedPlayer.HasCovered;
-            IsOutOfThisGame = observedPlayer.IsOutOfThisGame ; // Can work this out but possibly cleaner to record it explicitly
+            IsOutOfThisGame = observedPlayer.IsOutOfThisGame; 
+            HasDisconnected = observedPlayer.HasDisconnected; 
             VisibleHandDescription = observedPlayer._VisibleHandDescription;
             // Add a list of this player's cards, substituting with '?' if the player receiving this data is not allowed to see this card
             Cards = new List<string>();

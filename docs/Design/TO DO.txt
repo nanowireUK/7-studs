@@ -1,7 +1,5 @@
 ----------------------------------------- SERVER-SIDE TO DO (higher priority first) ---------------------------------
-* Fix double display in some StatusMessages
-* Don't allow someone to reveal if they have already revealed (allow for reveal in both modes)
-
+* Don't allow someone to reveal if they have already revealed (allowing for reveal in both modes)
 * Remove card details from the HandCommentary
 * Handle the section at the end of a hand where players reveal their hands (or folder) in turn
 * Think about whether any hands should be automatically revealed, e.g. in hand order
@@ -20,6 +18,7 @@
 ----------------------------------------- CLIENT-SIDE THOUGHTS ---------------------------------
 * Make it possible to toggle to a vertical view (with players stacked on top to enable a skinny side-panel view)
 ----------------------------------------- DONE (most recent first) ---------------------------------------
+DONE * Fix double display in some StatusMessages
 DONE * Add a new StatusMessage field which summarises LastEvent and NextAction
 DONE * Make each player's player-centric view show them as the first player 
 DONE * Remove all references to indexes in the player-centric views

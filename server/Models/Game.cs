@@ -28,6 +28,7 @@ namespace SevenStuds.Models
         public int _IndexOfLastPlayerToRaise { get; set; } 
         public int _IndexOfLastPlayerToStartChecking { get; set; } 
         public bool _CheckIsAvailable { get; set; }
+        public int CountOfLeavers { get; set; }
         protected GameLog _GameLog { get; set; }
         protected GameLog _TestContext { get; set; }
         private Dictionary<string, Participant> _ConnectionToParticipantMap { get; set; } // Can't be public as JSON serialiser can't handle it
@@ -58,6 +59,7 @@ namespace SevenStuds.Models
             _ConnectionToParticipantMap = new Dictionary<string, Participant>(); 
             _ActionAvailability = new Dictionary<ActionEnum, ActionAvailability>();
             ActionAvailabilityList = new List<ActionAvailability>();
+            CountOfLeavers = 0;
             SetActionAvailabilityBasedOnCurrentPlayer(); // Ensures the initial section of available actions is set
             this._GameLog = new GameLog(); // Initially empty, will be added to as game actions take place
         }
@@ -136,12 +138,38 @@ namespace SevenStuds.Models
 
         public void StartNextHand()
         {
+            // First remove any players that disconnected
+            for (int player = Participants.Count - 1; player > 0; player--) {
+                // Starting from the end of the player array, remove any players that have disconnected during the last hand
+                if ( Participants[player].HasDisconnected == true ) {
+                    Participants.RemoveAt(player);
+                    for (int i = 0; i < Pots.Count; i++) {
+                        Pots[i].RemoveAt(player); // Remove this player's slot from the pot array (the pot should be empty at this point anyway)
+                    }
+                }
+            }
+
             HandsPlayedIncludingCurrent++;
-            IndexOfParticipantDealingThisHand = (HandsPlayedIncludingCurrent - 1) % Participants.Count; // client could work this out too
 
+            // Change the dealer to be the next player to the left of the
+            if ( HandsPlayedIncludingCurrent == 1) {
+                IndexOfParticipantDealingThisHand = 0; 
+            }
+            else {
+                for (int player = 0; player < Participants.Count; player++) {
+                    // Starting from the end of the player array, remove any players that have disconnected during the last hand
+                    if ( Participants[player].HasDisconnected == true ) {
+                        Participants.RemoveAt(player);
+                        for (int i = 0; i < Pots.Count; i++) {
+                            Pots[i].RemoveAt(player); // Remove this player's slot from the pot array (the pot should be empty at this point anyway)
+                        }
+                    }
+                }                
+                IndexOfParticipantDealingThisHand = (HandsPlayedIncludingCurrent - 1) % Participants.Count; // client could work this out too
+            }
             this.ClearCommentary();
-            // Set up the pack again
 
+            // Set up the pack again
             if ( this.IsRunningInTestMode() == false ) {
                 CardPack.Shuffle(); // refreshes the pack and shuffles it
             }
@@ -201,6 +229,7 @@ namespace SevenStuds.Models
 
             // Set any commands that are always available
             SetActionAvailability(ActionEnum.Rejoin, AvailabilityEnum.AnyRegisteredPlayer); // Open up REJOIN to anyone who previously joined
+            SetActionAvailability(ActionEnum.Leave, AvailabilityEnum.AnyRegisteredPlayer); // Open up LEAVE to anyone who has joined
             SetActionAvailability(ActionEnum.GetState, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who previously joined
             SetActionAvailability(ActionEnum.GetLog, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who previously joined
             SetActionAvailability(ActionEnum.Replay, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who previously joined            
@@ -208,7 +237,6 @@ namespace SevenStuds.Models
             // Set different actions based on current game mode
             if ( GameMode == GameModeEnum.LobbyOpen ) {
                 SetActionAvailability(ActionEnum.Join, AvailabilityEnum.AnyUnregisteredPlayer); // Open up JOIN to anyone who has not yet joined
-                SetActionAvailability(ActionEnum.Leave, AvailabilityEnum.AnyRegisteredPlayer); // Open up LEAVE to anyone who has joined
                 SetActionAvailability(ActionEnum.Open, AvailabilityEnum.NotAvailable); // OPEN is no longer possible as lobby is already open
                 SetActionAvailability(ActionEnum.Start, ( this.Participants.Count >= 2 ) ? AvailabilityEnum.AdministratorOnly : AvailabilityEnum.NotAvailable ); 
             }

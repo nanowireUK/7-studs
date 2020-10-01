@@ -5,8 +5,8 @@ namespace SevenStuds.Models
     /// </summary>  
     public class ActionReveal : Action
     {  
-        public ActionReveal(string connectionId, ActionEnum actionType, string gameId, string user) 
-            : base(connectionId, actionType, gameId, user)
+        public ActionReveal(string connectionId, ActionEnum actionType, string gameId, string user, string leavers) 
+            : base(connectionId, actionType, gameId, user, leavers)
         {
         }
         public override void ProcessAction()

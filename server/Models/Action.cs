@@ -14,15 +14,15 @@ namespace SevenStuds.Models
             // from the individual fields in the JSON structure
         }
 
-        protected Action ( string connectionId, ActionEnum actionType, string gameId, string user )
+        protected Action ( string connectionId, ActionEnum actionType, string gameId, string user, string leavers )
         {
-            this.Initialise(connectionId, actionType, gameId, user, null);
+            this.Initialise(connectionId, actionType, gameId, user, leavers, null);
         }
-        protected Action ( string connectionId, ActionEnum actionType, string gameId, string user, string parameters )
+        protected Action ( string connectionId, ActionEnum actionType, string gameId, string user, string leavers, string parameters )
         {
-            this.Initialise(connectionId, actionType, gameId, user, parameters);
+            this.Initialise(connectionId, actionType, gameId, user, leavers, parameters);
         }
-        protected void Initialise ( string connectionId, ActionEnum actionType, string gameId, string user, string parameters )
+        protected void Initialise ( string connectionId, ActionEnum actionType, string gameId, string user, string leavers, string parameters )
         {
             // Do any initialisation that is common to all user actions.
 
@@ -64,6 +64,20 @@ namespace SevenStuds.Models
             PlayerIndex = G.PlayerIndexFromName(user);
             if ( ! G.ActionIsAvailableToPlayer(ActionType, PlayerIndex) ) {
                 throw new HubException("You attempted to "+ActionType.ToString().ToLower()+" (as user "+this.UserName+") but this option is not available to you at this point"); // client catches this as part of action method, i.e. no call to separate client method required
+            }
+
+            // Check that number of players who have left the game is as expected (i.e. that someone has not left in between)
+
+            int leaversAsInt;
+            bool leaversIsNumeric = int.TryParse(leavers, out leaversAsInt);
+            if ( !leaversIsNumeric) {
+                leaversAsInt = 0;
+            }
+            if ( G.CountOfLeavers != leaversAsInt ) {
+                throw new HubException("A player has just left the game."
+                    + " This has updated the game state and might have affected whose turn it is and what they can do."
+                    + " Your requested move has been ignored as a result. If it is still your turn, please try again."); 
+                // Note: client catches this as part of action method, i.e. no call to separate client method required
             }
 
             if ( p == null /* from above */ && PlayerIndex != -1 && G.Participants[PlayerIndex].IsLockedOutFollowingReplay == true ) {

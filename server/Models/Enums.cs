@@ -48,7 +48,7 @@ namespace SevenStuds.Models
         PlayerCentricGameState = 0,
         OverallGameState = 1,
         GameLog = 2,
-        ConfirmPlayerLeaving = 3
+        ConfirmToPlayerLeavingAndUpdateRemainingPlayers = 3
     }
 
     /// <summary>

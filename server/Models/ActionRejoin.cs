@@ -7,8 +7,8 @@ namespace SevenStuds.Models
     /// </summary>  
     public class ActionRejoin : Action
     {  
-        public ActionRejoin(string connectionId, ActionEnum actionType, string gameId, string user, string rejoinCode) 
-            : base(connectionId, actionType, gameId, user, rejoinCode)
+        public ActionRejoin(string connectionId, ActionEnum actionType, string gameId, string user, string leavers, string rejoinCode) 
+            : base(connectionId, actionType, gameId, user, leavers, rejoinCode)
         {
         }
 
