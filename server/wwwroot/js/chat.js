@@ -33,10 +33,10 @@ function getLeaverCount() {
 // -------------------------------------------------------------------------------------------------------------
 // Functions that the server can call and that we have to handle
 
-connection.on("ReceiveMyGameState", 
+connection.on("ReceiveMyGameState",
     function (gameState, leaverCount) {
-        document.getElementById("leaverCount").value = leaverCount;
-        var msg = gameState.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        var game = JSON.parse(gameState);
+        document.getElementById("leaverCount").value = game.CountOfLeavers;
         var encodedMsg = "Game state from my perspective is currently: \n" + gameState;
         var pre = document.createElement("pre");
         pre.textContent = encodedMsg;
@@ -44,9 +44,8 @@ connection.on("ReceiveMyGameState",
     }
 );
 
-connection.on("ReceiveGameLog", 
+connection.on("ReceiveGameLog",
     function (gameLog) {
-        var msg = gameLog.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
         var encodedMsg = "Game log: \n" + gameLog;
         var pre = document.createElement("pre");
         pre.textContent = encodedMsg;
@@ -54,9 +53,8 @@ connection.on("ReceiveGameLog",
     }
 );
 
-connection.on("ReceiveOverallGameState", 
+connection.on("ReceiveOverallGameState",
     function (gameState) {
-        var msg = gameState.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
         var encodedMsg = "Overall game state: \n" + gameState;
         var pre = document.createElement("pre");
         pre.textContent = encodedMsg;
@@ -64,9 +62,8 @@ connection.on("ReceiveOverallGameState",
     }
 );
 
-connection.on("ReceiveLeavingConfirmation", 
+connection.on("ReceiveLeavingConfirmation",
     function (gameState) {
-        var msg = gameState.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
         var encodedMsg = "Leaving confirmation: \n" + gameState;
         var pre = document.createElement("pre");
         pre.textContent = encodedMsg;
@@ -74,24 +71,16 @@ connection.on("ReceiveLeavingConfirmation",
     }
 );
 
-connection.start().then(
-    function () {
-        // actionJoin.disabled = false;
-        // actionCall.disabled = false;
-        // actionRaise.disabled = false;
-        // actionFold.disabled = false;
-        // actionCover.disabled = false;
-    }
-).catch(logError);
+connection.start().catch(logError);
 
 // -------------------------------------------------------------------------------------------------------------
 // Client-side actions that we want to pass to the server
 
 // --------------- OPEN
 
-document.getElementById("actionOpen").addEventListener("click", 
+document.getElementById("actionOpen").addEventListener("click",
     function (event) {
-        var gameId = getGameId();    
+        var gameId = getGameId();
         var user = getUser();
         var leaverCount = getLeaverCount();
         connection.invoke("UserClickedOpen", gameId, user, leaverCount).catch(logError);
@@ -101,9 +90,9 @@ document.getElementById("actionOpen").addEventListener("click",
 
 // --------------- JOIN
 
-document.getElementById("actionJoin").addEventListener("click", 
+document.getElementById("actionJoin").addEventListener("click",
     function (event) {
-        var gameId = getGameId();    
+        var gameId = getGameId();
         var user = getUser();
         var leaverCount = getLeaverCount();
         connection.invoke("UserClickedJoin", gameId, user, leaverCount).catch(logError);
@@ -113,9 +102,9 @@ document.getElementById("actionJoin").addEventListener("click",
 
 // --------------- LEAVE
 
-document.getElementById("actionLeave").addEventListener("click", 
+document.getElementById("actionLeave").addEventListener("click",
     function (event) {
-        var gameId = getGameId();    
+        var gameId = getGameId();
         var user = getUser();
         var leaverCount = getLeaverCount();
         connection.invoke("UserClickedLeave", gameId, user, leaverCount).catch(logError);
@@ -125,9 +114,9 @@ document.getElementById("actionLeave").addEventListener("click",
 
 // --------------- REJOIN
 
-document.getElementById("actionRejoin").addEventListener("click", 
+document.getElementById("actionRejoin").addEventListener("click",
     function (event) {
-        var gameId = getGameId();    
+        var gameId = getGameId();
         var user = getUser();
         var leaverCount = getLeaverCount();
         var rejoinCode = getModifiers();
@@ -138,9 +127,9 @@ document.getElementById("actionRejoin").addEventListener("click",
 
 // --------------- START
 
-document.getElementById("actionStart").addEventListener("click", 
+document.getElementById("actionStart").addEventListener("click",
     function (event) {
-        var gameId = getGameId();    
+        var gameId = getGameId();
         var user = getUser();
         var leaverCount = getLeaverCount();
         connection.invoke("UserClickedStart", gameId, user, leaverCount).catch(logError);
@@ -150,9 +139,9 @@ document.getElementById("actionStart").addEventListener("click",
 
 // --------------- REVEAL HAND
 
-document.getElementById("actionReveal").addEventListener("click", 
+document.getElementById("actionReveal").addEventListener("click",
     function (event) {
-        var gameId = getGameId();    
+        var gameId = getGameId();
         var user = getUser();
         var leaverCount = getLeaverCount();
         connection.invoke("UserClickedReveal", gameId, user, leaverCount).catch(logError);
@@ -163,7 +152,7 @@ document.getElementById("actionReveal").addEventListener("click",
 // --------------- CHECK
 
 document.getElementById("actionCheck").addEventListener("click", function (event) {
-    var gameId = getGameId();    
+    var gameId = getGameId();
     var user = getUser();
     var leaverCount = getLeaverCount();
     connection.invoke("UserClickedCheck", gameId, user, leaverCount).catch(logError);
@@ -173,7 +162,7 @@ document.getElementById("actionCheck").addEventListener("click", function (event
 // --------------- CALL
 
 document.getElementById("actionCall").addEventListener("click", function (event) {
-    var gameId = getGameId();    
+    var gameId = getGameId();
     var user = getUser();
     var leaverCount = getLeaverCount();
     connection.invoke("UserClickedCall", gameId, user, leaverCount).catch(logError);
@@ -182,9 +171,9 @@ document.getElementById("actionCall").addEventListener("click", function (event)
 
 // --------------- RAISE
 
-document.getElementById("actionRaise").addEventListener("click", 
+document.getElementById("actionRaise").addEventListener("click",
     function (event) {
-        var gameId = getGameId();    
+        var gameId = getGameId();
         var user = getUser();
         var raiseAmount = getModifiers();
         var leaverCount = getLeaverCount();
@@ -196,7 +185,7 @@ document.getElementById("actionRaise").addEventListener("click",
 // --------------- COVER
 
 document.getElementById("actionCover").addEventListener("click", function (event) {
-    var gameId = getGameId();    
+    var gameId = getGameId();
     var user = getUser();
     var leaverCount = getLeaverCount();
     connection.invoke("UserClickedCover", gameId, user, leaverCount).catch(logError);
@@ -206,7 +195,7 @@ document.getElementById("actionCover").addEventListener("click", function (event
 // --------------- FOLD
 
 document.getElementById("actionFold").addEventListener("click", function (event) {
-    var gameId = getGameId();    
+    var gameId = getGameId();
     var user = getUser();
     var leaverCount = getLeaverCount();
     connection.invoke("UserClickedFold", gameId, user, leaverCount).catch(logError);
@@ -216,8 +205,8 @@ document.getElementById("actionFold").addEventListener("click", function (event)
 // --------------- Get Game State (test feature)
 
 document.getElementById("actionGetState").addEventListener("click", function (event) {
-    var gameId = getGameId();    
-    var user = getUser(); 
+    var gameId = getGameId();
+    var user = getUser();
     var leaverCount = getLeaverCount();
     connection.invoke("UserClickedGetState", gameId, user, leaverCount).catch(logError);
     event.preventDefault();
@@ -226,8 +215,8 @@ document.getElementById("actionGetState").addEventListener("click", function (ev
 // --------------- Get Game Log (test feature)
 
 document.getElementById("actionGetLog").addEventListener("click", function (event) {
-    var gameId = getGameId();    
-    var user = getUser();  
+    var gameId = getGameId();
+    var user = getUser();
     var leaverCount = getLeaverCount();
     connection.invoke("UserClickedGetLog", gameId, user, leaverCount).catch(logError);
     event.preventDefault();
@@ -236,10 +225,10 @@ document.getElementById("actionGetLog").addEventListener("click", function (even
 // --------------- Replay game from game log (test feature)
 
 document.getElementById("actionReplay").addEventListener("click", function (event) {
-    var gameId = getGameId();    
+    var gameId = getGameId();
     var user = getUser();
     var leaverCount = getLeaverCount();
-    var gameLog = getModifiers();   
+    var gameLog = getModifiers();
     connection.invoke("UserClickedReplay", gameId, user, leaverCount, gameLog).catch(logError);
     event.preventDefault();
 });
@@ -247,7 +236,7 @@ document.getElementById("actionReplay").addEventListener("click", function (even
 // --------------- Test button (used for experimentation)
 
 document.getElementById("jdTest").addEventListener("click", function (event) {
-    var gameLog = getModifiers();  
+    var gameLog = getModifiers();
     var msg = "Length of modifiers field is "+gameLog.length
     var escapedMsg = msg.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
     var pre = document.createElement("pre");
@@ -255,5 +244,3 @@ document.getElementById("jdTest").addEventListener("click", function (event) {
     appendToMessagesList(pre);
     event.preventDefault();
 });
-
-jdTest
