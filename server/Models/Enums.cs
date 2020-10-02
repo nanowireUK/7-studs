@@ -72,7 +72,8 @@ namespace SevenStuds.Models
         ActivePlayerOnly = 1,
         AnyRegisteredPlayer = 2,
         AnyUnregisteredPlayer = 3,
-        AdministratorOnly = 4
+        AdministratorOnly = 4,
+        AnyUnrevealedRegisteredPlayer = 5
     }
    
     /// <summary>

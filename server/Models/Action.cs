@@ -71,9 +71,9 @@ namespace SevenStuds.Models
             int leaversAsInt;
             bool leaversIsNumeric = int.TryParse(leavers, out leaversAsInt);
             if ( !leaversIsNumeric) {
-                leaversAsInt = 0;
+                leaversAsInt = -1; // -1 means don't check
             }
-            if ( G.CountOfLeavers != leaversAsInt ) {
+            if ( leaversAsInt != -1 && leaversAsInt != G.CountOfLeavers ) {
                 throw new HubException("A player has just left the game."
                     + " This has updated the game state and might have affected whose turn it is and what they can do."
                     + " Your requested move has been ignored as a result. If it is still your turn, please try again."); 

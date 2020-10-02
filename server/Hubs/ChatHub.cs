@@ -11,9 +11,9 @@ namespace SevenStuds.Hubs
         // This is the server-side code that is called directly by the client
 
         public async Task UserClickedOpen(string gameId, string user, string leavers) { await UserClickedActionButton(ActionEnum.Open, gameId,  user, leavers,  ""); }
-        public async Task UserClickedJoin(string gameId, string user, string leavers) { await UserClickedActionButton(ActionEnum.Join, gameId,  user, leavers,  ""); }
-        public async Task UserClickedRejoin(string gameId, string user, string leavers, string rejoinCode) { await UserClickedActionButton(ActionEnum.Rejoin, gameId,  user, leavers,  rejoinCode); }
-        public async Task UserClickedLeave(string gameId, string user, string leavers) { await UserClickedActionButton(ActionEnum.Leave, gameId,  user, leavers,  ""); }
+        public async Task UserClickedJoin(string gameId, string user) { await UserClickedActionButton(ActionEnum.Join, gameId,  user, "-1",  ""); }
+        public async Task UserClickedRejoin(string gameId, string user, string rejoinCode) { await UserClickedActionButton(ActionEnum.Rejoin, gameId,  user, "-1",  rejoinCode); }
+        public async Task UserClickedLeave(string gameId, string user) { await UserClickedActionButton(ActionEnum.Leave, gameId,  user, "-1",  ""); }
         public async Task UserClickedStart(string gameId, string user, string leavers) { await UserClickedActionButton(ActionEnum.Start, gameId,  user, leavers,  ""); }
         public async Task UserClickedReveal(string gameId, string user, string leavers) { await UserClickedActionButton(ActionEnum.Reveal, gameId,  user, leavers,  ""); }
         public async Task UserClickedFinish(string gameId, string user, string leavers) { await UserClickedActionButton(ActionEnum.Finish, gameId,  user, leavers,  ""); }

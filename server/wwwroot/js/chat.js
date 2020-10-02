@@ -95,7 +95,7 @@ document.getElementById("actionJoin").addEventListener("click",
         var gameId = getGameId();
         var user = getUser();
         var leaverCount = getLeaverCount();
-        connection.invoke("UserClickedJoin", gameId, user, leaverCount).catch(logError);
+        connection.invoke("UserClickedJoin", gameId, user).catch(logError);
         event.preventDefault();
     }
 );
@@ -107,7 +107,7 @@ document.getElementById("actionLeave").addEventListener("click",
         var gameId = getGameId();
         var user = getUser();
         var leaverCount = getLeaverCount();
-        connection.invoke("UserClickedLeave", gameId, user, leaverCount).catch(logError);
+        connection.invoke("UserClickedLeave", gameId, user).catch(logError);
         event.preventDefault();
     }
 );
@@ -120,7 +120,7 @@ document.getElementById("actionRejoin").addEventListener("click",
         var user = getUser();
         var leaverCount = getLeaverCount();
         var rejoinCode = getModifiers();
-        connection.invoke("UserClickedRejoin", gameId, user, leaverCount, rejoinCode).catch(logError);
+        connection.invoke("UserClickedRejoin", gameId, user, rejoinCode).catch(logError);
         event.preventDefault();
     }
 );

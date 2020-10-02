@@ -6,7 +6,7 @@ namespace SevenStuds.Models
     public class ActionJoin : Action
     {  
         public ActionJoin(string connectionId, ActionEnum actionType, string gameId, string user, string leavers) 
-            : base(connectionId, actionType, gameId, user, leavers)
+            : base(connectionId, actionType, gameId, user, "-1")
         {
         }
 

@@ -246,7 +246,7 @@ namespace SevenStuds.Models
             }
             else if ( GameMode == GameModeEnum.HandCompleted ) {
                 SetActionAvailability(ActionEnum.Open, AvailabilityEnum.AdministratorOnly); // Admin can choose to reopen lobby at this point
-                SetActionAvailability(ActionEnum.Reveal, AvailabilityEnum.AnyRegisteredPlayer); // Players may voluntarily reveal their hands at the end of a hand
+                SetActionAvailability(ActionEnum.Reveal, AvailabilityEnum.AnyUnrevealedRegisteredPlayer); // Players may voluntarily reveal their hands at the end of a hand
                 SetActionAvailability(ActionEnum.Start, AvailabilityEnum.AdministratorOnly); // Make it possible for the administrator to start the next hand            
 
             }
