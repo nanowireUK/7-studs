@@ -13,6 +13,7 @@ export const hubSlice = createSlice({
         gameId: localStorage.getItem('gameId') || null,
         username: localStorage.getItem('username') || null,
         rejoinCode: localStorage.getItem('rejoinCode') || null,
+        leaverCount: 0,
         awaitingResponse: false,
     },
     reducers: {
@@ -34,6 +35,10 @@ export const hubSlice = createSlice({
             ...state,
             rejoinCode: payload,
         }),
+        setLeaverCount: (state, { payload }) => ({
+            ...state,
+            leaverCount: payload,
+        }),
         awaitingResponse: (state, { payload } ) => ({ ...state, awaitingResponse: payload})
     },
 });
@@ -44,6 +49,7 @@ export const {
     disconnected,
     joinedGame,
     setRejoinCode,
+    setLeaverCount,
     awaitingResponse,
 } = hubSlice.actions;
 
@@ -84,6 +90,20 @@ export const rejoin = (gameId, username, rejoinCode) => (dispatch, getState, con
         })
         .catch(console.log);
 };
+
+export const sendServerAction = (serverMethod, ...args) => (dispatch, getState, connection) => {
+    const { gameId, username } = getState().hub;
+    dispatch(awaitingResponse(true));
+    connection
+        .invoke(serverMethod, gameId, username, ...args)
+        .then(console.log)
+        .catch(console.log);
+}
+
+export const sendServerActionWithLeaverCount = (serverMethod, ...args) => (dispatch, getState) => {
+    const { leaverCount } = getState().hub;
+    dispatch(sendServerAction(serverMethod, leaverCount.toString(), ...args));
+}
 
 export const selectGameId = (state) => state.hub.gameId;
 

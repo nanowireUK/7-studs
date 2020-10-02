@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { awaitingResponse, setRejoinCode } from './hub';
+import { sendServerAction, sendServerActionWithLeaverCount } from './hub';
 
 export const gameSlice = createSlice({
     name: 'game',
@@ -13,75 +13,15 @@ export const {
     updateGame,
 } = gameSlice.actions;
 
+export const start = () => sendServerActionWithLeaverCount('UserClickedStart');
+export const leave = () => sendServerAction('UserClickedLeave');
 
-export const start = () => (dispatch, getState, connection) => {
-    const { gameId, username } = getState().hub;
-    dispatch(awaitingResponse(true));
-    connection
-        .invoke('UserClickedStart', gameId, username)
-        .then(console.log)
-        .catch(console.log);
-}
-
-export const leave = () => (dispatch) => {
-    localStorage.setItem('rejoinCode', '');
-    dispatch(setRejoinCode(''));
-    dispatch(updateGame(null));
-}
-
-export const raise = (raiseAmount) => (dispatch, getState, connection) => {
-    const { gameId, username } = getState().hub;
-    dispatch(awaitingResponse(true));
-    connection
-        .invoke('UserClickedRaise', gameId, username, raiseAmount)
-        .then(console.log)
-        .catch(console.log);
-}
-
-export const check = () => (dispatch, getState, connection) => {
-    const { gameId, username } = getState().hub;
-    dispatch(awaitingResponse(true));
-    connection
-        .invoke('UserClickedCheck', gameId, username)
-        .then(console.log)
-        .catch(console.log);
-};
-
-export const fold = () => (dispatch, getState, connection) => {
-    const { gameId, username } = getState().hub;
-    dispatch(awaitingResponse(true));
-    connection
-        .invoke('UserClickedFold', gameId, username)
-        .then(console.log)
-        .catch(console.log);
-};
-
-export const cover = () => (dispatch, getState, connection) => {
-    const { gameId, username } = getState().hub;
-    dispatch(awaitingResponse(true));
-    connection
-        .invoke("UserClickedCover", gameId, username)
-        .then(console.log)
-        .catch(console.log);
-};
-
-export const call = () => (dispatch, getState, connection) => {
-    const { gameId, username } = getState().hub;
-    dispatch(awaitingResponse(true));
-    connection
-        .invoke("UserClickedCall", gameId, username)
-        .then(console.log)
-        .catch(console.log);
-};
-
-export const reveal = () => (dispatch, getState, connection) => {
-    const { gameId, username } = getState().hub;
-    dispatch(awaitingResponse(true));
-    connection
-        .invoke("UserClickedReveal", gameId, username)
-        .then(console.log)
-        .catch(console.log);
-};
+export const raise = (raiseAmount) => sendServerActionWithLeaverCount('UserClickedRaise', raiseAmount);
+export const check = () => sendServerActionWithLeaverCount('UserClickedCheck');
+export const cover = () => sendServerActionWithLeaverCount('UserClickedCover');
+export const call = () => sendServerActionWithLeaverCount('UserClickedCall');
+export const fold = () => sendServerActionWithLeaverCount('UserClickedFold');
+export const reveal = () => sendServerActionWithLeaverCount('UserClickedReveal');
 
 export const selectGame = (state) => state.game;
 
@@ -100,7 +40,7 @@ export const selectIsAdmin = (state) =>
 export const selectPlayers = (state) =>
            (state.game !== null ? state.game.PlayerViewOfParticipants : []).map(
                (
-                   { Name: name, UncommittedChips: chips, Cards: cards, IsCurrentPlayer: isCurrentPlayer, IsMe: isMe, IsAdmin: isAdmin, IsDealer: isDealer, VisibleHandDescription: handDescription },
+                   { Name: name, UncommittedChips: chips, Cards: cards, IsCurrentPlayer: isCurrentPlayer, IsMe: isMe, IsAdmin: isAdmin, IsDealer: isDealer, IsOutOfThisGame: isOutOfThisGame, HasFolded: hasFolded, VisibleHandDescription: handDescription },
                ) => ({
                    name,
                    chips,
@@ -110,6 +50,8 @@ export const selectPlayers = (state) =>
                    isCurrentPlayer,
                    isDealer,
                    isAdmin,
+                   isOutOfThisGame,
+                   hasFolded
                })
            );
 
@@ -132,6 +74,13 @@ export const PlayerActions = Object.freeze({
     RAISE: 'Raise',
     FOLD: 'Fold',
     REVEAL: 'Reveal'
+});
+
+export const GameModes = Object.freeze({
+    LOBBY_OPEN: 'LobbyOpen',
+    HAND_IN_PROGRESS: 'HandInProgress',
+    HANDS_BEING_REVEALED: 'HandsBeingRevealed',
+    HAND_COMPLETED: 'HandCompleted'
 });
 
 export default gameSlice.reducer;
