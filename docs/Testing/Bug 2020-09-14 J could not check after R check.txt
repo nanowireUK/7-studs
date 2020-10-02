@@ -436,26 +436,6 @@
       ]
     },
     {
-      "ActionType": 6,
-      "UserName": "John",
-      "Parameters": null,
-      "LastEvent": "John revealed their hand details",
-      "NextAction": "Reveal hands if desired, or administrator to start next hand (or reopen lobby)",
-      "HandCommentary": [
-        "John folded",
-        "John folded, only one player left in, hand ended",
-        "Determining winner(s) of pot #1",
-        "Rob won 16 with 6s 4c As 3c 4s Kd Ac  (Aces and Fours)",
-        "John lost 16 after folding",
-        "Waiting for administrator to start next hand.",
-        "Reveal hands if desired, or administrator to start next hand (or reopen lobby)"
-      ],
-      "HandSummaries": [
-        "John Folded=True Covered=False Out=False Cards=3s Jc 7h Ks 7d 9h 3h ",
-        "Rob Folded=False Covered=False Out=False Cards=6s 4c As 3c 4s Kd Ac "
-      ]
-    },
-    {
       "ActionType": 4,
       "UserName": "Rob",
       "Parameters": null,
