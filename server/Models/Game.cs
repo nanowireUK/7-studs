@@ -20,6 +20,7 @@ namespace SevenStuds.Models
         public string LastEvent { get; set; }
         public string NextAction { get; set; }
         public List<string> HandCommentary { get; set; }
+        public List<string> LastHandResult { get; set; }
         public int HandsPlayedIncludingCurrent { get; set; } // 0 = game not yet started
         public int IndexOfParticipantDealingThisHand { get; set; } // Rotates from player 0
         public int IndexOfParticipantToTakeNextAction { get; set; } // Determined by cards showing (at start of round) then on player order
@@ -56,6 +57,7 @@ namespace SevenStuds.Models
             HandsPlayedIncludingCurrent = 0;
             CardPack = new Deck(true);
             HandCommentary = new List<string>();
+            LastHandResult = new List<string>();
             _ConnectionToParticipantMap = new Dictionary<string, Participant>(); 
             _ActionAvailability = new Dictionary<ActionEnum, ActionAvailability>();
             ActionAvailabilityList = new List<ActionAvailability>();
@@ -633,11 +635,14 @@ namespace SevenStuds.Models
             // Start with oldest pot and work forwards. 
             // Only players who have contributed to a pot and have not folded are to be considered
             AddCommentary(Trigger);
+
+            ClearResultDetails();
+
             List<int> currentWinners = new List<int>();
             for (int pot = 0; pot < Pots.Count ; pot++) {
                 // Identify the player or players who is/are winning this pot
                 int winningPlayersHandRank = int.MaxValue; // Low values will win so this is guaranteed to be beaten
-                AddCommentary("Determining winner(s) of pot #"+ (pot+1));
+                AddCommentaryAndResultDetail("Results" + (Pots.Count==1?"":" of pot "+ (pot+1))+ ":");
                 for (int player = 0; player < Participants.Count ; player++) {
                     if ( Participants[player].HasFolded == false && ChipsInSpecifiedPotForSpecifiedPlayer(pot, player) > 0 ) {
                         if ( currentWinners.Count == 0 ) {
@@ -666,7 +671,7 @@ namespace SevenStuds.Models
                         int share = tp / currentWinners.Count; // Discards any fractional winnings ... not sure how else to handle this
                         p.UncommittedChips += share;
                         int inPot = ChipsInSpecifiedPotForSpecifiedPlayer(pot, player);
-                        AddCommentary(p.Name + " won " + ( share - inPot ) + " with " + p._HandSummary + " (" + p._FullHandDescription + ")");
+                        AddCommentaryAndResultDetail(p.Name + " won " + ( share - inPot ) + " with " + p._HandSummary + " (" + p._FullHandDescription + ")");
                     }
                 }
                 for (int player = 0; player < Participants.Count ; player++) {
@@ -675,13 +680,13 @@ namespace SevenStuds.Models
                         // Record the loss of their investment
                         int inPot = ChipsInSpecifiedPotForSpecifiedPlayer(pot, player);
                         if ( inPot == 0 ) {
-                            AddCommentary(p.Name + " had nothing in this pot");
+                            AddCommentaryAndResultDetail(p.Name + " had nothing in this pot");
                         }
                         else if ( p.HasFolded ) {
-                            AddCommentary(p.Name + " lost " + ( inPot ) + " after folding");
+                            AddCommentaryAndResultDetail(p.Name + " lost " + ( inPot ) + " after folding");
                         }
                         else {
-                            AddCommentary(p.Name + " lost " + ( inPot ) + " with " + p._HandSummary /* + " [rank=" + p._FullHandRank + "] "*/ + " (" + p._FullHandDescription + ")");
+                            AddCommentaryAndResultDetail(p.Name + " lost " + ( inPot ) + " with " + p._HandSummary /* + " [rank=" + p._FullHandRank + "] "*/ + " (" + p._FullHandDescription + ")");
                         }
                     }
                 }                
@@ -709,9 +714,18 @@ namespace SevenStuds.Models
         public void AddCommentary (string c){
             this.HandCommentary.Add(c);
         }
-
         public void ClearCommentary (){
             this.HandCommentary.Clear();
+        }
+        public void AddCommentaryAndResultDetail (string c){
+            this.AddCommentary(c);
+            this.AddResultDetail(c);
+        }
+        public void AddResultDetail (string c){
+            this.LastHandResult.Add(c);
+        }
+        public void ClearResultDetails () {
+            this.LastHandResult.Clear();
         }
         public string AsJson()
         {
