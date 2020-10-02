@@ -138,7 +138,7 @@ namespace SevenStuds.Models
 
         public void StartNextHand()
         {
-            // First remove any players that disconnected
+            // First remove any player(s) that disconnected during the last hand
             for (int player = Participants.Count - 1; player > 0; player--) {
                 // Starting from the end of the player array, remove any players that have disconnected during the last hand
                 if ( Participants[player].HasDisconnected == true ) {
@@ -146,12 +146,20 @@ namespace SevenStuds.Models
                     for (int i = 0; i < Pots.Count; i++) {
                         Pots[i].RemoveAt(player); // Remove this player's slot from the pot array (the pot should be empty at this point anyway)
                     }
+                    if ( player == IndexOfParticipantDealingThisHand ) {
+                        // Removed player was the dealer, so notionally move the 'dealership' back one slot (and allow for wraparound)
+                        IndexOfParticipantDealingThisHand = ( 
+                            IndexOfParticipantDealingThisHand > 0 
+                            ? IndexOfParticipantDealingThisHand - 1 // go back one slot
+                            : Participants.Count - 1 // wraparound to last player in the list
+                        )  ;
+                    }
                 }
             }
 
             HandsPlayedIncludingCurrent++;
 
-            // Change the dealer to be the next player to the left of the player who is leaving
+            // Change the dealer to be the next player in turn
             if ( HandsPlayedIncludingCurrent == 1) {
                 IndexOfParticipantDealingThisHand = 0; // First dealer is first player in the list
             }
@@ -294,14 +302,13 @@ namespace SevenStuds.Models
             else if ( aa.Availability == AvailabilityEnum.AnyRegisteredPlayer & playerIndex != -1 ) {
                 return true;
             }
-            else if ( aa.Availability == AvailabilityEnum.AdministratorOnly & playerIndex != -1 
-                && this.Participants[playerIndex].IsGameAdministrator ) {
+            else if ( aa.Availability == AvailabilityEnum.AdministratorOnly & playerIndex != -1 & this.Participants[playerIndex].IsGameAdministrator ) {
                 return true;
             }
-            else if ( aa.Availability == AvailabilityEnum.ActivePlayerOnly 
-                & playerIndex == IndexOfParticipantToTakeNextAction
-                & playerIndex != -1 ) 
-            { 
+            else if ( aa.Availability == AvailabilityEnum.ActivePlayerOnly & playerIndex != -1 & playerIndex == IndexOfParticipantToTakeNextAction ) { 
+                return true;
+            }
+            else if ( aa.Availability == AvailabilityEnum.AnyUnrevealedRegisteredPlayer & playerIndex != -1 & ! Participants[playerIndex].IsSharingHandDetails ) { 
                 return true;
             }
             return false;

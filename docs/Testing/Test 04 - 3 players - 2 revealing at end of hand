@@ -1,0 +1,552 @@
+{
+  "playersInOrder": [
+    "Phil",
+    "Rob",
+    "John"
+  ],
+  "actions": [
+    {
+      "ActionType": 1,
+      "UserName": "John",
+      "Parameters": null,
+      "LastEvent": "John joined game as administrator",
+      "NextAction": "Await new player or start the game",
+      "HandCommentary": [
+        "John joined game as administrator"
+      ],
+      "HandSummaries": [
+        "John Folded=False Covered=False Out=False Cards="
+      ]
+    },
+    {
+      "ActionType": 1,
+      "UserName": "Rob",
+      "Parameters": null,
+      "LastEvent": "Rob joined game",
+      "NextAction": "Await new player or start the game",
+      "HandCommentary": [
+        "Rob joined game"
+      ],
+      "HandSummaries": [
+        "John Folded=False Covered=False Out=False Cards=",
+        "Rob Folded=False Covered=False Out=False Cards="
+      ]
+    },
+    {
+      "ActionType": 1,
+      "UserName": "Phil",
+      "Parameters": null,
+      "LastEvent": "Phil joined game",
+      "NextAction": "Await new player or start the game",
+      "HandCommentary": [
+        "Phil joined game"
+      ],
+      "HandSummaries": [
+        "John Folded=False Covered=False Out=False Cards=",
+        "Rob Folded=False Covered=False Out=False Cards=",
+        "Phil Folded=False Covered=False Out=False Cards="
+      ]
+    },
+    {
+      "ActionType": 4,
+      "UserName": "John",
+      "Parameters": null,
+      "LastEvent": "John started the first hand (player order now randomised)",
+      "NextAction": "John to bet",
+      "HandCommentary": [],
+      "HandSummaries": [
+        "Phil Folded=False Covered=False Out=False Cards=9d 6s 9c ",
+        "Rob Folded=False Covered=False Out=False Cards=5h Kc 6h ",
+        "John Folded=False Covered=False Out=False Cards=9h Qc Kh "
+      ]
+    },
+    {
+      "ActionType": 12,
+      "UserName": "John",
+      "Parameters": "200",
+      "LastEvent": "John raised by 200",
+      "NextAction": "Phil to bet",
+      "HandCommentary": [
+        "John raised by 200",
+        "Phil to bet"
+      ],
+      "HandSummaries": [
+        "Phil Folded=False Covered=False Out=False Cards=9d 6s 9c ",
+        "Rob Folded=False Covered=False Out=False Cards=5h Kc 6h ",
+        "John Folded=False Covered=False Out=False Cards=9h Qc Kh "
+      ]
+    },
+    {
+      "ActionType": 11,
+      "UserName": "Phil",
+      "Parameters": null,
+      "LastEvent": "Phil paid 200 to call",
+      "NextAction": "Rob to bet",
+      "HandCommentary": [
+        "Phil paid 200 to call",
+        "Rob to bet"
+      ],
+      "HandSummaries": [
+        "Phil Folded=False Covered=False Out=False Cards=9d 6s 9c ",
+        "Rob Folded=False Covered=False Out=False Cards=5h Kc 6h ",
+        "John Folded=False Covered=False Out=False Cards=9h Qc Kh "
+      ]
+    },
+    {
+      "ActionType": 11,
+      "UserName": "Rob",
+      "Parameters": null,
+      "LastEvent": "Rob paid 200 to call",
+      "NextAction": "Started next round, John to bet",
+      "HandCommentary": [
+        "Rob paid 200 to call",
+        "Started next round, John to bet"
+      ],
+      "HandSummaries": [
+        "Phil Folded=False Covered=False Out=False Cards=9d 6s 9c 4c ",
+        "Rob Folded=False Covered=False Out=False Cards=5h Kc 6h 8h ",
+        "John Folded=False Covered=False Out=False Cards=9h Qc Kh 5d "
+      ]
+    },
+    {
+      "ActionType": 12,
+      "UserName": "John",
+      "Parameters": "50",
+      "LastEvent": "John raised by 50",
+      "NextAction": "Phil to bet",
+      "HandCommentary": [
+        "John raised by 50",
+        "Phil to bet"
+      ],
+      "HandSummaries": [
+        "Phil Folded=False Covered=False Out=False Cards=9d 6s 9c 4c ",
+        "Rob Folded=False Covered=False Out=False Cards=5h Kc 6h 8h ",
+        "John Folded=False Covered=False Out=False Cards=9h Qc Kh 5d "
+      ]
+    },
+    {
+      "ActionType": 11,
+      "UserName": "Phil",
+      "Parameters": null,
+      "LastEvent": "Phil paid 50 to call",
+      "NextAction": "Rob to bet",
+      "HandCommentary": [
+        "Phil paid 50 to call",
+        "Rob to bet"
+      ],
+      "HandSummaries": [
+        "Phil Folded=False Covered=False Out=False Cards=9d 6s 9c 4c ",
+        "Rob Folded=False Covered=False Out=False Cards=5h Kc 6h 8h ",
+        "John Folded=False Covered=False Out=False Cards=9h Qc Kh 5d "
+      ]
+    },
+    {
+      "ActionType": 11,
+      "UserName": "Rob",
+      "Parameters": null,
+      "LastEvent": "Rob paid 50 to call",
+      "NextAction": "Started next round, Rob to bet",
+      "HandCommentary": [
+        "Rob paid 50 to call",
+        "Started next round, Rob to bet"
+      ],
+      "HandSummaries": [
+        "Phil Folded=False Covered=False Out=False Cards=9d 6s 9c 4c 7c ",
+        "Rob Folded=False Covered=False Out=False Cards=5h Kc 6h 8h 8c ",
+        "John Folded=False Covered=False Out=False Cards=9h Qc Kh 5d 5c "
+      ]
+    },
+    {
+      "ActionType": 12,
+      "UserName": "Rob",
+      "Parameters": "500",
+      "LastEvent": "Rob raised by 500",
+      "NextAction": "John to bet",
+      "HandCommentary": [
+        "Rob raised by 500",
+        "John to bet"
+      ],
+      "HandSummaries": [
+        "Phil Folded=False Covered=False Out=False Cards=9d 6s 9c 4c 7c ",
+        "Rob Folded=False Covered=False Out=False Cards=5h Kc 6h 8h 8c ",
+        "John Folded=False Covered=False Out=False Cards=9h Qc Kh 5d 5c "
+      ]
+    },
+    {
+      "ActionType": 14,
+      "UserName": "John",
+      "Parameters": null,
+      "LastEvent": "John folded",
+      "NextAction": "Phil to bet",
+      "HandCommentary": [
+        "John folded",
+        "Phil to bet"
+      ],
+      "HandSummaries": [
+        "Phil Folded=False Covered=False Out=False Cards=9d 6s 9c 4c 7c ",
+        "Rob Folded=False Covered=False Out=False Cards=5h Kc 6h 8h 8c ",
+        "John Folded=True Covered=False Out=False Cards=9h Qc Kh 5d 5c "
+      ]
+    },
+    {
+      "ActionType": 11,
+      "UserName": "Phil",
+      "Parameters": null,
+      "LastEvent": "Phil paid 500 to call",
+      "NextAction": "Started next round, Rob to bet",
+      "HandCommentary": [
+        "Phil paid 500 to call",
+        "Started next round, Rob to bet"
+      ],
+      "HandSummaries": [
+        "Phil Folded=False Covered=False Out=False Cards=9d 6s 9c 4c 7c 3c ",
+        "Rob Folded=False Covered=False Out=False Cards=5h Kc 6h 8h 8c 3d ",
+        "John Folded=True Covered=False Out=False Cards=9h Qc Kh 5d 5c "
+      ]
+    },
+    {
+      "ActionType": 10,
+      "UserName": "Rob",
+      "Parameters": null,
+      "LastEvent": "Rob checked",
+      "NextAction": "Phil to bet",
+      "HandCommentary": [
+        "Rob checked",
+        "Phil to bet"
+      ],
+      "HandSummaries": [
+        "Phil Folded=False Covered=False Out=False Cards=9d 6s 9c 4c 7c 3c ",
+        "Rob Folded=False Covered=False Out=False Cards=5h Kc 6h 8h 8c 3d ",
+        "John Folded=True Covered=False Out=False Cards=9h Qc Kh 5d 5c "
+      ]
+    },
+    {
+      "ActionType": 10,
+      "UserName": "Phil",
+      "Parameters": null,
+      "LastEvent": "Phil checked",
+      "NextAction": "Started next round, Rob to bet",
+      "HandCommentary": [
+        "Phil checked",
+        "Started next round, Rob to bet"
+      ],
+      "HandSummaries": [
+        "Phil Folded=False Covered=False Out=False Cards=9d 6s 9c 4c 7c 3c Js ",
+        "Rob Folded=False Covered=False Out=False Cards=5h Kc 6h 8h 8c 3d 2c ",
+        "John Folded=True Covered=False Out=False Cards=9h Qc Kh 5d 5c "
+      ]
+    },
+    {
+      "ActionType": 10,
+      "UserName": "Rob",
+      "Parameters": null,
+      "LastEvent": "Rob checked",
+      "NextAction": "Phil to bet",
+      "HandCommentary": [
+        "Rob checked",
+        "Phil to bet"
+      ],
+      "HandSummaries": [
+        "Phil Folded=False Covered=False Out=False Cards=9d 6s 9c 4c 7c 3c Js ",
+        "Rob Folded=False Covered=False Out=False Cards=5h Kc 6h 8h 8c 3d 2c ",
+        "John Folded=True Covered=False Out=False Cards=9h Qc Kh 5d 5c "
+      ]
+    },
+    {
+      "ActionType": 10,
+      "UserName": "Phil",
+      "Parameters": null,
+      "LastEvent": "Phil checked",
+      "NextAction": "Phil checked, betting completed, proceeding to hand reveal stage, Rob to reveal (or fold)",
+      "HandCommentary": [
+        "Phil checked",
+        "Phil checked, betting completed, proceeding to hand reveal stage, Rob to reveal (or fold)"
+      ],
+      "HandSummaries": [
+        "Phil Folded=False Covered=False Out=False Cards=9d 6s 9c 4c 7c 3c Js ",
+        "Rob Folded=False Covered=False Out=False Cards=5h Kc 6h 8h 8c 3d 2c ",
+        "John Folded=True Covered=False Out=False Cards=9h Qc Kh 5d 5c "
+      ]
+    },
+    {
+      "ActionType": 6,
+      "UserName": "Rob",
+      "Parameters": null,
+      "LastEvent": "Rob revealed their hand details",
+      "NextAction": "Phil to reveal (or fold)",
+      "HandCommentary": [
+        "Rob revealed their hand details",
+        "Phil to reveal (or fold)"
+      ],
+      "HandSummaries": [
+        "Phil Folded=False Covered=False Out=False Cards=9d 6s 9c 4c 7c 3c Js ",
+        "Rob Folded=False Covered=False Out=False Cards=5h Kc 6h 8h 8c 3d 2c ",
+        "John Folded=True Covered=False Out=False Cards=9h Qc Kh 5d 5c "
+      ]
+    },
+    {
+      "ActionType": 14,
+      "UserName": "Phil",
+      "Parameters": null,
+      "LastEvent": "Phil folded",
+      "NextAction": "Reveal hands if desired, or administrator to start next hand (or reopen lobby)",
+      "HandCommentary": [
+        "Phil folded",
+        "Phil folded, only one player left in, hand ended",
+        "Determining winner(s) of pot #1",
+        "Rob won 1002 with 5h Kc 6h 8h 8c 3d 2c  (Pair of Eights)",
+        "Phil lost 751 after folding",
+        "John lost 251 after folding",
+        "Waiting for administrator to start next hand.",
+        "Reveal hands if desired, or administrator to start next hand (or reopen lobby)"
+      ],
+      "HandSummaries": [
+        "Phil Folded=True Covered=False Out=False Cards=9d 6s 9c 4c 7c 3c Js ",
+        "Rob Folded=False Covered=False Out=False Cards=5h Kc 6h 8h 8c 3d 2c ",
+        "John Folded=True Covered=False Out=False Cards=9h Qc Kh 5d 5c "
+      ]
+    },
+    {
+      "ActionType": 6,
+      "UserName": "John",
+      "Parameters": null,
+      "LastEvent": "John revealed their hand details",
+      "NextAction": "Reveal hands if desired, or administrator to start next hand (or reopen lobby)",
+      "HandCommentary": [
+        "John revealed their hand details"
+      ],
+      "HandSummaries": [
+        "Phil Folded=True Covered=False Out=False Cards=9d 6s 9c 4c 7c 3c Js ",
+        "Rob Folded=False Covered=False Out=False Cards=5h Kc 6h 8h 8c 3d 2c ",
+        "John Folded=True Covered=False Out=False Cards=9h Qc Kh 5d 5c "
+      ]
+    },
+    {
+      "ActionType": 6,
+      "UserName": "Phil",
+      "Parameters": null,
+      "LastEvent": "Phil revealed their hand details",
+      "NextAction": "Reveal hands if desired, or administrator to start next hand (or reopen lobby)",
+      "HandCommentary": [
+        "Phil revealed their hand details"
+      ],
+      "HandSummaries": [
+        "Phil Folded=True Covered=False Out=False Cards=9d 6s 9c 4c 7c 3c Js ",
+        "Rob Folded=False Covered=False Out=False Cards=5h Kc 6h 8h 8c 3d 2c ",
+        "John Folded=True Covered=False Out=False Cards=9h Qc Kh 5d 5c "
+      ]
+    }
+  ],
+  "decks": [
+    [
+      {
+        "CardValue": 31,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 23,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 11,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 17,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 13,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 23,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 2,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 41,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 31,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 41,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 3,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 5,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 23,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 41,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 23,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 41,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 13,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 37,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 17,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 7,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 37,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 3,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 19,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 5,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 29,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 2,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 29,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 2,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 31,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 13,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 29,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 5,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 11,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 2,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 29,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 3,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 3,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 7,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 17,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 13,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 7,
+        "CardSuit": 3
+      },
+      {
+        "CardValue": 17,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 5,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 37,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 31,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 19,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 11,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 37,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 7,
+        "CardSuit": 1
+      },
+      {
+        "CardValue": 19,
+        "CardSuit": 2
+      },
+      {
+        "CardValue": 11,
+        "CardSuit": 0
+      },
+      {
+        "CardValue": 19,
+        "CardSuit": 3
+      }
+    ]
+  ]
+}
