@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { TextInput, Button, Box, Heading } from 'grommet';
+import { TextInput, Button, Box, Heading, Text } from 'grommet';
 
 import { join, rejoin } from './redux/slices/hub';
 import { useDispatch, useSelector } from 'react-redux';
@@ -33,13 +33,21 @@ function Welcome() {
                 margin="auto"
             >
                 <Heading textAlign="center">Seven Studs</Heading>
-                <TextInput placeholder="Player Name" value={playerName} onChange={event => setPlayerName(event.target.value)} />
-                <TextInput 
-                placeholder="Room Name" value={roomId} onChange={event => setRoomId(event.target.value)}/>
-                
-                <TextInput placeholder="Rejoin Code (optional)" value={rejoinCode} onChange={event => setRejoinCode(event.target.value)} />
-                <Button primary label="Join" 
-                onClick={submitJoin} disabled={isInvalid}/>
+
+                <Box direction="row" justify="end">
+                    <Text margin="small" alignSelf="center">Room</Text>
+                    <Box><TextInput placeholder="Room Name" value={roomId} onChange={event => setRoomId(event.target.value)}/></Box>
+                </Box>
+                <Box direction="row" justify="end">
+                    <Text margin="small" alignSelf="center">Player Name</Text>
+                    <Box><TextInput placeholder="Player Name" value={playerName} onChange={event => setPlayerName(event.target.value)} /></Box>
+                </Box>
+
+                <Box direction="row" justify="end">
+                    <Text margin="small" alignSelf="center">Rejoin Code</Text>
+                    <Box><TextInput placeholder="Rejoin Code (optional)" value={rejoinCode} onChange={event => setRejoinCode(event.target.value)} /></Box>
+                </Box>
+                <Button primary label="Join" onClick={submitJoin} disabled={isInvalid}/>
         </Box>
     );
 }
