@@ -55,7 +55,7 @@ function Face ({ face = '', suit = '' }) {
     const color = ['H', 'D'].includes(suit.toUpperCase()) ? '#d40000' : 'black';
     return (
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18" version="1.0">
-            <text x="50%" y="80%" text-anchor="middle" fontFamily="Bellota Text" fontWeight="700" fill={color}>{face === 'T' ? '10' : face}</text>
+            <text x="50%" y="80%" textAnchor="middle" fontFamily="Bellota Text" fontWeight="700" fill={color}>{face === 'T' ? '10' : face}</text>
         </svg>
     )
 }
