@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useContext} from 'react';
 
-import { Box, Button } from 'grommet';
+import { Box, Button, ResponsiveContext } from 'grommet';
 import { useSelector, useDispatch } from 'react-redux';
 
 import RaiseSlider from './components/RaiseSlider';
@@ -9,10 +9,18 @@ import {
     selectCanDoAction, selectIsAdmin,
     selectHandInProgress, selectHandCompleted, selectHandsBeingRevealed,
     selectAnte, selectMaxRaise,
-    PlayerActions, raise, start, check, fold, cover, call, reveal, } from './redux/slices/game';
+    PlayerActions, raise, start, check, fold, cover, call, reveal, open
+} from './redux/slices/game';
+
+function useSizeContext() {
+    return useContext(ResponsiveContext) === 'small';
+}
 
 function Raise ({ setIsRaising }) {
+    const mobileLayout = useSizeContext();
     const canRaise = useSelector(selectCanDoAction(PlayerActions.RAISE));
+
+    if (mobileLayout && !canRaise) return null;
 
     const clickRaise = () => setIsRaising(true);
 
@@ -21,7 +29,10 @@ function Raise ({ setIsRaising }) {
 
 function Check () {
     const dispatch = useDispatch();
+    const mobileLayout = useSizeContext();
     const canCheck = useSelector(selectCanDoAction(PlayerActions.CHECK));
+
+    if (mobileLayout && !canCheck) return null;
 
     const clickCheck = () => dispatch(check());
 
@@ -30,7 +41,10 @@ function Check () {
 
 function Call () {
     const dispatch = useDispatch();
+    const mobileLayout = useSizeContext();
     const canCall = useSelector(selectCanDoAction(PlayerActions.CALL));
+
+    if (mobileLayout && !canCall) return null;
 
     const clickCall = () => dispatch(call());
 
@@ -39,7 +53,10 @@ function Call () {
 
 function Cover () {
     const dispatch = useDispatch();
+    const mobileLayout = useSizeContext();
     const canCover = useSelector(selectCanDoAction(PlayerActions.COVER));
+
+    if (mobileLayout && !canCover) return null;
 
     const clickCover = () => dispatch(cover());
 
@@ -48,7 +65,10 @@ function Cover () {
 
 function Fold () {
     const dispatch = useDispatch();
+    const mobileLayout = useSizeContext();
     const canFold = useSelector(selectCanDoAction(PlayerActions.FOLD));
+
+    if (mobileLayout && !canFold) return null;
 
     const clickFold = () => dispatch(fold());
 
@@ -57,9 +77,12 @@ function Fold () {
 
 function RevealHand () {
     const dispatch = useDispatch();
+    const mobileLayout = useSizeContext();
     const canReveal = useSelector(selectCanDoAction(PlayerActions.REVEAL));
 
     const clickReveal = () => dispatch(reveal());
+
+    if (mobileLayout && !canReveal) return null;
 
     return <Button primary label="Reveal Hand [S]" onClick={clickReveal} disabled={!canReveal} />
 }
@@ -68,7 +91,14 @@ function StartNext () {
     const dispatch = useDispatch();
     const clickStartNext = () => dispatch(start());
 
-    return <Button primary label="Start Next Game [Enter]" onClick={clickStartNext} />;
+    return <Button secondary label="Start Next Game [Enter]" onClick={clickStartNext} />;
+}
+
+function OpenLobby () {
+    const dispatch = useDispatch();
+    const clickOpenLobby = () => dispatch(open());
+
+    return <Button secondary label="Open Lobby [O]" onClick={clickOpenLobby} />
 }
 
 
@@ -97,19 +127,20 @@ function GameActions () {
             <Box direction="row" gap="xsmall">
                 <RevealHand />
                 {isAdmin ? <StartNext /> : null}
+                {isAdmin ? <OpenLobby /> : null}
             </Box>
          );
     } else if (handInProgress) {
         if (isRaising) return <Box direction="row" gap="xsmall">
-            <Box direction="column" gap="xsmall">
-                <RaiseSlider min={ante} max={maxRaise} value={raiseAmount} setValue={setRaiseAmount} />
-            </Box>
             <Button primary label="Raise [Enter]" onClick={() => {
                 if (raiseIsValid) {
                   dispatch(raise(raiseAmount.toString()));
                   endRaising();
                 }
             }} />
+            <Box direction="column" gap="xsmall">
+                <RaiseSlider min={ante} max={maxRaise} value={raiseAmount} setValue={setRaiseAmount} />
+            </Box>
             <Button label="Cancel [Esc]" onClick={endRaising} />
         </Box>;
         return (
