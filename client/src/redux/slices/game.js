@@ -14,6 +14,7 @@ export const {
 } = gameSlice.actions;
 
 export const start = () => sendServerActionWithLeaverCount('UserClickedStart');
+export const open = () => sendServerActionWithLeaverCount('UserClickedOpen');
 export const leave = () => sendServerAction('UserClickedLeave');
 
 export const raise = (raiseAmount) => sendServerActionWithLeaverCount('UserClickedRaise', raiseAmount);
@@ -40,7 +41,19 @@ export const selectIsAdmin = (state) =>
 export const selectPlayers = (state) =>
            (state.game !== null ? state.game.PlayerViewOfParticipants : []).map(
                (
-                   { Name: name, UncommittedChips: chips, Cards: cards, IsCurrentPlayer: isCurrentPlayer, IsMe: isMe, IsAdmin: isAdmin, IsDealer: isDealer, IsOutOfThisGame: isOutOfThisGame, HasFolded: hasFolded, VisibleHandDescription: handDescription },
+                   {
+                       Name: name,
+                       UncommittedChips: chips,
+                       Cards: cards,
+                       IsCurrentPlayer: isCurrentPlayer,
+                       IsMe: isMe,
+                       IsAdmin: isAdmin,
+                       IsDealer: isDealer,
+                       IsOutOfThisGame: isOutOfThisGame,
+                       HasFolded: hasFolded,
+                       VisibleHandDescription: handDescription,
+                       IsSharingHandDetails: isSharingHandDetails,
+                    },
                ) => ({
                    name,
                    chips,
@@ -51,11 +64,14 @@ export const selectPlayers = (state) =>
                    isDealer,
                    isAdmin,
                    isOutOfThisGame,
-                   hasFolded
+                   hasFolded,
+                   isSharingHandDetails
                })
            );
 
 export const selectPots = (state) => state.game.Pots;
+
+export const selectLastHandResult = (state) => state.game.LastHandResult;
 
 export const selectGameStatus = (state) => state.game.StatusMessage;
 
