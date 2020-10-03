@@ -1,8 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
+import { Grommet } from 'grommet';
 import store from './redux/store';
 import * as serviceWorker from './serviceWorker';
+
+
+import theme from './theme';
 
 const render = () => {
     const App = require('./App').default
@@ -10,7 +14,9 @@ const render = () => {
     ReactDOM.render(
         <React.StrictMode>
             <Provider store={store}>
-                <App />
+                <Grommet theme={theme}>
+                    <App />
+                </Grommet>
             </Provider>
         </React.StrictMode>,
         document.getElementById('root')
