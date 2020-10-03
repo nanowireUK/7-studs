@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 
-import { RangeInput, TextInput } from 'grommet';
+import { RangeInput, TextInput, Box } from 'grommet';
 
 export default function RaiseSlider({ min, max, value, setValue}) {
     const [indexValue, setIndexValue] = useState(0);
@@ -10,12 +10,10 @@ export default function RaiseSlider({ min, max, value, setValue}) {
     }, [max]);
 
     return (
-        <React.Fragment>
-            <RangeInput min={0} max={raiseSteps.length - 1} value={indexValue} step={1} onChange={(e) => {
-                setIndexValue(e.target.value);
-                setValue(raiseSteps[e.target.value]);
-            }} />
-            <TextInput plain size="small" placeholder="Raise by" value={value} onChange={(e) => {
+        <Box direction="row" align="center" gap="small">
+            <Box width="xsmall">
+
+            <TextInput placeholder="Raise by" value={value} onChange={(e) => {
                 if (e.target.value.trim() === '') setValue('');
                 if (/^\d+$/.test(e.target.value)) {
                     const raiseBy = Number.parseInt(e.target.value, 10);
@@ -24,6 +22,11 @@ export default function RaiseSlider({ min, max, value, setValue}) {
                     if (raiseBy > max) setValue(max);
                 }
             }}/>
-        </React.Fragment>
+            </Box>
+            <RangeInput min={0} max={raiseSteps.length - 1} value={indexValue} step={1} onChange={(e) => {
+                setIndexValue(e.target.value);
+                setValue(raiseSteps[e.target.value]);
+            }} />
+        </Box>
     )
 }
