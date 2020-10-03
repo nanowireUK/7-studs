@@ -76,8 +76,6 @@ function PokerCard ({ face, suit, invisibleToOthers = false, availableDimensions
     const cardRef = useRef(null);
     const { height } = useContainerDimensions(cardRef);
 
-    console.log(height);
-
     if (face === '?' || suit === '?') return (<Box ref={cardRef} direction="row" title={face !== '?' ? `${face}${suit}` : 'Hidden'} elevation="xsmall" pad="xsmall" border round="xsmall" gap="xsmall">
         <Box pad="xsmall" direction="column" align="center" justify="around" width={`${height}px`} testborder={{ color: 'blue', style: 'dashed' }}><Face face={face}/></Box>
     </Box>)
