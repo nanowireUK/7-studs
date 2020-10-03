@@ -627,7 +627,6 @@ namespace SevenStuds.Models
                 }
             }
             return -1; // shouldn't be possible as long as we pass admnistratorship on if the current admin leaves the game
-            // (could consider returning 0 here and forcing a random player to be admin!)
         } 
 
         public string ProcessEndOfHand(string Trigger) {
@@ -693,7 +692,25 @@ namespace SevenStuds.Models
             }
             
             AddCommentary("Waiting for administrator to start next hand.");
-            NextAction = "Reveal hands if desired, or administrator to start next hand (or reopen lobby)";
+
+            // Check for anyone who has not disconnected and not yet revealed their cards
+            int unrevealedHands = 0;
+            for (int p = 0; p < Participants.Count ; p++) {
+                if ( Participants[p].IsSharingHandDetails == false && Participants[p].HasDisconnected == false) {
+                    unrevealedHands++;
+                }
+            }
+
+            if ( CountOfPlayersLeftIn() == 1 ) {
+                NextAction = "You are the last player in the game, please either reopen the lobby or leave the game";
+            }
+            else if ( unrevealedHands > 0 ) {
+                NextAction = "Reveal hands if desired, or administrator to start next hand (or reopen lobby)";
+            }
+            else {
+                NextAction = "Administrator to start next hand (or reopen lobby)";
+            }
+
             GameMode = GameModeEnum.HandCompleted; 
             return NextAction;
         }

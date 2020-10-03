@@ -37,8 +37,8 @@ namespace SevenStuds.Models
         public string _FullHandDescription { get; set; }
         public string _HandSummary { get; set; }
         private PokerHand _PokerHand { get; set; }
-        public bool IsLockedOutFollowingReplay { get; set; }
-        public bool IsGameAdministrator { get; set; }
+        public Boolean IsLockedOutFollowingReplay { get; set; }
+        public Boolean IsGameAdministrator { get; set; }
         public List<Card> Hand { get; set; }
         // public Boolean IsAllIn() {
         //     return UncommittedChips == 0 & ChipsCommittedToCurrentBettingRound > 0;

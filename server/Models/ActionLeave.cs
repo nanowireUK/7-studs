@@ -56,27 +56,36 @@ namespace SevenStuds.Models
             }
 
             if ( G.IndexOfParticipantDealingThisHand == PlayerIndex ) {
-                // Make the next free player the dealer
-                G.IndexOfParticipantDealingThisHand = 0;
+                // Leaving player is currently the dealer.
+                // Don't think we have to do anything here because although they are now out of the game,
+                // they are still notionally the dealer (i.e. hand evaluation starts with the player to their left).
+                // Leaving this code in place though as a reminder to think about this when stepping through the code.
             }
 
             if ( p.IsOutOfThisGame == false && p.HasFolded == false ) {
                 // Player was still in the game in some form, so we have to treat this as if they folded
-                G.RecordLastEvent(UserName + " has left the game and effectively folded"+ changeOfAdminMessage);
-                // Implement the Fold
                 p.HasFolded = true;
-                // Find and set next player (could be no one if all players have now folded)
-                G.SetNextPlayerToActOrHandleEndOfHand(G.IndexOfParticipantToTakeNextAction, G.LastEvent);    
+                if ( G.IndexOfParticipantToTakeNextAction == PlayerIndex ) {
+                    // It was player's turn to move anyway, so implement the fold in the same way as if they had just folded in turn
+                    G.RecordLastEvent(UserName + " has left the game and effectively folded"+ changeOfAdminMessage);
+                    G.SetNextPlayerToActOrHandleEndOfHand(G.IndexOfParticipantToTakeNextAction, G.LastEvent);   
+                }
+                else {
+                    // They are leaving out of turn, so it will remain the turn of the current player unless the player leaving now means there is only one person left in
+                    G.RecordLastEvent(UserName + " has left the game and effectively folded out of turn"+ changeOfAdminMessage);
+                    if ( G.CountOfPlayersLeftIn() == 1 ) {
+                        // Everyone has folded except one player
+                        G.NextAction = G.ProcessEndOfHand(G.LastEvent + ", only one player left in, hand ended"); // will also update commentary with hand results
+                        G.AddCommentary(G.NextAction);
+                    }
+                }
             }
             else {
-                // Player was already out so no real consequence unless someone else has to be nominated to be the game administrator
+                // Player was already out of the hand so no consequence to game flow
                 G.RecordLastEvent(p.Name + " has left the game"+changeOfAdminMessage);
             }
 
-            // Note: we don't explicitly change the next action. It will either stay as it was or be updated as a result of the fold
-            //G.NextAction = "..."; 
-
-            // Set the response type that will trigger the player's client session to disconnect
+            // Set the response type that will trigger the player's client session to disconnect and everyone else's gamne state to be updated
             SignalRGroupNameForAdditionalNotifications = p.ParticipantLevelSignalRGroupName;
             ResponseType = ActionResponseTypeEnum.ConfirmToPlayerLeavingAndUpdateRemainingPlayers;           
         }
