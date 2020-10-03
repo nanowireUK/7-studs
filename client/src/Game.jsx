@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -13,8 +13,8 @@ import {
 import { selectGameId, selectRejoinCode } from './redux/slices/hub';
 
 import Lobby from './Lobby';
-import Player from './Player';
-import { Box, Grid, Text, Button } from 'grommet';
+import Player from './components/Player';
+import { Box, Grid, Text, Button, ResponsiveContext } from 'grommet';
 import GameActions from './GameActions';
 
 function Game() {
@@ -26,22 +26,45 @@ function Game() {
     const gameStatus = useSelector(selectGameStatus);
     const dispatch = useDispatch();
 
+    const size = useContext(ResponsiveContext);
+
     const leaveGame = () => {
         dispatch(leave());
     }
 
     if (inLobby) return <Lobby/>
 
-    const playerArea = ((numPlayers) => (position) =>
-        [
-            ['player7', 'player2'],
-            ['player7', 'player1', 'player3'],
-            ['player7', 'player4', 'player2', 'player5'],
-            ['player7', 'player4', 'player1', 'player3', 'player5'],
-            ['player7', 'player6', 'player1', 'player2', 'player3', 'player8'],
-            ['player7', 'player6', 'player4', 'player1', 'player3', 'player5', 'player8'],
-            ['player7', 'player6', 'player4', 'player1', 'player2', 'player3', 'player5', 'player8'],
-        ][numPlayers][position])(players.length - 2);
+    const numPlayers = players.length;
+
+    const playerAreas = [
+        ['player7', 'player2'],
+        ['player7', 'player1', 'player3'],
+        ['player7', 'player4', 'player2', 'player5'],
+        ['player7', 'player4', 'player1', 'player3', 'player5'],
+        ['player7', 'player6', 'player1', 'player2', 'player3', 'player8'],
+        ['player7', 'player6', 'player4', 'player1', 'player3', 'player5', 'player8'],
+        ['player7', 'player6', 'player4', 'player1', 'player2', 'player3', 'player5', 'player8'],
+    ][numPlayers - 2];
+
+    const gridAreas = size === 'small' ? [
+        ...playerAreas.map((playerArea, index) => ({
+            name: playerArea, start: [0, index], end: [0, index]
+        })),
+        { name: 'pot', start: [0, numPlayers], end: [0, numPlayers] },
+    ] : [
+        { name: 'player1', start: [0, 0], end: [0, 0] },
+        { name: 'player2', start: [1, 0], end: [1, 0] },
+        { name: 'player3', start: [2, 0], end: [2, 0] },
+        { name: 'player4', start: [0, 1], end: [0, 1] },
+        { name: 'pot', start: [1, 1], end: [1, 1] },
+        { name: 'player5', start: [2, 1], end: [2, 1] },
+        { name: 'player6', start: [0, 2], end: [0, 2] },
+        { name: 'player7', start: [1, 2], end: [1, 2] },
+        { name: 'player8', start: [2, 2], end: [2, 2] },
+    ];
+
+    const columns = size === 'small' ? ['full'] : ['1/3', '1/3', '1/3'];
+    const rows = size === 'small' ? ['flex', 'flex', 'flex'] : ['1/3', '1/3', '1/3'];
 
     return (
         <div style={{ height: '100vh' }}>
@@ -65,22 +88,12 @@ function Game() {
                 <Grid
                     gridArea="gameArea"
                     fill={true}
-                    areas={[
-                        { name: 'player1', start: [0, 0], end: [0, 0] },
-                        { name: 'player2', start: [1, 0], end: [1, 0] },
-                        { name: 'player3', start: [2, 0], end: [2, 0] },
-                        { name: 'player4', start: [0, 1], end: [0, 1] },
-                        { name: 'pot', start: [1, 1], end: [1, 1] },
-                        { name: 'player5', start: [2, 1], end: [2, 1] },
-                        { name: 'player6', start: [0, 2], end: [0, 2] },
-                        { name: 'player7', start: [1, 2], end: [1, 2] },
-                        { name: 'player8', start: [2, 2], end: [2, 2] },
-                    ]}
-                    columns={['1/3', '1/3', '1/3']}
-                    rows={['1/3', '1/3', '1/3']}
+                    areas={gridAreas}
+                    columns={columns}
+                    rows={rows}
                 >
                     {players.map(({ name, ...player }, position) => (
-                        <Box key={name} gridArea={playerArea(position)}>
+                        <Box key={name} gridArea={playerAreas[position]}>
                             <Player name={name} {...player}></Player>
                         </Box>
                     ))}
@@ -89,6 +102,7 @@ function Game() {
                         {pots.map((pot, index) => (
                             <Text key={index} size="xlarge" textAlign="center">{pot.reduce((a, b) => a + b, 0)}</Text>
                         ))}
+                        <Text>{size}</Text>
                     </Box>
                 </Grid>
                 <Box gridArea="actions" border direction="column" justify="between" pad="xsmall">
