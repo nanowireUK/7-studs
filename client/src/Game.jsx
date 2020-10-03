@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
     selectInLobby,
     selectPlayers,
-    selectPots,
     selectGameStatus,
     leave,
 } from './redux/slices/game';
@@ -16,17 +15,17 @@ import Lobby from './Lobby';
 import Player from './components/Player';
 import { Box, Grid, Text, Button, ResponsiveContext } from 'grommet';
 import GameActions from './GameActions';
+import Pot from './components/Pot';
 
 function Game() {
     const players = useSelector(selectPlayers);
     const inLobby = useSelector(selectInLobby);
-    const pots = useSelector(selectPots);
     const gameId = useSelector(selectGameId);
     const rejoinCode = useSelector(selectRejoinCode);
     const gameStatus = useSelector(selectGameStatus);
     const dispatch = useDispatch();
 
-    const size = useContext(ResponsiveContext);
+    const mobileLayout = useContext(ResponsiveContext) === 'small';
 
     const leaveGame = () => {
         dispatch(leave());
@@ -37,6 +36,7 @@ function Game() {
     const numPlayers = players.length;
 
     const playerAreas = [
+        ['player7'],
         ['player7', 'player2'],
         ['player7', 'player1', 'player3'],
         ['player7', 'player4', 'player2', 'player5'],
@@ -44,9 +44,9 @@ function Game() {
         ['player7', 'player6', 'player1', 'player2', 'player3', 'player8'],
         ['player7', 'player6', 'player4', 'player1', 'player3', 'player5', 'player8'],
         ['player7', 'player6', 'player4', 'player1', 'player2', 'player3', 'player5', 'player8'],
-    ][numPlayers - 2];
+    ][numPlayers - 1];
 
-    const gridAreas = size === 'small' ? [
+    const gridAreas = mobileLayout ? [
         ...playerAreas.map((playerArea, index) => ({
             name: playerArea, start: [0, index], end: [0, index]
         })),
@@ -63,8 +63,8 @@ function Game() {
         { name: 'player8', start: [2, 2], end: [2, 2] },
     ];
 
-    const columns = size === 'small' ? ['full'] : ['1/3', '1/3', '1/3'];
-    const rows = size === 'small' ? ['flex', 'flex', 'flex'] : ['1/3', '1/3', '1/3'];
+    const columns = mobileLayout ? ['full'] : ['1/3', '1/3', '1/3'];
+    const rows = mobileLayout ? ['flex', 'flex', 'flex'] : ['1/3', '1/3', '1/3'];
 
     return (
         <div style={{ height: '100vh' }}>
@@ -98,11 +98,8 @@ function Game() {
                         </Box>
                     ))}
 
-                    <Box justify="center" align="center" alignContent="center" round={true} gridArea="pot" background="brand" direction="column">
-                        {pots.map((pot, index) => (
-                            <Text key={index} size="xlarge" textAlign="center">{pot.reduce((a, b) => a + b, 0)}</Text>
-                        ))}
-                        <Text>{size}</Text>
+                    <Box gridArea="pot" pad={mobileLayout ? 'small' : null}>
+                        <Pot />
                     </Box>
                 </Grid>
                 <Box gridArea="actions" border direction="column" justify="between" pad="xsmall">
