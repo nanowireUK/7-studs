@@ -46,12 +46,16 @@ function PokerCard ({ face, suit, invisibleToOthers = false, availableDimensions
     );
 }
 
-function Player ({ name, chips, cards, isDealer, isAdmin, isCurrentPlayer, isMe, handDescription }) {
+function Player ({ name, chips, cards, isDealer, isAdmin, isCurrentPlayer, isMe, handDescription, hasFolded, isOutOfThisGame }) {
     const topRef = useRef(null);
     const lowerRef = useRef(null);
 
     const topDimensions = useContainerDimensions(topRef);
     const lowerDimensions = useContainerDimensions(lowerRef);
+
+    let status;
+    if (hasFolded) status = 'Folded';
+    if (isOutOfThisGame) status = 'Out';
 
     return (
         <Box pad="small" fill >
