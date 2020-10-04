@@ -390,7 +390,7 @@ namespace SevenStuds.Models
             for (int i = 0; i < Participants.Count; i++) 
             {
                  if ( Participants[i].UncommittedChips > 0 ) {
-                    stillIn += 1; // 
+                    stillIn += 1;  
                 }
             }
             return stillIn;
@@ -649,6 +649,8 @@ namespace SevenStuds.Models
                 p.GainOrLossInLastHand = 0;
             }
 
+            int numberOfPotentialWinners = CountOfPlayersLeftInHand();
+
             List<int> currentWinners = new List<int>();
             for (int pot = 0; pot < Pots.Count ; pot++) {
                 // Identify the player or players who is/are winning this pot
@@ -683,7 +685,12 @@ namespace SevenStuds.Models
                         int inPot = ChipsInSpecifiedPotForSpecifiedPlayer(pot, player);
                         p.UncommittedChips += share;
                         p.GainOrLossInLastHand += ( share - inPot );
-                        AddCommentaryAndResultDetail(p.Name + " won " + ( share - inPot ) + " with " + p._HandSummary + " (" + p._FullHandDescription + ")");
+                        if ( numberOfPotentialWinners == 1 ) {
+                            AddCommentaryAndResultDetail(p.Name + " won " + ( share - inPot ) + " as everyone else folded");
+                        }
+                        else {
+                            AddCommentaryAndResultDetail(p.Name + " won " + ( share - inPot ) + " with " + p._HandSummary + " (" + p._FullHandDescription + ")");
+                        }
                     }
                 }
                 for (int player = 0; player < Participants.Count ; player++) {
