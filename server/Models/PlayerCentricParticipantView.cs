@@ -25,6 +25,7 @@ namespace SevenStuds.Models
         public Boolean IsOutOfThisGame { get; set; }
         public Boolean HasDisconnected { get; set; }
         public string VisibleHandDescription { get; set; }
+        public int GainOrLossInLastHand { get; set; }
         public List<string> Cards { get; set; }
 
         public PlayerCentricParticipantView(Game g, int thisPlayersIndex, int observedPlayersIndex ) {
@@ -43,6 +44,7 @@ namespace SevenStuds.Models
             IsOutOfThisGame = observedPlayer.IsOutOfThisGame; 
             HasDisconnected = observedPlayer.HasDisconnected; 
             VisibleHandDescription = observedPlayer._VisibleHandDescription;
+            GainOrLossInLastHand = observedPlayer.GainOrLossInLastHand;
             // Add a list of this player's cards, substituting with '?' if the player receiving this data is not allowed to see this card
             Cards = new List<string>();
             for ( int i = 0; i < observedPlayer.Hand.Count; i++ ) {

@@ -36,6 +36,7 @@ namespace SevenStuds.Models
         public string _VisibleHandDescription { get; set; }
         public string _FullHandDescription { get; set; }
         public string _HandSummary { get; set; }
+        public int GainOrLossInLastHand { get; set; }
         private PokerHand _PokerHand { get; set; }
         public Boolean IsLockedOutFollowingReplay { get; set; }
         public Boolean IsGameAdministrator { get; set; }
