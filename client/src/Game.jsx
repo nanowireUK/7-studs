@@ -64,7 +64,7 @@ function Game() {
     ];
 
     const columns = mobileLayout ? ['full'] : ['1/3', '1/3', '1/3'];
-    const rows = mobileLayout ? ['flex', 'flex', 'flex'] : ['1/3', '1/3', '1/3'];
+    const rows = mobileLayout ? Array(numPlayers + 1).fill('auto'): ['1/3', '1/3', '1/3'];
 
     return (
         <div style={{ height: '100vh' }}>
