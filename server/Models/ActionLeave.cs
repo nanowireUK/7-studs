@@ -33,8 +33,9 @@ namespace SevenStuds.Models
             //    2) Every action that is sent to the server should include the count
             //    3) Before processing an action, the server will check that the counts are the same and reject the action (with an exception) if they are not
 
-            // If this was the last player, remove the game from the system and notify the player via an exception that the game is now gone
-            if ( G.Participants.Count == 0 ) {
+            // If this was the last player still connected to the game, remove the game from the system 
+            // and notify the player via an exception that the game is now gone
+            if ( G.Participants.Count == 1 ) {
                 Game.EraseGame(G.GameId);
                 throw new HubException("You were the last player to leave the game so the game has now been deleted");
             }  
@@ -73,7 +74,7 @@ namespace SevenStuds.Models
                 else {
                     // They are leaving out of turn, so it will remain the turn of the current player unless the player leaving now means there is only one person left in
                     G.RecordLastEvent(UserName + " has left the game and effectively folded out of turn"+ changeOfAdminMessage);
-                    if ( G.CountOfPlayersLeftIn() == 1 ) {
+                    if ( G.CountOfPlayersLeftInHand() == 1 ) {
                         // Everyone has folded except one player
                         G.NextAction = G.ProcessEndOfHand(G.LastEvent + ", only one player left in, hand ended"); // will also update commentary with hand results
                         G.AddCommentary(G.NextAction);
