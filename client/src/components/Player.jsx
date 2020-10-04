@@ -1,12 +1,13 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Box, Stack, Text } from 'grommet';
-import Casino from 'react-casino';
 
 import {ReactComponent as Heart} from '../assets/suit-hearts.svg';
 import {ReactComponent as Club} from '../assets/suit-clubs.svg';
 import {ReactComponent as Diamond} from '../assets/suit-diamonds.svg';
 import {ReactComponent as Spade} from '../assets/suit-spades.svg';
 import {ReactComponent as Chip} from '../assets/poker-chip.svg';
+import { selectHandCompleted } from '../redux/slices/game';
+import { useSelector } from 'react-redux';
 
 const useContainerDimensions = myRef => {
     const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
@@ -33,47 +34,28 @@ const useContainerDimensions = myRef => {
     return dimensions;
 };
 
-function OldPokerCard ({ face, suit, invisibleToOthers = false, availableDimensions, index }) {
-    return (
-        <Box title={face !== '?' ? `${face}${suit}` : 'Hidden'}>
-            <Casino.Card
-                face={face}
-                suit={suit}
-                style={{
-                    maxWidth: availableDimensions.width / 4.75,
-                    maxHeight: availableDimensions.height,
-                    height: undefined,
-                    width: undefined,
-                    marginLeft: index ? '4px' : null,
-                    filter: invisibleToOthers ? 'opacity(70%)' : 'none'
-                }}
-            />
-        </Box>
-    );
-}
-
-function Face ({ face = '', suit = '' }) {
+function Face ({ face = '', suit = '', invisibleToOthers = false }) {
     const color = ['H', 'D'].includes(suit.toUpperCase()) ? '#d40000' : 'black';
     return (
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18" version="1.0">
-            <text x="50%" y="80%" textAnchor="middle" fontFamily="Bellota Text" fontWeight="700" fill={color}>{face === 'T' ? '10' : face}</text>
+            <text x="50%" y="80%" textAnchor="middle" fontFamily="Bellota Text" fontWeight="700" fill={color} opacity={invisibleToOthers ? '50%' : null}>{face === 'T' ? '10' : face}</text>
         </svg>
     )
 }
 
-function Suit ({ suit }) {
+function Suit ({ suit, invisibleToOthers = false }) {
     if (suit) {
         switch (suit.toUpperCase()) {
-            case 'S': return <Spade/>
-            case 'D': return <Diamond/>
-            case 'H': return <Heart/>
-            case 'C': return <Club/>
+            case 'S': return <Spade opacity={invisibleToOthers ? '50%' : null}/>
+            case 'D': return <Diamond opacity={invisibleToOthers ? '50%' : null}/>
+            case 'H': return <Heart opacity={invisibleToOthers ? '50%' : null}/>
+            case 'C': return <Club opacity={invisibleToOthers ? '50%' : null}/>
         }
     }
-    return <Face face="?" suit={suit}/>
+    return <Face invisibleToOthers={invisibleToOthers} face="?" suit={suit}/>
 }
 
-function PokerCard ({ face, suit }) {
+function PokerCard ({ face, suit, invisibleToOthers = false }) {
     const cardRef = useRef(null);
     const { height } = useContainerDimensions(cardRef);
 
@@ -86,13 +68,14 @@ function PokerCard ({ face, suit }) {
 
     return (
         <Box ref={cardRef} direction="row" title={face !== '?' ? `${face}${suit}` : 'Hidden'} elevation="xsmall" pad="xsmall" border round="xsmall" gap="2px" background="white">
-            <Box direction="column" align="center" justify="around" width={`${height/2}px`} testborder={{ color: 'blue', style: 'dashed' }}><Face face={face} suit={suit}/></Box>
-            <Box direction="column" align="center" justify="around" width={`${height/2}px`} testborder={{ color: 'red', style: 'dashed' }}><Suit suit={suit} /></Box>
+            <Box direction="column" align="center" justify="around" width={`${height/2}px`} testborder={{ color: 'blue', style: 'dashed' }}><Face invisibleToOthers={invisibleToOthers} face={face} suit={suit}/></Box>
+            <Box direction="column" align="center" justify="around" width={`${height/2}px`} testborder={{ color: 'red', style: 'dashed' }}><Suit invisibleToOthers={invisibleToOthers} suit={suit} /></Box>
         </Box>
     );
 }
 
-function Player ({ name, chips, cards, isDealer, isAdmin, isCurrentPlayer, isMe, handDescription, hasFolded, isOutOfThisGame, isSharingHandDetails }) {
+function Player ({ name, chips, cards, isDealer, isAdmin, isCurrentPlayer, isMe, handDescription, hasFolded, isOutOfThisGame, isSharingHandDetails, gainOrLossInLastHand }) {
+    const handCompleted = useSelector(selectHandCompleted);
     const topRef = useRef(null);
     const lowerRef = useRef(null);
 
@@ -114,11 +97,12 @@ function Player ({ name, chips, cards, isDealer, isAdmin, isCurrentPlayer, isMe,
                             <Box height="30px"><Chip /></Box>
                         </Box>
                     </Box>
-                    <Box flex="grow">
+                    <Box flex="grow" direction="row" justify="between">
                         <Text level={3} color='gray'>{handDescription}</Text>
+                        {handCompleted ? <Text color={gainOrLossInLastHand > 0 ? 'status-ok' : 'status-error'} margin={{ right: "small"}}>{gainOrLossInLastHand}</Text> : null}
                     </Box>
 
-                    <Box margin="xsmall" fill="vertical" border={{ style: "dashed"}} pad="xsmall" round="xsmall">
+                    <Box margin="xsmall" fill="vertical" border={{ style: "dashed"}} pad="xsmall" round="xsmall" direction="row" justify="between">
                         <Box ref={topRef} direction="row" gap="xsmall" fill>
                             {[...cards.slice(0, 2), ...cards.slice(6, 7)].map((card, index) => {
                                 const [value, suit] = [...card];
@@ -128,13 +112,14 @@ function Player ({ name, chips, cards, isDealer, isAdmin, isCurrentPlayer, isMe,
                                     index={index}
                                     face={value}
                                     suit={suit}
-                                    invisibleToOthers={isMe && isSharingHandDetails}
+                                    invisibleToOthers={isMe && !isSharingHandDetails}
                                     availableDimensions={topDimensions}
                                 />
                             })}
                         </Box>
+                        {isMe ? <Text color="gray" style={{ rotate: '90deg'}}>HAND</Text> : null}
                     </Box>
-                    <Box margin="xsmall" fill="vertical" border={{ style: "dashed"}} pad="xsmall" round="xsmall">
+                    <Box margin="xsmall" fill="vertical" border={{ style: "dashed"}} pad="xsmall" round="xsmall" direction="row" justify="between">
                         <Box ref={lowerRef} direction="row" gap="xsmall" fill>
                             {cards.slice(2, 6).map((card, index) => {
                                 const [value, suit] = [...card];
@@ -148,6 +133,7 @@ function Player ({ name, chips, cards, isDealer, isAdmin, isCurrentPlayer, isMe,
                                 />
                             })}
                         </Box>
+                        {isMe ? <Text color="gray" style={{ rotate: '90deg'}}>TABLE</Text> : null}
                     </Box>
 
                 </Box>
