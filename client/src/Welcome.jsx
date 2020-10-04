@@ -9,7 +9,7 @@ import { selectGameId, selectUsername, selectRejoinCode } from './redux/slices/h
 function Welcome() {
     const [roomId, setRoomId] = useState(useSelector(selectGameId) || '');
     const [playerName, setPlayerName] = useState(useSelector(selectUsername) || '');
-    const [rejoinCode, setRejoinCode] = useState(useSelector(selectRejoinCode) || '');
+    const [rejoinCode, setRejoinCode] = useState('');
 
     const isInvalid = roomId.trim() === '' || playerName.trim() === '';
 
