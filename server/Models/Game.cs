@@ -368,8 +368,7 @@ namespace SevenStuds.Models
             }
             return ZbiOfFirstToBet;
         } 
-
-        public int CountOfPlayersLeftIn() {
+        public int CountOfPlayersLeftInHand() {
            // Count how many players were in the round in the first place and have not folded in the meantime
             int stillIn = 0;
             for (int i = 0; i < Participants.Count; i++) 
@@ -380,13 +379,22 @@ namespace SevenStuds.Models
                     && this.ChipsInAllPotsForSpecifiedPlayer(i) > 0 // i.e. player was in the hand to start off with
                 )
                 {
-                    stillIn += 1; // This player is still in (even if they are no longer able to bet because of covering a pot)
+                    stillIn += 1; // This player is still in (includes situation where they are no longer able to bet because of covering a pot)
                 }
             }
             return stillIn;
         }
-
-
+        public int CountOfPlayersLeftInGame() {
+           // Count how many players still have funds (this is intended for use after a hand completes)
+            int stillIn = 0;
+            for (int i = 0; i < Participants.Count; i++) 
+            {
+                 if ( Participants[i].UncommittedChips > 0 ) {
+                    stillIn += 1; // 
+                }
+            }
+            return stillIn;
+        }
         public int ChipsInAllPotsForSpecifiedPlayer (int PlayerIndex ) {
             int totalCommitted = 0;
             foreach ( List<int> pot in this.Pots ) {
@@ -545,7 +553,7 @@ namespace SevenStuds.Models
 
         public void SetNextPlayerToActOrHandleEndOfHand(int currentPlayerIndex, string Trigger) {
             // Check for scenario where only one active player is left
-            if ( CountOfPlayersLeftIn() == 1 ) {
+            if ( CountOfPlayersLeftInHand() == 1 ) {
                 // Everyone has folded except one player
                 NextAction = ProcessEndOfHand(Trigger + ", only one player left in, hand ended"); // will also update commentary with hand results
                 AddCommentary(NextAction);
@@ -637,6 +645,10 @@ namespace SevenStuds.Models
 
             ClearResultDetails();
 
+            foreach ( Participant p in Participants ) {
+                p.GainOrLossInLastHand = 0;
+            }
+
             List<int> currentWinners = new List<int>();
             for (int pot = 0; pot < Pots.Count ; pot++) {
                 // Identify the player or players who is/are winning this pot
@@ -668,8 +680,9 @@ namespace SevenStuds.Models
                         // Give them their share of this pot
                         int tp = TotalInSpecifiedPot(pot);
                         int share = tp / currentWinners.Count; // Discards any fractional winnings ... not sure how else to handle this
-                        p.UncommittedChips += share;
                         int inPot = ChipsInSpecifiedPotForSpecifiedPlayer(pot, player);
+                        p.UncommittedChips += share;
+                        p.GainOrLossInLastHand += ( share - inPot );
                         AddCommentaryAndResultDetail(p.Name + " won " + ( share - inPot ) + " with " + p._HandSummary + " (" + p._FullHandDescription + ")");
                     }
                 }
@@ -678,6 +691,7 @@ namespace SevenStuds.Models
                     if ( ! currentWinners.Contains(player) ) {
                         // Record the loss of their investment
                         int inPot = ChipsInSpecifiedPotForSpecifiedPlayer(pot, player);
+                        p.GainOrLossInLastHand -= inPot;
                         if ( inPot == 0 ) {
                             AddCommentaryAndResultDetail(p.Name + " had nothing in this pot");
                         }
@@ -701,7 +715,7 @@ namespace SevenStuds.Models
                 }
             }
 
-            if ( CountOfPlayersLeftIn() == 1 ) {
+            if ( CountOfPlayersLeftInGame() == 1 ) {
                 NextAction = "You are the last player in the game, please either reopen the lobby or leave the game";
             }
             else if ( unrevealedHands > 0 ) {
