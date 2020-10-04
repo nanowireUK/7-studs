@@ -53,6 +53,7 @@ export const selectPlayers = (state) =>
                        HasFolded: hasFolded,
                        VisibleHandDescription: handDescription,
                        IsSharingHandDetails: isSharingHandDetails,
+                       GainOrLossInLastHand: gainOrLossInLastHand,
                     },
                ) => ({
                    name,
@@ -65,7 +66,8 @@ export const selectPlayers = (state) =>
                    isAdmin,
                    isOutOfThisGame,
                    hasFolded,
-                   isSharingHandDetails
+                   isSharingHandDetails,
+                   gainOrLossInLastHand
                })
            );
 
