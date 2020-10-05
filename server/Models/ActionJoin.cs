@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.SignalR;
+
 namespace SevenStuds.Models
 {  
     /// <summary>  
@@ -12,6 +14,13 @@ namespace SevenStuds.Models
 
         public override void ProcessAction()
         {
+            G.RemoveDisconnectedPlayersFromGameState(); // clear out disconnected players to possibly make way for new joiner
+
+            // First make sure the limit of 8 players is not exceeded
+            if ( G.Participants.Count == 8 ) {
+                throw new HubException("This game already has the maximum of 8 registered players");
+            }
+
             // Add player (note that the base class has already checked the player's basic eligibility for this action)
             Participant p = new Participant(this.UserName);
             G.Participants.Add(p);
@@ -23,7 +32,7 @@ namespace SevenStuds.Models
             p.NoteConnectionId(this.ConnectionId);
             G.RecordLastEvent(this.UserName + " joined game" + ( p.IsGameAdministrator ? " as administrator" : ""));
             G.NextAction = "Await new player or start the game";
-            G.RemoveDisconnectedPlayersFromGameState(); // clear out disconnected players
+
             G.LobbyData = new LobbyData(G); // Update the lobby data
         }
     }     

@@ -143,7 +143,7 @@ namespace SevenStuds.Models
         }
 
         public void RemoveDisconnectedPlayersFromGameState() {
-
+            // Remove any player(s) that disconnected during the last hand
             for (int player = Participants.Count - 1; player > 0; player--) {
                 // Starting from the end of the player array, remove any players that have disconnected during the last hand
                 if ( Participants[player].HasDisconnected == true ) {
