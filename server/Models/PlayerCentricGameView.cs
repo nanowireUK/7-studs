@@ -33,7 +33,9 @@ namespace SevenStuds.Models
         public List<List<int>> Pots { get; set; } // pot(s) built up in the current hand (over multiple rounds of betting)
         public List<string> LastHandResult { get; set; }
         public List<PlayerCentricParticipantView> PlayerViewOfParticipants { get; set; } // ordered list of participants (order represents order around the table)
+        public Card CommunityCard { get; set; }
         public List<Boolean> CardPositionIsVisible { get; set; }
+        public LobbyData LobbyData { get; set; }
         public PlayerCentricGameView(Game g, int playerIndex) {
             // Build up this player's view of the game
             StatusMessage = g.StatusMessage;
@@ -53,7 +55,10 @@ namespace SevenStuds.Models
             GameId = g.GameId;
             HandsPlayedIncludingCurrent = g.HandsPlayedIncludingCurrent;
             CountOfLeavers = g.CountOfLeavers;
+            CommunityCard = g.CommunityCard;
             CardPositionIsVisible = g.CardPositionIsVisible;
+            LobbyData = g.LobbyData;
+
             // Reproduce the pots (the pots themselves stay in the same order, but the current player's contributions becomes the first slot in the inner array)
             if ( g.Pots == null ) {
                 this.Pots = null;

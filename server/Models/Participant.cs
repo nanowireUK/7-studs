@@ -109,9 +109,14 @@ namespace SevenStuds.Models
         } 
 
         public void PrepareForNextBettingRound(Game g, int roundNumber) {
-            // Check whether player is still in, and deal them a new card if so
+            // Check whether player is still in, and deal them a new card if so (or the community card if specified)
             if ( this.HasFolded == false & this.IsOutOfThisGame == false ) {
-                this.Hand.Add(g.DealCard()); // random card
+                if ( g.CommunityCard == null ) {
+                    this.Hand.Add(g.DealCard()); // random card, usual scenario
+                }
+                else {
+                    this.Hand.Add(g.CommunityCard); // same card for each player in this round
+                }
                 PokerHand visibleHand = new PokerHand(
                     this.Hand[2], 
                     roundNumber >= 4 ? this.Hand[3] : ServerState.DummyCard, 

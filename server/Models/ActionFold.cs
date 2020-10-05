@@ -19,6 +19,11 @@ namespace SevenStuds.Models
             // Implement the Fold
             p.HasFolded = true;
 
+            if ( p.UncommittedChips == 0 ) {
+                // Player is now bankrupt 
+                G.BankruptcyEventHistoryForGame.Add(new BankruptcyEvent(p.Name, false));
+            }
+
             // Find and set next player (could be no one if all players have now folded)
             G.SetNextPlayerToActOrHandleEndOfHand(PlayerIndex, G.LastEvent);           
         }

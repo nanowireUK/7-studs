@@ -30,8 +30,10 @@ namespace SevenStuds.Models
         public int _IndexOfLastPlayerToStartChecking { get; set; } 
         public bool _CheckIsAvailable { get; set; }
         public int CountOfLeavers { get; set; }
+        public Card CommunityCard { get; set; }
         protected GameLog _GameLog { get; set; }
         protected GameLog _TestContext { get; set; }
+        public List<BankruptcyEvent> BankruptcyEventHistoryForGame { get; set; }
         private Dictionary<string, Participant> _ConnectionToParticipantMap { get; set; } // Can't be public as JSON serialiser can't handle it
         public List<List<int>> Pots { get; set; } // pot(s) built up in the current hand (over multiple rounds of betting)
         public List<Participant> Participants { get; set; } // ordered list of participants (order represents order around the table)
@@ -39,6 +41,7 @@ namespace SevenStuds.Models
         private Dictionary<ActionEnum, ActionAvailability> _ActionAvailability { get; set; } // Can't be public as JSON serialiser can't handle it
         public List<ActionAvailability> ActionAvailabilityList { get; set; } // This list contains references to the same objects as in the Dictionary       
         public List<Boolean> CardPositionIsVisible { get; } = new List<Boolean>{false, false, true, true, true, true, false};
+        public LobbyData LobbyData { get; set; }
         private Deck CardPack { get; set; }
 
         public Game(string gameId) {
@@ -112,6 +115,7 @@ namespace SevenStuds.Models
             {
                 p.UncommittedChips = this.InitialChipQuantity;
             }
+            BankruptcyEventHistoryForGame = new List<BankruptcyEvent>();
             if ( this.IsRunningInTestMode() == false ) {
                 // Normal game, so randomise player order by picking a random player, deleting and moving to front, repeating a few times
                 for (int player = 0; player < Participants.Count; player++) {
@@ -121,7 +125,7 @@ namespace SevenStuds.Models
                 }
             }
             else {
-                // We are running in test mode (i.e. under the control of an ActionReply command) so set the original player order
+                // We are running in test mode (i.e. under the control of an ActionReplay command) so set the original player order
                 for ( int requiredPos = 0; requiredPos < this._TestContext.playersInOrder.Count; requiredPos++ ) {
                     // Find that player who should be at this position and move them to it
                     string playerToMove = this._TestContext.playersInOrder[requiredPos];
@@ -138,9 +142,8 @@ namespace SevenStuds.Models
             this.LogPlayers(); // record the modified player order
         }
 
-        public void StartNextHand()
-        {
-            // First remove any player(s) that disconnected during the last hand
+        public void RemoveDisconnectedPlayersFromGameState() {
+
             for (int player = Participants.Count - 1; player > 0; player--) {
                 // Starting from the end of the player array, remove any players that have disconnected during the last hand
                 if ( Participants[player].HasDisconnected == true ) {
@@ -158,6 +161,12 @@ namespace SevenStuds.Models
                     }
                 }
             }
+        }
+
+        public void StartNextHand()
+        {
+            // First remove any player(s) that disconnected during the last hand
+            RemoveDisconnectedPlayersFromGameState(); // Shouldn't really be necessary here ... happens mainly on Join, Continue or Open
 
             HandsPlayedIncludingCurrent++;
 
@@ -239,6 +248,7 @@ namespace SevenStuds.Models
             SetActionAvailability(ActionEnum.Rejoin, AvailabilityEnum.AnyRegisteredPlayer); // Open up REJOIN to anyone who previously joined
             SetActionAvailability(ActionEnum.Leave, AvailabilityEnum.AnyRegisteredPlayer); // Open up LEAVE to anyone who has joined
             SetActionAvailability(ActionEnum.GetState, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who previously joined
+            SetActionAvailability(ActionEnum.GetMyState, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who previously joined
             SetActionAvailability(ActionEnum.GetLog, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who previously joined
             SetActionAvailability(ActionEnum.Replay, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who previously joined            
 
@@ -247,6 +257,7 @@ namespace SevenStuds.Models
                 SetActionAvailability(ActionEnum.Join, AvailabilityEnum.AnyUnregisteredPlayer); // Open up JOIN to anyone who has not yet joined
                 SetActionAvailability(ActionEnum.Open, AvailabilityEnum.NotAvailable); // OPEN is no longer possible as lobby is already open
                 SetActionAvailability(ActionEnum.Start, ( this.Participants.Count >= 2 ) ? AvailabilityEnum.AdministratorOnly : AvailabilityEnum.NotAvailable ); 
+                SetActionAvailability(ActionEnum.Continue, ( this.Participants.Count >= 2 ) ? AvailabilityEnum.AdministratorOnly : AvailabilityEnum.NotAvailable ); 
             }
             else if ( GameMode == GameModeEnum.HandsBeingRevealed ) {
                 // Player can only fold or reveal in this phase
@@ -318,6 +329,11 @@ namespace SevenStuds.Models
         public void DealNextRound()
         {
             _CardsDealtIncludingCurrent += 1;
+            CommunityCard = null;
+            if ( _CardsDealtIncludingCurrent == 7 && CountOfPlayersLeftInHand() > CardPack.Count ) {
+                // Edge case: we don't have enough cards to deal to all players (can only happen in round 7 if nearly everyone stayed in up to that point)
+                CommunityCard = DealCard(); // Random card that will be dealt to all players
+            }
             foreach (Participant p in Participants)
             {
                 p.PrepareForNextBettingRound(this, _CardsDealtIncludingCurrent);
@@ -444,24 +460,27 @@ namespace SevenStuds.Models
                     && p.HasFolded == false
                     && p.IsOutOfThisGame == false
                 ) {
-                    if ( ( p.UncommittedChips + ChipsInAllPotsForSpecifiedPlayer(i) ) > maxAvailableToOtherActivePlayers ) {
-                        maxAvailableToOtherActivePlayers = p.UncommittedChips + ChipsInAllPotsForSpecifiedPlayer(i);
+                    int thisPlayersCommittedChips = ChipsInAllPotsForSpecifiedPlayer(i);
+                    if ( ( p.UncommittedChips + thisPlayersCommittedChips ) > maxAvailableToOtherActivePlayers ) {
+                        maxAvailableToOtherActivePlayers = p.UncommittedChips + thisPlayersCommittedChips;
                     }
                 }
             }
             p = this.Participants[playerIndex];
-            if ( p.UncommittedChips > catchupAmount ) {
-                // Raise is theoretically possible, now make sure that the raise amount allows at least one player to match it (by going all in)
-                if ( ( p.UncommittedChips + catchupAmount ) <= maxAvailableToOtherActivePlayers ) {
-                    return p.UncommittedChips - catchupAmount; // We can raise anything up to our total (after paying anything required to catchup)
-                }
-                else {
-                    return maxAvailableToOtherActivePlayers - ( ChipsInAllPotsForSpecifiedPlayer(playerIndex) + catchupAmount );
-                }
+            int currentPlayersCommittedChips = ChipsInAllPotsForSpecifiedPlayer(playerIndex);
+
+            if ( p.UncommittedChips <= catchupAmount ) {
+                // We can't raise at all because we don't have more than we need to just catch up
+                return 0; 
             }
-            else {  
-                return 0; // We can't raise at all because we don't have more than we need to just catch up
-            }
+            else if ( ( currentPlayersCommittedChips + p.UncommittedChips ) > maxAvailableToOtherActivePlayers ) {
+                // We have more funds than anyone else so any raise is capped (possibly at zero)
+                return maxAvailableToOtherActivePlayers - ( currentPlayersCommittedChips + catchupAmount); 
+            } 
+            else {
+                // We have less committed + uncommitted funds than other players, so we can raise up to our total (after catching up)
+                return p.UncommittedChips - catchupAmount;
+            }               
         }  
         public int TotalInSpecifiedPot (int pot) {
             int totalPot = 0;
@@ -711,6 +730,14 @@ namespace SevenStuds.Models
                     }
                 }                
             }
+
+            // Identify anyone who became backrupt during the hand
+            for (int p = 0; p < Participants.Count ; p++) {
+                if ( Participants[p].UncommittedChips == 0 && Participants[p].IsOutOfThisGame == false ) {
+                    // Player is now bankrupt having been in this hand with some funds at the beginning of the hand
+                    BankruptcyEventHistoryForGame.Add(new BankruptcyEvent(Participants[p].Name, false));
+                }
+            }
             
             AddCommentary("Waiting for administrator to start next hand.");
 
@@ -809,5 +836,10 @@ namespace SevenStuds.Models
         public string GameLogAsJson() {
             return this._GameLog.AsJson();
         }
+
+        // public string LobbyDataAsJson() {
+        //     LobbyData l = new LobbyData(this);
+        //     return l.AsJson();
+        // }
     }
 }

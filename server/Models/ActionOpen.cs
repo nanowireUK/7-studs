@@ -12,21 +12,12 @@ namespace SevenStuds.Models
 
         public override void ProcessAction()
         {
-            // Note that this command can be used to open a new game lobby or for the administrator to reopen the lobby at the end of a hand
-            if ( G.Participants.Count == 0 ) {
-                // This is someone opening the game lobby for the first time
-                Participant p = new Participant(this.UserName);
-                G.Participants.Add(p);
-                p.IsGameAdministrator = true; // First player to join becomes the administrator (may need to find ways of changing this later)
-                p.NoteConnectionId(this.ConnectionId);
-                G.RecordLastEvent(this.UserName + " created the game and opened the lobby");
-                G.NextAction = "Await new player or start the game";
-            }
-            else {
-                G.RecordLastEvent(this.UserName + " reopened the game lobby to allow joining/leaving");
-                G.NextAction = "Await players leaving/joining, or restart the game";
-            }
+            // Note that this command is used to reopen the lobby at the end of a hand
+            G.RecordLastEvent(this.UserName + " reopened the game lobby");
+            G.NextAction = "Await players leaving/joining, or continue the game, or start a new one";
             G.GameMode = GameModeEnum.LobbyOpen;
+            G.RemoveDisconnectedPlayersFromGameState(); // clear out disconnected players
+            G.LobbyData = new LobbyData(G); // Update the lobby data
         }
     }     
 }  

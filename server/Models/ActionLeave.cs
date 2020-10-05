@@ -66,6 +66,8 @@ namespace SevenStuds.Models
             if ( p.IsOutOfThisGame == false && p.HasFolded == false ) {
                 // Player was still in the game in some form, so we have to treat this as if they folded
                 p.HasFolded = true;
+                // Player is now bankrupt (their funds will be discarded at the end of the hand)
+                G.BankruptcyEventHistoryForGame.Add(new BankruptcyEvent(p.Name, true));
                 if ( G.IndexOfParticipantToTakeNextAction == PlayerIndex ) {
                     // It was player's turn to move anyway, so implement the fold in the same way as if they had just folded in turn
                     G.RecordLastEvent(UserName + " has left the game and effectively folded"+ changeOfAdminMessage);
@@ -84,6 +86,11 @@ namespace SevenStuds.Models
             else {
                 // Player was already out of the hand so no consequence to game flow
                 G.RecordLastEvent(p.Name + " has left the game"+changeOfAdminMessage);
+            }
+
+            if ( G.GameMode == GameModeEnum.LobbyOpen ) {
+                G.RemoveDisconnectedPlayersFromGameState(); // clear out disconnected players
+                G.LobbyData = new LobbyData(G); // Update the lobby data
             }
 
             // Set the response type that will trigger the player's client session to disconnect and everyone else's gamne state to be updated
