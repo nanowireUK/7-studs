@@ -137,6 +137,18 @@ document.getElementById("actionStart").addEventListener("click",
     }
 );
 
+// --------------- START
+
+document.getElementById("actionContinue").addEventListener("click",
+    function (event) {
+        var gameId = getGameId();
+        var user = getUser();
+        var leaverCount = getLeaverCount();
+        connection.invoke("UserClickedContinue", gameId, user, leaverCount).catch(logError);
+        event.preventDefault();
+    }
+);
+
 // --------------- REVEAL HAND
 
 document.getElementById("actionReveal").addEventListener("click",
@@ -230,6 +242,16 @@ document.getElementById("actionReplay").addEventListener("click", function (even
     var leaverCount = getLeaverCount();
     var gameLog = getModifiers();
     connection.invoke("UserClickedReplay", gameId, user, leaverCount, gameLog).catch(logError);
+    event.preventDefault();
+});
+
+// --------------- Get My Game State (test feature)
+
+document.getElementById("actionGetMyState").addEventListener("click", function (event) {
+    var gameId = getGameId();
+    var user = getUser();
+    var leaverCount = getLeaverCount();
+    connection.invoke("UserClickedGetMyState", gameId, user, leaverCount).catch(logError);
     event.preventDefault();
 });
 

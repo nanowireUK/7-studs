@@ -25,7 +25,7 @@ namespace SevenStuds.Models
         Rejoin = 2,
         Leave = 3,
         Start = 4, // Starts the first or subsequent hand for an open or started game
-        Finish = 5,
+        Continue = 5,
         Reveal = 6, // only allowed between hands (i.e. game is started and a hand has just completed)
         // Hand-level actions, available only to one player at any one time
         Check = 10,
@@ -36,7 +36,8 @@ namespace SevenStuds.Models
         // Admin or test functions not intended for general use
         GetState = 20,
         GetLog = 21,
-        Replay = 22
+        Replay = 22,
+        GetMyState = 23
     }
    
 
@@ -48,7 +49,7 @@ namespace SevenStuds.Models
         PlayerCentricGameState = 0,
         OverallGameState = 1,
         GameLog = 2,
-        ConfirmToPlayerLeavingAndUpdateRemainingPlayers = 3
+        ConfirmToPlayerLeavingAndUpdateRemainingPlayers = 3 // this is a bit of a messy mix of ResponseType and Audience
     }
 
     /// <summary>

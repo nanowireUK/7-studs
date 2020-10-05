@@ -16,7 +16,7 @@ namespace SevenStuds.Hubs
         public async Task UserClickedLeave(string gameId, string user) { await UserClickedActionButton(ActionEnum.Leave, gameId,  user, "-1",  ""); }
         public async Task UserClickedStart(string gameId, string user, string leavers) { await UserClickedActionButton(ActionEnum.Start, gameId,  user, leavers,  ""); }
         public async Task UserClickedReveal(string gameId, string user, string leavers) { await UserClickedActionButton(ActionEnum.Reveal, gameId,  user, leavers,  ""); }
-        public async Task UserClickedFinish(string gameId, string user, string leavers) { await UserClickedActionButton(ActionEnum.Finish, gameId,  user, leavers,  ""); }
+        public async Task UserClickedContinue(string gameId, string user, string leavers) { await UserClickedActionButton(ActionEnum.Continue, gameId,  user, leavers,  ""); }
         public async Task UserClickedCheck(string gameId, string user, string leavers) { await UserClickedActionButton(ActionEnum.Check, gameId,  user, leavers,  ""); }
         public async Task UserClickedCall(string gameId, string user, string leavers) { await UserClickedActionButton(ActionEnum.Call, gameId,  user, leavers,  ""); }
         public async Task UserClickedRaise(string gameId, string user, string leavers, string raiseAmount) { await UserClickedActionButton(ActionEnum.Raise, gameId,  user, leavers,  raiseAmount); }
@@ -25,6 +25,7 @@ namespace SevenStuds.Hubs
         public async Task UserClickedGetState(string gameId, string user, string leavers) { await UserClickedActionButton(ActionEnum.GetState, gameId,  user, leavers,  ""); }
         public async Task UserClickedGetLog(string gameId, string user, string leavers) { await UserClickedActionButton(ActionEnum.GetLog, gameId,  user, leavers,  ""); }
         public async Task UserClickedReplay(string gameId, string user, string leavers, string gameLog) { await UserClickedActionButton(ActionEnum.Replay, gameId,  user, leavers,  gameLog); }
+        public async Task UserClickedGetMyState(string gameId, string user, string leavers) { await UserClickedActionButton(ActionEnum.GetMyState, gameId,  user, leavers,  ""); }
 
         // --------------------------------------------------------------------------------------------------
         // Internal methods
@@ -68,8 +69,6 @@ namespace SevenStuds.Hubs
                     resultAsJson = g.AsJson();
                     targetMethod = "ReceiveOverallGameState";
                     break;
-
-
                 default:
                     throw new System.Exception("7Studs User Exception: Unsupported response type");
             }

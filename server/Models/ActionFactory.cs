@@ -26,6 +26,8 @@ namespace SevenStuds.Models
                     return new ActionLeave(connectionId, actionType, gameId, user, leavers);
                 case ActionEnum.Start:  
                     return new ActionStart(connectionId, actionType, gameId, user, leavers);   
+                case ActionEnum.Continue:  
+                    return new ActionContinue(connectionId, actionType, gameId, user, leavers);                     
                 case ActionEnum.Reveal:  
                     return new ActionReveal(connectionId, actionType, gameId, user, leavers);                         
                 case ActionEnum.Check:  
@@ -39,7 +41,9 @@ namespace SevenStuds.Models
                 case ActionEnum.Fold:  
                     return new ActionFold(connectionId, actionType, gameId, user, leavers);   
                 case ActionEnum.GetState:  
-                    return new ActionGetState(connectionId, actionType, gameId, user, leavers);     
+                    return new ActionGetState(connectionId, actionType, gameId, user, leavers);   
+                case ActionEnum.GetMyState:  
+                    return new ActionGetMyState(connectionId, actionType, gameId, user, leavers);                        
                 case ActionEnum.GetLog:  
                     return new ActionGetLog(connectionId, actionType, gameId, user, leavers);   
                 case ActionEnum.Replay:  
