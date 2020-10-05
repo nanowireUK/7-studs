@@ -71,6 +71,15 @@ connection.on("ReceiveLeavingConfirmation",
     }
 );
 
+connection.on("ReceiveAdHocServerData",
+    function (serverData) {
+        var encodedMsg = "Ad hoc server data: \n" + serverData;
+        var pre = document.createElement("pre");
+        pre.textContent = encodedMsg;
+        appendToMessagesList(pre);
+    }
+);
+
 connection.start().catch(logError);
 
 // -------------------------------------------------------------------------------------------------------------
@@ -233,6 +242,18 @@ document.getElementById("actionGetLog").addEventListener("click", function (even
     connection.invoke("UserClickedGetLog", gameId, user, leaverCount).catch(logError);
     event.preventDefault();
 });
+
+// --------------- Get Game Log (test feature)
+
+document.getElementById("actionAdHocQuery").addEventListener("click", function (event) {
+    var gameId = getGameId();
+    var user = getUser();
+    var leaverCount = getLeaverCount();
+    var queryNum = getModifiers();
+    connection.invoke("UserClickedAdHocQuery", gameId, user, leaverCount, queryNum).catch(logError);
+    event.preventDefault();
+});
+
 
 // --------------- Replay game from game log (test feature)
 

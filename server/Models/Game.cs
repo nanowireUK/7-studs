@@ -43,6 +43,7 @@ namespace SevenStuds.Models
         public List<Boolean> CardPositionIsVisible { get; } = new List<Boolean>{false, false, true, true, true, true, false};
         public LobbyData LobbyData { get; set; }
         private Deck CardPack { get; set; }
+        public int AdHocQueryNumber { get; set; }
 
         public Game(string gameId) {
             GameId = gameId;
@@ -250,7 +251,9 @@ namespace SevenStuds.Models
             SetActionAvailability(ActionEnum.GetState, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who previously joined
             SetActionAvailability(ActionEnum.GetMyState, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who previously joined
             SetActionAvailability(ActionEnum.GetLog, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who previously joined
-            SetActionAvailability(ActionEnum.Replay, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who previously joined            
+            SetActionAvailability(ActionEnum.AdHocQuery, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who previously joined
+            SetActionAvailability(ActionEnum.Replay, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who previously joined  
+                      
 
             // Set different actions based on current game mode
             if ( GameMode == GameModeEnum.LobbyOpen ) {
@@ -836,10 +839,12 @@ namespace SevenStuds.Models
         public string GameLogAsJson() {
             return this._GameLog.AsJson();
         }
+        public string AdHocQueryResultAsJson() {
+            // This is stupidly convoluted, but an ActionAdHocQuery command has recorded a command number in AdHocQueryNumber,
+            // and we will now use a separate class to action the query and return 
+            return new AdHocQuery(AdHocQueryNumber).AsJson();
 
-        // public string LobbyDataAsJson() {
-        //     LobbyData l = new LobbyData(this);
-        //     return l.AsJson();
-        // }
+        }
+
     }
 }

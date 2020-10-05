@@ -105,7 +105,8 @@ namespace SevenStuds.Models
             if ( this.ActionType != ActionEnum.Replay 
                 & this.ActionType != ActionEnum.Rejoin
                 & this.ActionType != ActionEnum.GetLog
-                & this.ActionType != ActionEnum.GetState ) 
+                & this.ActionType != ActionEnum.GetState
+                & this.ActionType != ActionEnum.AdHocQuery ) 
             {
                 G.LogActionWithResults(this); // only do this for real game actions (not GetState, GetLog, Replay, Rejoin)
             }

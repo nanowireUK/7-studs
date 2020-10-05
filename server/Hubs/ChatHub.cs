@@ -26,6 +26,7 @@ namespace SevenStuds.Hubs
         public async Task UserClickedGetLog(string gameId, string user, string leavers) { await UserClickedActionButton(ActionEnum.GetLog, gameId,  user, leavers,  ""); }
         public async Task UserClickedReplay(string gameId, string user, string leavers, string gameLog) { await UserClickedActionButton(ActionEnum.Replay, gameId,  user, leavers,  gameLog); }
         public async Task UserClickedGetMyState(string gameId, string user, string leavers) { await UserClickedActionButton(ActionEnum.GetMyState, gameId,  user, leavers,  ""); }
+        public async Task UserClickedAdHocQuery(string gameId, string user, string leavers, string queryNum) { await UserClickedActionButton(ActionEnum.AdHocQuery, gameId,  user, leavers,  queryNum); }
 
         // --------------------------------------------------------------------------------------------------
         // Internal methods
@@ -33,7 +34,6 @@ namespace SevenStuds.Hubs
         {
             Action a = ActionFactory.NewAction(Context.ConnectionId, actionType, gameId, user, leavers, parameters);
             Game g = a.ProcessActionAndReturnGameReference();
-            // For each participant, send a personalised copy of the game state (hiding e.g. other people's cards)
 
             // New connections may have been linked to players, so link those connections to the relevant game and player groups in SignalR
             foreach ( Participant p in g.Participants ) {
@@ -68,6 +68,10 @@ namespace SevenStuds.Hubs
                 case ActionResponseTypeEnum.OverallGameState:
                     resultAsJson = g.AsJson();
                     targetMethod = "ReceiveOverallGameState";
+                    break;
+                case ActionResponseTypeEnum.AdHocServerQuery:
+                    resultAsJson = g.AdHocQueryResultAsJson();
+                    targetMethod = "ReceiveAdHocServerData";
                     break;
                 default:
                     throw new System.Exception("7Studs User Exception: Unsupported response type");

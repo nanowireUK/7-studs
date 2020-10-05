@@ -45,7 +45,9 @@ namespace SevenStuds.Models
                 case ActionEnum.GetMyState:  
                     return new ActionGetMyState(connectionId, actionType, gameId, user, leavers);                        
                 case ActionEnum.GetLog:  
-                    return new ActionGetLog(connectionId, actionType, gameId, user, leavers);   
+                    return new ActionGetLog(connectionId, actionType, gameId, user, leavers);  
+                case ActionEnum.AdHocQuery:  
+                    return new ActionAdHocQuery(connectionId, actionType, gameId, user, leavers, parameters);   
                 case ActionEnum.Replay:  
                     return new ActionReplay(connectionId, actionType, gameId, user, leavers, parameters);                                                                                                   
                 default:  

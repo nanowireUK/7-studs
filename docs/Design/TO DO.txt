@@ -1,11 +1,9 @@
 ----------------------------------------- SERVER-SIDE TO DO (higher priority first) ---------------------------------
 * Extend lobby data to include game event summary ... timings, # of hands played, joiners, order in which people went to zero chips, chips for those left in
 * Database to preserve/restore game status
-* Don't allow more than 8 people into a game 
 * Is there a way of telling whether my code is running on the Azure box (want to restrict access to game state and game log if so) -> do this in the week
 * Why does setting the admin sometimes not work (as part of leave game)?
 * Add game time, hands played, etc.
-* AdHocClientTest + AdHocServerTest functions as framework for quick test features
 * Think about whether any hands should be automatically revealed, e.g. in hand order
 * Tidy up hand commentary (remove references to cards)
 * Handle Admin activities (remove player, ...). What if admin is themselves disconnected/indisposed?
@@ -21,6 +19,8 @@
 ----------------------------------------- CLIENT-SIDE THOUGHTS ---------------------------------
 * Make it possible to toggle to a vertical view (with players stacked on top to enable a skinny side-panel view)
 ----------------------------------------- DONE (most recent first) ---------------------------------------
+DONE * Add an AdHocQuery action as framework for quick test features
+DONE * Don't allow more than 8 people into a game 
 DONE * Fixed (I hope) a bug in MaxRaise (when a less well-funded opponent has already gone all in)
 DONE * 'Join' and 'Open' action both now call 'ReceiveLobbyData' on client (not 'ReceiveMyGameState')
 DONE * Record bankruptcy events throughout all hands of a game

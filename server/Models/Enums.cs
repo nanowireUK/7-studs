@@ -37,9 +37,9 @@ namespace SevenStuds.Models
         GetState = 20,
         GetLog = 21,
         Replay = 22,
-        GetMyState = 23
+        GetMyState = 23,
+        AdHocQuery = 24
     }
-   
 
     /// <summary>
     /// ActionResponseTypeEnum: defines what data should be pass back to the server
@@ -49,7 +49,8 @@ namespace SevenStuds.Models
         PlayerCentricGameState = 0,
         OverallGameState = 1,
         GameLog = 2,
-        ConfirmToPlayerLeavingAndUpdateRemainingPlayers = 3 // this is a bit of a messy mix of ResponseType and Audience
+        ConfirmToPlayerLeavingAndUpdateRemainingPlayers = 3, // this is a bit of a messy mix of ResponseType and Audience
+        AdHocServerQuery = 4
     }
 
     /// <summary>
