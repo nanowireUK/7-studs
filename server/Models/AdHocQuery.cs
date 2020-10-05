@@ -12,18 +12,25 @@ namespace SevenStuds.Models
         public List<string> queryResults { get; set; } 
         public AdHocQuery(int queryNum) {
             queryResults = new List<string>();
-            switch (queryNum)  
-            { 
-                case 1:  
-                    queryResults.Add("Query " + queryNum + " listing env vars");
-                    foreach (DictionaryEntry de in Environment.GetEnvironmentVariables()) {
-                        queryResults.Add("Key: " + de.Key + " Value: " + de.Value);
-                    }
-                    break;                                                                         
-                default:  
-                    queryResults.Add("Unsupported query number" + queryNum);
-                    break;
-            }  
+            try
+            {
+                switch (queryNum)  
+                { 
+                    case 1:  
+                        queryResults.Add("Query " + queryNum + " listing env vars");
+                        foreach (DictionaryEntry de in Environment.GetEnvironmentVariables()) {
+                            queryResults.Add("Key: " + de.Key + " Value: " + de.Value);
+                        }
+                        break;                                                                         
+                    default:  
+                        throw new SystemException("Query number not implemented");
+                }  
+            }
+            catch (System.Exception e)
+            {
+                queryResults.Add("Query " + queryNum + " failed:");
+                queryResults.Add(e.Message);
+            }
         }
         public string AsJson()
         {
