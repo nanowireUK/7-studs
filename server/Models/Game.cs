@@ -31,6 +31,7 @@ namespace SevenStuds.Models
         public bool _CheckIsAvailable { get; set; }
         public int CountOfLeavers { get; set; }
         public Card CommunityCard { get; set; }
+        public DateTimeOffset LastSuccessfulAction { get; set; }
         protected GameLog _GameLog { get; set; }
         protected GameLog _TestContext { get; set; }
         public List<BankruptcyEvent> BankruptcyEventHistoryForGame { get; set; }
@@ -248,13 +249,16 @@ namespace SevenStuds.Models
             // Set any commands that are always available
             SetActionAvailability(ActionEnum.Rejoin, AvailabilityEnum.AnyRegisteredPlayer); // Open up REJOIN to anyone who previously joined
             SetActionAvailability(ActionEnum.Leave, AvailabilityEnum.AnyRegisteredPlayer); // Open up LEAVE to anyone who has joined
-            SetActionAvailability(ActionEnum.GetState, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who previously joined
-            SetActionAvailability(ActionEnum.GetMyState, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who previously joined
-            SetActionAvailability(ActionEnum.GetLog, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who previously joined
             SetActionAvailability(ActionEnum.AdHocQuery, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who previously joined
-            SetActionAvailability(ActionEnum.Replay, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who previously joined  
-                      
 
+            // Set any commands that are only available when we are not on the public server (i.e. test features)
+            if ( ! ServerState.IsRunningOnPublicServer() ) {
+                SetActionAvailability(ActionEnum.GetState, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who previously joined
+                SetActionAvailability(ActionEnum.GetLog, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who previously joined
+                SetActionAvailability(ActionEnum.Replay, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who previously joined  
+                SetActionAvailability(ActionEnum.GetMyState, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who previously joined
+            }
+                      
             // Set different actions based on current game mode
             if ( GameMode == GameModeEnum.LobbyOpen ) {
                 SetActionAvailability(ActionEnum.Join, AvailabilityEnum.AnyUnregisteredPlayer); // Open up JOIN to anyone who has not yet joined

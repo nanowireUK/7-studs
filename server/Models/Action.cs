@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.SignalR;
+using System;
 
 namespace SevenStuds.Models
 {  
@@ -114,7 +115,7 @@ namespace SevenStuds.Models
             // After dealing with the requested action, reset the permissions for each action to reflect the updated game state
             G.SetActionAvailabilityBasedOnCurrentPlayer();
             G.StatusMessage = G.LastEvent + ". " + G.NextAction; // Note that NextAction may not have changed as a result of the current action
-
+            G.LastSuccessfulAction = DateTimeOffset.Now;
             return G;
         }        
         public abstract void ProcessAction();
