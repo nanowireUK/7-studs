@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.SignalR;
+
 namespace SevenStuds.Models
 {
     /// <summary>  
@@ -14,6 +16,10 @@ namespace SevenStuds.Models
             string parameters // only used in some cases
         )
         {
+            // Only Join is allowable for games that do not exist
+            if ( Game.GameExists(gameId) == false && actionType != ActionEnum.Join ) {
+                throw new HubException("The only allowable action against a non-existent game is to join it");
+            }
             switch (actionType)  
             { 
                 case ActionEnum.Open:  
