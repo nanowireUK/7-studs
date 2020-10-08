@@ -32,7 +32,9 @@ namespace SevenStuds.Models
                     G.CountOfLeavers.ToString(), 
                     gla.Parameters
                 );
-                System.Diagnostics.Debug.WriteLine("Replaying " + gla.ActionType.ToString().ToLower() + " by " + gla.UserName);
+                System.Diagnostics.Debug.WriteLine(
+                    "Replaying action "  + gla.ActionNumber + ": "
+                    + gla.ActionType.ToString().ToLower() + " by " + gla.UserName);
 
                 a.ProcessActionAndReturnGameReference(); 
 
@@ -42,17 +44,21 @@ namespace SevenStuds.Models
                 foreach ( string c in G.HandCommentary ) {
                     System.Diagnostics.Debug.WriteLine("    " + c);                    
                 }
- 
-                if ( G.LastEvent != gla.LastEvent ){
-                    System.Diagnostics.Debug.WriteLine("  Last Event is not consistent:");
-                    System.Diagnostics.Debug.WriteLine("    ORIGINAL : " + gla.LastEvent);
-                    System.Diagnostics.Debug.WriteLine("    REPLAY   : " + G.LastEvent);
+                 if ( G.StatusMessage != gla.StatusMessage ){
+                    System.Diagnostics.Debug.WriteLine("  Status Message is not consistent:");
+                    System.Diagnostics.Debug.WriteLine("    ORIGINAL : " + gla.StatusMessage);
+                    System.Diagnostics.Debug.WriteLine("    REPLAY   : " + G.StatusMessage);
                 }
-                if ( G.NextAction != gla.NextAction ){
-                    System.Diagnostics.Debug.WriteLine("  Next Action is not consistent:");
-                    System.Diagnostics.Debug.WriteLine("    ORIGINAL : " + gla.NextAction);
-                    System.Diagnostics.Debug.WriteLine("    REPLAY   : " + G.NextAction);
-                }                
+                // if ( G.LastEvent != gla.LastEvent ){
+                //     System.Diagnostics.Debug.WriteLine("  Last Event is not consistent:");
+                //     System.Diagnostics.Debug.WriteLine("    ORIGINAL : " + gla.LastEvent);
+                //     System.Diagnostics.Debug.WriteLine("    REPLAY   : " + G.LastEvent);
+                // }
+                // if ( G.NextAction != gla.NextAction ){
+                //     System.Diagnostics.Debug.WriteLine("  Next Action is not consistent:");
+                //     System.Diagnostics.Debug.WriteLine("    ORIGINAL : " + gla.NextAction);
+                //     System.Diagnostics.Debug.WriteLine("    REPLAY   : " + G.NextAction);
+                // }                
             }
             foreach ( Participant p in G.Participants ) {
                 // Mark the player as locked ... this will be unlocked once someone joins as that player using a unique new connection

@@ -34,6 +34,7 @@ namespace SevenStuds.Models
         public DateTimeOffset LastSuccessfulAction { get; set; }
         protected GameLog _GameLog { get; set; }
         protected GameLog _TestContext { get; set; }
+        protected int ActionNumber { get; set; }
         public List<BankruptcyEvent> BankruptcyEventHistoryForGame { get; set; }
         private Dictionary<string, Participant> _ConnectionToParticipantMap { get; set; } // Can't be public as JSON serialiser can't handle it
         public List<List<int>> Pots { get; set; } // pot(s) built up in the current hand (over multiple rounds of betting)
@@ -67,6 +68,7 @@ namespace SevenStuds.Models
             _ActionAvailability = new Dictionary<ActionEnum, ActionAvailability>();
             ActionAvailabilityList = new List<ActionAvailability>();
             CountOfLeavers = 0;
+            ActionNumber = 0;
             SetActionAvailabilityBasedOnCurrentPlayer(); // Ensures the initial section of available actions is set
             this._GameLog = new GameLog(); // Initially empty, will be added to as game actions take place
         }
@@ -589,7 +591,7 @@ namespace SevenStuds.Models
                     // All 7 cards have now been bet on, so betting is completed and we now need players to reveal their hands in turn
                     GameMode = GameModeEnum.HandsBeingRevealed;
                     IndexOfParticipantToTakeNextAction  = ( _CheckIsAvailable ? _IndexOfLastPlayerToStartChecking : _IndexOfLastPlayerToRaise );
-                    NextAction = Trigger + ", betting completed, proceeding to hand reveal stage, " 
+                    NextAction = /* Trigger + ", " + */ "Betting completed, proceeding to hand reveal stage, " 
                         + Participants[IndexOfParticipantToTakeNextAction].Name + " to reveal (or fold)"; 
                     AddCommentary(NextAction);
                     return;
@@ -808,7 +810,15 @@ namespace SevenStuds.Models
         } 
 
         public void LogActionWithResults(Action a) {
-            this._GameLog.actions.Add(new GameLogAction(a, this.LastEvent, this.NextAction, this.HandCommentary, this.HandSummaries()));
+            this.ActionNumber++;
+            this._GameLog.actions.Add(new GameLogAction(
+                a, 
+                this.ActionNumber,
+                this.StatusMessage,
+                this.LastEvent,
+                this.NextAction, 
+                this.HandCommentary, 
+                this.HandSummaries()));
             this.LastSuccessfulAction = DateTimeOffset.Now; 
         }
 

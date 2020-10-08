@@ -103,18 +103,20 @@ namespace SevenStuds.Models
         {
             this.ProcessAction(); // Use the subclass to implement the specifics of the action
 
+            // Set a status message that combines the last event with the next action
+            // (noting that NextAction may not have changed as a result of the current action)
+            G.StatusMessage = G.LastEvent + ". " + G.NextAction; 
+
             if ( this.ActionType != ActionEnum.Replay 
                 & this.ActionType != ActionEnum.Rejoin
                 & this.ActionType != ActionEnum.GetLog
                 & this.ActionType != ActionEnum.GetState
                 & this.ActionType != ActionEnum.AdHocQuery ) 
             {
-                G.LogActionWithResults(this); // only log real game actions (not GetState, GetLog, Replay, Rejoin or AdHocQuery)
+                G.LogActionWithResults(this); // Note: only log real game actions (not GetState, GetLog, Replay, Rejoin or AdHocQuery)
             }
-
             // After dealing with the requested action, reset the permissions for each action to reflect the updated game state
             G.SetActionAvailabilityBasedOnCurrentPlayer();
-            G.StatusMessage = G.LastEvent + ". " + G.NextAction; // Note that NextAction may not have changed as a result of the current action
             return G;
         }        
         public abstract void ProcessAction();

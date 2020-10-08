@@ -6,11 +6,11 @@
   ],
   "actions": [
     {
+      "ActionNumber": 1,
       "ActionType": 1,
       "UserName": "John",
       "Parameters": null,
-      "LastEvent": "John joined game as administrator",
-      "NextAction": "Await new player or start the game",
+      "StatusMessage": "John joined game as administrator. Await new player or start the game",
       "HandCommentary": [
         "John joined game as administrator"
       ],
@@ -19,11 +19,11 @@
       ]
     },
     {
+      "ActionNumber": 2,
       "ActionType": 1,
       "UserName": "Robert",
       "Parameters": null,
-      "LastEvent": "Robert joined game",
-      "NextAction": "Await new player or start the game",
+      "StatusMessage": "Robert joined game. Await new player or start the game",
       "HandCommentary": [
         "Robert joined game"
       ],
@@ -33,11 +33,11 @@
       ]
     },
     {
+      "ActionNumber": 3,
       "ActionType": 1,
       "UserName": "Phil",
       "Parameters": null,
-      "LastEvent": "Phil joined game",
-      "NextAction": "Await new player or start the game",
+      "StatusMessage": "Phil joined game. Await new player or start the game",
       "HandCommentary": [
         "Phil joined game"
       ],
@@ -48,11 +48,11 @@
       ]
     },
     {
+      "ActionNumber": 4,
       "ActionType": 4,
       "UserName": "John",
       "Parameters": null,
-      "LastEvent": "John started the first hand (player order now randomised)",
-      "NextAction": "John to bet",
+      "StatusMessage": "John started the first hand (player order now randomised). John to bet",
       "HandCommentary": [],
       "HandSummaries": [
         "Phil Folded=False Covered=False Out=False Cards=6s Ah 7h ",
@@ -61,11 +61,11 @@
       ]
     },
     {
+      "ActionNumber": 5,
       "ActionType": 12,
       "UserName": "John",
       "Parameters": "500",
-      "LastEvent": "John raised by 500",
-      "NextAction": "Phil to bet",
+      "StatusMessage": "John raised by 500. Phil to bet",
       "HandCommentary": [
         "John raised by 500",
         "Phil to bet"
@@ -77,11 +77,11 @@
       ]
     },
     {
+      "ActionNumber": 6,
       "ActionType": 11,
       "UserName": "Phil",
       "Parameters": null,
-      "LastEvent": "Phil paid 500 to call",
-      "NextAction": "Robert to bet",
+      "StatusMessage": "Phil paid 500 to call. Robert to bet",
       "HandCommentary": [
         "Phil paid 500 to call",
         "Robert to bet"
@@ -93,11 +93,11 @@
       ]
     },
     {
+      "ActionNumber": 7,
       "ActionType": 11,
       "UserName": "Robert",
       "Parameters": null,
-      "LastEvent": "Robert paid 500 to call",
-      "NextAction": "Started next round, Robert to bet",
+      "StatusMessage": "Robert paid 500 to call. Started next round, Robert to bet",
       "HandCommentary": [
         "Robert paid 500 to call",
         "Started next round, Robert to bet"
@@ -109,11 +109,11 @@
       ]
     },
     {
+      "ActionNumber": 8,
       "ActionType": 12,
       "UserName": "Robert",
       "Parameters": "150",
-      "LastEvent": "Robert raised by 150",
-      "NextAction": "John to bet",
+      "StatusMessage": "Robert raised by 150. John to bet",
       "HandCommentary": [
         "Robert raised by 150",
         "John to bet"
@@ -125,11 +125,11 @@
       ]
     },
     {
+      "ActionNumber": 9,
       "ActionType": 11,
       "UserName": "John",
       "Parameters": null,
-      "LastEvent": "John paid 150 to call",
-      "NextAction": "Phil to bet",
+      "StatusMessage": "John paid 150 to call. Phil to bet",
       "HandCommentary": [
         "John paid 150 to call",
         "Phil to bet"
@@ -141,11 +141,11 @@
       ]
     },
     {
+      "ActionNumber": 10,
       "ActionType": 14,
       "UserName": "Phil",
       "Parameters": null,
-      "LastEvent": "Phil folded",
-      "NextAction": "Started next round, Robert to bet",
+      "StatusMessage": "Phil folded. Started next round, Robert to bet",
       "HandCommentary": [
         "Phil folded",
         "Started next round, Robert to bet"
@@ -157,11 +157,11 @@
       ]
     },
     {
+      "ActionNumber": 11,
       "ActionType": 12,
       "UserName": "Robert",
       "Parameters": "150",
-      "LastEvent": "Robert raised by 150",
-      "NextAction": "John to bet",
+      "StatusMessage": "Robert raised by 150. John to bet",
       "HandCommentary": [
         "Robert raised by 150",
         "John to bet"
@@ -173,11 +173,11 @@
       ]
     },
     {
+      "ActionNumber": 12,
       "ActionType": 14,
       "UserName": "John",
       "Parameters": null,
-      "LastEvent": "John folded",
-      "NextAction": "Reveal hands if desired, or administrator to start next hand (or reopen lobby)",
+      "StatusMessage": "John folded. Reveal hands if desired, or administrator to start next hand (or reopen lobby)",
       "HandCommentary": [
         "John folded",
         "John folded, only one player left in, hand ended",
@@ -195,11 +195,11 @@
       ]
     },
     {
+      "ActionNumber": 13,
       "ActionType": 4,
       "UserName": "John",
       "Parameters": null,
-      "LastEvent": "John started next hand",
-      "NextAction": "Robert to bet",
+      "StatusMessage": "John started next hand. Robert to bet",
       "HandCommentary": [],
       "HandSummaries": [
         "Phil Folded=False Covered=False Out=False Cards=Jh 6d 5d ",
@@ -208,11 +208,11 @@
       ]
     },
     {
+      "ActionNumber": 14,
       "ActionType": 10,
       "UserName": "Robert",
       "Parameters": null,
-      "LastEvent": "Robert checked",
-      "NextAction": "John to bet",
+      "StatusMessage": "Robert checked. John to bet",
       "HandCommentary": [
         "Robert checked",
         "John to bet"
@@ -224,11 +224,11 @@
       ]
     },
     {
+      "ActionNumber": 15,
       "ActionType": 10,
       "UserName": "John",
       "Parameters": null,
-      "LastEvent": "John checked",
-      "NextAction": "Phil to bet",
+      "StatusMessage": "John checked. Phil to bet",
       "HandCommentary": [
         "John checked",
         "Phil to bet"
@@ -240,11 +240,11 @@
       ]
     },
     {
+      "ActionNumber": 16,
       "ActionType": 12,
       "UserName": "Phil",
       "Parameters": "20",
-      "LastEvent": "Phil raised by 20",
-      "NextAction": "Robert to bet",
+      "StatusMessage": "Phil raised by 20. Robert to bet",
       "HandCommentary": [
         "Phil raised by 20",
         "Robert to bet"
@@ -256,11 +256,11 @@
       ]
     },
     {
+      "ActionNumber": 17,
       "ActionType": 12,
       "UserName": "Robert",
       "Parameters": "478",
-      "LastEvent": "Robert paid 20 to stay in and raised by 478",
-      "NextAction": "John to bet",
+      "StatusMessage": "Robert paid 20 to stay in and raised by 478. John to bet",
       "HandCommentary": [
         "Robert paid 20 to stay in and raised by 478",
         "John to bet"
@@ -272,11 +272,11 @@
       ]
     },
     {
+      "ActionNumber": 18,
       "ActionType": 13,
       "UserName": "John",
       "Parameters": null,
-      "LastEvent": "John paid 348 to cover the pot",
-      "NextAction": "Phil to bet",
+      "StatusMessage": "John paid 348 to cover the pot. Phil to bet",
       "HandCommentary": [
         "John paid 348 to cover the pot",
         "348 is to be added to the pot (or pots)",
@@ -292,11 +292,11 @@
       ]
     },
     {
+      "ActionNumber": 19,
       "ActionType": 11,
       "UserName": "Phil",
       "Parameters": null,
-      "LastEvent": "Phil paid 478 to call",
-      "NextAction": "Started next round, Robert to bet",
+      "StatusMessage": "Phil paid 478 to call. Started next round, Robert to bet",
       "HandCommentary": [
         "Phil paid 478 to call",
         "Started next round, Robert to bet"
@@ -308,11 +308,11 @@
       ]
     },
     {
+      "ActionNumber": 20,
       "ActionType": 10,
       "UserName": "Robert",
       "Parameters": null,
-      "LastEvent": "Robert checked",
-      "NextAction": "Phil to bet",
+      "StatusMessage": "Robert checked. Phil to bet",
       "HandCommentary": [
         "Robert checked",
         "Phil to bet"
@@ -324,11 +324,11 @@
       ]
     },
     {
+      "ActionNumber": 21,
       "ActionType": 10,
       "UserName": "Phil",
       "Parameters": null,
-      "LastEvent": "Phil checked",
-      "NextAction": "Started next round, Robert to bet",
+      "StatusMessage": "Phil checked. Started next round, Robert to bet",
       "HandCommentary": [
         "Phil checked",
         "Started next round, Robert to bet"
@@ -340,11 +340,11 @@
       ]
     },
     {
+      "ActionNumber": 22,
       "ActionType": 10,
       "UserName": "Robert",
       "Parameters": null,
-      "LastEvent": "Robert checked",
-      "NextAction": "Phil to bet",
+      "StatusMessage": "Robert checked. Phil to bet",
       "HandCommentary": [
         "Robert checked",
         "Phil to bet"
@@ -356,11 +356,11 @@
       ]
     },
     {
+      "ActionNumber": 23,
       "ActionType": 10,
       "UserName": "Phil",
       "Parameters": null,
-      "LastEvent": "Phil checked",
-      "NextAction": "Started next round, Robert to bet",
+      "StatusMessage": "Phil checked. Started next round, Robert to bet",
       "HandCommentary": [
         "Phil checked",
         "Started next round, Robert to bet"
@@ -372,11 +372,11 @@
       ]
     },
     {
+      "ActionNumber": 24,
       "ActionType": 10,
       "UserName": "Robert",
       "Parameters": null,
-      "LastEvent": "Robert checked",
-      "NextAction": "Phil to bet",
+      "StatusMessage": "Robert checked. Phil to bet",
       "HandCommentary": [
         "Robert checked",
         "Phil to bet"
@@ -388,11 +388,11 @@
       ]
     },
     {
+      "ActionNumber": 25,
       "ActionType": 10,
       "UserName": "Phil",
       "Parameters": null,
-      "LastEvent": "Phil checked",
-      "NextAction": "Started next round, Robert to bet",
+      "StatusMessage": "Phil checked. Started next round, Robert to bet",
       "HandCommentary": [
         "Phil checked",
         "Started next round, Robert to bet"
@@ -404,11 +404,11 @@
       ]
     },
     {
+      "ActionNumber": 26,
       "ActionType": 10,
       "UserName": "Robert",
       "Parameters": null,
-      "LastEvent": "Robert checked",
-      "NextAction": "Phil to bet",
+      "StatusMessage": "Robert checked. Phil to bet",
       "HandCommentary": [
         "Robert checked",
         "Phil to bet"
@@ -420,14 +420,14 @@
       ]
     },
     {
+      "ActionNumber": 27,
       "ActionType": 10,
       "UserName": "Phil",
       "Parameters": null,
-      "LastEvent": "Phil checked",
-      "NextAction": "Phil checked, betting completed, proceeding to hand reveal stage, Robert to reveal (or fold)",
+      "StatusMessage": "Phil checked. Betting completed, proceeding to hand reveal stage, Robert to reveal (or fold)",
       "HandCommentary": [
         "Phil checked",
-        "Phil checked, betting completed, proceeding to hand reveal stage, Robert to reveal (or fold)"
+        "Betting completed, proceeding to hand reveal stage, Robert to reveal (or fold)"
       ],
       "HandSummaries": [
         "Phil Folded=False Covered=False Out=False Cards=Jh 6d 5d 9c 7c 8h 5c ",
@@ -436,11 +436,11 @@
       ]
     },
     {
+      "ActionNumber": 28,
       "ActionType": 6,
       "UserName": "Robert",
       "Parameters": null,
-      "LastEvent": "Robert revealed their hand details",
-      "NextAction": "John to reveal (or fold)",
+      "StatusMessage": "Robert revealed their hand details. John to reveal (or fold)",
       "HandCommentary": [
         "Robert revealed their hand details",
         "John to reveal (or fold)"
@@ -452,11 +452,11 @@
       ]
     },
     {
+      "ActionNumber": 29,
       "ActionType": 6,
       "UserName": "John",
       "Parameters": null,
-      "LastEvent": "John revealed their hand details",
-      "NextAction": "Phil to reveal (or fold)",
+      "StatusMessage": "John revealed their hand details. Phil to reveal (or fold)",
       "HandCommentary": [
         "John revealed their hand details",
         "Phil to reveal (or fold)"
@@ -468,11 +468,11 @@
       ]
     },
     {
+      "ActionNumber": 30,
       "ActionType": 6,
       "UserName": "Phil",
       "Parameters": null,
-      "LastEvent": "Phil revealed their hand details",
-      "NextAction": "Administrator to start next hand (or reopen lobby)",
+      "StatusMessage": "Phil revealed their hand details. Administrator to start next hand (or reopen lobby)",
       "HandCommentary": [
         "Phil revealed their hand details",
         "Phil revealed their hand details, all hands revealed, hand ended",
@@ -494,11 +494,11 @@
       ]
     },
     {
+      "ActionNumber": 31,
       "ActionType": 4,
       "UserName": "John",
       "Parameters": null,
-      "LastEvent": "John started next hand",
-      "NextAction": "Robert to bet",
+      "StatusMessage": "John started next hand. Robert to bet",
       "HandCommentary": [],
       "HandSummaries": [
         "Phil Folded=False Covered=False Out=False Cards=7c 3d 4s ",
@@ -507,11 +507,11 @@
       ]
     },
     {
+      "ActionNumber": 32,
       "ActionType": 3,
       "UserName": "John",
       "Parameters": null,
-      "LastEvent": "John has left the game. Phil is new game administrator",
-      "NextAction": "Robert to bet",
+      "StatusMessage": "John has left the game. Phil is new game administrator. Robert to bet",
       "HandCommentary": [
         "John has left the game. Phil is new game administrator"
       ],
@@ -522,11 +522,11 @@
       ]
     },
     {
+      "ActionNumber": 33,
       "ActionType": 12,
       "UserName": "Robert",
       "Parameters": "300",
-      "LastEvent": "Robert raised by 300",
-      "NextAction": "Phil to bet",
+      "StatusMessage": "Robert raised by 300. Phil to bet",
       "HandCommentary": [
         "Robert raised by 300",
         "Phil to bet"
@@ -538,11 +538,11 @@
       ]
     },
     {
+      "ActionNumber": 34,
       "ActionType": 11,
       "UserName": "Phil",
       "Parameters": null,
-      "LastEvent": "Phil paid 300 to call",
-      "NextAction": "Started next round, Robert to bet",
+      "StatusMessage": "Phil paid 300 to call. Started next round, Robert to bet",
       "HandCommentary": [
         "Phil paid 300 to call",
         "Started next round, Robert to bet"
@@ -554,11 +554,11 @@
       ]
     },
     {
+      "ActionNumber": 35,
       "ActionType": 10,
       "UserName": "Robert",
       "Parameters": null,
-      "LastEvent": "Robert checked",
-      "NextAction": "Phil to bet",
+      "StatusMessage": "Robert checked. Phil to bet",
       "HandCommentary": [
         "Robert checked",
         "Phil to bet"
@@ -570,11 +570,11 @@
       ]
     },
     {
+      "ActionNumber": 36,
       "ActionType": 10,
       "UserName": "Phil",
       "Parameters": null,
-      "LastEvent": "Phil checked",
-      "NextAction": "Started next round, Robert to bet",
+      "StatusMessage": "Phil checked. Started next round, Robert to bet",
       "HandCommentary": [
         "Phil checked",
         "Started next round, Robert to bet"
@@ -586,11 +586,11 @@
       ]
     },
     {
+      "ActionNumber": 37,
       "ActionType": 10,
       "UserName": "Robert",
       "Parameters": null,
-      "LastEvent": "Robert checked",
-      "NextAction": "Phil to bet",
+      "StatusMessage": "Robert checked. Phil to bet",
       "HandCommentary": [
         "Robert checked",
         "Phil to bet"
@@ -602,11 +602,11 @@
       ]
     },
     {
+      "ActionNumber": 38,
       "ActionType": 10,
       "UserName": "Phil",
       "Parameters": null,
-      "LastEvent": "Phil checked",
-      "NextAction": "Started next round, Robert to bet",
+      "StatusMessage": "Phil checked. Started next round, Robert to bet",
       "HandCommentary": [
         "Phil checked",
         "Started next round, Robert to bet"
@@ -618,11 +618,11 @@
       ]
     },
     {
+      "ActionNumber": 39,
       "ActionType": 10,
       "UserName": "Robert",
       "Parameters": null,
-      "LastEvent": "Robert checked",
-      "NextAction": "Phil to bet",
+      "StatusMessage": "Robert checked. Phil to bet",
       "HandCommentary": [
         "Robert checked",
         "Phil to bet"
@@ -634,11 +634,11 @@
       ]
     },
     {
+      "ActionNumber": 40,
       "ActionType": 10,
       "UserName": "Phil",
       "Parameters": null,
-      "LastEvent": "Phil checked",
-      "NextAction": "Started next round, Robert to bet",
+      "StatusMessage": "Phil checked. Started next round, Robert to bet",
       "HandCommentary": [
         "Phil checked",
         "Started next round, Robert to bet"
@@ -650,11 +650,11 @@
       ]
     },
     {
+      "ActionNumber": 41,
       "ActionType": 10,
       "UserName": "Robert",
       "Parameters": null,
-      "LastEvent": "Robert checked",
-      "NextAction": "Phil to bet",
+      "StatusMessage": "Robert checked. Phil to bet",
       "HandCommentary": [
         "Robert checked",
         "Phil to bet"
@@ -666,14 +666,14 @@
       ]
     },
     {
+      "ActionNumber": 42,
       "ActionType": 10,
       "UserName": "Phil",
       "Parameters": null,
-      "LastEvent": "Phil checked",
-      "NextAction": "Phil checked, betting completed, proceeding to hand reveal stage, Robert to reveal (or fold)",
+      "StatusMessage": "Phil checked. Betting completed, proceeding to hand reveal stage, Robert to reveal (or fold)",
       "HandCommentary": [
         "Phil checked",
-        "Phil checked, betting completed, proceeding to hand reveal stage, Robert to reveal (or fold)"
+        "Betting completed, proceeding to hand reveal stage, Robert to reveal (or fold)"
       ],
       "HandSummaries": [
         "Phil Folded=False Covered=False Out=False Cards=7c 3d 4s Th 9s 7h 5c ",
@@ -682,11 +682,11 @@
       ]
     },
     {
+      "ActionNumber": 43,
       "ActionType": 6,
       "UserName": "Robert",
       "Parameters": null,
-      "LastEvent": "Robert revealed their hand details",
-      "NextAction": "Phil to reveal (or fold)",
+      "StatusMessage": "Robert revealed their hand details. Phil to reveal (or fold)",
       "HandCommentary": [
         "Robert revealed their hand details",
         "Phil to reveal (or fold)"
@@ -698,11 +698,11 @@
       ]
     },
     {
+      "ActionNumber": 44,
       "ActionType": 6,
       "UserName": "Phil",
       "Parameters": null,
-      "LastEvent": "Phil revealed their hand details",
-      "NextAction": "Administrator to start next hand (or reopen lobby)",
+      "StatusMessage": "Phil revealed their hand details. Administrator to start next hand (or reopen lobby)",
       "HandCommentary": [
         "Phil revealed their hand details",
         "Phil revealed their hand details, all hands revealed, hand ended",
@@ -720,11 +720,11 @@
       ]
     },
     {
+      "ActionNumber": 45,
       "ActionType": 4,
       "UserName": "Phil",
       "Parameters": null,
-      "LastEvent": "Phil started next hand",
-      "NextAction": "Phil to bet",
+      "StatusMessage": "Phil started next hand. Phil to bet",
       "HandCommentary": [],
       "HandSummaries": [
         "Phil Folded=False Covered=False Out=False Cards=5c Qd Ts ",
@@ -732,11 +732,11 @@
       ]
     },
     {
+      "ActionNumber": 46,
       "ActionType": 10,
       "UserName": "Phil",
       "Parameters": null,
-      "LastEvent": "Phil checked",
-      "NextAction": "Robert to bet",
+      "StatusMessage": "Phil checked. Robert to bet",
       "HandCommentary": [
         "Phil checked",
         "Robert to bet"
@@ -747,11 +747,11 @@
       ]
     },
     {
+      "ActionNumber": 47,
       "ActionType": 10,
       "UserName": "Robert",
       "Parameters": null,
-      "LastEvent": "Robert checked",
-      "NextAction": "Started next round, Robert to bet",
+      "StatusMessage": "Robert checked. Started next round, Robert to bet",
       "HandCommentary": [
         "Robert checked",
         "Started next round, Robert to bet"
@@ -762,11 +762,11 @@
       ]
     },
     {
+      "ActionNumber": 48,
       "ActionType": 10,
       "UserName": "Robert",
       "Parameters": null,
-      "LastEvent": "Robert checked",
-      "NextAction": "Phil to bet",
+      "StatusMessage": "Robert checked. Phil to bet",
       "HandCommentary": [
         "Robert checked",
         "Phil to bet"
@@ -777,11 +777,11 @@
       ]
     },
     {
+      "ActionNumber": 49,
       "ActionType": 10,
       "UserName": "Phil",
       "Parameters": null,
-      "LastEvent": "Phil checked",
-      "NextAction": "Started next round, Robert to bet",
+      "StatusMessage": "Phil checked. Started next round, Robert to bet",
       "HandCommentary": [
         "Phil checked",
         "Started next round, Robert to bet"
@@ -792,11 +792,11 @@
       ]
     },
     {
+      "ActionNumber": 50,
       "ActionType": 10,
       "UserName": "Robert",
       "Parameters": null,
-      "LastEvent": "Robert checked",
-      "NextAction": "Phil to bet",
+      "StatusMessage": "Robert checked. Phil to bet",
       "HandCommentary": [
         "Robert checked",
         "Phil to bet"
@@ -807,11 +807,11 @@
       ]
     },
     {
+      "ActionNumber": 51,
       "ActionType": 12,
       "UserName": "Phil",
       "Parameters": "20",
-      "LastEvent": "Phil raised by 20",
-      "NextAction": "Robert to bet",
+      "StatusMessage": "Phil raised by 20. Robert to bet",
       "HandCommentary": [
         "Phil raised by 20",
         "Robert to bet"
@@ -822,11 +822,11 @@
       ]
     },
     {
+      "ActionNumber": 52,
       "ActionType": 11,
       "UserName": "Robert",
       "Parameters": null,
-      "LastEvent": "Robert paid 20 to call",
-      "NextAction": "Started next round, Robert to bet",
+      "StatusMessage": "Robert paid 20 to call. Started next round, Robert to bet",
       "HandCommentary": [
         "Robert paid 20 to call",
         "Started next round, Robert to bet"
@@ -837,11 +837,11 @@
       ]
     },
     {
+      "ActionNumber": 53,
       "ActionType": 10,
       "UserName": "Robert",
       "Parameters": null,
-      "LastEvent": "Robert checked",
-      "NextAction": "Phil to bet",
+      "StatusMessage": "Robert checked. Phil to bet",
       "HandCommentary": [
         "Robert checked",
         "Phil to bet"
@@ -852,11 +852,11 @@
       ]
     },
     {
+      "ActionNumber": 54,
       "ActionType": 10,
       "UserName": "Phil",
       "Parameters": null,
-      "LastEvent": "Phil checked",
-      "NextAction": "Started next round, Robert to bet",
+      "StatusMessage": "Phil checked. Started next round, Robert to bet",
       "HandCommentary": [
         "Phil checked",
         "Started next round, Robert to bet"
@@ -867,11 +867,11 @@
       ]
     },
     {
+      "ActionNumber": 55,
       "ActionType": 12,
       "UserName": "Robert",
       "Parameters": "20",
-      "LastEvent": "Robert raised by 20",
-      "NextAction": "Phil to bet",
+      "StatusMessage": "Robert raised by 20. Phil to bet",
       "HandCommentary": [
         "Robert raised by 20",
         "Phil to bet"
@@ -882,14 +882,14 @@
       ]
     },
     {
+      "ActionNumber": 56,
       "ActionType": 11,
       "UserName": "Phil",
       "Parameters": null,
-      "LastEvent": "Phil paid 20 to call",
-      "NextAction": "Phil paid 20 to call, betting completed, proceeding to hand reveal stage, Robert to reveal (or fold)",
+      "StatusMessage": "Phil paid 20 to call. Betting completed, proceeding to hand reveal stage, Robert to reveal (or fold)",
       "HandCommentary": [
         "Phil paid 20 to call",
-        "Phil paid 20 to call, betting completed, proceeding to hand reveal stage, Robert to reveal (or fold)"
+        "Betting completed, proceeding to hand reveal stage, Robert to reveal (or fold)"
       ],
       "HandSummaries": [
         "Phil Folded=False Covered=False Out=False Cards=5c Qd Ts 7c 2d 9h 5h ",
@@ -897,11 +897,11 @@
       ]
     },
     {
+      "ActionNumber": 57,
       "ActionType": 6,
       "UserName": "Robert",
       "Parameters": null,
-      "LastEvent": "Robert revealed their hand details",
-      "NextAction": "Phil to reveal (or fold)",
+      "StatusMessage": "Robert revealed their hand details. Phil to reveal (or fold)",
       "HandCommentary": [
         "Robert revealed their hand details",
         "Phil to reveal (or fold)"
@@ -912,11 +912,11 @@
       ]
     },
     {
+      "ActionNumber": 58,
       "ActionType": 6,
       "UserName": "Phil",
       "Parameters": null,
-      "LastEvent": "Phil revealed their hand details",
-      "NextAction": "Administrator to start next hand (or reopen lobby)",
+      "StatusMessage": "Phil revealed their hand details. Administrator to start next hand (or reopen lobby)",
       "HandCommentary": [
         "Phil revealed their hand details",
         "Phil revealed their hand details, all hands revealed, hand ended",
@@ -932,11 +932,11 @@
       ]
     },
     {
+      "ActionNumber": 59,
       "ActionType": 0,
       "UserName": "Phil",
       "Parameters": null,
-      "LastEvent": "Phil reopened the game lobby",
-      "NextAction": "Await players leaving/joining, or continue the game, or start a new one",
+      "StatusMessage": "Phil reopened the game lobby. Await players leaving/joining, or continue the game, or start a new one",
       "HandCommentary": [
         "Phil reopened the game lobby"
       ],
@@ -946,11 +946,11 @@
       ]
     },
     {
+      "ActionNumber": 60,
       "ActionType": 5,
       "UserName": "Phil",
       "Parameters": null,
-      "LastEvent": "Phil started next hand",
-      "NextAction": "Phil to bet",
+      "StatusMessage": "Phil started next hand. Phil to bet",
       "HandCommentary": [],
       "HandSummaries": [
         "Phil Folded=False Covered=False Out=False Cards=Ac 4s 6c ",
@@ -958,11 +958,11 @@
       ]
     },
     {
+      "ActionNumber": 61,
       "ActionType": 12,
       "UserName": "Phil",
       "Parameters": "20",
-      "LastEvent": "Phil raised by 20",
-      "NextAction": "Robert to bet",
+      "StatusMessage": "Phil raised by 20. Robert to bet",
       "HandCommentary": [
         "Phil raised by 20",
         "Robert to bet"
@@ -973,11 +973,11 @@
       ]
     },
     {
+      "ActionNumber": 62,
       "ActionType": 14,
       "UserName": "Robert",
       "Parameters": null,
-      "LastEvent": "Robert folded",
-      "NextAction": "Reveal hands if desired, or administrator to start next hand (or reopen lobby)",
+      "StatusMessage": "Robert folded. Reveal hands if desired, or administrator to start next hand (or reopen lobby)",
       "HandCommentary": [
         "Robert folded",
         "Robert folded, only one player left in, hand ended",
@@ -993,11 +993,11 @@
       ]
     },
     {
+      "ActionNumber": 63,
       "ActionType": 4,
       "UserName": "Phil",
       "Parameters": null,
-      "LastEvent": "Phil started next hand",
-      "NextAction": "Phil to bet",
+      "StatusMessage": "Phil started next hand. Phil to bet",
       "HandCommentary": [],
       "HandSummaries": [
         "Phil Folded=False Covered=False Out=False Cards=Td Qc Ts ",
@@ -1005,11 +1005,11 @@
       ]
     },
     {
+      "ActionNumber": 64,
       "ActionType": 12,
       "UserName": "Phil",
       "Parameters": "50",
-      "LastEvent": "Phil raised by 50",
-      "NextAction": "Robert to bet",
+      "StatusMessage": "Phil raised by 50. Robert to bet",
       "HandCommentary": [
         "Phil raised by 50",
         "Robert to bet"
@@ -1020,11 +1020,11 @@
       ]
     },
     {
+      "ActionNumber": 65,
       "ActionType": 12,
       "UserName": "Robert",
       "Parameters": "200",
-      "LastEvent": "Robert paid 50 to stay in and raised by 200",
-      "NextAction": "Phil to bet",
+      "StatusMessage": "Robert paid 50 to stay in and raised by 200. Phil to bet",
       "HandCommentary": [
         "Robert paid 50 to stay in and raised by 200",
         "Phil to bet"
@@ -1035,11 +1035,11 @@
       ]
     },
     {
+      "ActionNumber": 66,
       "ActionType": 12,
       "UserName": "Phil",
       "Parameters": "755",
-      "LastEvent": "Phil paid 200 to stay in and raised by 755",
-      "NextAction": "Robert to bet",
+      "StatusMessage": "Phil paid 200 to stay in and raised by 755. Robert to bet",
       "HandCommentary": [
         "Phil paid 200 to stay in and raised by 755",
         "Robert to bet"
