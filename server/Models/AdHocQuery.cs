@@ -11,42 +11,46 @@ namespace SevenStuds.Models
     {
         // Various queries against the server
         public List<string> queryResults { get; set; } 
-        public AdHocQuery(int queryNum) {
+        public AdHocQuery(string queryType) {
             queryResults = new List<string>();
             try
             {
-                switch (queryNum)  
+                switch (queryType.ToLower())  
                 { 
-                    case 1: // List environment variables 
-                        queryResults.Add("Query " + queryNum + " listing env vars");
+                    case "list-vars": // List environment variables 
                         foreach (DictionaryEntry de in Environment.GetEnvironmentVariables()) {
                             queryResults.Add("Key: " + de.Key + " Value: " + de.Value);
                         }
                         break;   
-                    case 2: // List open games  
-                        queryResults.Add("Query " + queryNum + " listing open games");
+                    case "list-games": // List open games  
                         foreach (DictionaryEntry pair in ServerState.GameList )
                         {
                             Game g = (Game) pair.Value;
                             queryResults.Add(
                                 "Game: " + pair.Key 
                                 + ", Participants: " + g.Participants.Count
+                                + ", Hands: " + g.HandsPlayedIncludingCurrent
                                 + ", Last Action: " + g.LastSuccessfulAction.ToString("yyyy-MM-dd HH:mm")
-                                + " (" + (DateTimeOffset.Now - g.LastSuccessfulAction).TotalMinutes.ToString("F0", CultureInfo.InvariantCulture)+" Minutes Ago)"
+                                + " (" + g.MinutesSinceLastAction()+" Minutes Ago)"
                                 );
                         }
                         break;  
-                    case 3: // Check if running on public server
-                        queryResults.Add("Query " + queryNum + " check whether running on public server = "
-                            + ServerState.IsRunningOnPublicServer().ToString());
+                    case "list-env": // Check if running on public server
+                        if ( ServerState.IsRunningOnPublicServer() ) {
+                            queryResults.Add("Game is running on the public server");
+                        }
+                        else {
+                            queryResults.Add("Game is running on something other than the public server");
+
+                        }
                         break;                                                                                                                        
                     default:  
-                        throw new SystemException("Query number not implemented");
+                        throw new SystemException("Query type '" + queryType + "' not implemented");
                 }  
             }
             catch (System.Exception e)
             {
-                queryResults.Add("Query " + queryNum + " failed:");
+                queryResults.Add("Query type '" + queryType + "' failed:");
                 queryResults.Add(e.Message);
             }
         }

@@ -44,7 +44,7 @@ namespace SevenStuds.Models
         public List<Boolean> CardPositionIsVisible { get; } = new List<Boolean>{false, false, true, true, true, true, false};
         public LobbyData LobbyData { get; set; }
         private Deck CardPack { get; set; }
-        public int AdHocQueryNumber { get; set; }
+        public string AdHocQueryType { get; set; }
 
         public Game(string gameId) {
             GameId = gameId;
@@ -69,20 +69,6 @@ namespace SevenStuds.Models
             CountOfLeavers = 0;
             SetActionAvailabilityBasedOnCurrentPlayer(); // Ensures the initial section of available actions is set
             this._GameLog = new GameLog(); // Initially empty, will be added to as game actions take place
-        }
-        public static Game FindOrCreateGame(string gameId) {
-            if ( SevenStuds.Models.ServerState.GameList.ContainsKey(gameId) ) {
-                return (Game) SevenStuds.Models.ServerState.GameList[gameId];
-            }
-            else {
-                Game newGame = new Game(gameId);
-                SevenStuds.Models.ServerState.GameList.Add(gameId, newGame);
-                return newGame;
-            }
-        }
-
-        public static void EraseGame(string gameId) {
-            SevenStuds.Models.ServerState.GameList.Remove(gameId);
         }
 
         public void SetTestContext(GameLog testContext)
@@ -822,8 +808,8 @@ namespace SevenStuds.Models
         } 
 
         public void LogActionWithResults(Action a) {
-
             this._GameLog.actions.Add(new GameLogAction(a, this.LastEvent, this.NextAction, this.HandCommentary, this.HandSummaries()));
+            this.LastSuccessfulAction = DateTimeOffset.Now; 
         }
 
         public List<string> HandSummaries()
@@ -844,11 +830,37 @@ namespace SevenStuds.Models
             return this._GameLog.AsJson();
         }
         public string AdHocQueryResultAsJson() {
-            // This is stupidly convoluted, but an ActionAdHocQuery command has recorded a command number in AdHocQueryNumber,
+            // This is stupidly convoluted, but an ActionAdHocQuery command has recorded a command number in AdHocQueryType,
             // and we will now use a separate class to action the query and return 
-            return new AdHocQuery(AdHocQueryNumber).AsJson();
-
+            return new AdHocQuery(AdHocQueryType).AsJson();
         }
 
+        public int MinutesSinceLastAction() {
+            return Convert.ToInt32( (DateTimeOffset.Now - this.LastSuccessfulAction).TotalMinutes);
+        }
+        
+        public static Boolean GameExists(string gameId) {
+            return SevenStuds.Models.ServerState.GameList.ContainsKey(gameId);
+        }
+
+        public static Game FindOrCreateGame(string gameId) {
+            if ( SevenStuds.Models.ServerState.GameList.ContainsKey(gameId) ) {
+                Game g =  (Game) SevenStuds.Models.ServerState.GameList[gameId];
+                if ( g.MinutesSinceLastAction() <= 120 ) {
+                    return g;
+                }
+                else {
+                    // Delete the current version of this game so the new one starts 
+                    EraseGame(gameId);
+                }
+            }
+            Game newGame = new Game(gameId);
+            SevenStuds.Models.ServerState.GameList.Add(gameId, newGame);
+            newGame.LastSuccessfulAction = DateTimeOffset.Now; // Record time game was created
+            return newGame;
+        }
+        public static void EraseGame(string gameId) {
+            SevenStuds.Models.ServerState.GameList.Remove(gameId);
+        }
     }
 }

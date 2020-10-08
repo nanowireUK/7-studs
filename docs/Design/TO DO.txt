@@ -1,7 +1,12 @@
 ----------------------------------------- SERVER-SIDE TO DO (higher priority first) ---------------------------------
+* Fix double commentary 
+* Protect ad hoc query further ... can we use config to provide a secret prefix for the request number? I.e. nothing visible in GitHub
+* Is a simple spectator mode possible?
+    - Join as anonymous Spectator (just adds the connection to a list of spectators for the game)
+    - Spectator mode would have to hide all players' down cards. Start with player 0.
+    - Once registered, any Spectator would receive all updates  
 * Extend lobby data to include game event summary ... timings, # of hands played, joiners, order in which people went to zero chips, chips for those left in
 * Database to preserve/restore game status
-* Is there a way of telling whether my code is running on the Azure box (want to restrict access to game state and game log if so) -> do this in the week
 * Why does setting the admin sometimes not work (as part of leave game)?
 * Add game time, hands played, etc.
 * Think about whether any hands should be automatically revealed, e.g. in hand order
@@ -19,6 +24,10 @@
 ----------------------------------------- CLIENT-SIDE THOUGHTS ---------------------------------
 * Make it possible to toggle to a vertical view (with players stacked on top to enable a skinny side-panel view)
 ----------------------------------------- DONE (most recent first) ---------------------------------------
+DONE * Automatically reset a game that has been inactive for more than 120 mins
+DONE * Made AdHocQuery slight less open in that callers have to know the 'commands' it supports (not just a number from 1-n)
+DONE * For non-existent games, only allow Join. All other commands are controlled by game and player state.
+DONE * Block access to test features when running on the public web server
 DONE * Add an AdHocQuery action as framework for quick test features
 DONE * Don't allow more than 8 people into a game 
 DONE * Fixed (I hope) a bug in MaxRaise (when a less well-funded opponent has already gone all in)

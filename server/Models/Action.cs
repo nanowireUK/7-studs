@@ -109,13 +109,12 @@ namespace SevenStuds.Models
                 & this.ActionType != ActionEnum.GetState
                 & this.ActionType != ActionEnum.AdHocQuery ) 
             {
-                G.LogActionWithResults(this); // only do this for real game actions (not GetState, GetLog, Replay, Rejoin)
+                G.LogActionWithResults(this); // only log real game actions (not GetState, GetLog, Replay, Rejoin or AdHocQuery)
             }
 
             // After dealing with the requested action, reset the permissions for each action to reflect the updated game state
             G.SetActionAvailabilityBasedOnCurrentPlayer();
             G.StatusMessage = G.LastEvent + ". " + G.NextAction; // Note that NextAction may not have changed as a result of the current action
-            G.LastSuccessfulAction = DateTimeOffset.Now;
             return G;
         }        
         public abstract void ProcessAction();
