@@ -27,10 +27,10 @@ namespace SevenStuds.Models
                         {
                             Game g = (Game) pair.Value;
                             queryResults.Add(
-                                "Game: " + pair.Key 
-                                + ", Participants: " + g.Participants.Count
-                                + ", Hands: " + g.HandsPlayedIncludingCurrent
-                                + ", Last Action: " + g.LastSuccessfulAction.ToString("yyyy-MM-dd HH:mm")
+                                "Game:" + pair.Key 
+                                + ", Participants:" + g.Participants.Count
+                                + ", Hands:" + g.HandsPlayedIncludingCurrent
+                                + ", Last Action:" + g.LastSuccessfulAction.ToString("yyyy-MM-dd HH:mm")
                                 + " (" + g.MinutesSinceLastAction()+" Minutes Ago)"
                                 );
                         }
@@ -45,12 +45,12 @@ namespace SevenStuds.Models
                         }
                         break;                                                                                                                        
                     default:  
-                        throw new SystemException("Query type '" + queryType + "' not implemented");
+                        throw new SystemException("Query type " + queryType + " not implemented");
                 }  
             }
             catch (System.Exception e)
             {
-                queryResults.Add("Query type '" + queryType + "' failed:");
+                queryResults.Add("Query type " + queryType + " failed:");
                 queryResults.Add(e.Message);
             }
         }
