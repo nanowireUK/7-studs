@@ -36,7 +36,7 @@ namespace SevenStuds.Models
         protected GameLog _TestContext { get; set; }
         protected int ActionNumber { get; set; }
         public List<BankruptcyEvent> BankruptcyEventHistoryForGame { get; set; }
-        private Dictionary<string, Participant> _ConnectionToParticipantMap { get; set; } // Can't be public as JSON serialiser can't handle it
+        public Dictionary<string, Participant> _ConnectionToParticipantMap { get; set; } 
         public List<List<int>> Pots { get; set; } // pot(s) built up in the current hand (over multiple rounds of betting)
         public List<Participant> Participants { get; set; } // ordered list of participants (order represents order around the table)
         //public List<Event> Events { get; set; } // ordered list of events associated with the game
@@ -150,6 +150,20 @@ namespace SevenStuds.Models
                         )  ;
                     }
                 }
+            }
+        }
+        public void ClearRemnantsFromLastGame() {
+            // Clear the pots 
+            ClearHandDataBetweenHands();
+        }
+
+        public void ClearHandDataBetweenHands() {
+            this.Pots = new List<List<int>>();
+            this.Pots.Add(new List<int>());
+            foreach (Participant p in Participants)
+            {
+                this.Pots[0].Add(0); 
+                p.Hand = new List<Card>();
             }
         }
 
@@ -800,6 +814,8 @@ namespace SevenStuds.Models
         }  
 
         public void LogPlayers(){
+            // Relog players
+            this._GameLog.playersInOrder = new List<string>();
             foreach ( Participant p in this.Participants ) {
                 this._GameLog.playersInOrder.Add(p.Name);
             }

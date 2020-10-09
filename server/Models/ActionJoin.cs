@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.SignalR;
+using System.Collections.Generic;
 
 namespace SevenStuds.Models
 {  
@@ -24,6 +25,14 @@ namespace SevenStuds.Models
             // Add player (note that the base class has already checked the player's basic eligibility for this action)
             Participant p = new Participant(this.UserName);
             G.Participants.Add(p);
+
+            // If the player is joining a game that is already in progress, ensure they are allocated chips
+            if ( G.HandsPlayedIncludingCurrent > 0 ) {
+                p.UncommittedChips = G.InitialChipQuantity;
+                G.LogPlayers();
+                G.Pots[0].Add(0); // Add a new empty position to pot 0
+                p.Hand = new List<Card>();
+            }
 
             if ( G.Participants.Count == 1 )
             {

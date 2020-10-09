@@ -1,4 +1,7 @@
 ----------------------------------------- SERVER-SIDE TO DO (higher priority first) ---------------------------------
+* Rejoin obliterates whatever the previous move was (in the status message) ... possible to prepend the rejoin to current message?
+* Allow admin to reject a player prior to starting or continuing a game
+* Allow admin to forcibly remove an inactive player (like an involuntary leave)
 * Protect ad hoc query further ... can we use config to provide a secret prefix for the request number? I.e. nothing visible in GitHub
 * Is a simple spectator mode possible?
     - Join as anonymous Spectator (just adds the connection to a list of spectators for the game)
@@ -22,6 +25,7 @@
 ----------------------------------------- CLIENT-SIDE THOUGHTS ---------------------------------
 * Make it possible to toggle to a vertical view (with players stacked on top to enable a skinny side-panel view)
 ----------------------------------------- DONE (most recent first) ---------------------------------------
+DONE * Allow for players joining from the lobby mid-game (ensure they get funds etc.)
 DONE * Fix double commentary
 DONE * Automatically reset a game that has been inactive for more than 120 mins
 DONE * Made AdHocQuery slight less open in that callers have to know the 'commands' it supports (not just a number from 1 to n)

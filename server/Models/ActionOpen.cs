@@ -1,7 +1,7 @@
 namespace SevenStuds.Models
 {  
     /// <summary>  
-    /// The 'ActionOpen' Class: to initially open a game lobby, or to return to the lobby at the end of a hand  
+    /// The 'ActionOpen' Class: to return to the lobby at the end of a hand  
     /// </summary>  
     public class ActionOpen : Action
     {  
@@ -17,6 +17,7 @@ namespace SevenStuds.Models
             G.NextAction = "Await players leaving/joining, or continue the game, or start a new one";
             G.GameMode = GameModeEnum.LobbyOpen;
             G.RemoveDisconnectedPlayersFromGameState(); // clear out disconnected players
+            G.ClearRemnantsFromLastGame(); // reset pots, hands etc.
             G.LobbyData = new LobbyData(G); // Update the lobby data
         }
     }     

@@ -1048,6 +1048,204 @@
         "Phil Folded=False Covered=False Out=False Cards=Td Qc Ts ",
         "Robert Folded=False Covered=False Out=False Cards=7h 6s 3c "
       ]
+    },
+    {
+      "ActionNumber": 67,
+      "ActionType": 23,
+      "UserName": "Robert",
+      "Parameters": null,
+      "StatusMessage": "Robert rejoined game. Robert to bet",
+      "HandCommentary": [
+        "Robert rejoined game"
+      ],
+      "HandSummaries": [
+        "Phil Folded=False Covered=False Out=False Cards=Td Qc Ts ",
+        "Robert Folded=False Covered=False Out=False Cards=7h 6s 3c "
+      ]
+    },
+    {
+      "ActionNumber": 68,
+      "ActionType": 11,
+      "UserName": "Robert",
+      "Parameters": null,
+      "StatusMessage": "Robert paid 755 to call. Started next round, Robert to bet",
+      "HandCommentary": [
+        "Robert paid 755 to call",
+        "Started next round, Robert to bet"
+      ],
+      "HandSummaries": [
+        "Phil Folded=False Covered=False Out=False Cards=Td Qc Ts 5c ",
+        "Robert Folded=False Covered=False Out=False Cards=7h 6s 3c Jc "
+      ]
+    },
+    {
+      "ActionNumber": 69,
+      "ActionType": 10,
+      "UserName": "Robert",
+      "Parameters": null,
+      "StatusMessage": "Robert checked. Phil to bet",
+      "HandCommentary": [
+        "Robert checked",
+        "Phil to bet"
+      ],
+      "HandSummaries": [
+        "Phil Folded=False Covered=False Out=False Cards=Td Qc Ts 5c ",
+        "Robert Folded=False Covered=False Out=False Cards=7h 6s 3c Jc "
+      ]
+    },
+    {
+      "ActionNumber": 70,
+      "ActionType": 10,
+      "UserName": "Phil",
+      "Parameters": null,
+      "StatusMessage": "Phil checked. Started next round, Robert to bet",
+      "HandCommentary": [
+        "Phil checked",
+        "Started next round, Robert to bet"
+      ],
+      "HandSummaries": [
+        "Phil Folded=False Covered=False Out=False Cards=Td Qc Ts 5c 4d ",
+        "Robert Folded=False Covered=False Out=False Cards=7h 6s 3c Jc Qs "
+      ]
+    },
+    {
+      "ActionNumber": 71,
+      "ActionType": 10,
+      "UserName": "Robert",
+      "Parameters": null,
+      "StatusMessage": "Robert checked. Phil to bet",
+      "HandCommentary": [
+        "Robert checked",
+        "Phil to bet"
+      ],
+      "HandSummaries": [
+        "Phil Folded=False Covered=False Out=False Cards=Td Qc Ts 5c 4d ",
+        "Robert Folded=False Covered=False Out=False Cards=7h 6s 3c Jc Qs "
+      ]
+    },
+    {
+      "ActionNumber": 72,
+      "ActionType": 10,
+      "UserName": "Phil",
+      "Parameters": null,
+      "StatusMessage": "Phil checked. Started next round, Robert to bet",
+      "HandCommentary": [
+        "Phil checked",
+        "Started next round, Robert to bet"
+      ],
+      "HandSummaries": [
+        "Phil Folded=False Covered=False Out=False Cards=Td Qc Ts 5c 4d 7s ",
+        "Robert Folded=False Covered=False Out=False Cards=7h 6s 3c Jc Qs 2h "
+      ]
+    },
+    {
+      "ActionNumber": 73,
+      "ActionType": 10,
+      "UserName": "Robert",
+      "Parameters": null,
+      "StatusMessage": "Robert checked. Phil to bet",
+      "HandCommentary": [
+        "Robert checked",
+        "Phil to bet"
+      ],
+      "HandSummaries": [
+        "Phil Folded=False Covered=False Out=False Cards=Td Qc Ts 5c 4d 7s ",
+        "Robert Folded=False Covered=False Out=False Cards=7h 6s 3c Jc Qs 2h "
+      ]
+    },
+    {
+      "ActionNumber": 74,
+      "ActionType": 10,
+      "UserName": "Phil",
+      "Parameters": null,
+      "StatusMessage": "Phil checked. Started next round, Robert to bet",
+      "HandCommentary": [
+        "Phil checked",
+        "Started next round, Robert to bet"
+      ],
+      "HandSummaries": [
+        "Phil Folded=False Covered=False Out=False Cards=Td Qc Ts 5c 4d 7s Kd ",
+        "Robert Folded=False Covered=False Out=False Cards=7h 6s 3c Jc Qs 2h Th "
+      ]
+    },
+    {
+      "ActionNumber": 75,
+      "ActionType": 10,
+      "UserName": "Robert",
+      "Parameters": null,
+      "StatusMessage": "Robert checked. Phil to bet",
+      "HandCommentary": [
+        "Robert checked",
+        "Phil to bet"
+      ],
+      "HandSummaries": [
+        "Phil Folded=False Covered=False Out=False Cards=Td Qc Ts 5c 4d 7s Kd ",
+        "Robert Folded=False Covered=False Out=False Cards=7h 6s 3c Jc Qs 2h Th "
+      ]
+    },
+    {
+      "ActionNumber": 76,
+      "ActionType": 10,
+      "UserName": "Phil",
+      "Parameters": null,
+      "StatusMessage": "Phil checked. Betting completed, proceeding to hand reveal stage, Robert to reveal (or fold)",
+      "HandCommentary": [
+        "Phil checked",
+        "Betting completed, proceeding to hand reveal stage, Robert to reveal (or fold)"
+      ],
+      "HandSummaries": [
+        "Phil Folded=False Covered=False Out=False Cards=Td Qc Ts 5c 4d 7s Kd ",
+        "Robert Folded=False Covered=False Out=False Cards=7h 6s 3c Jc Qs 2h Th "
+      ]
+    },
+    {
+      "ActionNumber": 77,
+      "ActionType": 6,
+      "UserName": "Robert",
+      "Parameters": null,
+      "StatusMessage": "Robert revealed their hand details. Phil to reveal (or fold)",
+      "HandCommentary": [
+        "Robert revealed their hand details",
+        "Phil to reveal (or fold)"
+      ],
+      "HandSummaries": [
+        "Phil Folded=False Covered=False Out=False Cards=Td Qc Ts 5c 4d 7s Kd ",
+        "Robert Folded=False Covered=False Out=False Cards=7h 6s 3c Jc Qs 2h Th "
+      ]
+    },
+    {
+      "ActionNumber": 78,
+      "ActionType": 6,
+      "UserName": "Phil",
+      "Parameters": null,
+      "StatusMessage": "Phil revealed their hand details. Administrator to start next hand (or reopen lobby)",
+      "HandCommentary": [
+        "Phil revealed their hand details",
+        "Phil revealed their hand details, all hands revealed, hand ended",
+        "Results:",
+        "Phil won 1006 with Td Qc Ts 5c 4d 7s Kd  (Pair of Tens)",
+        "Robert lost 1006 with 7h 6s 3c Jc Qs 2h Th  (Queen-High)",
+        "Waiting for administrator to start next hand.",
+        "Administrator to start next hand (or reopen lobby)"
+      ],
+      "HandSummaries": [
+        "Phil Folded=False Covered=False Out=False Cards=Td Qc Ts 5c 4d 7s Kd ",
+        "Robert Folded=False Covered=False Out=False Cards=7h 6s 3c Jc Qs 2h Th "
+      ]
+    },
+    {
+      "ActionNumber": 79,
+      "ActionType": 0,
+      "UserName": "Phil",
+      "Parameters": null,
+      "StatusMessage": "Phil reopened the game lobby. Await players leaving/joining, or continue the game, or start a new one",
+      "HandCommentary": [
+        "Phil reopened the game lobby"
+      ],
+      "HandSummaries": [
+        "Phil Folded=False Covered=False Out=False Cards=Td Qc Ts 5c 4d 7s Kd ",
+        "Robert Folded=False Covered=False Out=False Cards=7h 6s 3c Jc Qs 2h Th "
+      ]
     }
   ],
   "decks": [

@@ -17,7 +17,6 @@ namespace SevenStuds.Models
                 G.RecordLastEvent(this.UserName + " started the first hand (player order now randomised)");
                 G.StartGame(); // Initialise the game
                 G.StartNextHand(); 
-
             }
             else {
                 G.RecordLastEvent(this.UserName + " started next hand");
