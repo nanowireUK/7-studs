@@ -62,7 +62,7 @@ function Lobby () {
         {previousGameResults ? (
             <Box>
                 <Heading level={2}>Previous Games</Heading>
-                {previousGameResults.map(result => <Text>{result}</Text>)}
+                {previousGameResults.map((result, index) => <Text key={index}>{result}</Text>)}
             </Box>
         ) : null}
     </Box>;
