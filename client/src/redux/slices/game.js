@@ -27,6 +27,11 @@ export const reveal = () => sendServerActionWithLeaverCount('UserClickedReveal')
 
 export const selectGame = (state) => state.game;
 
+export const selectMyHandDescription = (state) => state.game.MyHandDescription;
+
+export const selectPreviousGameResults = (state) => state.game.LobbyData.PreviousGameResults;
+export const selectCurrentGameStandings = (state) => state.game.LobbyData.CurrentGameStandings;
+
 export const selectInLobby = (state) =>
     state.game !== null && state.game.GameMode === 'LobbyOpen';
 export const selectHandInProgress = (state) =>
@@ -55,6 +60,7 @@ export const selectPlayers = (state) =>
                        VisibleHandDescription: handDescription,
                        IsSharingHandDetails: isSharingHandDetails,
                        GainOrLossInLastHand: gainOrLossInLastHand,
+                       HandsWon: handsWon
                     },
                ) => ({
                    name,
@@ -68,7 +74,8 @@ export const selectPlayers = (state) =>
                    isOutOfThisGame,
                    hasFolded,
                    isSharingHandDetails,
-                   gainOrLossInLastHand
+                   gainOrLossInLastHand,
+                   handsWon,
                })
            );
 
