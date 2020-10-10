@@ -9,6 +9,32 @@ import {ReactComponent as Spade} from '../assets/suit-spades.svg';
 
 import { useContainerDimensions } from '../utils/hooks';
 
+function generateTitle(suit, face) {
+    const suits = {
+        D: 'Diamonds',
+        C: 'Clubs',
+        S: 'Spades',
+        H: 'Hearts',
+    };
+    const faces = {
+        A: 'Ace',
+        1: 'One',
+        2: 'Two',
+        3: 'Three',
+        4: 'Four',
+        5: 'Five',
+        6: 'Six',
+        7: 'Seven',
+        8: 'Eight',
+        9: 'Nine',
+        T: 'Ten',
+        J: 'Jack',
+        Q: 'Queen',
+        K: 'King'
+    };
+    return `${faces[face.toUpperCase()]} of ${suits[suit.toUpperCase()]}`;
+}
+
 function Face ({ face = '', suit = '', invisibleToOthers = false }) {
     const color = ['H', 'D'].includes(suit.toUpperCase()) ? '#d40000' : 'black';
     return (
@@ -35,7 +61,7 @@ export default function PokerCard ({ face, suit, invisibleToOthers = false }) {
     const cardRef = useRef(null);
     const { height } = useContainerDimensions(cardRef);
 
-    if (face === '?' || suit === '?') return (<Box ref={cardRef} direction="row" title={face !== '?' ? `${face}${suit}` : 'Hidden'} elevation="xsmall" pad="xsmall" border round="xsmall" gap="xsmall" background={{
+    if (face === '?' || suit === '?') return (<Box ref={cardRef} direction="row" title='Hidden' elevation="xsmall" pad="xsmall" border round="xsmall" gap="xsmall" background={{
         image: "url(https://upload.wikimedia.org/wikipedia/commons/3/30/Card_back_05a.svg)", // need to double check license and possibly find suitable alternative if appropriate (LGPL-2)
         size: "115%"
     }}>
@@ -43,7 +69,7 @@ export default function PokerCard ({ face, suit, invisibleToOthers = false }) {
     </Box>)
 
     return (
-        <Box fill="vertical" ref={cardRef} direction="row" title={face !== '?' ? `${face}${suit}` : 'Hidden'} elevation="xsmall" pad="xsmall" border round="xsmall" gap="2px" background="white">
+        <Box fill="vertical" ref={cardRef} direction="row" title={generateTitle(suit, face)} elevation="xsmall" pad="xsmall" border round="xsmall" gap="2px" background="white">
             <Box direction="column" align="center" justify="around" width={`${height/2}px`} testborder={{ color: 'blue', style: 'dashed' }}><Face invisibleToOthers={invisibleToOthers} face={face} suit={suit}/></Box>
             <Box direction="column" align="center" justify="around" width={`${height/2}px`} testborder={{ color: 'red', style: 'dashed' }}><Suit invisibleToOthers={invisibleToOthers} suit={suit} /></Box>
         </Box>
