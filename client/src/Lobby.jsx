@@ -59,6 +59,12 @@ function Lobby () {
             <Button margin="xxsmall" label="Leave game"
             onClick={leaveGame} />
         </Box>
+        {previousGameResults ? (
+            <Box>
+                <Heading level={2}>Previous Games</Heading>
+                {previousGameResults.map(result => <Text>{result}</Text>)}
+            </Box>
+        ) : null}
     </Box>;
 }
 
