@@ -20,26 +20,29 @@ namespace SevenStuds.Models
             return ( origin_value == "https://7studsserver.azurewebsites.net/" );
         }
         public static Boolean GameExists(string gameId) {
-            return GameList.ContainsKey(gameId);
+            string lowercaseId = gameId.ToLower();
+            return GameList.ContainsKey(lowercaseId);
         }
 
         public static Game FindOrCreateGame(string gameId) {
-            if ( GameList.ContainsKey(gameId) ) {
-                Game g =  (Game) GameList[gameId];
+            string lowercaseId = gameId.ToLower();
+            if ( GameList.ContainsKey(lowercaseId) ) {
+                Game g =  (Game) GameList[lowercaseId];
                 if ( g.MinutesSinceLastAction() <= 120 ) {
                     return g;
                 }
                 else {
                     // Delete the current version of this game so the new one starts 
-                    EraseGame(gameId);
+                    EraseGame(lowercaseId);
                 }
             }
-            Game newGame = new Game(gameId);
-            GameList.Add(gameId, newGame);
+            Game newGame = new Game(gameId); // Keep original upper/lowercase
+            GameList.Add(lowercaseId, newGame);
             return newGame;
         }
         public static void EraseGame(string gameId) {
-            GameList.Remove(gameId);
+            string lowercaseId = gameId.ToLower();
+            GameList.Remove(lowercaseId);
         }
         public static void AddCompletedGameToRoomHistory(Game g) {
             if ( RoomHistory.ContainsKey(g.GameId) == false ) {
