@@ -13,11 +13,11 @@ namespace SevenStuds.Models
         /// <remarks>A player-specific view of the game state that is suitable for passing to the client as a deserialisable JSON string</remarks>
   
         public string StatusMessage { get; set; }
-        public string LastEvent { get; set; }
-        public string NextAction { get; set; }
+        //public string LastEvent { get; set; }
+        //public string NextAction { get; set; }
         public string MyHandSummary  { get; set; }
         public string MyHandDescription { get; set; }
-        public List<string> HandCommentary { get; set; }        
+        //public List<string> HandCommentary { get; set; }        
         public string MyRejoinCode { get; set; }
         public int MyMaxRaise { get; set; }
         public string GameMode { get; set; }
@@ -39,8 +39,8 @@ namespace SevenStuds.Models
         public PlayerCentricGameView(Game g, int playerIndex) {
             // Build up this player's view of the game
             StatusMessage = g.StatusMessage;
-            LastEvent = g.LastEvent;
-            NextAction = g.NextAction;
+            //LastEvent = g.LastEvent;
+            //NextAction = g.NextAction;
             MyHandSummary = g.Participants[playerIndex]._HandSummary;
             MyHandDescription = g.Participants[playerIndex]._FullHandDescription;                    
             //HandCommentary = new List<string>(g.HandCommentary); // Creates a separate copy (not sure it actually needs to be a clone here, but safer anyway)

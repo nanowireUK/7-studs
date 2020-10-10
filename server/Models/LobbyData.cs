@@ -8,7 +8,7 @@ namespace SevenStuds.Models
     {
         // Used to present the current status of a room
         public List<string> GameStatistics { get; set; } 
-        public List<LobbyDataCurrentGame> CurrentGameResult { get; set; } // Will show players in order from most successful to least successful in this game
+        public List<LobbyDataCurrentGame> CurrentGameStandings { get; set; } // Will show players in order from most successful to least successful in this game
         public List<string> ConnectedPlayers { get; set; } 
         public List<string> PreviousGameResults { get; set; } 
         public LobbyData(Game g) {
@@ -18,7 +18,7 @@ namespace SevenStuds.Models
             this.AddPreviousGameResults(g);
         }
         private void AddGameResult(Game g) {
-            CurrentGameResult = g.SortedListOfWinnersAndLosers();
+            CurrentGameStandings = g.SortedListOfWinnersAndLosers();
         }
         private void AddGameStatistics(Game g) {
             GameStatistics = new List<string>();
