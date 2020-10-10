@@ -7,9 +7,11 @@ namespace SevenStuds.Models
 {
     public static class ServerState
     {
-        // Enables a game object to be found from its ID 
+        // Maintains a registry of games which enables a game object to be found from its ID.
+        // Also provides other room-level functions (where a room may have hosted a whole series of games)
         public static Hashtable GameList = new Hashtable(); // Maps Room name to current Game object
         public static Hashtable RoomHistory = new Hashtable(); // Map Room name to a history of completed game results
+        public static Hashtable RoomGameLogHistory = new Hashtable(); // Map Room name to a history of game logs
         public static PokerHandRankingTable RankingTable = new PokerHandRankingTable(); // Only need one of these
         public static Card DummyCard = new Card(CardEnum.Dummy, SuitEnum.Clubs);
         public static Boolean IsRunningOnPublicServer() {
@@ -43,9 +45,12 @@ namespace SevenStuds.Models
             if ( RoomHistory.ContainsKey(g.GameId) == false ) {
                 // Start a game history for this room
                 RoomHistory.Add(g.GameId, new List<string>());
+                RoomGameLogHistory.Add(g.GameId, new List<string>());
             }
-            List<string> existingResultsForThisGame = (List<string>) RoomHistory[g.GameId];
-            existingResultsForThisGame.Insert(0, OneLineSummaryOfResult(g)); // Ensure latest result appears at top
+            List<string> existingResults = (List<string>) RoomHistory[g.GameId];
+            existingResults.Insert(0, OneLineSummaryOfResult(g)); // Ensure latest result appears at top
+            List<string> existingLogs = (List<string>) RoomGameLogHistory[g.GameId];
+            existingLogs.Insert(0, g.GameLogAsJson()); // Ensure latest result appears at top
         }
         private static string OneLineSummaryOfResult(Game g) {
             // Return a one-liner that summarises the results in order of winning player to losing player

@@ -70,7 +70,7 @@ namespace SevenStuds.Hubs
                     targetMethod = "ReceiveOverallGameState";
                     break;
                 case ActionResponseTypeEnum.AdHocServerQuery:
-                    resultAsJson = g.AdHocQueryResultAsJson();
+                    resultAsJson = string.Join("", g.AdHocQueryResult());
                     targetMethod = "ReceiveAdHocServerData";
                     break;
                 default:

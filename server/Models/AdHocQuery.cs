@@ -11,18 +11,20 @@ namespace SevenStuds.Models
     {
         // Various queries against the server
         public List<string> queryResults { get; set; } 
-        public AdHocQuery(string queryType) {
+        public AdHocQuery(Game thisGame, string queryType) {
             queryResults = new List<string>();
             try
             {
                 switch (queryType.ToLower())  
                 { 
-                    case "list-vars": // List environment variables 
+                    case "list-vars": 
+                        // List environment variables 
                         foreach (DictionaryEntry de in Environment.GetEnvironmentVariables()) {
                             queryResults.Add("Key: " + de.Key + " Value: " + de.Value);
                         }
                         break;   
-                    case "list-games": // List open games  
+                    case "list-games": 
+                        // List open games  
                         foreach (DictionaryEntry pair in ServerState.GameList )
                         {
                             Game g = (Game) pair.Value;
@@ -35,7 +37,8 @@ namespace SevenStuds.Models
                                 );
                         }
                         break;  
-                    case "list-env": // Check if running on public server
+                    case "list-env": 
+                        // Check if running on public server
                         if ( ServerState.IsRunningOnPublicServer() ) {
                             queryResults.Add("Game is running on the public server");
                         }
@@ -43,7 +46,14 @@ namespace SevenStuds.Models
                             queryResults.Add("Game is running on something other than the public server");
 
                         }
-                        break;                                                                                                                        
+                        break;    
+                    case "list-logs": 
+                        // Return the game logs from all games completed under the given game id
+                        List<string> logsForThisGame = (List<string>) ServerState.RoomGameLogHistory[thisGame.GameId];
+                        foreach ( string log in logsForThisGame ) {
+                            queryResults.Add(log);
+                        }
+                        break;  
                     default:  
                         throw new SystemException("Query type " + queryType + " not implemented");
                 }  
@@ -54,15 +64,15 @@ namespace SevenStuds.Models
                 queryResults.Add(e.Message);
             }
         }
-        public string AsJson()
-        {
-            var options = new JsonSerializerOptions
-            {
-                WriteIndented = true,
-            };
-            //options.Converters.Add(new JsonStringEnumConverter(null /*JsonNamingPolicy.CamelCase*/));
-            string jsonString = JsonSerializer.Serialize(this, options);
-            return jsonString;
-        }  
+        // public string AsJson()
+        // {
+        //     var options = new JsonSerializerOptions
+        //     {
+        //         WriteIndented = true,
+        //     };
+        //     //options.Converters.Add(new JsonStringEnumConverter(null /*JsonNamingPolicy.CamelCase*/));
+        //     string jsonString = JsonSerializer.Serialize(this, options);
+        //     return jsonString;
+        // }  
     }
 }

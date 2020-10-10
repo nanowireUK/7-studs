@@ -857,10 +857,11 @@ namespace SevenStuds.Models
         public string GameLogAsJson() {
             return this._GameLog.AsJson();
         }
-        public string AdHocQueryResultAsJson() {
-            // This is stupidly convoluted, but an ActionAdHocQuery command has recorded a command number in AdHocQueryType,
+        public List<string> AdHocQueryResult() {
+            // This is stupidly convoluted, but an ActionAdHocQuery command has recorded a command name in AdHocQueryType,
             // and we will now use a separate class to action the query and return 
-            return new AdHocQuery(AdHocQueryType).AsJson();
+            AdHocQuery q = new AdHocQuery(this, AdHocQueryType);
+            return q.queryResults;
         }
 
         public int MinutesSinceLastAction() {
