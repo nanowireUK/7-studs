@@ -31,6 +31,7 @@ namespace SevenStuds.Models
         public bool _CheckIsAvailable { get; set; }
         public int CountOfLeavers { get; set; }
         public Card CommunityCard { get; set; }
+        public DateTimeOffset StartTime { get; set; }
         public DateTimeOffset LastSuccessfulAction { get; set; }
         protected GameLog _GameLog { get; set; }
         protected GameLog _TestContext { get; set; }
@@ -56,6 +57,7 @@ namespace SevenStuds.Models
         public void InitialiseGame(GameLog testContext)
         {
             GameMode = GameModeEnum.LobbyOpen;
+            LastSuccessfulAction = DateTimeOffset.Now; // This will be updated as the game progresses but need to set a baseline here
             SetTestContext(testContext);
             Participants = new List<Participant>(); // start with empty list of participants
             InitialChipQuantity = 1000;
@@ -128,7 +130,7 @@ namespace SevenStuds.Models
                     }
                 }
             }
-
+            StartTime = DateTimeOffset.Now;
             this.LogPlayers(); // record the modified player order
         }
 
@@ -864,29 +866,43 @@ namespace SevenStuds.Models
         public int MinutesSinceLastAction() {
             return Convert.ToInt32( (DateTimeOffset.Now - this.LastSuccessfulAction).TotalMinutes);
         }
-        
-        public static Boolean GameExists(string gameId) {
-            return SevenStuds.Models.ServerState.GameList.ContainsKey(gameId);
-        }
-
-        public static Game FindOrCreateGame(string gameId) {
-            if ( SevenStuds.Models.ServerState.GameList.ContainsKey(gameId) ) {
-                Game g =  (Game) SevenStuds.Models.ServerState.GameList[gameId];
-                if ( g.MinutesSinceLastAction() <= 120 ) {
-                    return g;
-                }
-                else {
-                    // Delete the current version of this game so the new one starts 
-                    EraseGame(gameId);
+        public List<LobbyDataCurrentGame> SortedListOfWinnersAndLosers() {
+            DateTimeOffset now = DateTimeOffset.Now;
+            List<LobbyDataCurrentGame> result = new List<LobbyDataCurrentGame>();
+            // First add all players who are still in the game, without worrying about the order as the list will be sorted later
+            foreach ( Participant p in Participants ) {
+                if ( p.UncommittedChips > 0 ) {
+                    result.Add(new LobbyDataCurrentGame(p.Name, p.UncommittedChips, now));
                 }
             }
-            Game newGame = new Game(gameId);
-            SevenStuds.Models.ServerState.GameList.Add(gameId, newGame);
-            newGame.LastSuccessfulAction = DateTimeOffset.Now; // Record time game was created
-            return newGame;
-        }
-        public static void EraseGame(string gameId) {
-            SevenStuds.Models.ServerState.GameList.Remove(gameId);
-        }
+            // Now add the details of the bankruptcies
+            if ( BankruptcyEventHistoryForGame != null ) {
+                foreach ( BankruptcyEvent e in BankruptcyEventHistoryForGame ) {
+                    result.Add(new LobbyDataCurrentGame(e.BankruptPlayerName, 0, e.OccurredAt_UTC));
+                } 
+            }           
+            // Now sort the array by (1) funds descending, (2) date they went backrupt, descending and finally (3) by name
+            result.Sort(
+                delegate(LobbyDataCurrentGame x, LobbyDataCurrentGame y) 
+                {
+                    // See https://www.codeproject.com/Tips/761275/How-to-Sort-a-List
+
+                    // Sort by total funds in descending order
+                    int a = y.RemainingFunds.CompareTo(x.RemainingFunds);
+                    // If both players have same funds remaining (which might be zero) then sort by the time they went bankrupt
+                    if (a == 0)
+                        a = y.EventTimeAsUTC.CompareTo(x.EventTimeAsUTC);
+                    // If both players 
+                    if (a == 0)
+                        a = x.PlayerName.CompareTo(y.PlayerName);                    
+
+                    return a;
+                }
+            );
+            // Add some game data ahead of the sorted list
+            return result;
+            }
+        
+
     }
 }

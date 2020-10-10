@@ -33,7 +33,7 @@ namespace SevenStuds.Models
 
             // The ProcessAction() method can use the same technique as long as the game state has not changed.
 
-            G = Game.FindOrCreateGame(gameId); // find our game or create a new one if required
+            G = ServerState.FindOrCreateGame(gameId); // find our game or create a new one if required
             ActionType = actionType;
             UserName = user;
             Parameters = parameters;

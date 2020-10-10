@@ -36,7 +36,7 @@ namespace SevenStuds.Models
             // If this was the last player still connected to the game, remove the game from the system 
             // and notify the player via an exception that the game is now gone
             if ( G.Participants.Count == 1 ) {
-                Game.EraseGame(G.GameId);
+                ServerState.EraseGame(G.GameId);
                 throw new HubException("You were the last player to leave the game so the game has now been deleted");
             }  
 

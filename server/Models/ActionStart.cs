@@ -13,6 +13,11 @@ namespace SevenStuds.Models
         public override void ProcessAction()
         {
             // Start game (note that the base class has already checked the player's eligibility for this action)
+
+            // #### TO DO
+            // Need to check whether or not we're in LobbyMode here ... if not then Start is the same as continue from Lobby mode
+            //
+
             if ( G.HandsPlayedIncludingCurrent == 0 ) {
                 G.RecordLastEvent(this.UserName + " started the first hand (player order now randomised)");
                 G.StartGame(); // Initialise the game
@@ -20,6 +25,7 @@ namespace SevenStuds.Models
 
             }
             else {
+                ServerState.AddCompletedGameToRoomHistory(G);
                 G.RecordLastEvent(this.UserName + " started next hand");
                 G.StartNextHand(); 
             }            

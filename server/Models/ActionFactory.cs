@@ -17,7 +17,7 @@ namespace SevenStuds.Models
         )
         {
             // Only Join is allowable for games that do not exist
-            if ( Game.GameExists(gameId) == false && actionType != ActionEnum.Join ) {
+            if ( ServerState.GameExists(gameId) == false && actionType != ActionEnum.Join ) {
                 throw new HubException("The only allowable action against a non-existent game is to join it");
             }
             switch (actionType)  

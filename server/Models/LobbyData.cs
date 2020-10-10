@@ -6,66 +6,39 @@ namespace SevenStuds.Models
 {
     public class LobbyData
     {
-        // Used to present the current status of a game 
-        public List<LobbyDataCurrentGame> currentGameResult { get; set; } // Will show players in order from most successful to least successful in this game
-        public List<string> connectedPlayers { get; set; } 
+        // Used to present the current status of a room
+        public List<string> GameStatistics { get; set; } 
+        public List<LobbyDataCurrentGame> CurrentGameResult { get; set; } // Will show players in order from most successful to least successful in this game
+        public List<string> ConnectedPlayers { get; set; } 
+        public List<string> PreviousGameResults { get; set; } 
         public LobbyData(Game g) {
+            this.AddGameStatistics(g);
             this.AddGameResult(g);
             this.AddConnectedPlayers(g);
+            this.AddPreviousGameResults(g);
         }
         private void AddGameResult(Game g) {
-            DateTimeOffset now = DateTimeOffset.Now;
-            currentGameResult = new List<LobbyDataCurrentGame>();
-            // First add all players who are still in the game, without worrying about the order as the list will be sorted later
-            foreach ( Participant p in g.Participants ) {
-                if ( p.UncommittedChips > 0 ) {
-                    this.currentGameResult.Add(new LobbyDataCurrentGame(p.Name, p.UncommittedChips, now));
-                }
-            }
-            // Now add the details of the bankruptcies
-            if ( g.BankruptcyEventHistoryForGame != null ) {
-                foreach ( BankruptcyEvent e in g.BankruptcyEventHistoryForGame ) {
-                    this.currentGameResult.Add(new LobbyDataCurrentGame(e.BankruptPlayerName, 0, e.OccurredAt_UTC));
-                } 
-            }           
-            // Now sort the array by (1) funds descending, (2) date they went backrupt, descending and finally (3) by name
-            currentGameResult.Sort(
-                delegate(LobbyDataCurrentGame x, LobbyDataCurrentGame y) 
-                {
-                    // See https://www.codeproject.com/Tips/761275/How-to-Sort-a-List
-
-                    // Sort by total funds in descending order
-                    int a = y.RemainingFunds.CompareTo(x.RemainingFunds);
-                    // If both players have same funds remaining (which might be zero) then sort by the time they went bankrupt
-                    if (a == 0)
-                        a = y.EventTimeAsUTC.CompareTo(x.EventTimeAsUTC);
-                    // If both players 
-                    if (a == 0)
-                        a = x.PlayerName.CompareTo(y.PlayerName);                    
-
-                    return a;
-                }
-            );
+            CurrentGameResult = g.SortedListOfWinnersAndLosers();
         }
-
-       private void AddConnectedPlayers(Game g) {
-            connectedPlayers = new List<string>();
+        private void AddGameStatistics(Game g) {
+            GameStatistics = new List<string>();
+            GameStatistics.Add("Start Time: " + g.StartTime.ToString("HH:mm"));
+            GameStatistics.Add("Time Now: " + DateTimeOffset.Now.ToString("HH:mm"));
+            GameStatistics.Add("Duration: " + Convert.ToInt32( (DateTimeOffset.Now - g.StartTime).TotalMinutes));
+            GameStatistics.Add("Hands Played: " + g.HandsPlayedIncludingCurrent);
+            return ;
+        }          
+        private void AddConnectedPlayers(Game g) {
+            ConnectedPlayers = new List<string>();
             // Add all players who are either in the game already or who have joined the lobby
             foreach ( Participant p in g.Participants ) {
                 if ( p.HasDisconnected == false ) {
-                    this.connectedPlayers.Add(p.Name);
+                    ConnectedPlayers.Add(p.Name);
                 }
             }
-        }        
-        // public string AsJson()
-        // {
-        //     var options = new JsonSerializerOptions
-        //     {
-        //         WriteIndented = true,
-        //     };
-        //     //options.Converters.Add(new JsonStringEnumConverter(null /*JsonNamingPolicy.CamelCase*/));
-        //     string jsonString = JsonSerializer.Serialize(this, options);
-        //     return jsonString;
-        // }  
+        }  
+        private void AddPreviousGameResults(Game g) {
+            PreviousGameResults =  (List<string>) ServerState.RoomHistory[g.GameId];
+        }      
     }
 }

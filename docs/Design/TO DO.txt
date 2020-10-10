@@ -25,6 +25,7 @@
 ----------------------------------------- CLIENT-SIDE THOUGHTS ---------------------------------
 * Make it possible to toggle to a vertical view (with players stacked on top to enable a skinny side-panel view)
 ----------------------------------------- DONE (most recent first) ---------------------------------------
+DONE * Maintain a log of results of previous games against each room
 DONE * Allow for players joining from the lobby mid-game (ensure they get funds etc.)
 DONE * Fix double commentary
 DONE * Automatically reset a game that has been inactive for more than 120 mins
