@@ -110,6 +110,7 @@ namespace SevenStuds.Models
             foreach ( Participant p in Participants )
             {
                 p.UncommittedChips = this.InitialChipQuantity;
+                p.HandsWon = 0;
             }
             BankruptcyEventHistoryForGame = new List<BankruptcyEvent>();
             if ( this.IsRunningInTestMode() == false ) {
@@ -681,6 +682,7 @@ namespace SevenStuds.Models
 
             foreach ( Participant p in Participants ) {
                 p.GainOrLossInLastHand = 0;
+                p.WonSomethingInCurrentHand = false;
             }
 
             int numberOfPotentialWinners = CountOfPlayersLeftInHand();
@@ -719,6 +721,7 @@ namespace SevenStuds.Models
                         int inPot = ChipsInSpecifiedPotForSpecifiedPlayer(pot, player);
                         p.UncommittedChips += share;
                         p.GainOrLossInLastHand += ( share - inPot );
+                        p.WonSomethingInCurrentHand = true;
                         if ( numberOfPotentialWinners == 1 ) {
                             AddCommentaryAndResultDetail(p.Name + " won " + ( share - inPot ) + " as everyone else folded");
                         }
@@ -746,7 +749,7 @@ namespace SevenStuds.Models
                 }                
             }
 
-            // Identify anyone who became backrupt during the hand
+            // Identify anyone who became backrupt during the hand. 
             for (int p = 0; p < Participants.Count ; p++) {
                 if ( Participants[p].UncommittedChips == 0 && Participants[p].IsOutOfThisGame == false ) {
                     // Player is now bankrupt having been in this hand with some funds at the beginning of the hand
@@ -754,15 +757,18 @@ namespace SevenStuds.Models
                 }
             }
             
-            AddCommentary("Waiting for administrator to start next hand.");
-
-            // Check for anyone who has not disconnected and not yet revealed their cards
+            // Check for anyone who has not disconnected and not yet revealed their cards. Also flag up whether the player won anything 
             int unrevealedHands = 0;
             for (int p = 0; p < Participants.Count ; p++) {
                 if ( Participants[p].IsSharingHandDetails == false && Participants[p].HasDisconnected == false) {
                     unrevealedHands++;
                 }
+                if ( Participants[p].WonSomethingInCurrentHand == true) {
+                    Participants[p].HandsWon++;
+                }
             }
+
+            AddCommentary("Waiting for administrator to start next hand.");
 
             if ( CountOfPlayersLeftInGame() == 1 ) {
                 NextAction = "You are the last player in the game, please either reopen the lobby or leave the game";

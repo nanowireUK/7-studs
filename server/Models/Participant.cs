@@ -25,7 +25,9 @@ namespace SevenStuds.Models
         public Boolean HasCovered { get; set; }
         public Boolean IsOutOfThisGame { get; set; } // i.e. had no funds at the start of the current hand
         public Boolean HasDisconnected { get; set; } // Player has chosen to leave the game (i.e. is no longer connected and will be removed at end of hand)
-        public Boolean IsSharingHandDetails { get; set; } 
+        public Boolean IsSharingHandDetails { get; set; }
+        public Boolean WonSomethingInCurrentHand { get; set; }
+        public int HandsWon { get; set; } 
         public string RejoinCode { get; set; } // e.g. 3 alphanumeric characters that enables a disconnected player to rejoin as the same person
         public string ParticipantLevelSignalRGroupName { get; set; }
         private List<string> _ConnectionIds { get; set; }
