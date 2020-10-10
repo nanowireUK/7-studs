@@ -67,9 +67,16 @@ function Player ({ name, chips, cards, isDealer, isAdmin, isCurrentPlayer, isMe,
                         </Box>
                     </Box>
                     <Box flex="grow" direction="row" justify="between">
-                        <Box direction="row" gap="1px">
-                            <Text level={3} color='gray' onMouseOver={() => setShowMyHandDescription(true)} onMouseOut={() => setShowMyHandDescription(false)}>{isMe && showMyHandDescription ? myHandDescription : handDescription}</Text>
-                            {isMe && !showMyHandDescription && !isSharingHandDetails ? <Text color='gray' size="11px" style={{ verticalAlign: 'super'}}>?</Text> : null }
+                        <Box direction="row" onMouseOver={() => setShowMyHandDescription(true)} onMouseOut={() => setShowMyHandDescription(false)}>
+                            <Stack direction="row" guidingChild={isMe ? ((handDescription.length > myHandDescription.length) ? 0 : 1) : 0}>
+                                <Box direction="row" gap="1px">
+                                    <Text level={3} color={isMe && showMyHandDescription ? 'transparent' : 'gray'}>{handDescription}</Text>
+                                    <Text color={!isMe || showMyHandDescription ? 'transparent' : 'gray'} size="11px" style={{ verticalAlign: 'super'}}>*</Text>
+                                </Box>
+                                {isMe ? <Box direction="row">
+                                    <Text level={3} color={isMe && showMyHandDescription ? 'gray' : 'transparent'}>{myHandDescription}</Text>
+                                </Box> : null}
+                            </Stack>
                         </Box>
                         {handCompleted ?
                             <Text color={gainOrLossInLastHand > 0 ? 'status-ok' : 'status-error'} margin={{ right: "small"}}>{gainOrLossInLastHand}</Text> : null}
