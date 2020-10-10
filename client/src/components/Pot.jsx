@@ -40,10 +40,10 @@ export default function PotArea () {
 
     if (handCompleted) {
         return (
-            <Box fill round={true} background="brand" direction="column" overflow="auto">
-                <Box>
+            <Box fill round={true} background="brand" direction="column" overflow="hidden">
+                <Box pad="small">
                     {lastHandResult.map((pot, index) => (
-                        <Text key={index} size="xlarge">{pot}</Text>
+                        <Box key={index}><Text size="xlarge">{pot}</Text></Box>
                     ))}
                 </Box>
             </Box>
