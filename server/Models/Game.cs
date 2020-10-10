@@ -279,7 +279,7 @@ namespace SevenStuds.Models
             else if ( GameMode == GameModeEnum.HandCompleted ) {
                 SetActionAvailability(ActionEnum.Open, AvailabilityEnum.AdministratorOnly); // Admin can choose to reopen lobby at this point
                 SetActionAvailability(ActionEnum.Reveal, AvailabilityEnum.AnyUnrevealedRegisteredPlayer); // Players may voluntarily reveal their hands at the end of a hand
-                SetActionAvailability(ActionEnum.Start, AvailabilityEnum.AdministratorOnly); // Make it possible for the administrator to start the next hand            
+                SetActionAvailability(ActionEnum.Continue, AvailabilityEnum.AdministratorOnly); // Admin can choose to continue with the next hand
 
             }
             else if ( GameMode == GameModeEnum.HandInProgress ) {
@@ -719,7 +719,9 @@ namespace SevenStuds.Models
                             AddCommentaryAndResultDetail(p.Name + " won " + ( share - inPot ) + " as everyone else folded");
                         }
                         else {
-                            AddCommentaryAndResultDetail(p.Name + " won " + ( share - inPot ) + " with " + p._HandSummary + " (" + p._FullHandDescription + ")");
+                            AddCommentaryAndResultDetail(p.Name + " won " + ( share - inPot ) 
+                                //+ " with " /* + p._HandSummary + " [rank=" + p._FullHandRank + "] " + " ("*/ + p._FullHandDescription /*+ ")"*/);
+                                + " with " + p._HandSummary + " (" + p._FullHandDescription + ")");
                         }
                     }
                 }
@@ -736,7 +738,8 @@ namespace SevenStuds.Models
                             AddCommentaryAndResultDetail(p.Name + " lost " + ( inPot ) + " after folding");
                         }
                         else {
-                            AddCommentaryAndResultDetail(p.Name + " lost " + ( inPot ) + " with " + p._HandSummary /* + " [rank=" + p._FullHandRank + "] "*/ + " (" + p._FullHandDescription + ")");
+                            AddCommentaryAndResultDetail(p.Name + " lost " + ( inPot ) 
+                                + " with " /* + p._HandSummary + " [rank=" + p._FullHandRank + "] " + " ("*/ + p._FullHandDescription /*+ ")"*/);
                         }
                     }
                 }                

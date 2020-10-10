@@ -196,7 +196,7 @@
     },
     {
       "ActionNumber": 13,
-      "ActionType": 4,
+      "ActionType": 5,
       "UserName": "John",
       "Parameters": null,
       "StatusMessage": "John started next hand. Robert to bet",
@@ -495,7 +495,7 @@
     },
     {
       "ActionNumber": 31,
-      "ActionType": 4,
+      "ActionType": 5,
       "UserName": "John",
       "Parameters": null,
       "StatusMessage": "John started next hand. Robert to bet",
@@ -721,7 +721,7 @@
     },
     {
       "ActionNumber": 45,
-      "ActionType": 4,
+      "ActionType": 5,
       "UserName": "Phil",
       "Parameters": null,
       "StatusMessage": "Phil started next hand. Phil to bet",
@@ -994,7 +994,7 @@
     },
     {
       "ActionNumber": 63,
-      "ActionType": 4,
+      "ActionType": 5,
       "UserName": "Phil",
       "Parameters": null,
       "StatusMessage": "Phil started next hand. Phil to bet",

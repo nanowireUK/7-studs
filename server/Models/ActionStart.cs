@@ -12,23 +12,15 @@ namespace SevenStuds.Models
 
         public override void ProcessAction()
         {
-            // Start game (note that the base class has already checked the player's eligibility for this action)
+            // Start a new game (note that the base class has already checked the player's eligibility for this action)
 
-            // #### TO DO
-            // Need to check whether or not we're in LobbyMode here ... if not then Start is the same as continue from Lobby mode
-            //
-
-            if ( G.HandsPlayedIncludingCurrent == 0 ) {
-                G.RecordLastEvent(this.UserName + " started the first hand (player order now randomised)");
-                G.StartGame(); // Initialise the game
-                G.StartNextHand(); 
-
+            if ( G.HandsPlayedIncludingCurrent > 0 ) {
+                // Archive the results of the last game before setting up the new one 
+                ServerState.AddCompletedGameToRoomHistory(G); 
             }
-            else {
-                ServerState.AddCompletedGameToRoomHistory(G);
-                G.RecordLastEvent(this.UserName + " started next hand");
-                G.StartNextHand(); 
-            }            
+            G.RecordLastEvent(this.UserName + " started the game (player order now randomised)");
+            G.StartGame(); // Initialise the game
+            G.StartNextHand(); 
             G.NextAction = G.Participants[G.IndexOfParticipantToTakeNextAction].Name + " to bet"; 
             G.GameMode = GameModeEnum.HandInProgress;
         }
