@@ -719,9 +719,7 @@ namespace SevenStuds.Models
                             AddCommentaryAndResultDetail(p.Name + " won " + ( share - inPot ) + " as everyone else folded");
                         }
                         else {
-                            AddCommentaryAndResultDetail(p.Name + " won " + ( share - inPot ) 
-                                //+ " with " /* + p._HandSummary + " [rank=" + p._FullHandRank + "] " + " ("*/ + p._FullHandDescription /*+ ")"*/);
-                                + " with " + p._HandSummary + " (" + p._FullHandDescription + ")");
+                            AddCommentaryAndResultDetail(p.Name + " won " + ( share - inPot ) + " with " + p._FullHandDescription);
                         }
                     }
                 }
@@ -738,8 +736,7 @@ namespace SevenStuds.Models
                             AddCommentaryAndResultDetail(p.Name + " lost " + ( inPot ) + " after folding");
                         }
                         else {
-                            AddCommentaryAndResultDetail(p.Name + " lost " + ( inPot ) 
-                                + " with " /* + p._HandSummary + " [rank=" + p._FullHandRank + "] " + " ("*/ + p._FullHandDescription /*+ ")"*/);
+                            AddCommentaryAndResultDetail(p.Name + " lost " + ( inPot ) + " with " + p._FullHandDescription);
                         }
                     }
                 }                
