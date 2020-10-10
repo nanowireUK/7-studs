@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 
 import { Box, Drop, Text } from 'grommet';
-import { selectHandCompleted, selectPots, selectLastHandResult, selectPlayers, selectCommunityCard } from '../redux/slices/game';
+import { selectHandCompleted, selectPots, selectLastHandResult, selectPlayers, selectCommunityCard, selectGameStatus } from '../redux/slices/game';
 import { useSelector } from 'react-redux';
 import { useState } from 'react';
 import PokerCard from './PokerCard';
@@ -37,6 +37,7 @@ export default function PotArea () {
     const handCompleted = useSelector(selectHandCompleted);
     const lastHandResult = useSelector(selectLastHandResult);
     const communityCard = useSelector(selectCommunityCard);
+    const gameStatus = useSelector(selectGameStatus);
 
     if (handCompleted) {
         return (
@@ -57,7 +58,9 @@ export default function PotArea () {
                     <Pot key={index} contents={pot} potNumber={index} />
                 ))}
             </Box>
-            {communityCard ? <Box alignSelf={pots.length > 6 ? 'end' : null} height="25%"><PokerCard face={communityCard[0]} suit={communityCard[1]} /></Box> : null}
+            {communityCard ? <Box pad="xsmall" alignSelf={pots.length > 6 ? 'end' : null} height="30%"><PokerCard face={communityCard[0]} suit={communityCard[1]} isCommunity/></Box> : null}
+
+            <Box><Text textAlign="center">{gameStatus}</Text></Box>
         </Box>
     )
 }

@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
     selectInLobby,
     selectPlayers,
-    selectGameStatus,
     leave,
 } from './redux/slices/game';
 
@@ -22,7 +21,6 @@ function Game() {
     const inLobby = useSelector(selectInLobby);
     const gameId = useSelector(selectGameId);
     const rejoinCode = useSelector(selectRejoinCode);
-    const gameStatus = useSelector(selectGameStatus);
     const dispatch = useDispatch();
 
     const mobileLayout = useContext(ResponsiveContext) === 'small';
@@ -76,7 +74,7 @@ function Game() {
                     { name: 'actions', start: [0, 2], end: [0, 2] },
                 ]}
                 columns={['fill']}
-                rows={['xsmall', 'auto', 'xsmall']}
+                rows={['xsmall', 'auto', 'xxsmall']}
             >
                 <Box pad="small" gridArea="gameStatus" background="brand" direction="row" fill justify="between">
                     <Text basis="full" alignSelf="center" size="xxlarge">{gameId}</Text>
@@ -103,7 +101,6 @@ function Game() {
                     </Box>
                 </Grid>
                 <Box gridArea="actions" border direction="column" justify="between" pad="xsmall">
-                    <Box><Text textAlign="center">{gameStatus}</Text></Box>
                     <Box alignSelf="end"><GameActions /></Box>
                 </Box>
             </Grid>
