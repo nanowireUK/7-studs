@@ -273,7 +273,8 @@ namespace SevenStuds.Models
                 SetActionAvailability(ActionEnum.Join, AvailabilityEnum.AnyUnregisteredPlayer); // Open up JOIN to anyone who has not yet joined
                 SetActionAvailability(ActionEnum.Open, AvailabilityEnum.NotAvailable); // OPEN is no longer possible as lobby is already open
                 SetActionAvailability(ActionEnum.Start, ( this.Participants.Count >= 2 ) ? AvailabilityEnum.AdministratorOnly : AvailabilityEnum.NotAvailable ); 
-                SetActionAvailability(ActionEnum.Continue, ( this.Participants.Count >= 2 ) ? AvailabilityEnum.AdministratorOnly : AvailabilityEnum.NotAvailable ); 
+                SetActionAvailability(ActionEnum.Continue, 
+                    ( this.Participants.Count >= 2 && this.HandsPlayedIncludingCurrent > 0 ) ? AvailabilityEnum.AdministratorOnly : AvailabilityEnum.NotAvailable ); 
             }
             else if ( GameMode == GameModeEnum.HandsBeingRevealed ) {
                 // Player can only fold or reveal in this phase
