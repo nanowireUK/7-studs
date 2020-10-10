@@ -26,19 +26,10 @@ export const hubSlice = createSlice({
         disconnected: (state) => {
             state.connectionState = ConnectionState.DISCONNECTED;
         },
-        joinedGame: (state, { payload: { gameId, username } }) => ({
-            ...state,
-            gameId,
-            username,
-        }),
-        setRejoinCode: (state, { payload }) => ({
-            ...state,
-            rejoinCode: payload,
-        }),
-        setLeaverCount: (state, { payload }) => ({
-            ...state,
-            leaverCount: payload,
-        }),
+        setUsername: (state, { payload }) => ({ ...state, username: payload }),
+        setGameId: (state, { payload }) => ({ ...state, gameId: payload }),
+        setRejoinCode: (state, { payload }) => ({ ...state, rejoinCode: payload }),
+        setLeaverCount: (state, { payload }) => ({ ...state, leaverCount: payload }),
         awaitingResponse: (state, { payload } ) => ({ ...state, awaitingResponse: payload})
     },
 });
@@ -47,7 +38,8 @@ export const {
     connected,
     reconnecting,
     disconnected,
-    joinedGame,
+    setUsername,
+    setGameId,
     setRejoinCode,
     setLeaverCount,
     awaitingResponse,
@@ -73,7 +65,7 @@ export const join = (gameId, username) => (dispatch, getState, connection) => {
             console.log('User clicked join')
             localStorage.setItem('gameId', gameId);
             localStorage.setItem('username', username);
-            dispatch(joinedGame(({ gameId, username })));
+            setUsername(username);
         })
         .catch(console.log);
 };
@@ -86,7 +78,7 @@ export const rejoin = (gameId, username, rejoinCode) => (dispatch, getState, con
             localStorage.setItem('gameId', gameId);
             localStorage.setItem('username', username);
             localStorage.setItem('rejoinCode', rejoinCode);
-            dispatch(joinedGame(({ gameId, username })));
+            setUsername(username);
         })
         .catch(console.log);
 };
