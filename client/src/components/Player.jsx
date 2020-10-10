@@ -68,10 +68,10 @@ function Player ({ name, chips, cards, isDealer, isAdmin, isCurrentPlayer, isMe,
                     </Box>
                     <Box flex="grow" direction="row" justify="between">
                         <Box direction="row" onMouseOver={() => setShowMyHandDescription(true)} onMouseOut={() => setShowMyHandDescription(false)}>
-                            <Stack direction="row" guidingChild={isMe ? ((handDescription.length > myHandDescription.length) ? 0 : 1) : 0}>
+                            <Stack direction="row" guidingChild={isMe ? ((handDescription.length >= myHandDescription.length) ? 0 : 1) : 0}>
                                 <Box direction="row" gap="1px">
                                     <Text level={3} color={isMe && showMyHandDescription ? 'transparent' : 'gray'}>{handDescription}</Text>
-                                    <Text color={!isMe || showMyHandDescription ? 'transparent' : 'gray'} size="11px" style={{ verticalAlign: 'super'}}>*</Text>
+                                    <Text color={!isMe || showMyHandDescription || isSharingHandDetails ? 'transparent' : 'gray'} size="11px" style={{ verticalAlign: 'super'}}>*</Text>
                                 </Box>
                                 {isMe ? <Box direction="row">
                                     <Text level={3} color={isMe && showMyHandDescription ? 'gray' : 'transparent'}>{myHandDescription}</Text>
