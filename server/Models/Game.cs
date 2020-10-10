@@ -62,13 +62,14 @@ namespace SevenStuds.Models
             Participants = new List<Participant>(); // start with empty list of participants
             InitialChipQuantity = 1000;
             Ante = 1;
-            HandsPlayedIncludingCurrent = 0;
+
             CardPack = new Deck(true);
             HandCommentary = new List<string>();
             LastHandResult = new List<string>();
             _ConnectionToParticipantMap = new Dictionary<string, Participant>(); 
             _ActionAvailability = new Dictionary<ActionEnum, ActionAvailability>();
             ActionAvailabilityList = new List<ActionAvailability>();
+            HandsPlayedIncludingCurrent = 0;
             CountOfLeavers = 0;
             ActionNumber = 0;
             SetActionAvailabilityBasedOnCurrentPlayer(); // Ensures the initial section of available actions is set
@@ -103,6 +104,9 @@ namespace SevenStuds.Models
 
         public void StartGame()
         {
+            HandsPlayedIncludingCurrent = 0;
+            CountOfLeavers = 0;
+            ActionNumber = 0;
             foreach ( Participant p in Participants )
             {
                 p.UncommittedChips = this.InitialChipQuantity;
