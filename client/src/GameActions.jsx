@@ -9,7 +9,7 @@ import {
     selectCanDoAction, selectIsAdmin,
     selectHandInProgress, selectHandCompleted, selectHandsBeingRevealed,
     selectAnte, selectMaxRaise,
-    PlayerActions, raise, start, check, fold, cover, call, reveal, open
+    PlayerActions, raise, proceed, check, fold, cover, call, reveal, open
 } from './redux/slices/game';
 
 function useSizeContext() {
@@ -87,11 +87,11 @@ function RevealHand () {
     return <Button primary label="Reveal Hand [S]" onClick={clickReveal} disabled={!canReveal} />
 }
 
-function StartNext () {
+function Continue () {
     const dispatch = useDispatch();
-    const clickStartNext = () => dispatch(start());
+    const clickContinue = () => dispatch(proceed());
 
-    return <Button secondary label="Start Next Game [Enter]" onClick={clickStartNext} />;
+    return <Button secondary label="Next Game [Enter]" onClick={clickContinue} />;
 }
 
 function OpenLobby () {
@@ -126,7 +126,7 @@ function GameActions () {
          return (
             <Box direction="row" gap="xsmall">
                 <RevealHand />
-                {isAdmin ? <StartNext /> : null}
+                {isAdmin ? <Continue /> : null}
                 {isAdmin ? <OpenLobby /> : null}
             </Box>
          );
