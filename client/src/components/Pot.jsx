@@ -41,12 +41,14 @@ export default function PotArea () {
 
     if (handCompleted) {
         return (
-            <Box fill round={true} background="brand" direction="column" overflow="hidden">
-                <Box pad="small">
-                    {lastHandResult.map((pot, index) => (
-                        <Box key={index}><Text size="xlarge">{pot}</Text></Box>
-                    ))}
-                </Box>
+            <Box fill round={true} background="brand" direction="column" overflow="auto">
+                {lastHandResult.map((potResult, potIndex) => (
+                    <Box flex="grow" key={potIndex} pad="small">
+                        {potResult.map((resultLine, index) => (
+                            <Box flex="grow" key={index}><Text size="xlarge">{resultLine}</Text></Box>
+                        ))}
+                    </Box>
+                ))}
             </Box>
         )
     }
