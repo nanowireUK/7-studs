@@ -1,6 +1,6 @@
 import React, { useState, useContext} from 'react';
 
-import { Box, Button, ResponsiveContext } from 'grommet';
+import { Box, Button, Keyboard, ResponsiveContext } from 'grommet';
 import { useSelector, useDispatch } from 'react-redux';
 
 import RaiseSlider from './components/RaiseSlider';
@@ -24,7 +24,7 @@ function Raise ({ setIsRaising }) {
 
     const clickRaise = () => setIsRaising(true);
 
-    return <Button primary label="Raise [R]" onClick={clickRaise} disabled={!canRaise} />
+    return <Button primary label="Raise" onClick={clickRaise} disabled={!canRaise} />
 }
 
 function Check () {
@@ -91,14 +91,14 @@ function Continue () {
     const dispatch = useDispatch();
     const clickContinue = () => dispatch(proceed());
 
-    return <Button secondary label="Next Game [Enter]" onClick={clickContinue} />;
+    return <Button secondary label="Next Game" onClick={clickContinue} />;
 }
 
 function OpenLobby () {
     const dispatch = useDispatch();
     const clickOpenLobby = () => dispatch(open());
 
-    return <Button secondary label="Open Lobby [O]" onClick={clickOpenLobby} />
+    return <Button secondary label="Open Lobby" onClick={clickOpenLobby} />
 }
 
 
@@ -132,7 +132,7 @@ function GameActions () {
          );
     } else if (handInProgress) {
         if (isRaising) return <Box direction="row" gap="xsmall">
-            <Button primary label="Raise [Enter]" onClick={() => {
+            <Button primary label="Raise" onClick={() => {
                 if (raiseIsValid) {
                   dispatch(raise(raiseAmount.toString()));
                   endRaising();
@@ -141,7 +141,7 @@ function GameActions () {
             <Box direction="column" gap="xsmall">
                 <RaiseSlider min={ante} max={maxRaise} value={raiseAmount} setValue={setRaiseAmount} />
             </Box>
-            <Button label="Cancel [Esc]" onClick={endRaising} />
+            <Button label="Cancel" onClick={endRaising} />
         </Box>;
         return (
             <Box direction="row" gap="xsmall">
@@ -163,4 +163,38 @@ function GameActions () {
 
 }
 
-export default GameActions;
+export default function GameActionsWithKeyboard () {
+    const canCheck = useSelector(selectCanDoAction(PlayerActions.CHECK));
+    const canCall = useSelector(selectCanDoAction(PlayerActions.CALL));
+    const canCover = useSelector(selectCanDoAction(PlayerActions.COVER));
+    const canFold = useSelector(selectCanDoAction(PlayerActions.FOLD));
+    const canReveal = useSelector(selectCanDoAction(PlayerActions.REVEAL));
+
+    const dispatch = useDispatch();
+    function handleKeyPress (e) {
+        switch (e.key.toUpperCase()) {
+            case 'K':
+                if (canCheck) dispatch(check());
+                break;
+            case 'F':
+                if (canFold) dispatch(fold());
+                break;
+            case 'C':
+                if (canCall) dispatch(call());
+                break;
+            case 'X':
+                if (canCover) dispatch(cover());
+                break;
+            case 'S':
+                if (canReveal) dispatch(reveal());
+                break;
+            default:
+                break;
+        }
+        console.log(e);
+    }
+
+    return (<Keyboard target="document" onKeyDown={handleKeyPress}>
+        <GameActions />
+    </Keyboard>)
+}
