@@ -94,7 +94,7 @@ function Game() {
                 >
                     {players.map(({ name, ...player }, position) => (
                         <Box key={name} gridArea={playerAreas[position]}>
-                            <Player name={name} {...player}></Player>
+                            <Player name={name} position={position} {...player}></Player>
                         </Box>
                     ))}
 

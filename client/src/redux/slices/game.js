@@ -14,6 +14,7 @@ export const {
 } = gameSlice.actions;
 
 export const start = () => sendServerActionWithLeaverCount('UserClickedStart');
+export const proceed = () => sendServerActionWithLeaverCount('UserClickedContinue');
 export const open = () => sendServerActionWithLeaverCount('UserClickedOpen');
 export const leave = () => sendServerAction('UserClickedLeave');
 
@@ -84,6 +85,8 @@ export const selectAnte = (state) => state.game.Ante;
 
 export const selectMaxRaise = (state) => state.game.MyMaxRaise;
 
+export const selectCommunityCard = (state) => state.game.CommunityCard;
+
 export const PlayerActions = Object.freeze({
     START: 'Start',
     CHECK: 'Check',
@@ -91,7 +94,8 @@ export const PlayerActions = Object.freeze({
     COVER: 'Cover',
     RAISE: 'Raise',
     FOLD: 'Fold',
-    REVEAL: 'Reveal'
+    REVEAL: 'Reveal',
+    CONINUE: 'Continue'
 });
 
 export const GameModes = Object.freeze({
