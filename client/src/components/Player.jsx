@@ -51,7 +51,7 @@ function Player ({ name, chips, cards, isDealer, isAdmin, isCurrentPlayer, isMe,
 
     return (
         <Box pad="small" fill>
-            <Stack fill>
+            <Stack fill interactiveChild="first">
                 <Box pad="xsmall" round={true} fill elevation={isCurrentPlayer ? 'medium': 'small'} border={isCurrentPlayer ? { color: 'accent-1', size: 'medium' } : { color: 'white', size: 'medium' }}>
                     <Box flex="grow" direction="row" justify="between">
                         <Box direction="row" gap="xsmall">
@@ -86,7 +86,7 @@ function Player ({ name, chips, cards, isDealer, isAdmin, isCurrentPlayer, isMe,
                     <CardRow name="TABLE" showRowName={isMe} cards={cards.slice(2, 6)} />
                 </Box>
 
-                {(hasFolded || isOutOfThisGame) ? <Box round={true} fill background={{ color: "white", opacity: "0.6"}} style={{ pointerEvents: 'none'}}></Box> : null}
+                {(hasFolded || isOutOfThisGame) ? <Box round={true} fill background={{ color: "white", opacity: "0.6"}}></Box> : null}
             </Stack>
 
         </Box>
