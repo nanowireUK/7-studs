@@ -65,7 +65,7 @@ export const join = (gameId, username) => (dispatch, getState, connection) => {
             console.log('User clicked join')
             localStorage.setItem('gameId', gameId);
             localStorage.setItem('username', username);
-            setUsername(username);
+            dispatch(setUsername(username));
         })
         .catch(console.log);
 };
@@ -78,7 +78,7 @@ export const rejoin = (gameId, username, rejoinCode) => (dispatch, getState, con
             localStorage.setItem('gameId', gameId);
             localStorage.setItem('username', username);
             localStorage.setItem('rejoinCode', rejoinCode);
-            setUsername(username);
+            dispatch(setUsername(username));
         })
         .catch(console.log);
 };
