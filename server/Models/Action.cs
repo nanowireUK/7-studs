@@ -89,6 +89,7 @@ namespace SevenStuds.Models
                 G.Participants[PlayerIndex].IsLockedOutFollowingReplay = false;
                 // Can continue processing the command now 
             }
+            G.RoundNumberIfCardsJustDealt = -1; // The new action will clear any requirement for the client to animate the dealing of the cards
         }
         protected Game G { get; set; }  
         public ActionEnum ActionType { get; set; }

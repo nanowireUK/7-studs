@@ -25,6 +25,7 @@ namespace SevenStuds.Models
         public int IndexOfParticipantDealingThisHand { get; set; } // Rotates from player 0
         public int IndexOfParticipantToTakeNextAction { get; set; } // Determined by cards showing (at start of round) then on player order
         public int MaxRaiseForParticipantToTakeNextAction { get; set; } // So that client doesn't need to work this out
+        public int RoundNumberIfCardsJustDealt { get; set; } // So that client know it can animate the deal
         public int _CardsDealtIncludingCurrent { get; set; } // 0 = hand not started
         public int _IndexOfLastPlayerToRaise { get; set; } 
         public int _IndexOfLastPlayerToStartChecking { get; set; } 
@@ -228,6 +229,7 @@ namespace SevenStuds.Models
             _IndexOfLastPlayerToStartChecking = -1; 
             _CheckIsAvailable = true;
             _CardsDealtIncludingCurrent = MaxCardsDealtSoFar();
+            RoundNumberIfCardsJustDealt = _CardsDealtIncludingCurrent; // Will be cleared as soon as next action comes in
          }
         public void SetActionAvailability(ActionEnum ac, AvailabilityEnum av) 
         {
@@ -346,6 +348,7 @@ namespace SevenStuds.Models
         public void DealNextRound()
         {
             _CardsDealtIncludingCurrent += 1;
+            RoundNumberIfCardsJustDealt = _CardsDealtIncludingCurrent; // Will be cleared as soon as next action comes in
             CommunityCard = null;
             if ( _CardsDealtIncludingCurrent == 7 && CountOfPlayersLeftInHand() > CardPack.Count ) {
                 // Edge case: we don't have enough cards to deal to all players (can only happen in round 7 if nearly everyone stayed in up to that point)
