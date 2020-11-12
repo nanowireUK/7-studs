@@ -21,6 +21,7 @@ namespace SevenStuds.Models
         public string NextAction { get; set; }
         public List<string> HandCommentary { get; set; }
         public List<List<string>> LastHandResult { get; set; }
+        public List<List<PotResult>> MostRecentHandResult { get; set; } // New way of doing this 
         public int HandsPlayedIncludingCurrent { get; set; } // 0 = game not yet started
         public int IndexOfParticipantDealingThisHand { get; set; } // Rotates from player 0
         public int IndexOfParticipantToTakeNextAction { get; set; } // Determined by cards showing (at start of round) then on player order
@@ -67,6 +68,8 @@ namespace SevenStuds.Models
             CardPack = new Deck(true);
             HandCommentary = new List<string>();
             LastHandResult = new List<List<string>>();
+            MostRecentHandResult = new List<List<PotResult>>();
+
             _ConnectionToParticipantMap = new Dictionary<string, Participant>(); 
             _ActionAvailability = new Dictionary<ActionEnum, ActionAvailability>();
             ActionAvailabilityList = new List<ActionAvailability>();
@@ -727,10 +730,12 @@ namespace SevenStuds.Models
                         p.GainOrLossInLastHand += ( share - inPot );
                         p.WonSomethingInCurrentHand = true;
                         if ( numberOfPotentialWinners == 1 ) {
-                            AddCommentaryAndResultDetail(pot, p.Name + " won " + ( share - inPot ) + " as everyone else folded");
+                            AddCommentaryAndResultDetail(pot, p.Name, ( share - inPot ), PotResultReasonEnum.NoOneElseLeft, p._FullHandDescription, p.Hand,
+                                p.Name + " won " + ( share - inPot ) + " as everyone else folded");
                         }
                         else {
-                            AddCommentaryAndResultDetail(pot, p.Name + " won " + ( share - inPot ) + " with " + p._FullHandDescription);
+                            AddCommentaryAndResultDetail(pot, p.Name, ( share - inPot ), PotResultReasonEnum.ViaHandComparisons, p._FullHandDescription, p.Hand,
+                                p.Name + " won " + ( share - inPot ) + " with " + p._FullHandDescription);
                         }
                     }
                 }
@@ -741,13 +746,16 @@ namespace SevenStuds.Models
                         int inPot = ChipsInSpecifiedPotForSpecifiedPlayer(pot, player);
                         p.GainOrLossInLastHand -= inPot;
                         if ( inPot == 0 ) {
-                            AddCommentaryAndResultDetail(pot, p.Name + " had nothing in this pot");
+                            AddCommentaryAndResultDetail(pot, p.Name, 0, PotResultReasonEnum.PlayerWasNotInThisPot, p._FullHandDescription, p.Hand,
+                                p.Name + " had nothing in this pot");
                         }
                         else if ( p.HasFolded ) {
-                            AddCommentaryAndResultDetail(pot, p.Name + " lost " + ( inPot ) + " after folding");
+                            AddCommentaryAndResultDetail(pot, p.Name, - inPot, PotResultReasonEnum.PlayerFolded, p._FullHandDescription, p.Hand,
+                                p.Name + " lost " + ( inPot ) + " after folding");
                         }
                         else {
-                            AddCommentaryAndResultDetail(pot, p.Name + " lost " + ( inPot ) + " with " + p._FullHandDescription);
+                            AddCommentaryAndResultDetail(pot, p.Name, - inPot, PotResultReasonEnum.ViaHandComparisons, p._FullHandDescription, p.Hand,
+                                p.Name + " lost " + ( inPot ) + " with " + p._FullHandDescription);
                         }
                     }
                 }                
@@ -807,18 +815,21 @@ namespace SevenStuds.Models
         public void ClearCommentary (){
             this.HandCommentary.Clear();
         }
-        public void AddCommentaryAndResultDetail (int pot, string c){
+        public void AddCommentaryAndResultDetail (int pot, string player, int gain, PotResultReasonEnum reason, string handDesc, List<Card> hand, string c){
             this.AddCommentary("Pot "+pot+": "+c);
-            this.AddResultDetail(pot, c);
+            this.AddResultDetail(pot, player, gain, reason, handDesc, hand, c);
         }
-        public void AddResultDetail (int pot, string c){
+        public void AddResultDetail (int pot, string player, int gain, PotResultReasonEnum reason, string handDesc, List<Card> hand, string c){
             if ( this.LastHandResult.Count < ( pot + 1 ) ) {
                 this.LastHandResult.Add(new List<string>());
+                this.MostRecentHandResult.Add(new List<PotResult>());
             }
             this.LastHandResult[pot].Add(c);
+            this.MostRecentHandResult[pot].Add(new PotResult(player, gain, reason, handDesc, hand));
         }
         public void ClearResultDetails () {
             this.LastHandResult = new List<List<string>>();
+            this.MostRecentHandResult = new List<List<PotResult>>();
         }
         public string AsJson()
         {

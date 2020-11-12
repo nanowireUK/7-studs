@@ -77,6 +77,17 @@ namespace SevenStuds.Models
         AdministratorOnly = 4,
         AnyUnrevealedRegisteredPlayer = 5
     }
+
+    /// <summary>
+    /// PotResultReasonEnum: shows why a player won or lost a given pot
+    /// </summary>
+    public enum PotResultReasonEnum : int
+    {
+        PlayerFolded = 0,
+        ViaHandComparisons = 1,
+        NoOneElseLeft = 2,
+        PlayerWasNotInThisPot = 3
+    }
    
     /// <summary>
     /// Enumeration values are used to calculate hand rank keys

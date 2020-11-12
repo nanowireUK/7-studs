@@ -33,6 +33,7 @@ namespace SevenStuds.Models
         public List<string> AvailableActions { get; set; } // A player-centric view of the actions available to them
         public List<List<int>> Pots { get; set; } // pot(s) built up in the current hand (over multiple rounds of betting)
         public List<List<string>> LastHandResult { get; set; }
+        public List<List<PotResult>> MostRecentHandResult { get; set; } 
         public List<PlayerCentricParticipantView> PlayerViewOfParticipants { get; set; } // ordered list of participants (order represents order around the table)
         public Card CommunityCard { get; set; }
         public List<Boolean> CardPositionIsVisible { get; set; }
@@ -46,6 +47,7 @@ namespace SevenStuds.Models
             MyHandDescription = g.Participants[playerIndex]._FullHandDescription;                    
             //HandCommentary = new List<string>(g.HandCommentary); // Creates a separate copy (not sure it actually needs to be a clone here, but safer anyway)
             LastHandResult = new List<List<string>>(g.LastHandResult); // This definitely needs to be a copy
+            MostRecentHandResult = new List<List<PotResult>>(g.MostRecentHandResult); // This definitely needs to be a copy
             MyRejoinCode = g.Participants[playerIndex].RejoinCode;
             MyMaxRaise = g.IndexOfParticipantToTakeNextAction == playerIndex ? g.MaxRaiseForParticipantToTakeNextAction : 0;
             GameMode = g.GameMode.ToString();
