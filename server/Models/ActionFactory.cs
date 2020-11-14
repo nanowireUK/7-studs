@@ -33,7 +33,9 @@ namespace SevenStuds.Models
                 case ActionEnum.Start:  
                     return new ActionStart(connectionId, actionType, gameId, user, leavers);   
                 case ActionEnum.Continue:  
-                    return new ActionContinue(connectionId, actionType, gameId, user, leavers);                     
+                    return new ActionContinue(connectionId, actionType, gameId, user, leavers);     
+                case ActionEnum.Spectate:  
+                    return new ActionSpectate(connectionId, actionType, gameId, user, leavers);                  
                 case ActionEnum.Reveal:  
                     return new ActionReveal(connectionId, actionType, gameId, user, leavers);                         
                 case ActionEnum.Check:  

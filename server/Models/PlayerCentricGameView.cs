@@ -38,21 +38,16 @@ namespace SevenStuds.Models
         public Card CommunityCard { get; set; }
         public List<Boolean> CardPositionIsVisible { get; set; }
         public LobbyData LobbyData { get; set; }
-        public PlayerCentricGameView(Game g, int playerIndex) {
+        public PlayerCentricGameView(Game g, int requestedPlayerIndex, int spectatorIndex) {
             // Build up this player's view of the game
+            // (note that if player index = -1 it means we're building a view for a spectator and the dealer will be the first player shown)
+            int playerIndex = requestedPlayerIndex;
+            bool isSpectatorView = ( playerIndex == -1 );
+            if ( isSpectatorView ) {
+                playerIndex = g.IndexOfParticipantDealingThisHand;
+            }
+            // Set the game level items that don't matter whether the player is a spectator or a player
             StatusMessage = g.StatusMessage;
-            //LastEvent = g.LastEvent;
-            //NextAction = g.NextAction;
-            MyHandSummary = g.Participants[playerIndex]._HandSummary;
-            MyHandDescription = g.Participants[playerIndex]._FullHandDescription;                    
-            //HandCommentary = new List<string>(g.HandCommentary); // Creates a separate copy (not sure it actually needs to be a clone here, but safer anyway)
-            LastHandResult = new List<List<string>>(g.LastHandResult); // This definitely needs to be a copy
-            MostRecentHandResult = new List<List<PotResult>>(g.MostRecentHandResult); // This definitely needs to be a copy
-            MyRejoinCode = g.Participants[playerIndex].RejoinCode;
-            MyMaxRaise = g.IndexOfParticipantToTakeNextAction == playerIndex ? g.MaxRaiseForParticipantToTakeNextAction : 0;
-            GameMode = g.GameMode.ToString();
-            IsMyTurn = ( playerIndex == g.IndexOfParticipantToTakeNextAction );
-            IAmDealer = ( playerIndex == g.IndexOfParticipantDealingThisHand ) ;
             InitialChipQuantity = g.InitialChipQuantity;
             Ante = g.Ante;
             GameId = g.GameId;
@@ -62,7 +57,29 @@ namespace SevenStuds.Models
             CommunityCard = g.CommunityCard;
             CardPositionIsVisible = g.CardPositionIsVisible;
             LobbyData = g.LobbyData;
-
+            LastHandResult = new List<List<string>>(g.LastHandResult); // This definitely needs to be a copy
+            MostRecentHandResult = new List<List<PotResult>>(g.MostRecentHandResult); // This definitely needs to be a copy
+            GameMode = g.GameMode.ToString();
+            if ( isSpectatorView ) {
+                // Show neutral values
+                MyHandSummary = "";
+                MyHandDescription = "";                    
+                MyRejoinCode = g.Spectators[spectatorIndex].RejoinCode;
+                MyMaxRaise = 0;
+                IsMyTurn = false;
+                IAmDealer = false;
+                IAmAdministrator = false;
+            }
+            else {
+                // Show values from active player's perspective
+                MyHandSummary = g.Participants[playerIndex]._HandSummary;
+                MyHandDescription = g.Participants[playerIndex]._FullHandDescription;                    
+                MyRejoinCode = g.Participants[playerIndex].RejoinCode;
+                MyMaxRaise = g.IndexOfParticipantToTakeNextAction == playerIndex ? g.MaxRaiseForParticipantToTakeNextAction : 0;
+                IsMyTurn = ( playerIndex == g.IndexOfParticipantToTakeNextAction );
+                IAmDealer = ( playerIndex == g.IndexOfParticipantDealingThisHand ) ;
+                IAmAdministrator = ( g.GetIndexOfAdministrator() == playerIndex ); 
+            }
             // Reproduce the pots (the pots themselves stay in the same order, but the current player's contributions becomes the first slot in the inner array)
             if ( g.Pots == null ) {
                 this.Pots = null;
@@ -79,30 +96,32 @@ namespace SevenStuds.Models
                     }
                 }  
             }              
-            // Determine the index of the administrator
-            IAmAdministrator = ( g.GetIndexOfAdministrator() == playerIndex ); 
             // Add a list of participants, with data relevant to this player
             PlayerViewOfParticipants = new List<PlayerCentricParticipantView>();
             for ( int i = 0; i < g.Participants.Count; i++ ) {
-                PlayerViewOfParticipants.Add(new PlayerCentricParticipantView(g, playerIndex, i));
+                PlayerViewOfParticipants.Add(new PlayerCentricParticipantView(g, playerIndex, i, isSpectatorView));
             }
-            // Rotate the list so that current player is first person in the list
+            // Rotate the list so that current player (or dealer) is first person in the list
             for ( int i = 0; i < playerIndex; i++) {
                 PlayerViewOfParticipants.Add(PlayerViewOfParticipants[0]); // Copy first element to end of list
                 PlayerViewOfParticipants.RemoveAt(0); // Remove the first element
             }
             // Convert the game-level permissions into a player view of their permissions
             AvailableActions = new List<string>();
-            foreach ( ActionAvailability aa in g.ActionAvailabilityList )
-            {
-                if ( aa.Availability == AvailabilityEnum.AnyRegisteredPlayer
-                    || ( aa.Availability == AvailabilityEnum.ActivePlayerOnly & IsMyTurn )
-                    || ( aa.Availability == AvailabilityEnum.AdministratorOnly & IAmAdministrator )
-                    || ( aa.Availability == AvailabilityEnum.AnyUnrevealedRegisteredPlayer & g.Participants[playerIndex].IsSharingHandDetails == false )
-                ) {
-                    AvailableActions.Add(aa.Action.ToString());
+            if ( isSpectatorView ) {
+                // No actions available to spectators while game is in progress (which is when this view can be invoked)
+            }
+            else {
+                foreach ( ActionAvailability aa in g.ActionAvailabilityList )
+                {
+                    if ( aa.Availability == AvailabilityEnum.AnyRegisteredPlayer
+                        || ( aa.Availability == AvailabilityEnum.ActivePlayerOnly & IsMyTurn )
+                        || ( aa.Availability == AvailabilityEnum.AdministratorOnly & IAmAdministrator )
+                        || ( aa.Availability == AvailabilityEnum.AnyUnrevealedRegisteredPlayer & g.Participants[playerIndex].IsSharingHandDetails == false )
+                    ) {
+                        AvailableActions.Add(aa.Action.ToString());
+                    }
                 }
-
             }
         }
         public string AsJson()

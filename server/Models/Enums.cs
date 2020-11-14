@@ -27,6 +27,7 @@ namespace SevenStuds.Models
         Start = 4, // Starts the first or subsequent hand for an open or started game
         Continue = 5,
         Reveal = 6, // only allowed between hands (i.e. game is started and a hand has just completed)
+        Spectate = 7,
         // Hand-level actions, available only to one player at any one time
         Check = 10,
         Call = 11,

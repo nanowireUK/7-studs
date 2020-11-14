@@ -12,6 +12,7 @@ namespace SevenStuds.Hubs
 
         public async Task UserClickedOpen(string gameId, string user, string leavers) { await UserClickedActionButton(ActionEnum.Open, gameId,  user, leavers,  ""); }
         public async Task UserClickedJoin(string gameId, string user) { await UserClickedActionButton(ActionEnum.Join, gameId,  user, "-1",  ""); }
+        public async Task UserClickedSpectate(string gameId, string user) { await UserClickedActionButton(ActionEnum.Spectate, gameId,  user, "-1",  ""); }
         public async Task UserClickedRejoin(string gameId, string user, string rejoinCode) { await UserClickedActionButton(ActionEnum.Rejoin, gameId,  user, "-1",  rejoinCode); }
         public async Task UserClickedLeave(string gameId, string user) { await UserClickedActionButton(ActionEnum.Leave, gameId,  user, "-1",  ""); }
         public async Task UserClickedStart(string gameId, string user, string leavers) { await UserClickedActionButton(ActionEnum.Start, gameId,  user, leavers,  ""); }
@@ -43,8 +44,20 @@ namespace SevenStuds.Hubs
                     string conn = conns[i];
                     if ( g.GetParticipantFromConnection(conn) == null ) {
                         g.LinkConnectionToParticipant(conn, p);
-                        //await Groups.AddToGroupAsync(conn, g.GameLevelSignalRGroupName);
                         await Groups.AddToGroupAsync(conn, p.ParticipantLevelSignalRGroupName);
+                    }
+                }
+            }
+
+            // New connections may have been linked to spectators, so link those connections to the relevant game and player groups in SignalR
+            foreach ( Spectator p in g.Spectators ) {
+                List<string> conns = p.GetConnectionIds();
+                for ( int i = 0; i < conns.Count; i++ ) {
+                    // If the game has not yet added this connection, then link it
+                    string conn = conns[i];
+                    if ( g.GetSpectatorFromConnection(conn) == null ) {
+                        g.LinkConnectionToSpectator(conn, p);
+                        await Groups.AddToGroupAsync(conn, p.SpectatorLevelSignalRGroupName);
                     }
                 }
             }
@@ -82,25 +95,38 @@ namespace SevenStuds.Hubs
             {
                 case ActionResponseAudienceEnum.Caller:
                     if ( a.ResponseType == ActionResponseTypeEnum.PlayerCentricGameState ) {
-                        resultAsJson = new PlayerCentricGameView(g, a.PlayerIndex).AsJson();
+                        resultAsJson = new PlayerCentricGameView(g, a.PlayerIndex, -1).AsJson();
                     }
                     await Clients.Caller.SendAsync(targetMethod, resultAsJson);
                     break;
                 case ActionResponseAudienceEnum.CurrentPlayer:
                     if ( a.ResponseType == ActionResponseTypeEnum.PlayerCentricGameState ) {
-                        resultAsJson = new PlayerCentricGameView(g, a.PlayerIndex).AsJson();
+                        resultAsJson = new PlayerCentricGameView(g, a.PlayerIndex, -1).AsJson();
                     }
                     await Clients.Group(g.Participants[a.PlayerIndex].ParticipantLevelSignalRGroupName).SendAsync(targetMethod, resultAsJson);
                     break;
                 case ActionResponseAudienceEnum.AllPlayers:
+                    // Send personalised views to all players sat around the table
                     for ( int i = 0; i < g.Participants.Count; i++ ) {
                         if ( a.ResponseType == ActionResponseTypeEnum.PlayerCentricGameState
                             || a.ResponseType == ActionResponseTypeEnum.ConfirmToPlayerLeavingAndUpdateRemainingPlayers ) {
                             // Send each player (including any leaving player) a view of the game from their own perspective
-                            resultAsJson = new PlayerCentricGameView(g, i).AsJson();
+                            resultAsJson = new PlayerCentricGameView(g, i, -1).AsJson();
                         }
                         await Clients.Group(g.Participants[i].ParticipantLevelSignalRGroupName).SendAsync(targetMethod, resultAsJson);
                     }
+                    // For any spectators, send a view from the dealer's perspective but with all face-down cards obscured
+                    // Note that we have to build a view for each spectator as each spectator has their own rejoin code (this is a bit messy)
+                    if ( g.Spectators.Count > 0) {
+                        for ( int i = 0; i < g.Spectators.Count; i++ ) {
+                            if ( a.ResponseType == ActionResponseTypeEnum.PlayerCentricGameState
+                                || a.ResponseType == ActionResponseTypeEnum.ConfirmToPlayerLeavingAndUpdateRemainingPlayers ) {
+                                // Send each player (including any leaving player) a view of the game from their own perspective
+                                resultAsJson = new PlayerCentricGameView(g, -1, i).AsJson();
+                            }
+                            await Clients.Group(g.Participants[i].ParticipantLevelSignalRGroupName).SendAsync(targetMethod, resultAsJson);
+                        }
+                    } 
                     if ( a.ResponseType == ActionResponseTypeEnum.ConfirmToPlayerLeavingAndUpdateRemainingPlayers ) {
                         // Extra bit to notify all of the leaving player's connections that they have left
                         string leavingConfirmationAsJson = "{ \"ok\" }";

@@ -10,11 +10,13 @@ namespace SevenStuds.Models
         public List<string> GameStatistics { get; set; } 
         public List<LobbyDataCurrentGame> CurrentGameStandings { get; set; } // Will show players in order from most successful to least successful in this game
         public List<string> ConnectedPlayers { get; set; } 
+        public List<string> ConnectedSpectators { get; set; } 
         public List<string> PreviousGameResults { get; set; } 
         public LobbyData(Game g) {
             this.AddGameStatistics(g);
             this.AddGameResult(g);
             this.AddConnectedPlayers(g);
+            this.AddSpectators(g);
             this.AddPreviousGameResults(g);
         }
         private void AddGameResult(Game g) {
@@ -37,6 +39,13 @@ namespace SevenStuds.Models
                 }
             }
         }  
+        private void AddSpectators(Game g) {
+            ConnectedSpectators = new List<string>();
+            // Add all players who are either in the game already or who have joined the lobby
+            foreach ( Spectator p in g.Spectators ) {
+                ConnectedSpectators.Add(p.Name);
+            }
+        }         
         private void AddPreviousGameResults(Game g) {
             PreviousGameResults =  (List<string>) ServerState.RoomHistory[g.GameId];
         }      

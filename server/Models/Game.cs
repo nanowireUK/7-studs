@@ -40,9 +40,10 @@ namespace SevenStuds.Models
         protected int ActionNumber { get; set; }
         public List<BankruptcyEvent> BankruptcyEventHistoryForGame { get; set; }
         public Dictionary<string, Participant> _ConnectionToParticipantMap { get; set; } 
+        public Dictionary<string, Spectator> _ConnectionToSpectatorMap { get; set; } 
         public List<List<int>> Pots { get; set; } // pot(s) built up in the current hand (over multiple rounds of betting)
         public List<Participant> Participants { get; set; } // ordered list of participants (order represents order around the table)
-        //public List<Event> Events { get; set; } // ordered list of events associated with the game
+        public List<Spectator> Spectators { get; set; } // ordered list of spectators (no representation around the table)
         private Dictionary<ActionEnum, ActionAvailability> _ActionAvailability { get; set; } // Can't be public as JSON serialiser can't handle it
         public List<ActionAvailability> ActionAvailabilityList { get; set; } // This list contains references to the same objects as in the Dictionary       
         public List<Boolean> CardPositionIsVisible { get; } = new List<Boolean>{false, false, true, true, true, true, false};
@@ -62,6 +63,7 @@ namespace SevenStuds.Models
             LastSuccessfulAction = DateTimeOffset.Now; // This will be updated as the game progresses but need to set a baseline here
             SetTestContext(testContext);
             Participants = new List<Participant>(); // start with empty list of participants
+            Spectators = new List<Spectator>(); // start with empty list of spectators
             InitialChipQuantity = 1000;
             Ante = 1;
 
@@ -92,11 +94,28 @@ namespace SevenStuds.Models
         {
             _ConnectionToParticipantMap.Add(connectionId, p);
         }
+        public void LinkConnectionToSpectator(string connectionId, Spectator p) 
+        {
+            _ConnectionToSpectatorMap.Add(connectionId, p);
+        }
 
         public Participant GetParticipantFromConnection(string connectionId) 
         {
             Participant p;
             if ( _ConnectionToParticipantMap.TryGetValue(connectionId, out p) )
+            {
+                return p;
+            }
+            else 
+            {
+                return null;
+            }
+        }
+
+        public Spectator GetSpectatorFromConnection(string connectionId) 
+        {
+            Spectator p;
+            if ( _ConnectionToSpectatorMap.TryGetValue(connectionId, out p) )
             {
                 return p;
             }
@@ -264,6 +283,8 @@ namespace SevenStuds.Models
             SetActionAvailability(ActionEnum.Rejoin, AvailabilityEnum.AnyRegisteredPlayer); // Open up REJOIN to anyone who previously joined
             SetActionAvailability(ActionEnum.Leave, AvailabilityEnum.AnyRegisteredPlayer); // Open up LEAVE to anyone who has joined
             SetActionAvailability(ActionEnum.AdHocQuery, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who previously joined
+            SetActionAvailability(ActionEnum.Spectate, AvailabilityEnum.AnyUnregisteredPlayer); // Open up SPECTATE at any time to anyone who has not yet joined
+
 
             // Set any commands that are only available when we are not on the public server (i.e. test features)
             if ( ! ServerState.IsRunningOnPublicServer() ) {
@@ -275,7 +296,8 @@ namespace SevenStuds.Models
                       
             // Set different actions based on current game mode
             if ( GameMode == GameModeEnum.LobbyOpen ) {
-                SetActionAvailability(ActionEnum.Join, AvailabilityEnum.AnyUnregisteredPlayer); // Open up JOIN to anyone who has not yet joined
+                SetActionAvailability(ActionEnum.Join, AvailabilityEnum.AnyUnregisteredPlayer); // Open up JOIN to anyone who has not yet joined (including spectators)
+                SetActionAvailability(ActionEnum.Spectate, AvailabilityEnum.AnyUnregisteredPlayer); // Open up SPECTATE to anyone who has not yet joined
                 SetActionAvailability(ActionEnum.Open, AvailabilityEnum.NotAvailable); // OPEN is no longer possible as lobby is already open
                 SetActionAvailability(ActionEnum.Start, ( this.Participants.Count >= 2 ) ? AvailabilityEnum.AdministratorOnly : AvailabilityEnum.NotAvailable ); 
                 SetActionAvailability(ActionEnum.Continue, 

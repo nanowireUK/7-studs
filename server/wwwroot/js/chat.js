@@ -109,6 +109,18 @@ document.getElementById("actionJoin").addEventListener("click",
     }
 );
 
+// --------------- SPECTATE
+
+document.getElementById("actionSpectate").addEventListener("click",
+    function (event) {
+        var gameId = getGameId();
+        var user = getUser();
+        var leaverCount = getLeaverCount();
+        connection.invoke("UserClickedSpectate", gameId, user).catch(logError);
+        event.preventDefault();
+    }
+);
+
 // --------------- LEAVE
 
 document.getElementById("actionLeave").addEventListener("click",
@@ -146,7 +158,7 @@ document.getElementById("actionStart").addEventListener("click",
     }
 );
 
-// --------------- START
+// --------------- CONTINUE
 
 document.getElementById("actionContinue").addEventListener("click",
     function (event) {

@@ -9,7 +9,7 @@ namespace SevenStuds.Models
     {
         /// <summary>
         /// A view of a player that that is suitable for passing to the client as a deserialisable JSON string
-        /// and which does not give
+        /// and which does not give any details of other players' hands
         /// </summary>
         /// <remarks>A player-specific view of the game state that is suitable for passing to the client as a deserialisable JSON string</remarks>
   
@@ -29,13 +29,13 @@ namespace SevenStuds.Models
         public int HandsWon { get; set; }
         public List<string> Cards { get; set; }
 
-        public PlayerCentricParticipantView(Game g, int thisPlayersIndex, int observedPlayersIndex ) {
+        public PlayerCentricParticipantView(Game g, int thisPlayersIndex, int observedPlayersIndex, bool isSpectatorView ) {
             Participant viewingPlayer = g.Participants[thisPlayersIndex];
             Participant observedPlayer = g.Participants[observedPlayersIndex];
             // Build up this viewing player's view of the observed player (which might be the player themselves)
             Name = observedPlayer.Name;
             UncommittedChips  = observedPlayer.UncommittedChips;
-            IsMe = ( observedPlayersIndex == thisPlayersIndex );
+            IsMe = ( isSpectatorView == false && observedPlayersIndex == thisPlayersIndex );
             IsCurrentPlayer = ( observedPlayersIndex == g.IndexOfParticipantToTakeNextAction );
             IsDealer = ( observedPlayersIndex == g.IndexOfParticipantDealingThisHand ) ;
             IsAdmin  = ( observedPlayersIndex == g.GetIndexOfAdministrator() );   
@@ -50,7 +50,7 @@ namespace SevenStuds.Models
             // Add a list of this player's cards, substituting with '?' if the player receiving this data is not allowed to see this card
             Cards = new List<string>();
             for ( int i = 0; i < observedPlayer.Hand.Count; i++ ) {
-                if ( observedPlayer.Name != viewingPlayer.Name
+                if ( ( observedPlayer.Name != viewingPlayer.Name || isSpectatorView == true ) 
                     && g.CardPositionIsVisible[i] == false 
                     && observedPlayer.IsSharingHandDetails == false
                     ) {
