@@ -15,7 +15,7 @@ function CardRow ({ cards, invisibleToOthers = false, name, showRowName }) {
     const dimensions = useContainerDimensions(ref);
 
     return (
-        <Box margin="xsmall" fill="vertical" border={{ style: "dashed"}} pad="xsmall" round="xsmall" direction="row" justify="between">
+        <Box margin="xsmall" fill="vertical" border={{ style: "dashed"}} pad="xsmall" round="xsmall" direction="row" justify="between" height={{ min: '50px' }}>
             <Box ref={ref} direction="row" gap="xsmall" fill="vertical">
                 {cards.map((card, index) => {
                     const [value, suit] = [...card];
@@ -50,7 +50,7 @@ function Player ({ name, chips, cards, isDealer, isAdmin, isCurrentPlayer, isMe,
     if (isOutOfThisGame) status = '(Out)';
 
     return (
-        <Box pad="small" fill>
+        <Box pad="small" fill overflow="auto">
             <Stack fill interactiveChild="first">
                 <Box pad="xsmall" round={true} fill elevation={isCurrentPlayer ? 'medium': 'small'} border={isCurrentPlayer ? { color: 'accent-1', size: 'medium' } : { color: 'white', size: 'medium' }}>
                     <Box flex="grow" direction="row" justify="between">
