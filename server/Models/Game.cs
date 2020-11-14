@@ -25,6 +25,7 @@ namespace SevenStuds.Models
         public int HandsPlayedIncludingCurrent { get; set; } // 0 = game not yet started
         public int IndexOfParticipantDealingThisHand { get; set; } // Rotates from player 0
         public int IndexOfParticipantToTakeNextAction { get; set; } // Determined by cards showing (at start of round) then on player order
+        public int CallAmountForParticipantToTakeNextAction { get; set; } // So that client doesn't need to work this out
         public int MaxRaiseForParticipantToTakeNextAction { get; set; } // So that client doesn't need to work this out
         public int RoundNumberIfCardsJustDealt { get; set; } // So that client know it can animate the deal
         public int _CardsDealtIncludingCurrent { get; set; } // 0 = hand not started
@@ -331,6 +332,7 @@ namespace SevenStuds.Models
                 // Decide whether player can call, raise or cover at this stage
                 // (depends on their uncommitted funds, how much they need to match the pot and other people's funds)
                 int catchupAmount = MaxChipsInAllPotsForAnyPlayer() - ChipsInAllPotsForSpecifiedPlayer(playerIndex);
+                CallAmountForParticipantToTakeNextAction = catchupAmount;
                 MaxRaiseForParticipantToTakeNextAction = MaxRaiseInContextOfOtherPlayersFunds(playerIndex, catchupAmount);
 
                 // To raise they need more than the matching amount and at least one person has to be able to call or cover following the raise

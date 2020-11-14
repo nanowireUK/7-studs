@@ -19,6 +19,7 @@ namespace SevenStuds.Models
         public string MyHandDescription { get; set; }
         //public List<string> HandCommentary { get; set; }        
         public string MyRejoinCode { get; set; }
+        public int MyCallAmount { get; set; }
         public int MyMaxRaise { get; set; }
         public string GameMode { get; set; }
         public Boolean IsMyTurn { get; set; }
@@ -65,6 +66,7 @@ namespace SevenStuds.Models
                 MyHandSummary = "";
                 MyHandDescription = "";                    
                 MyRejoinCode = g.Spectators[spectatorIndex].RejoinCode;
+                MyCallAmount = 0;
                 MyMaxRaise = 0;
                 IsMyTurn = false;
                 IAmDealer = false;
@@ -75,6 +77,7 @@ namespace SevenStuds.Models
                 MyHandSummary = g.Participants[playerIndex]._HandSummary;
                 MyHandDescription = g.Participants[playerIndex]._FullHandDescription;                    
                 MyRejoinCode = g.Participants[playerIndex].RejoinCode;
+                MyCallAmount = g.IndexOfParticipantToTakeNextAction == playerIndex ? g.CallAmountForParticipantToTakeNextAction : 0;
                 MyMaxRaise = g.IndexOfParticipantToTakeNextAction == playerIndex ? g.MaxRaiseForParticipantToTakeNextAction : 0;
                 IsMyTurn = ( playerIndex == g.IndexOfParticipantToTakeNextAction );
                 IAmDealer = ( playerIndex == g.IndexOfParticipantDealingThisHand ) ;
