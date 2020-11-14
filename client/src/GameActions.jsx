@@ -1,6 +1,6 @@
 import React, { useState, useContext} from 'react';
 
-import { Box, Button, Keyboard, ResponsiveContext } from 'grommet';
+import { Box, Button, Keyboard, ResponsiveContext, Text } from 'grommet';
 import { useSelector, useDispatch } from 'react-redux';
 
 import RaiseSlider from './components/RaiseSlider';
@@ -8,7 +8,7 @@ import RaiseSlider from './components/RaiseSlider';
 import {
     selectCanDoAction, selectIsAdmin,
     selectHandInProgress, selectHandCompleted, selectHandsBeingRevealed,
-    selectAnte, selectMaxRaise,
+    selectAnte, selectMaxRaise, selectCallAmount,
     PlayerActions, raise, proceed, check, fold, cover, call, reveal, open
 } from './redux/slices/game';
 
@@ -39,7 +39,7 @@ function Check () {
     return <Button primary label="Check [K]" onClick={clickCheck} disabled={!canCheck} />
 }
 
-function Call () {
+function Call ({ callAmount = '' }) {
     const dispatch = useDispatch();
     const mobileLayout = useSizeContext();
     const canCall = useSelector(selectCanDoAction(PlayerActions.CALL));
@@ -48,7 +48,7 @@ function Call () {
 
     const clickCall = () => dispatch(call());
 
-    return <Button primary label="Call [C]" onClick={clickCall} disabled={!canCall} />
+    return <Button primary label={`Call ${canCall && callAmount ? callAmount : ''} [C]`} onClick={clickCall} disabled={!canCall} />
 }
 
 function Cover () {
@@ -109,6 +109,7 @@ function GameActions () {
     const isAdmin = useSelector(selectIsAdmin);
     const ante = useSelector(selectAnte);
     const maxRaise = useSelector(selectMaxRaise);
+    const callAmount = useSelector(selectCallAmount);
 
     const dispatch = useDispatch();
 
@@ -132,12 +133,13 @@ function GameActions () {
          );
     } else if (handInProgress) {
         if (isRaising) return <Box direction="row" gap="xsmall">
-            <Button primary label="Raise" onClick={() => {
+            <Button primary label={`Raise${callAmount ? ` + ${callAmount} to call` : ''}`} onClick={() => {
                 if (raiseIsValid) {
                   dispatch(raise(raiseAmount.toString()));
                   endRaising();
                 }
             }} />
+            <Text></Text>
             <Box direction="column" gap="xsmall">
                 <RaiseSlider min={ante} max={maxRaise} value={raiseAmount} setValue={setRaiseAmount} />
             </Box>
@@ -147,7 +149,7 @@ function GameActions () {
             <Box direction="row" gap="xsmall">
                 <Raise {...{ setIsRaising }}/>
                 <Check />
-                <Call />
+                <Call callAmount={callAmount}/>
                 <Cover />
                 <Fold />
             </Box>
