@@ -74,6 +74,7 @@ namespace SevenStuds.Models
             MostRecentHandResult = new List<List<PotResult>>();
 
             _ConnectionToParticipantMap = new Dictionary<string, Participant>(); 
+            _ConnectionToSpectatorMap = new Dictionary<string, Spectator>(); 
             _ActionAvailability = new Dictionary<ActionEnum, ActionAvailability>();
             ActionAvailabilityList = new List<ActionAvailability>();
             HandsPlayedIncludingCurrent = 0;
@@ -147,9 +148,25 @@ namespace SevenStuds.Models
             }
             else {
                 // We are running in test mode (i.e. under the control of an ActionReplay command) so set the original player order
-                for ( int requiredPos = 0; requiredPos < this._TestContext.playersInOrder.Count; requiredPos++ ) {
+                // First remove any players who have not yet joined (allows for players joining between hands)
+                List<String> correctedPlayersInOrder = new List<String>(this._TestContext.playersInOrder);
+                for ( int playerPos = correctedPlayersInOrder.Count - 1; playerPos >= 0; playerPos-- ) {
+                    string playerName = correctedPlayersInOrder[playerPos];
+                    bool participantExists = false;
+                    foreach ( Participant p in Participants) {
+                        if ( p.Name == playerName) {
+                            participantExists = true;
+                            break;
+                        }
+                    }
+                    if ( participantExists == false) {
+                        correctedPlayersInOrder.RemoveAt(playerPos);
+                        System.Diagnostics.Debug.WriteLine("Removing "+playerName+" from player order as they had not joined at this point");
+                    }
+                }  
+                for ( int requiredPos = 0; requiredPos < correctedPlayersInOrder.Count; requiredPos++ ) {
                     // Find that player who should be at this position and move them to it
-                    string playerToMove = this._TestContext.playersInOrder[requiredPos];
+                    string playerToMove = correctedPlayersInOrder[requiredPos];
                     int currentIndexOfPlayerToMove = PlayerIndexFromName(playerToMove);
                     if ( requiredPos != currentIndexOfPlayerToMove ) {
                         // We need to remove them from current pos and reinsert them at the required pos
@@ -158,6 +175,15 @@ namespace SevenStuds.Models
                         Participants.Insert(requiredPos, p);
                     }
                 }
+                // Set the right player as the administrator 
+                foreach ( Participant p in Participants) {
+                    if ( p.IsGameAdministrator == false && p.Name == this._TestContext.administrator) {
+                        p.IsGameAdministrator = true;
+                    }
+                    if ( p.IsGameAdministrator == true && p.Name != this._TestContext.administrator) {
+                        p.IsGameAdministrator = false;
+                    }  
+                }                   
             }
             StartTime = DateTimeOffset.Now;
             this.LogPlayers(); // record the modified player order
@@ -371,6 +397,10 @@ namespace SevenStuds.Models
                 return true;
             }
             return false;
+        }
+        public bool ActionIsAvailableToSpectator(ActionEnum actionType, int spectatorIndex) {
+            // Check whether specified spectator is entitled to take this action at this stage
+            return actionType == ActionEnum.Leave; // The only thing a spectator can do is leave
         }
         public void DealNextRound()
         {
@@ -828,6 +858,14 @@ namespace SevenStuds.Models
             }
             return -1;
         }
+        public int SpectatorIndexFromName(string SearchName) {
+            for (int spectator = 0; spectator < Spectators.Count ; spectator++) {
+                if ( Spectators[spectator].Name == SearchName ) {
+                    return spectator;
+                }
+            }
+            return -1;
+        }
         public void RecordLastEvent(string a){
             LastEvent = a;
             ClearCommentary(); 
@@ -872,6 +910,9 @@ namespace SevenStuds.Models
             this._GameLog.playersInOrder = new List<string>();
             foreach ( Participant p in this.Participants ) {
                 this._GameLog.playersInOrder.Add(p.Name);
+                if ( p.IsGameAdministrator ) {
+                    this._GameLog.administrator = p.Name;
+                }
             }
         } 
 

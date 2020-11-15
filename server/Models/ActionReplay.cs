@@ -16,12 +16,15 @@ namespace SevenStuds.Models
             ResponseType = ActionResponseTypeEnum.OverallGameState; // On completion of replay, the tester will have the overall game state returned to them
             ResponseAudience =  ActionResponseAudienceEnum.Caller; // Tester will then have to rejoin each player using their respective rejoin codes
             G._ConnectionToParticipantMap.Clear(); // Clear out the tester's current connection (and any other connections currently associated with the game)
+            G._ConnectionToSpectatorMap.Clear(); // Clear out the tester's current connection (and any other connections currently associated with the game)
             GameLog historicalGameLog = JsonSerializer.Deserialize<GameLog>(this.Parameters);
             FixCardOrderInDesererialisedDecks(historicalGameLog); // (it loads them in array order, which gives a reversed deck)
 
             // Now rebuild/replay the current game using the previously-recorded moves
             System.Diagnostics.Debug.WriteLine("Replaying game from supplied game log");
             G.InitialiseGame(historicalGameLog); // Clear the current game and set the test context (this affects various program behaviours)
+
+            // Replay each game action in the recorded order (including joins and starts)
             foreach ( GameLogAction gla in historicalGameLog.actions ) {
                 ActionEnum actionType = gla.ActionType;
                 Action a = ActionFactory.NewAction(

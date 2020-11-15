@@ -14,6 +14,22 @@ namespace SevenStuds.Models
 
         public override void ProcessAction()
         {
+            // A spectator can leave at any time as they do not influence the game in any way.
+            int spectatorIndex = G.SpectatorIndexFromName(UserName);
+            if ( spectatorIndex != -1 )
+            {
+                // Remove the spectator from the game
+                // Set the response type that will trigger the player's client session to disconnect and everyone else's game state to be updated
+                SignalRGroupNameForAdditionalNotifications = G.Spectators[spectatorIndex].SpectatorLevelSignalRGroupName;
+                ResponseType = ActionResponseTypeEnum.ConfirmToPlayerLeavingAndUpdateRemainingPlayers;   
+                G.Spectators.RemoveAt(spectatorIndex);
+                if ( G.GameMode == GameModeEnum.LobbyOpen ) {
+                    G.LobbyData = new LobbyData(G); // Update the lobby data
+                }
+                return; // All done
+            }
+
+            //
             // A player can leave at any time with the following immediate effect:
             //    1) They will be sent a 'ReceiveLeavingConfirmation' message which the client should handle by terminating its connection
             //    2) They will no longer be sent any updates from the game (which will have closed the SignalR group that the player was associated with)
@@ -93,7 +109,7 @@ namespace SevenStuds.Models
                 G.LobbyData = new LobbyData(G); // Update the lobby data
             }
 
-            // Set the response type that will trigger the player's client session to disconnect and everyone else's gamne state to be updated
+            // Set the response type that will trigger the player's client session to disconnect and everyone else's game state to be updated
             SignalRGroupNameForAdditionalNotifications = p.ParticipantLevelSignalRGroupName;
             ResponseType = ActionResponseTypeEnum.ConfirmToPlayerLeavingAndUpdateRemainingPlayers;           
         }

@@ -60,36 +60,56 @@ namespace SevenStuds.Models
                     throw new HubException("You attempted to "+ActionType.ToString().ToLower()+" (as user "+this.UserName+") from a connection that is already in use by "+p.Name); // client catches this as part of action method, i.e. no call to separate client method required
                 }
             }
+            Spectator s = G.GetSpectatorFromConnection(ConnectionId);
+            if ( s != null ) {
+                if ( s.Name != this.UserName ) {
+                    // This connection is already being used by someone else
+                    throw new HubException("You attempted to "+ActionType.ToString().ToLower()+" (as user "+this.UserName+") from a connection that is already in use by "+s.Name); // client catches this as part of action method, i.e. no call to separate client method required
+                }
+            }            
 
-            // Check player has permission to trigger this action
-            PlayerIndex = G.PlayerIndexFromName(user);
-            if ( ! G.ActionIsAvailableToPlayer(ActionType, PlayerIndex) ) {
-                throw new HubException("You attempted to "+ActionType.ToString().ToLower()+" (as user "+this.UserName+") but this option is not available to you at this point"); // client catches this as part of action method, i.e. no call to separate client method required
-            }
+            // Check whether player is a spectator
+            int spectatorIndex = G.SpectatorIndexFromName(user);
 
-            // Check that number of players who have left the game is as expected (i.e. that someone has not left in between)
+            if ( spectatorIndex != -1 ) {
+                // Check permissions for spectators
+                if ( ! G.ActionIsAvailableToSpectator(ActionType, spectatorIndex) ) {
+                    throw new HubException("You attempted to "+ActionType.ToString().ToLower()+" (as user "+this.UserName+") but this option is not available to you at this point"); // client catches this as part of action method, i.e. no call to separate client method required
+                }
+            }
+            else {
+                // Check permissions for registered players
 
-            int leaversAsInt;
-            bool leaversIsNumeric = int.TryParse(leavers, out leaversAsInt);
-            if ( !leaversIsNumeric) {
-                leaversAsInt = -1; // -1 means don't check
-            }
-            if ( leaversAsInt != -1 && leaversAsInt != G.CountOfLeavers ) {
-                throw new HubException("A player has just left the game."
-                    + " This has updated the game state and might have affected whose turn it is and what they can do."
-                    + " Your requested move has been ignored as a result. If it is still your turn, please try again."); 
-                // Note: client catches this as part of action method, i.e. no call to separate client method required
-            }
+                // Check player has permission to trigger this action
+                PlayerIndex = G.PlayerIndexFromName(user);
+                if ( ! G.ActionIsAvailableToPlayer(ActionType, PlayerIndex) ) {
+                    throw new HubException("You attempted to "+ActionType.ToString().ToLower()+" (as user "+this.UserName+") but this option is not available to you at this point"); // client catches this as part of action method, i.e. no call to separate client method required
+                }
 
-            if ( p == null /* from above */ && PlayerIndex != -1 && G.Participants[PlayerIndex].IsLockedOutFollowingReplay == true ) {
-                // This is a new connection AND the player is currently locked out following a 'replay' action, 
-                // so do an implicit Rejoin by linking the new connection to the current player
-                // (note the game will no longer be in test mode at this stage, so IsRunningInTestMode() will show false even though this is as a result of testing)
-                G.Participants[PlayerIndex].NoteConnectionId(this.ConnectionId);
-                G.Participants[PlayerIndex].IsLockedOutFollowingReplay = false;
-                // Can continue processing the command now 
+                // Check that number of players who have left the game is as expected (i.e. that someone has not left in between)
+
+                int leaversAsInt;
+                bool leaversIsNumeric = int.TryParse(leavers, out leaversAsInt);
+                if ( !leaversIsNumeric) {
+                    leaversAsInt = -1; // -1 means don't check
+                }
+                if ( leaversAsInt != -1 && leaversAsInt != G.CountOfLeavers ) {
+                    throw new HubException("A player has just left the game."
+                        + " This has updated the game state and might have affected whose turn it is and what they can do."
+                        + " Your requested move has been ignored as a result. If it is still your turn, please try again."); 
+                    // Note: client catches this as part of action method, i.e. no call to separate client method required
+                }
+
+                if ( p == null /* from above */ && PlayerIndex != -1 && G.Participants[PlayerIndex].IsLockedOutFollowingReplay == true ) {
+                    // This is a new connection AND the player is currently locked out following a 'replay' action, 
+                    // so do an implicit Rejoin by linking the new connection to the current player
+                    // (note the game will no longer be in test mode at this stage, so IsRunningInTestMode() will show false even though this is as a result of testing)
+                    G.Participants[PlayerIndex].NoteConnectionId(this.ConnectionId);
+                    G.Participants[PlayerIndex].IsLockedOutFollowingReplay = false;
+                    // Can continue processing the command now 
+                }
+                G.RoundNumberIfCardsJustDealt = -1; // The new action will clear any requirement for the client to animate the dealing of the cards
             }
-            G.RoundNumberIfCardsJustDealt = -1; // The new action will clear any requirement for the client to animate the dealing of the cards
         }
         protected Game G { get; set; }  
         public ActionEnum ActionType { get; set; }

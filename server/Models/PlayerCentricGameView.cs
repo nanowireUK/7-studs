@@ -112,7 +112,8 @@ namespace SevenStuds.Models
             // Convert the game-level permissions into a player view of their permissions
             AvailableActions = new List<string>();
             if ( isSpectatorView ) {
-                // No actions available to spectators while game is in progress (which is when this view can be invoked)
+                // The only action available to a spectator is to leave the game, and they can do this at any time
+                AvailableActions.Add(ActionEnum.Leave.ToString());
             }
             else {
                 foreach ( ActionAvailability aa in g.ActionAvailabilityList )

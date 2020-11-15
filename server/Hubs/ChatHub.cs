@@ -124,7 +124,7 @@ namespace SevenStuds.Hubs
                                 // Send each player (including any leaving player) a view of the game from their own perspective
                                 resultAsJson = new PlayerCentricGameView(g, -1, i).AsJson();
                             }
-                            await Clients.Group(g.Participants[i].ParticipantLevelSignalRGroupName).SendAsync(targetMethod, resultAsJson);
+                            await Clients.Group(g.Spectators[i].SpectatorLevelSignalRGroupName).SendAsync(targetMethod, resultAsJson);
                         }
                     } 
                     if ( a.ResponseType == ActionResponseTypeEnum.ConfirmToPlayerLeavingAndUpdateRemainingPlayers ) {

@@ -7,6 +7,7 @@ namespace SevenStuds.Models
     public class GameLog
     {
         // Used to record the progress of a game so that it can later be replayed (mainly intended for retesting scenarios)
+        public string administrator { get; set; } // Records name of administrator
         public List<string> playersInOrder { get; set; } // Records player names in the order that the game was played
         public List<GameLogAction> actions { get; set; }
         public List<Deck> decks { get; set; } // Records start state of each deck used (so it can be redealt in the same order)

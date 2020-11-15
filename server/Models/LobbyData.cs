@@ -41,7 +41,7 @@ namespace SevenStuds.Models
         }  
         private void AddSpectators(Game g) {
             ConnectedSpectators = new List<string>();
-            // Add all players who are either in the game already or who have joined the lobby
+            // Add all spectators
             foreach ( Spectator p in g.Spectators ) {
                 ConnectedSpectators.Add(p.Name);
             }
