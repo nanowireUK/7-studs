@@ -15,15 +15,15 @@ namespace SevenStuds.Models
             // from the individual fields in the JSON structure
         }
 
-        protected Action ( string connectionId, ActionEnum actionType, string gameId, string user, string leavers )
+        protected Action ( string connectionId, ActionEnum actionType, string roomId, string user, string leavers )
         {
-            this.Initialise(connectionId, actionType, gameId, user, leavers, null);
+            this.Initialise(connectionId, actionType, roomId, user, leavers, null);
         }
-        protected Action ( string connectionId, ActionEnum actionType, string gameId, string user, string leavers, string parameters )
+        protected Action ( string connectionId, ActionEnum actionType, string roomId, string user, string leavers, string parameters )
         {
-            this.Initialise(connectionId, actionType, gameId, user, leavers, parameters);
+            this.Initialise(connectionId, actionType, roomId, user, leavers, parameters);
         }
-        protected void Initialise ( string connectionId, ActionEnum actionType, string gameId, string user, string leavers, string parameters )
+        protected void Initialise ( string connectionId, ActionEnum actionType, string roomId, string user, string leavers, string parameters )
         {
             // Do any initialisation that is common to all user actions.
 
@@ -33,7 +33,8 @@ namespace SevenStuds.Models
 
             // The ProcessAction() method can use the same technique as long as the game state has not changed.
 
-            G = ServerState.FindOrCreateGame(gameId); // find our game or create a new one if required
+            R = ServerState.FindOrCreateRoom(roomId); // Find our room or create a new one if required
+            G = R.ActiveGame;
             ActionType = actionType;
             UserName = user;
             Parameters = parameters;
@@ -111,6 +112,7 @@ namespace SevenStuds.Models
                 G.RoundNumberIfCardsJustDealt = -1; // The new action will clear any requirement for the client to animate the dealing of the cards
             }
         }
+        protected Room R { get; set; } 
         protected Game G { get; set; }  
         public ActionEnum ActionType { get; set; }
         public string UserName { get; set; }
@@ -120,7 +122,7 @@ namespace SevenStuds.Models
         public ActionResponseTypeEnum ResponseType { get; set; }
         public ActionResponseAudienceEnum ResponseAudience { get; set; }
         public string SignalRGroupNameForAdditionalNotifications { get; set; } // a bit of a botch to allow for a player who is leaving
-        public virtual Game ProcessActionAndReturnGameReference()
+        public virtual Room ProcessActionAndReturnRoomReference()
         {
             this.ProcessAction(); // Use the subclass to implement the specifics of the action
 
@@ -138,7 +140,7 @@ namespace SevenStuds.Models
             }
             // After dealing with the requested action, reset the permissions for each action to reflect the updated game state
             G.SetActionAvailabilityBasedOnCurrentPlayer();
-            return G;
+            return R;
         }        
         public abstract void ProcessAction();
     }     

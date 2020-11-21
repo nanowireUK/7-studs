@@ -50,11 +50,7 @@ namespace SevenStuds.Models
         public List<Boolean> CardPositionIsVisible { get; } = new List<Boolean>{false, false, true, true, true, true, false};
         public LobbyData LobbyData { get; set; }
         private Deck CardPack { get; set; }
-        public string AdHocQueryType { get; set; }
-
-        public Game(string gameId) {
-            GameId = gameId;
-            //this.GameLevelSignalRGroupName = GameId + '.' + Guid.NewGuid().ToString(); // Unique SignalRgroup name for all players associated with this game
+        public Game() {
             this.InitialiseGame(null);
         }
 
@@ -81,6 +77,7 @@ namespace SevenStuds.Models
             CountOfLeavers = 0;
             ActionNumber = 0;
             SetActionAvailabilityBasedOnCurrentPlayer(); // Ensures the initial section of available actions is set
+
             this._GameLog = new GameLog(); // Initially empty, will be added to as game actions take place
         }
 
@@ -149,7 +146,8 @@ namespace SevenStuds.Models
             else {
                 // We are running in test mode (i.e. under the control of an ActionReplay command) so set the original player order
                 // First remove any players who have not yet joined (allows for players joining between hands)
-                List<String> correctedPlayersInOrder = new List<String>(this._TestContext.playersInOrder);
+                System.Diagnostics.Debug.WriteLine("Setting player order as per game log");
+                List<String> correctedPlayersInOrder = new List<String>(this._TestContext.playersInOrderAtStartOfGame);
                 for ( int playerPos = correctedPlayersInOrder.Count - 1; playerPos >= 0; playerPos-- ) {
                     string playerName = correctedPlayersInOrder[playerPos];
                     bool participantExists = false;
@@ -173,12 +171,17 @@ namespace SevenStuds.Models
                         Participant p = Participants[currentIndexOfPlayerToMove];
                         Participants.RemoveAt(currentIndexOfPlayerToMove); // Remove it from the current list
                         Participants.Insert(requiredPos, p);
+                        System.Diagnostics.Debug.WriteLine("Moved "+p.Name+" to position "+requiredPos);
+                    }
+                    else {
+                        System.Diagnostics.Debug.WriteLine(Participants[requiredPos].Name+" was already at position "+requiredPos);
                     }
                 }
                 // Set the right player as the administrator 
                 foreach ( Participant p in Participants) {
                     if ( p.IsGameAdministrator == false && p.Name == this._TestContext.administrator) {
                         p.IsGameAdministrator = true;
+                        System.Diagnostics.Debug.WriteLine("Setting "+p.Name+" as administrator for the replay");
                     }
                     if ( p.IsGameAdministrator == true && p.Name != this._TestContext.administrator) {
                         p.IsGameAdministrator = false;
@@ -186,7 +189,7 @@ namespace SevenStuds.Models
                 }                   
             }
             StartTime = DateTimeOffset.Now;
-            this.LogPlayers(); // record the modified player order
+            this.LogPlayers(); // Record the (potentially modified) player order at the start of this game
         }
 
         public void RemoveDisconnectedPlayersFromGameState() {
@@ -734,10 +737,11 @@ namespace SevenStuds.Models
         } 
 
         public string ProcessEndOfHand(string Trigger) {
-            // Something has triggered the end of the game. Distribute each pot according to winner(s) of that pot.
+            // Something has triggered the end of the hand. Distribute each pot according to winner(s) of that pot.
             // Start with oldest pot and work forwards. 
             // Only players who have contributed to a pot and have not folded are to be considered
             AddCommentary(Trigger);
+            _GameLog.RecordProvisionalEndTime();
 
             ClearResultDetails();
 
@@ -907,9 +911,10 @@ namespace SevenStuds.Models
 
         public void LogPlayers(){
             // Relog players
-            this._GameLog.playersInOrder = new List<string>();
+            this._GameLog.playersInOrderAtStartOfGame = new List<string>();
             foreach ( Participant p in this.Participants ) {
-                this._GameLog.playersInOrder.Add(p.Name);
+                this._GameLog.playersInOrderAtStartOfGame.Add(p.Name);
+                System.Diagnostics.Debug.WriteLine("Logging player "+p.Name);
                 if ( p.IsGameAdministrator ) {
                     this._GameLog.administrator = p.Name;
                 }
@@ -950,13 +955,6 @@ namespace SevenStuds.Models
         public string GameLogAsJson() {
             return this._GameLog.AsJson();
         }
-        public List<string> AdHocQueryResult() {
-            // This is stupidly convoluted, but an ActionAdHocQuery command has recorded a command name in AdHocQueryType,
-            // and we will now use a separate class to action the query and return 
-            AdHocQuery q = new AdHocQuery(this, AdHocQueryType);
-            return q.queryResults;
-        }
-
         public int MinutesSinceLastAction() {
             return Convert.ToInt32( (DateTimeOffset.Now - this.LastSuccessfulAction).TotalMinutes);
         }

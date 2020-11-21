@@ -11,7 +11,7 @@ namespace SevenStuds.Models
     {
         // Various queries against the server
         public List<string> queryResults { get; set; } 
-        public AdHocQuery(Game thisGame, string queryType) {
+        public AdHocQuery(Room thisRoom, string queryType) {
             queryResults = new List<string>();
             try
             {
@@ -23,13 +23,14 @@ namespace SevenStuds.Models
                             queryResults.Add("Key: " + de.Key + " Value: " + de.Value);
                         }
                         break;   
-                    case "list-games": 
+                    case "list-rooms": 
                         // List open games  
-                        foreach (DictionaryEntry pair in ServerState.GameList )
+                        foreach (DictionaryEntry pair in ServerState.RoomList )
                         {
-                            Game g = (Game) pair.Value;
+                            Room r = (Room) pair.Value;
+                            Game g = r.ActiveGame;
                             queryResults.Add(
-                                "Game:" + pair.Key 
+                                "Room:" + pair.Key 
                                 + ", Participants:" + g.Participants.Count
                                 + ", Hands:" + g.HandsPlayedIncludingCurrent
                                 + ", Last Action:" + g.LastSuccessfulAction.ToString("yyyy-MM-dd HH:mm")
@@ -48,11 +49,12 @@ namespace SevenStuds.Models
                         }
                         break;    
                     case "list-logs": 
-                        // Return the game logs from all games completed under the given game id
-                        List<string> logsForThisGame = (List<string>) ServerState.RoomGameLogHistory[thisGame.GameId];
-                        foreach ( string log in logsForThisGame ) {
-                            queryResults.Add(log);
-                        }
+                        // Return the game logs from all games completed under the current game id
+                        // List<string> logsForThisGame = (List<string>) R.RoomGameLogHistory[thisRoom.GameId];
+                        // foreach ( string log in logsForThisGame ) {
+                        //     queryResults.Add(log);
+                        // }
+                        queryResults.Add("Not implemented");
                         break;  
                     default:  
                         throw new SystemException("Query type " + queryType + " not implemented");

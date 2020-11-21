@@ -7,8 +7,8 @@ namespace SevenStuds.Models
     /// </summary>  
     public class ActionReplay : Action
     {  
-        public ActionReplay(string connectionId, ActionEnum actionType, string gameId, string user, string leavers, string logAsJson) 
-            : base(connectionId, actionType, gameId, user, leavers, logAsJson)
+        public ActionReplay(string connectionId, ActionEnum actionType, string roomId, string user, string leavers, string logAsJson) 
+            : base(connectionId, actionType, roomId, user, leavers, logAsJson)
         {
         }
         public override void ProcessAction()
@@ -31,7 +31,7 @@ namespace SevenStuds.Models
                     "", // TODO think about how to handle connection ids in test mode ... 
                         // generate a new dummy one for each action? Users will have to rejoin anyway.
                     gla.ActionType, 
-                    G.GameId, 
+                    R.RoomId, 
                     gla.UserName,
                     G.CountOfLeavers.ToString(), 
                     gla.Parameters
@@ -40,7 +40,7 @@ namespace SevenStuds.Models
                     "Replaying action "  + gla.ActionNumber + ": "
                     + gla.ActionType.ToString().ToLower() + " by " + gla.UserName);
 
-                a.ProcessActionAndReturnGameReference(); 
+                a.ProcessActionAndReturnRoomReference(); 
 
                 System.Diagnostics.Debug.WriteLine("  StatusMessage: " + G.StatusMessage);
 

@@ -10,31 +10,32 @@ namespace SevenStuds.Hubs
         // --------------------------------------------------------------------------------------------------
         // This is the server-side code that is called directly by the client
 
-        public async Task UserClickedOpen(string gameId, string user, string leavers) { await UserClickedActionButton(ActionEnum.Open, gameId,  user, leavers,  ""); }
-        public async Task UserClickedJoin(string gameId, string user) { await UserClickedActionButton(ActionEnum.Join, gameId,  user, "-1",  ""); }
-        public async Task UserClickedSpectate(string gameId, string user) { await UserClickedActionButton(ActionEnum.Spectate, gameId,  user, "-1",  ""); }
-        public async Task UserClickedRejoin(string gameId, string user, string rejoinCode) { await UserClickedActionButton(ActionEnum.Rejoin, gameId,  user, "-1",  rejoinCode); }
-        public async Task UserClickedLeave(string gameId, string user) { await UserClickedActionButton(ActionEnum.Leave, gameId,  user, "-1",  ""); }
-        public async Task UserClickedStart(string gameId, string user, string leavers) { await UserClickedActionButton(ActionEnum.Start, gameId,  user, leavers,  ""); }
-        public async Task UserClickedReveal(string gameId, string user, string leavers) { await UserClickedActionButton(ActionEnum.Reveal, gameId,  user, leavers,  ""); }
-        public async Task UserClickedContinue(string gameId, string user, string leavers) { await UserClickedActionButton(ActionEnum.Continue, gameId,  user, leavers,  ""); }
-        public async Task UserClickedCheck(string gameId, string user, string leavers) { await UserClickedActionButton(ActionEnum.Check, gameId,  user, leavers,  ""); }
-        public async Task UserClickedCall(string gameId, string user, string leavers) { await UserClickedActionButton(ActionEnum.Call, gameId,  user, leavers,  ""); }
-        public async Task UserClickedRaise(string gameId, string user, string leavers, string raiseAmount) { await UserClickedActionButton(ActionEnum.Raise, gameId,  user, leavers,  raiseAmount); }
-        public async Task UserClickedCover(string gameId, string user, string leavers) { await UserClickedActionButton(ActionEnum.Cover, gameId,  user, leavers,  ""); }
-        public async Task UserClickedFold(string gameId, string user, string leavers) { await UserClickedActionButton(ActionEnum.Fold, gameId,  user, leavers,  ""); }
-        public async Task UserClickedGetState(string gameId, string user, string leavers) { await UserClickedActionButton(ActionEnum.GetState, gameId,  user, leavers,  ""); }
-        public async Task UserClickedGetLog(string gameId, string user, string leavers) { await UserClickedActionButton(ActionEnum.GetLog, gameId,  user, leavers,  ""); }
-        public async Task UserClickedReplay(string gameId, string user, string leavers, string gameLog) { await UserClickedActionButton(ActionEnum.Replay, gameId,  user, leavers,  gameLog); }
-        public async Task UserClickedGetMyState(string gameId, string user, string leavers) { await UserClickedActionButton(ActionEnum.GetMyState, gameId,  user, leavers,  ""); }
-        public async Task UserClickedAdHocQuery(string gameId, string user, string leavers, string queryNum) { await UserClickedActionButton(ActionEnum.AdHocQuery, gameId,  user, leavers,  queryNum); }
+        public async Task UserClickedOpen(string roomId, string user, string leavers) { await UserClickedActionButton(ActionEnum.Open, roomId,  user, leavers,  ""); }
+        public async Task UserClickedJoin(string roomId, string user) { await UserClickedActionButton(ActionEnum.Join, roomId,  user, "-1",  ""); }
+        public async Task UserClickedSpectate(string roomId, string user) { await UserClickedActionButton(ActionEnum.Spectate, roomId,  user, "-1",  ""); }
+        public async Task UserClickedRejoin(string roomId, string user, string rejoinCode) { await UserClickedActionButton(ActionEnum.Rejoin, roomId,  user, "-1",  rejoinCode); }
+        public async Task UserClickedLeave(string roomId, string user) { await UserClickedActionButton(ActionEnum.Leave, roomId,  user, "-1",  ""); }
+        public async Task UserClickedStart(string roomId, string user, string leavers) { await UserClickedActionButton(ActionEnum.Start, roomId,  user, leavers,  ""); }
+        public async Task UserClickedReveal(string roomId, string user, string leavers) { await UserClickedActionButton(ActionEnum.Reveal, roomId,  user, leavers,  ""); }
+        public async Task UserClickedContinue(string roomId, string user, string leavers) { await UserClickedActionButton(ActionEnum.Continue, roomId,  user, leavers,  ""); }
+        public async Task UserClickedCheck(string roomId, string user, string leavers) { await UserClickedActionButton(ActionEnum.Check, roomId,  user, leavers,  ""); }
+        public async Task UserClickedCall(string roomId, string user, string leavers) { await UserClickedActionButton(ActionEnum.Call, roomId,  user, leavers,  ""); }
+        public async Task UserClickedRaise(string roomId, string user, string leavers, string raiseAmount) { await UserClickedActionButton(ActionEnum.Raise, roomId,  user, leavers,  raiseAmount); }
+        public async Task UserClickedCover(string roomId, string user, string leavers) { await UserClickedActionButton(ActionEnum.Cover, roomId,  user, leavers,  ""); }
+        public async Task UserClickedFold(string roomId, string user, string leavers) { await UserClickedActionButton(ActionEnum.Fold, roomId,  user, leavers,  ""); }
+        public async Task UserClickedGetState(string roomId, string user, string leavers) { await UserClickedActionButton(ActionEnum.GetState, roomId,  user, leavers,  ""); }
+        public async Task UserClickedGetLog(string roomId, string user, string leavers) { await UserClickedActionButton(ActionEnum.GetLog, roomId,  user, leavers,  ""); }
+        public async Task UserClickedReplay(string roomId, string user, string leavers, string gameLog) { await UserClickedActionButton(ActionEnum.Replay, roomId,  user, leavers,  gameLog); }
+        public async Task UserClickedGetMyState(string roomId, string user, string leavers) { await UserClickedActionButton(ActionEnum.GetMyState, roomId,  user, leavers,  ""); }
+        public async Task UserClickedAdHocQuery(string roomId, string user, string leavers, string queryNum) { await UserClickedActionButton(ActionEnum.AdHocQuery, roomId,  user, leavers,  queryNum); }
 
         // --------------------------------------------------------------------------------------------------
         // Internal methods
-        private async Task UserClickedActionButton(ActionEnum actionType, string gameId, string user, string leavers, string parameters)
+        private async Task UserClickedActionButton(ActionEnum actionType, string roomId, string user, string leavers, string parameters)
         {
-            Action a = ActionFactory.NewAction(Context.ConnectionId, actionType, gameId, user, leavers, parameters);
-            Game g = a.ProcessActionAndReturnGameReference();
+            Action a = ActionFactory.NewAction(Context.ConnectionId, actionType, roomId, user, leavers, parameters);
+            Room r = a.ProcessActionAndReturnRoomReference();
+            Game g = r.ActiveGame;
 
             // New connections may have been linked to players, so link those connections to the relevant game and player groups in SignalR
             foreach ( Participant p in g.Participants ) {
@@ -83,7 +84,7 @@ namespace SevenStuds.Hubs
                     targetMethod = "ReceiveOverallGameState";
                     break;
                 case ActionResponseTypeEnum.AdHocServerQuery:
-                    resultAsJson = string.Join("", g.AdHocQueryResult());
+                    resultAsJson = string.Join("", r.AdHocQueryResult());
                     targetMethod = "ReceiveAdHocServerData";
                     break;
                 default:

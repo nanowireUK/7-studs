@@ -5,8 +5,8 @@ namespace SevenStuds.Models
     /// </summary>  
     public class ActionStart : Action
     {  
-        public ActionStart(string connectionId, ActionEnum actionType, string gameId, string user, string leavers) 
-            : base(connectionId, actionType, gameId, user, leavers)
+        public ActionStart(string connectionId, ActionEnum actionType, string roomId, string user, string leavers) 
+            : base(connectionId, actionType, roomId, user, leavers)
         {
         }
 
@@ -14,9 +14,13 @@ namespace SevenStuds.Models
         {
             // Start a new game (note that the base class has already checked the player's eligibility for this action)
 
+            // THIS NEEDS TO WORK FROM A ROOM PERSPECTIVE
+            // STARTING A GAME SHOULD ASSIGN PLAYERS TO IT (i.e. JOIN IS A ROOM LEVEL FUNCTION NOT A GAME LEVEL)
+            // CHANGE PARTICIPANT TO PLAYER?
+
             if ( G.HandsPlayedIncludingCurrent > 0 ) {
                 // Archive the results of the last game before setting up the new one 
-                ServerState.AddCompletedGameToRoomHistory(G); 
+                ///////R.AddCompletedGameToRoomHistory(G); 
             }
             G.RecordLastEvent(this.UserName + " started the game (player order now randomised)");
             G.StartGame(); // Initialise the game

@@ -7,6 +7,18 @@ namespace SevenStuds.Models
     /// <summary>
     /// GameModeEnum: Defines the mode that the game is currently in
     /// </summary>
+    public enum UserStatusEnum
+    {
+        WaitingInLobby = 0,
+        ActiveInGame = 1,
+        LeavingGame = 2,
+        LeftGame = 3,
+        Spectator = 4
+    }    
+    
+    /// <summary>
+    /// GameModeEnum: Defines the mode that the game is currently in
+    /// </summary>
     public enum GameModeEnum
     {
         LobbyOpen = 0,

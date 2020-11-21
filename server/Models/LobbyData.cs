@@ -47,7 +47,10 @@ namespace SevenStuds.Models
             }
         }         
         private void AddPreviousGameResults(Game g) {
-            PreviousGameResults =  (List<string>) ServerState.RoomHistory[g.GameId];
+            // PreviousGameResults = null;
+            // if ( ServerState.RoomHistory.Contains[g.GameId] ) {
+            //     PreviousGameResults = (List<string>) ServerState.RoomHistory[g.GameId];
+            // }
         }      
     }
 }

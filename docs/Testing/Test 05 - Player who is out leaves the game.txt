@@ -1,5 +1,5 @@
 {
-  "playersInOrder": [
+  "playersInOrderAtStartOfGame": [
     "Phil",
     "Robert",
     "John"

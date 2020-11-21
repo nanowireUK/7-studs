@@ -1,5 +1,6 @@
 {
-  "playersInOrder": [
+  "administrator": "John",
+  "playersInOrderAtStartOfGame": [
     "Phil",
     "Robert",
     "John"

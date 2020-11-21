@@ -7,8 +7,8 @@ namespace SevenStuds.Models
     /// </summary>  
     public class ActionLeave : Action
     {  
-        public ActionLeave(string connectionId, ActionEnum actionType, string gameId, string user, string leavers) 
-            : base(connectionId, actionType, gameId, user, leavers)
+        public ActionLeave(string connectionId, ActionEnum actionType, string roomId, string user, string leavers) 
+            : base(connectionId, actionType, roomId, user, leavers)
         {
         }
 
@@ -52,7 +52,7 @@ namespace SevenStuds.Models
             // If this was the last player still connected to the game, remove the game from the system 
             // and notify the player via an exception that the game is now gone
             if ( G.Participants.Count == 1 ) {
-                ServerState.EraseGame(G.GameId);
+                //ServerState.EraseGame(G.GameId);
                 throw new HubException("You were the last player to leave the game so the game has now been deleted");
             }  
 

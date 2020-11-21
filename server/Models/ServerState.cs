@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -8,10 +7,8 @@ namespace SevenStuds.Models
     public static class ServerState
     {
         // Maintains a registry of games which enables a game object to be found from its ID.
+        public static Hashtable RoomList = new Hashtable(); // Server-level list of Rooms
         // Also provides other room-level functions (where a room may have hosted a whole series of games)
-        public static Hashtable GameList = new Hashtable(); // Maps Room name to current Game object
-        public static Hashtable RoomHistory = new Hashtable(); // Map Room name to a history of completed game results
-        public static Hashtable RoomGameLogHistory = new Hashtable(); // Map Room name to a history of game logs
         public static PokerHandRankingTable RankingTable = new PokerHandRankingTable(); // Only need one of these
         public static Card DummyCard = new Card(CardEnum.Dummy, SuitEnum.Clubs);
         public static Boolean IsRunningOnPublicServer() {
@@ -19,53 +16,73 @@ namespace SevenStuds.Models
             if ( origin_value == null ) { return false; }
             return ( origin_value == "https://7studsserver.azurewebsites.net/" );
         }
-        public static Boolean GameExists(string gameId) {
-            string lowercaseId = gameId.ToLower();
-            return GameList.ContainsKey(lowercaseId);
-        }
 
-        public static Game FindOrCreateGame(string gameId) {
-            string lowercaseId = gameId.ToLower();
-            if ( GameList.ContainsKey(lowercaseId) ) {
-                Game g =  (Game) GameList[lowercaseId];
-                if ( g.MinutesSinceLastAction() <= 120 ) {
-                    return g;
+        // public static Boolean GameExists(string gameId) {
+        //     string lowercaseId = gameId.ToLower();
+        //     return GameList.ContainsKey(lowercaseId);
+        // }
+
+        // public static Game FindOrCreateGame(string gameId) {
+        //     string lowercaseId = gameId.ToLower();
+        //     if ( GameList.ContainsKey(lowercaseId) ) {
+        //         Game g =  (Game) GameList[lowercaseId];
+        //         if ( g.MinutesSinceLastAction() <= 120 ) {
+        //             return g;
+        //         }
+        //         else {
+        //             // Delete the current version of this game so the new one starts 
+        //             EraseGame(lowercaseId);
+        //         }
+        //     }
+        //     Game newGame = new Game(gameId); // Keep original upper/lowercase
+        //     GameList.Add(lowercaseId, newGame);
+        //     return newGame;
+        // }
+        // public static void EraseGame(string gameId) {
+        //     string lowercaseId = gameId.ToLower();
+        //     GameList.Remove(lowercaseId);
+        // }
+        public static Boolean RoomExists(string roomId) {
+            return RoomList.ContainsKey(roomId.ToLower());
+        }
+        public static Room FindOrCreateRoom(string RoomId) {
+            string roomIdToUse = RoomId; 
+            string lowercaseId = RoomId.ToLower();
+            if ( RoomList.ContainsKey(lowercaseId) ) {
+                Room r =  (Room) RoomList[lowercaseId];
+                roomIdToUse = r.RoomId; // Get the room id as originally supplied by whoever created the room
+                if ( r.ActiveGame != null ) {
+                    if ( r.ActiveGame.MinutesSinceLastAction() <= 120 ) {
+                        return r;
+                    }
+                    else {
+                        // Archive the current version of the room so that we can start again from scratch
+                        r.RoomId += "-finished-"+r.ActiveGame.LastSuccessfulAction.ToString("yyyy-MM-dd.HHmm");
+                        RoomList.Add(r.RoomId, r); 
+                        // Remove the link with the old name (we'll add the new version of the room below)
+                        RoomList.Remove(lowercaseId);  
+                    }
                 }
-                else {
-                    // Delete the current version of this game so the new one starts 
-                    EraseGame(lowercaseId);
+            }
+            Room newRoom = new Room(roomIdToUse); // Keep original name (respecting upper/lowercase)
+            RoomList.Add(lowercaseId, newRoom);
+
+            // Note that other archived rooms may be using up memory ... clear them out after two days
+            foreach ( string id in RoomList.Keys )
+            {
+                Room r = (Room) RoomList[id];
+                if ( r.ActiveGame != null && r.ActiveGame.MinutesSinceLastAction() > ( 2 * 24 * 60) ) {
+                    RoomList.Remove(id);
                 }
             }
-            Game newGame = new Game(gameId); // Keep original upper/lowercase
-            GameList.Add(lowercaseId, newGame);
-            return newGame;
-        }
-        public static void EraseGame(string gameId) {
-            string lowercaseId = gameId.ToLower();
-            GameList.Remove(lowercaseId);
-        }
-        public static void AddCompletedGameToRoomHistory(Game g) {
-            if ( RoomHistory.ContainsKey(g.GameId) == false ) {
-                // Start a game history for this room
-                RoomHistory.Add(g.GameId, new List<string>());
-                RoomGameLogHistory.Add(g.GameId, new List<string>());
+
+            // If there is no active game against this room, create an 'empty' game
+            if ( newRoom.ActiveGame == null){
+                newRoom.ActiveGame = new Game();
             }
-            List<string> existingResults = (List<string>) RoomHistory[g.GameId];
-            existingResults.Insert(0, OneLineSummaryOfResult(g)); // Ensure latest result appears at top
-            List<string> existingLogs = (List<string>) RoomGameLogHistory[g.GameId];
-            existingLogs.Insert(0, g.GameLogAsJson()); // Ensure latest result appears at top
-        }
-        private static string OneLineSummaryOfResult(Game g) {
-            // Return a one-liner that summarises the results in order of winning player to losing player
-            DateTimeOffset now = DateTimeOffset.Now; // This is the completion date/time of the game
-            string gameResult = "Ended " + now.ToString("HH:mm");
-            List<LobbyDataCurrentGame> w = g.SortedListOfWinnersAndLosers();
-            for ( int r = 0; r < w.Count; r++ ) {
-                int f = w[r].RemainingFunds;
-                string pref = ( r==0 ? " " : ", " );
-                gameResult += pref + (r+1) + ":" + w[r].PlayerName + "(" + f + ")";
-            }
-            return gameResult;
+
+            // Finally return the room we've just found or created
+            return newRoom;
         }
     }
 }

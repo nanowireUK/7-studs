@@ -1,4 +1,12 @@
 ----------------------------------------- SERVER-SIDE TO DO (higher priority first) ---------------------------------
+Focus on logging games
+
+Ensure that sub-objects have no references to parent objects? Is this realistic (e.g always passing parameters downwards)?
+
+Some way of keeping track of available memory?
+
+Can you have a room without a game ... should be possible, before first game and possibly between games
+
 * Rejoin obliterates whatever the previous move was (in the status message) ... possible to prepend the rejoin to current message?
 * Allow admin to reject a player prior to starting or continuing a game
 * Allow admin to forcibly remove an inactive player (like an involuntary leave)

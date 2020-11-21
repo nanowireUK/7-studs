@@ -20,7 +20,6 @@ namespace SevenStuds.Models
         
         public string Name { get; set; }
         public int UncommittedChips { get; set; }
-        //public int ChipsCommittedToCurrentBettingRound { get; set; }
         public Boolean HasFolded { get; set; }
         public Boolean HasCovered { get; set; }
         public Boolean IsOutOfThisGame { get; set; } // i.e. had no funds at the start of the current hand

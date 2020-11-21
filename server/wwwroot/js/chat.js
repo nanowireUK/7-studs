@@ -14,7 +14,7 @@ function logError (err) {
     return console.error(err.toString());
 }
 
-function getGameId() {
+function getRoomId() {
     return document.getElementById("userInputGameId").value; // Was "7Studs Main Event" ... we'll look at setting this from the URL at a later date
 }
 
@@ -89,10 +89,10 @@ connection.start().catch(logError);
 
 document.getElementById("actionOpen").addEventListener("click",
     function (event) {
-        var gameId = getGameId();
+        var roomId = getRoomId();
         var user = getUser();
         var leaverCount = getLeaverCount();
-        connection.invoke("UserClickedOpen", gameId, user, leaverCount).catch(logError);
+        connection.invoke("UserClickedOpen", roomId, user, leaverCount).catch(logError);
         event.preventDefault();
     }
 );
@@ -101,10 +101,10 @@ document.getElementById("actionOpen").addEventListener("click",
 
 document.getElementById("actionJoin").addEventListener("click",
     function (event) {
-        var gameId = getGameId();
+        var roomId = getRoomId();
         var user = getUser();
         var leaverCount = getLeaverCount();
-        connection.invoke("UserClickedJoin", gameId, user).catch(logError);
+        connection.invoke("UserClickedJoin", roomId, user).catch(logError);
         event.preventDefault();
     }
 );
@@ -113,10 +113,10 @@ document.getElementById("actionJoin").addEventListener("click",
 
 document.getElementById("actionSpectate").addEventListener("click",
     function (event) {
-        var gameId = getGameId();
+        var roomId = getRoomId();
         var user = getUser();
         var leaverCount = getLeaverCount();
-        connection.invoke("UserClickedSpectate", gameId, user).catch(logError);
+        connection.invoke("UserClickedSpectate", roomId, user).catch(logError);
         event.preventDefault();
     }
 );
@@ -125,10 +125,10 @@ document.getElementById("actionSpectate").addEventListener("click",
 
 document.getElementById("actionLeave").addEventListener("click",
     function (event) {
-        var gameId = getGameId();
+        var roomId = getRoomId();
         var user = getUser();
         var leaverCount = getLeaverCount();
-        connection.invoke("UserClickedLeave", gameId, user).catch(logError);
+        connection.invoke("UserClickedLeave", roomId, user).catch(logError);
         event.preventDefault();
     }
 );
@@ -137,11 +137,11 @@ document.getElementById("actionLeave").addEventListener("click",
 
 document.getElementById("actionRejoin").addEventListener("click",
     function (event) {
-        var gameId = getGameId();
+        var roomId = getRoomId();
         var user = getUser();
         var leaverCount = getLeaverCount();
         var rejoinCode = getModifiers();
-        connection.invoke("UserClickedRejoin", gameId, user, rejoinCode).catch(logError);
+        connection.invoke("UserClickedRejoin", roomId, user, rejoinCode).catch(logError);
         event.preventDefault();
     }
 );
@@ -150,10 +150,10 @@ document.getElementById("actionRejoin").addEventListener("click",
 
 document.getElementById("actionStart").addEventListener("click",
     function (event) {
-        var gameId = getGameId();
+        var roomId = getRoomId();
         var user = getUser();
         var leaverCount = getLeaverCount();
-        connection.invoke("UserClickedStart", gameId, user, leaverCount).catch(logError);
+        connection.invoke("UserClickedStart", roomId, user, leaverCount).catch(logError);
         event.preventDefault();
     }
 );
@@ -162,10 +162,10 @@ document.getElementById("actionStart").addEventListener("click",
 
 document.getElementById("actionContinue").addEventListener("click",
     function (event) {
-        var gameId = getGameId();
+        var roomId = getRoomId();
         var user = getUser();
         var leaverCount = getLeaverCount();
-        connection.invoke("UserClickedContinue", gameId, user, leaverCount).catch(logError);
+        connection.invoke("UserClickedContinue", roomId, user, leaverCount).catch(logError);
         event.preventDefault();
     }
 );
@@ -174,10 +174,10 @@ document.getElementById("actionContinue").addEventListener("click",
 
 document.getElementById("actionReveal").addEventListener("click",
     function (event) {
-        var gameId = getGameId();
+        var roomId = getRoomId();
         var user = getUser();
         var leaverCount = getLeaverCount();
-        connection.invoke("UserClickedReveal", gameId, user, leaverCount).catch(logError);
+        connection.invoke("UserClickedReveal", roomId, user, leaverCount).catch(logError);
         event.preventDefault();
     }
 );
@@ -185,20 +185,20 @@ document.getElementById("actionReveal").addEventListener("click",
 // --------------- CHECK
 
 document.getElementById("actionCheck").addEventListener("click", function (event) {
-    var gameId = getGameId();
+    var roomId = getRoomId();
     var user = getUser();
     var leaverCount = getLeaverCount();
-    connection.invoke("UserClickedCheck", gameId, user, leaverCount).catch(logError);
+    connection.invoke("UserClickedCheck", roomId, user, leaverCount).catch(logError);
     event.preventDefault();
 });
 
 // --------------- CALL
 
 document.getElementById("actionCall").addEventListener("click", function (event) {
-    var gameId = getGameId();
+    var roomId = getRoomId();
     var user = getUser();
     var leaverCount = getLeaverCount();
-    connection.invoke("UserClickedCall", gameId, user, leaverCount).catch(logError);
+    connection.invoke("UserClickedCall", roomId, user, leaverCount).catch(logError);
     event.preventDefault();
 });
 
@@ -206,11 +206,11 @@ document.getElementById("actionCall").addEventListener("click", function (event)
 
 document.getElementById("actionRaise").addEventListener("click",
     function (event) {
-        var gameId = getGameId();
+        var roomId = getRoomId();
         var user = getUser();
         var raiseAmount = getModifiers();
         var leaverCount = getLeaverCount();
-        connection.invoke("UserClickedRaise", gameId, user, leaverCount, raiseAmount).catch(logError);
+        connection.invoke("UserClickedRaise", roomId, user, leaverCount, raiseAmount).catch(logError);
         event.preventDefault();
     }
 );
@@ -218,51 +218,51 @@ document.getElementById("actionRaise").addEventListener("click",
 // --------------- COVER
 
 document.getElementById("actionCover").addEventListener("click", function (event) {
-    var gameId = getGameId();
+    var roomId = getRoomId();
     var user = getUser();
     var leaverCount = getLeaverCount();
-    connection.invoke("UserClickedCover", gameId, user, leaverCount).catch(logError);
+    connection.invoke("UserClickedCover", roomId, user, leaverCount).catch(logError);
     event.preventDefault();
 });
 
 // --------------- FOLD
 
 document.getElementById("actionFold").addEventListener("click", function (event) {
-    var gameId = getGameId();
+    var roomId = getRoomId();
     var user = getUser();
     var leaverCount = getLeaverCount();
-    connection.invoke("UserClickedFold", gameId, user, leaverCount).catch(logError);
+    connection.invoke("UserClickedFold", roomId, user, leaverCount).catch(logError);
     event.preventDefault();
 });
 
 // --------------- Get Game State (test feature)
 
 document.getElementById("actionGetState").addEventListener("click", function (event) {
-    var gameId = getGameId();
+    var roomId = getRoomId();
     var user = getUser();
     var leaverCount = getLeaverCount();
-    connection.invoke("UserClickedGetState", gameId, user, leaverCount).catch(logError);
+    connection.invoke("UserClickedGetState", roomId, user, leaverCount).catch(logError);
     event.preventDefault();
 });
 
 // --------------- Get Game Log (test feature)
 
 document.getElementById("actionGetLog").addEventListener("click", function (event) {
-    var gameId = getGameId();
+    var roomId = getRoomId();
     var user = getUser();
     var leaverCount = getLeaverCount();
-    connection.invoke("UserClickedGetLog", gameId, user, leaverCount).catch(logError);
+    connection.invoke("UserClickedGetLog", roomId, user, leaverCount).catch(logError);
     event.preventDefault();
 });
 
 // --------------- Get Game Log (test feature)
 
 document.getElementById("actionAdHocQuery").addEventListener("click", function (event) {
-    var gameId = getGameId();
+    var roomId = getRoomId();
     var user = getUser();
     var leaverCount = getLeaverCount();
     var queryNum = getModifiers();
-    connection.invoke("UserClickedAdHocQuery", gameId, user, leaverCount, queryNum).catch(logError);
+    connection.invoke("UserClickedAdHocQuery", roomId, user, leaverCount, queryNum).catch(logError);
     event.preventDefault();
 });
 
@@ -270,21 +270,21 @@ document.getElementById("actionAdHocQuery").addEventListener("click", function (
 // --------------- Replay game from game log (test feature)
 
 document.getElementById("actionReplay").addEventListener("click", function (event) {
-    var gameId = getGameId();
+    var roomId = getRoomId();
     var user = getUser();
     var leaverCount = getLeaverCount();
     var gameLog = getModifiers();
-    connection.invoke("UserClickedReplay", gameId, user, leaverCount, gameLog).catch(logError);
+    connection.invoke("UserClickedReplay", roomId, user, leaverCount, gameLog).catch(logError);
     event.preventDefault();
 });
 
 // --------------- Get My Game State (test feature)
 
 document.getElementById("actionGetMyState").addEventListener("click", function (event) {
-    var gameId = getGameId();
+    var roomId = getRoomId();
     var user = getUser();
     var leaverCount = getLeaverCount();
-    connection.invoke("UserClickedGetMyState", gameId, user, leaverCount).catch(logError);
+    connection.invoke("UserClickedGetMyState", roomId, user, leaverCount).catch(logError);
     event.preventDefault();
 });
 
