@@ -34,10 +34,10 @@ namespace SevenStuds.Models
         public List<string> AvailableActions { get; set; } // A player-centric view of the actions available to them
         public List<List<int>> Pots { get; set; } // pot(s) built up in the current hand (over multiple rounds of betting)
         public List<List<string>> LastHandResult { get; set; }
-        public List<List<PotResult>> MostRecentHandResult { get; set; } 
         public List<PlayerCentricParticipantView> PlayerViewOfParticipants { get; set; } // ordered list of participants (order represents order around the table)
         public Card CommunityCard { get; set; }
         public List<Boolean> CardPositionIsVisible { get; set; }
+        public List<List<PotResult>> MostRecentHandResult { get; set; } 
         public LobbyData LobbyData { get; set; }
         public PlayerCentricGameView(Game g, int requestedPlayerIndex, int spectatorIndex) {
             // Build up this player's view of the game
