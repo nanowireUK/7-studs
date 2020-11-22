@@ -142,9 +142,11 @@ namespace SevenStuds.Models
             BankruptcyEventHistoryForGame = new List<BankruptcyEvent>();
             if ( this.IsRunningInTestMode() == false ) {
                 // Normal game, so randomise player order by picking a random player, deleting and moving to front, repeating a few times
-                for (int player = 0; player < Participants.Count; player++) {
-                    Participant p = Participants[player]; // Get reference to player to be moved
-                    Participants.RemoveAt(player); // Remove it from the current list
+                Random r = ServerState.ServerLevelRandomNumberGenerator;
+                for (int i = 0; i < 20; i++) {
+                    int randomPlayerIndex = r.Next(0, Participants.Count - 1); // Note: include player 0 to ensure randomness even when only two players
+                    Participant p = Participants[randomPlayerIndex]; // Get reference to player to be moved
+                    Participants.RemoveAt(randomPlayerIndex); // Remove it from the current list
                     Participants.Insert(0, p); // Move to front of the queue
                 }
             }
