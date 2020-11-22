@@ -78,9 +78,9 @@ namespace SevenStuds.Models
                 }
             }
 
-            // If there is no active game against this room, create an 'empty' game
+            // If there is no active game against this room, create an 'empty', unstarted game
             if ( newRoom.ActiveGame == null){
-                newRoom.ActiveGame = new Game();
+                newRoom.ActiveGame = new Game(newRoom, 0);
             }
 
             // Finally return the room we've just found or created

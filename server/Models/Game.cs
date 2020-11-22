@@ -11,7 +11,10 @@ namespace SevenStuds.Models
     {
         [Required]
         // Fixed game properties
-        public string GameId { get; }
+        private Room Room;
+        public int GameNumber { get; set; }
+        public int HandsPlayedIncludingCurrent { get; set; } // 0 = game not yet started
+        public int ActionNumber { get; set; }
         public GameModeEnum GameMode { get; set; }
         public int InitialChipQuantity { get; set; }
         public int Ante { get; set; }
@@ -22,7 +25,6 @@ namespace SevenStuds.Models
         public List<string> HandCommentary { get; set; }
         public List<List<string>> LastHandResult { get; set; }
         public List<List<PotResult>> MostRecentHandResult { get; set; } // New way of doing this 
-        public int HandsPlayedIncludingCurrent { get; set; } // 0 = game not yet started
         public int IndexOfParticipantDealingThisHand { get; set; } // Rotates from player 0
         public int IndexOfParticipantToTakeNextAction { get; set; } // Determined by cards showing (at start of round) then on player order
         public int CallAmountForParticipantToTakeNextAction { get; set; } // So that client doesn't need to work this out
@@ -38,7 +40,6 @@ namespace SevenStuds.Models
         public DateTimeOffset LastSuccessfulAction { get; set; }
         protected GameLog _GameLog { get; set; }
         protected GameLog _TestContext { get; set; }
-        protected int ActionNumber { get; set; }
         public List<BankruptcyEvent> BankruptcyEventHistoryForGame { get; set; }
         private Dictionary<string, Participant> _ConnectionToParticipantMap { get; set; } 
         private Dictionary<string, Spectator> _ConnectionToSpectatorMap { get; set; } 
@@ -50,8 +51,14 @@ namespace SevenStuds.Models
         public List<Boolean> CardPositionIsVisible { get; } = new List<Boolean>{false, false, true, true, true, true, false};
         public LobbyData LobbyData { get; set; }
         private Deck CardPack { get; set; }
-        public Game() {
+        public Game(Room roomRef, int gameNumber) {
+            this.Room = roomRef;
+            this.GameNumber = gameNumber;
             this.InitialiseGame(null);
+        }
+
+        public Room ParentRoom() {
+            return this.Room;
         }
 
         public void InitialiseGame(GameLog testContext)
@@ -131,9 +138,10 @@ namespace SevenStuds.Models
 
         public void StartGame()
         {
+            GameNumber++;
             HandsPlayedIncludingCurrent = 0;
-            CountOfLeavers = 0;
             ActionNumber = 0;
+            CountOfLeavers = 0;
             foreach ( Participant p in Participants )
             {
                 p.UncommittedChips = this.InitialChipQuantity;

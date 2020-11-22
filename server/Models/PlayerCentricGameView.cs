@@ -11,13 +11,14 @@ namespace SevenStuds.Models
         /// A player-specific view of the game state that is suitable for passing to the client as a deserialisable JSON string
         /// </summary>
         /// <remarks>A player-specific view of the game state that is suitable for passing to the client as a deserialisable JSON string</remarks>
-  
+
+        public string RoomId { get; }
+        public int GameNumber { get; set; }
+        public int HandsPlayedIncludingCurrent { get; set; } // 0 = game not yet started
+        public int ActionNumber { get; set; }
         public string StatusMessage { get; set; }
-        //public string LastEvent { get; set; }
-        //public string NextAction { get; set; }
         public string MyHandSummary  { get; set; }
         public string MyHandDescription { get; set; }
-        //public List<string> HandCommentary { get; set; }        
         public string MyRejoinCode { get; set; }
         public int MyCallAmount { get; set; }
         public int MyMaxRaise { get; set; }
@@ -27,8 +28,6 @@ namespace SevenStuds.Models
         public Boolean IAmAdministrator { get; set; }
         public int InitialChipQuantity { get; set; }
         public int Ante { get; set; }
-        public string GameId { get; }
-        public int HandsPlayedIncludingCurrent { get; set; } // 0 = game not yet started
         public int RoundNumberIfCardsJustDealt { get; set; } // So that client know it can animate the deal
         public int CountOfLeavers { get; set; }
         public List<string> AvailableActions { get; set; } // A player-centric view of the actions available to them
@@ -48,11 +47,13 @@ namespace SevenStuds.Models
                 playerIndex = g.IndexOfParticipantDealingThisHand;
             }
             // Set the game level items that don't matter whether the player is a spectator or a player
+            GameNumber = g.GameNumber;
+            HandsPlayedIncludingCurrent = g.HandsPlayedIncludingCurrent;
+            ActionNumber = g.ActionNumber;
             StatusMessage = g.StatusMessage;
             InitialChipQuantity = g.InitialChipQuantity;
             Ante = g.Ante;
-            GameId = g.GameId;
-            HandsPlayedIncludingCurrent = g.HandsPlayedIncludingCurrent;
+            RoomId = g.ParentRoom().RoomId;
             RoundNumberIfCardsJustDealt = g.RoundNumberIfCardsJustDealt;
             CountOfLeavers = g.CountOfLeavers;
             CommunityCard = g.CommunityCard;
