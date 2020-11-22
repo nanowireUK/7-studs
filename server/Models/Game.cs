@@ -40,8 +40,8 @@ namespace SevenStuds.Models
         protected GameLog _TestContext { get; set; }
         protected int ActionNumber { get; set; }
         public List<BankruptcyEvent> BankruptcyEventHistoryForGame { get; set; }
-        public Dictionary<string, Participant> _ConnectionToParticipantMap { get; set; } 
-        public Dictionary<string, Spectator> _ConnectionToSpectatorMap { get; set; } 
+        private Dictionary<string, Participant> _ConnectionToParticipantMap { get; set; } 
+        private Dictionary<string, Spectator> _ConnectionToSpectatorMap { get; set; } 
         public List<List<int>> Pots { get; set; } // pot(s) built up in the current hand (over multiple rounds of betting)
         public List<Participant> Participants { get; set; } // ordered list of participants (order represents order around the table)
         public List<Spectator> Spectators { get; set; } // ordered list of spectators (no representation around the table)
@@ -87,6 +87,11 @@ namespace SevenStuds.Models
         }
         public bool IsRunningInTestMode() {
             return this._TestContext != null;
+        }
+
+        public void ClearConnectionMappings() {
+            _ConnectionToParticipantMap.Clear(); // Clear out the tester's current connection (and any other connections currently associated with the game)
+            _ConnectionToSpectatorMap.Clear(); // Clear out the tester's current connection (and any other connections currently associated with the game)
         }
 
         public void LinkConnectionToParticipant(string connectionId, Participant p) 
@@ -640,16 +645,6 @@ namespace SevenStuds.Models
         public Card DealCard() {
             return this.CardPack.NextCard(); 
         }
-
-        // private string PickRandomCardFromDeck() {
-        //     int cardCount = this.UndealtCards.Count;
-        //     Random r = new Random();
-        //     int rInt = r.Next(0, cardCount - 1); //for ints
-        //     string selectedCard = this.UndealtCards[rInt];
-        //     this.UndealtCards.RemoveAt(rInt);
-        //     return selectedCard;
-        // }
-
         public void SetNextPlayerToActOrHandleEndOfHand(int currentPlayerIndex, string Trigger) {
             // Check for scenario where only one active player is left
             if ( CountOfPlayersLeftInHand() == 1 ) {

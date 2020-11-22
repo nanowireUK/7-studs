@@ -15,8 +15,7 @@ namespace SevenStuds.Models
         {
             ResponseType = ActionResponseTypeEnum.OverallGameState; // On completion of replay, the tester will have the overall game state returned to them
             ResponseAudience =  ActionResponseAudienceEnum.Caller; // Tester will then have to rejoin each player using their respective rejoin codes
-            G._ConnectionToParticipantMap.Clear(); // Clear out the tester's current connection (and any other connections currently associated with the game)
-            G._ConnectionToSpectatorMap.Clear(); // Clear out the tester's current connection (and any other connections currently associated with the game)
+            G.ClearConnectionMappings();
             GameLog historicalGameLog = JsonSerializer.Deserialize<GameLog>(this.Parameters);
             FixCardOrderInDesererialisedDecks(historicalGameLog); // (it loads them in array order, which gives a reversed deck)
 
