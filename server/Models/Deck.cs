@@ -108,7 +108,7 @@ namespace SevenStuds.Models
         {
             //Collection<Card> col = new Collection<Card>();
             List<Card> lst = new List<Card>();
-            Random r = new Random();
+            Random r = ServerState.ServerLevelRandomNumberGenerator;
             Card c;
             int j;
 

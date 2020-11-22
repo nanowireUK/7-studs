@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
+//using System.Collections.Generic;
 
 namespace SevenStuds.Models
 {
@@ -16,6 +16,8 @@ namespace SevenStuds.Models
             if ( origin_value == null ) { return false; }
             return ( origin_value == "https://7studsserver.azurewebsites.net/" );
         }
+
+        public static Random ServerLevelRandomNumberGenerator = new Random();
 
         // public static Boolean GameExists(string gameId) {
         //     string lowercaseId = gameId.ToLower();

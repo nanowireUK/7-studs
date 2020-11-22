@@ -48,7 +48,7 @@ namespace SevenStuds.Models
         public string GenerateRejoinCode() {
             string seed = "abcdefghijkmnopqrstuvwxyz023456789"; // no '1' and no 'l' as too easy to mix up
             string code = "";
-            Random r = new Random();
+            Random r = ServerState.ServerLevelRandomNumberGenerator;
             for ( int i = 0; i < 4; i++) {
                 code += seed[r.Next(0, seed.Length - i)];
             }
