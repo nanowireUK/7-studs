@@ -9,15 +9,15 @@ namespace SevenStuds.Models
         public string RoomId { get; set; }
         public Hashtable GameList = new Hashtable(); // Maps Room name to current Game object
         public Hashtable RoomHistory = new Hashtable(); // Map Room name to a history of completed game results
-        //public List<List<string>> RoomGameLogHistory = new List<List<string>>(); // Map Room name to a history of game logs
         public Game ActiveGame { get; set; }
-        public List<GameLog> GameLogs { get; set; }
+        public List<GameLog> GameLogs { get; set; } // Copies of game logs get dumped here each time a game completes in this room
         public LobbyData LobbyData { get; set; }
         protected List<User> RegisteredUsers { get; set; }
         public string AdHocQueryType { get; set; }
         public Room(string roomId) {
             RoomId = roomId;
             RegisteredUsers = new List<User>();
+            GameLogs = new List<GameLog>();
             ActiveGame = null;
         }
         // public void AddCompletedGameToRoomHistory(Game g) {

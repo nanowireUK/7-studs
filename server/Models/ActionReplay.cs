@@ -24,6 +24,7 @@ namespace SevenStuds.Models
             G.InitialiseGame(historicalGameLog); // Clear the current game and set the test context (this affects various program behaviours)
 
             // Replay each game action in the recorded order (including joins and starts)
+            int inconsistenciesFound = 0;
             foreach ( GameLogAction gla in historicalGameLog.actions ) {
                 ActionEnum actionType = gla.ActionType;
                 Action a = ActionFactory.NewAction(
@@ -48,26 +49,23 @@ namespace SevenStuds.Models
                     System.Diagnostics.Debug.WriteLine("    " + c);                    
                 }
                  if ( G.StatusMessage != gla.StatusMessage ){
+                    inconsistenciesFound++;
                     System.Diagnostics.Debug.WriteLine("  Status Message is not consistent:");
                     System.Diagnostics.Debug.WriteLine("    ORIGINAL : " + gla.StatusMessage);
                     System.Diagnostics.Debug.WriteLine("    REPLAY   : " + G.StatusMessage);
                 }
-                // if ( G.LastEvent != gla.LastEvent ){
-                //     System.Diagnostics.Debug.WriteLine("  Last Event is not consistent:");
-                //     System.Diagnostics.Debug.WriteLine("    ORIGINAL : " + gla.LastEvent);
-                //     System.Diagnostics.Debug.WriteLine("    REPLAY   : " + G.LastEvent);
-                // }
-                // if ( G.NextAction != gla.NextAction ){
-                //     System.Diagnostics.Debug.WriteLine("  Next Action is not consistent:");
-                //     System.Diagnostics.Debug.WriteLine("    ORIGINAL : " + gla.NextAction);
-                //     System.Diagnostics.Debug.WriteLine("    REPLAY   : " + G.NextAction);
-                // }                
             }
             foreach ( Participant p in G.Participants ) {
                 // Mark the player as locked ... this will be unlocked once someone joins as that player using a unique new connection
                 p.IsLockedOutFollowingReplay = true;
             }
-            System.Diagnostics.Debug.WriteLine("Replay complete, game will continue under normal conditions from here.");
+            if ( inconsistenciesFound == 0 ) {
+                System.Diagnostics.Debug.WriteLine("Replay complete, no inconsistent results, game will continue under normal conditions from here.");
+            }
+            else {
+                System.Diagnostics.Debug.WriteLine("WARNING: " + inconsistenciesFound + "inconsistencies in results were identified ... please review the replay log");
+                System.Diagnostics.Debug.WriteLine("Game will nonetheless continue under normal conditions from here.");
+            }
             System.Diagnostics.Debug.WriteLine("Use the game state to find each player and rejoin each of them from a separate browser using their respective rejoin codes.");
             G.SetTestContext(null); // Clear the test context, game will continue under normal conditions from here            
         }

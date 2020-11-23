@@ -23,8 +23,8 @@ namespace SevenStuds.Models
                             queryResults.Add("Key: " + de.Key + " Value: " + de.Value);
                         }
                         break;   
-                    case "list-rooms": 
-                        // List open games  
+                    case "list-games": 
+                        // List rooms with active games
                         foreach (DictionaryEntry pair in ServerState.RoomList )
                         {
                             Room r = (Room) pair.Value;
@@ -48,13 +48,15 @@ namespace SevenStuds.Models
 
                         }
                         break;    
-                    case "list-logs": 
-                        // Return the game logs from all games completed under the current game id
-                        // List<string> logsForThisGame = (List<string>) R.RoomGameLogHistory[thisRoom.GameId];
-                        // foreach ( string log in logsForThisGame ) {
-                        //     queryResults.Add(log);
-                        // }
-                        queryResults.Add("Not implemented");
+                    case "list-logs":
+                        // Return the game logs from all games completed since the server last restarted
+                        foreach (DictionaryEntry pair in ServerState.RoomList )
+                        {
+                            Room r = (Room) pair.Value;
+                            foreach ( GameLog gl in r.GameLogs) {
+                                queryResults.Add(gl.AsJson());
+                            }
+                        }
                         break;  
                     default:  
                         throw new SystemException("Query type " + queryType + " not implemented");
@@ -66,15 +68,5 @@ namespace SevenStuds.Models
                 queryResults.Add(e.Message);
             }
         }
-        // public string AsJson()
-        // {
-        //     var options = new JsonSerializerOptions
-        //     {
-        //         WriteIndented = true,
-        //     };
-        //     //options.Converters.Add(new JsonStringEnumConverter(null /*JsonNamingPolicy.CamelCase*/));
-        //     string jsonString = JsonSerializer.Serialize(this, options);
-        //     return jsonString;
-        // }  
     }
 }

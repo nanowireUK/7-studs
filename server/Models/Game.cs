@@ -50,7 +50,8 @@ namespace SevenStuds.Models
         public List<ActionAvailability> ActionAvailabilityList { get; set; } // This list contains references to the same objects as in the Dictionary       
         public List<Boolean> CardPositionIsVisible { get; } = new List<Boolean>{false, false, true, true, true, true, false};
         public LobbyData LobbyData { get; set; }
-        private Deck CardPack { get; set; }
+        private Deck CardPack { get; set; } // Starts as a full shuffled deck but is depleted as cards are dealt from it
+        private Deck SnapshotOfDeckForCurrentHand { get; set; } // Captures the full shuffled deck as at the start of the hand
         public Game(Room roomRef, int gameNumber) {
             this.Room = roomRef;
             this.GameNumber = gameNumber;
@@ -84,10 +85,23 @@ namespace SevenStuds.Models
             CountOfLeavers = 0;
             ActionNumber = 0;
             SetActionAvailabilityBasedOnCurrentPlayer(); // Ensures the initial section of available actions is set
-
-            this._GameLog = new GameLog(); // Initially empty, will be added to as game actions take place
+            StartNewGameLog(); // This sets up a dummy log that will just capture joins ahead of any actual games
         }
-
+        public void StartNewGameLog() {
+            // Initialise the game log, which will be added to as game actions take place
+            this._GameLog = new GameLog(); 
+            this._GameLog.roomId = this.ParentRoom().RoomId;
+            // Log player order
+            this._GameLog.playersInOrderAtStartOfGame = new List<string>();
+            foreach ( Participant p in this.Participants ) {
+                this._GameLog.playersInOrderAtStartOfGame.Add(p.Name);
+                //System.Diagnostics.Debug.WriteLine("Logging player "+p.Name);
+                if ( p.IsGameAdministrator ) {
+                    this._GameLog.administrator = p.Name; 
+                }
+            }
+            this.ParentRoom().GameLogs.Add(this._GameLog); // Add the game log to the history of game logs for the room
+        }
         public void SetTestContext(GameLog testContext)
         {
             _TestContext = testContext; // Note: this affects some system behaviour ... need to search for IsRunningInTestMode() to see where
@@ -204,7 +218,9 @@ namespace SevenStuds.Models
                 }                   
             }
             StartTime = DateTimeOffset.Now;
-            this.LogPlayers(); // Record the (potentially modified) player order at the start of this game
+            StartNewGameLog(); // start a new log for this game
+
+
         }
 
         public void RemoveDisconnectedPlayersFromGameState() {
@@ -276,7 +292,7 @@ namespace SevenStuds.Models
                 CardPack = this._TestContext.decks[HandsPlayedIncludingCurrent - 1].Clone(newDeckId);
             }
 
-            this.LogSnapshotOfGameDeck();
+            this.TakeSnapshotOfNewDeck();
 
             this.Pots = new List<List<int>>();
             this.Pots.Add(new List<int>());
@@ -748,7 +764,7 @@ namespace SevenStuds.Models
             // Start with oldest pot and work forwards. 
             // Only players who have contributed to a pot and have not folded are to be considered
             AddCommentary(Trigger);
-            _GameLog.RecordProvisionalEndTime();
+            _GameLog.LogEndOfHand(this.SnapshotOfDeckForCurrentHand);
 
             ClearResultDetails();
 
@@ -916,20 +932,9 @@ namespace SevenStuds.Models
             return jsonString;
         }  
 
-        public void LogPlayers(){
-            // Relog players
-            this._GameLog.playersInOrderAtStartOfGame = new List<string>();
-            foreach ( Participant p in this.Participants ) {
-                this._GameLog.playersInOrderAtStartOfGame.Add(p.Name);
-                System.Diagnostics.Debug.WriteLine("Logging player "+p.Name);
-                if ( p.IsGameAdministrator ) {
-                    this._GameLog.administrator = p.Name;
-                }
-            }
-        } 
 
-        public void LogSnapshotOfGameDeck(){
-            this._GameLog.decks.Add(this.CardPack.Clone());
+        public void TakeSnapshotOfNewDeck(){
+            this.SnapshotOfDeckForCurrentHand = this.CardPack.Clone();
         } 
 
         public void LogActionWithResults(Action a) {
@@ -938,27 +943,26 @@ namespace SevenStuds.Models
                 a, 
                 this.ActionNumber,
                 this.StatusMessage,
-                this.LastEvent,
-                this.NextAction, 
-                this.HandCommentary, 
-                this.HandSummaries()));
+                this.HandCommentary
+                // , this.HandSummaries()
+                ));
             this.LastSuccessfulAction = DateTimeOffset.Now; 
         }
 
-        public List<string> HandSummaries()
-        {
-            List<string> r = new List<string>();
-            foreach ( Participant p in this.Participants ) {
-                r.Add(
-                    p.Name 
-                    + " Folded=" + p.HasFolded
-                    + " Covered=" + p.HasCovered
-                    + " Out=" + p.IsOutOfThisGame
-                    + " Cards=" + p._HandSummary
-                );
-            }
-            return r;
-        }
+        // public List<string> HandSummaries()
+        // {
+        //     List<string> r = new List<string>();
+        //     foreach ( Participant p in this.Participants ) {
+        //         r.Add(
+        //             p.Name 
+        //             + " Folded=" + p.HasFolded
+        //             + " Covered=" + p.HasCovered
+        //             + " Out=" + p.IsOutOfThisGame
+        //             + " Cards=" + p._HandSummary
+        //         );
+        //     }
+        //     return r;
+        // }
         public string GameLogAsJson() {
             return this._GameLog.AsJson();
         }
