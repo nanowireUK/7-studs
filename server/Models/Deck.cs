@@ -4,32 +4,35 @@ using System.Collections.Generic;
 
 namespace SevenStuds.Models
 {
-    public class Deck : Stack<Card>
+    public class Deck
     {
-
-    /// <summary>
-    /// A deck of playing cards.
-    /// </summary>
-    /// <remarks>This class represents a standard deck of 52 playing cards.</remarks>
+        /// <summary>
+        /// A deck of 52 playing cards.
+        /// </summary>
+        /// <remarks>This class represents a standard deck of 52 playing cards.</remarks>
 
         /// <summary>
         /// Initializes the Deck.
         /// </summary>
         /// <param name="Shuffled">Optional. If True, Deck will be shuffled after it is initialized.</param>
         /// <remarks>Creates a new Deck with 52 standard playing cards.</remarks>
-        public Deck()
+
+        public string DeckId { get; set; }
+        public Stack<Card> Cards { get; set; }
+        public Deck() // parameterless constructor is required for the JSON deserialiser
         {
-            this.Clear(); // used by JSON deserialiser
+            Cards = new Stack<Card>();
+            Cards.Clear(); 
         }
-        public Deck(bool shuffle = true)
+        public Deck(string deckId, bool shuffle = true)
         {
+            Cards = new Stack<Card>();
+            Cards.Clear(); 
+            DeckId = deckId;
+            InitDeck();
             if (shuffle)
             {
                 Shuffle();
-            }
-            else
-            {
-                InitDeck();
             }
         }
 
@@ -41,89 +44,78 @@ namespace SevenStuds.Models
         /// Deck has 52 Cards (no Jokers).</remarks>
         private void InitDeck()
         {
-            this.Clear();
+            Cards.Clear();
 
-            this.Push(new Card(CardEnum.Two, SuitEnum.Spades));
-            this.Push(new Card(CardEnum.Three, SuitEnum.Spades));
-            this.Push(new Card(CardEnum.Four, SuitEnum.Spades));
-            this.Push(new Card(CardEnum.Five, SuitEnum.Spades));
-            this.Push(new Card(CardEnum.Six, SuitEnum.Spades));
-            this.Push(new Card(CardEnum.Seven, SuitEnum.Spades));
-            this.Push(new Card(CardEnum.Eight, SuitEnum.Spades));
-            this.Push(new Card(CardEnum.Nine, SuitEnum.Spades));
-            this.Push(new Card(CardEnum.Ten, SuitEnum.Spades));
-            this.Push(new Card(CardEnum.Jack, SuitEnum.Spades));
-            this.Push(new Card(CardEnum.Queen, SuitEnum.Spades));
-            this.Push(new Card(CardEnum.King, SuitEnum.Spades));
-            this.Push(new Card(CardEnum.Ace, SuitEnum.Spades));
+            Cards.Push(new Card(CardEnum.Two, SuitEnum.Spades));
+            Cards.Push(new Card(CardEnum.Three, SuitEnum.Spades));
+            Cards.Push(new Card(CardEnum.Four, SuitEnum.Spades));
+            Cards.Push(new Card(CardEnum.Five, SuitEnum.Spades));
+            Cards.Push(new Card(CardEnum.Six, SuitEnum.Spades));
+            Cards.Push(new Card(CardEnum.Seven, SuitEnum.Spades));
+            Cards.Push(new Card(CardEnum.Eight, SuitEnum.Spades));
+            Cards.Push(new Card(CardEnum.Nine, SuitEnum.Spades));
+            Cards.Push(new Card(CardEnum.Ten, SuitEnum.Spades));
+            Cards.Push(new Card(CardEnum.Jack, SuitEnum.Spades));
+            Cards.Push(new Card(CardEnum.Queen, SuitEnum.Spades));
+            Cards.Push(new Card(CardEnum.King, SuitEnum.Spades));
+            Cards.Push(new Card(CardEnum.Ace, SuitEnum.Spades));
 
-            this.Push(new Card(CardEnum.Two, SuitEnum.Hearts));
-            this.Push(new Card(CardEnum.Three, SuitEnum.Hearts));
-            this.Push(new Card(CardEnum.Four, SuitEnum.Hearts));
-            this.Push(new Card(CardEnum.Five, SuitEnum.Hearts));
-            this.Push(new Card(CardEnum.Six, SuitEnum.Hearts));
-            this.Push(new Card(CardEnum.Seven, SuitEnum.Hearts));
-            this.Push(new Card(CardEnum.Eight, SuitEnum.Hearts));
-            this.Push(new Card(CardEnum.Nine, SuitEnum.Hearts));
-            this.Push(new Card(CardEnum.Ten, SuitEnum.Hearts));
-            this.Push(new Card(CardEnum.Jack, SuitEnum.Hearts));
-            this.Push(new Card(CardEnum.Queen, SuitEnum.Hearts));
-            this.Push(new Card(CardEnum.King, SuitEnum.Hearts));
-            this.Push(new Card(CardEnum.Ace, SuitEnum.Hearts));
+            Cards.Push(new Card(CardEnum.Two, SuitEnum.Hearts));
+            Cards.Push(new Card(CardEnum.Three, SuitEnum.Hearts));
+            Cards.Push(new Card(CardEnum.Four, SuitEnum.Hearts));
+            Cards.Push(new Card(CardEnum.Five, SuitEnum.Hearts));
+            Cards.Push(new Card(CardEnum.Six, SuitEnum.Hearts));
+            Cards.Push(new Card(CardEnum.Seven, SuitEnum.Hearts));
+            Cards.Push(new Card(CardEnum.Eight, SuitEnum.Hearts));
+            Cards.Push(new Card(CardEnum.Nine, SuitEnum.Hearts));
+            Cards.Push(new Card(CardEnum.Ten, SuitEnum.Hearts));
+            Cards.Push(new Card(CardEnum.Jack, SuitEnum.Hearts));
+            Cards.Push(new Card(CardEnum.Queen, SuitEnum.Hearts));
+            Cards.Push(new Card(CardEnum.King, SuitEnum.Hearts));
+            Cards.Push(new Card(CardEnum.Ace, SuitEnum.Hearts));
 
-            this.Push(new Card(CardEnum.Two, SuitEnum.Clubs));
-            this.Push(new Card(CardEnum.Three, SuitEnum.Clubs));
-            this.Push(new Card(CardEnum.Four, SuitEnum.Clubs));
-            this.Push(new Card(CardEnum.Five, SuitEnum.Clubs));
-            this.Push(new Card(CardEnum.Six, SuitEnum.Clubs));
-            this.Push(new Card(CardEnum.Seven, SuitEnum.Clubs));
-            this.Push(new Card(CardEnum.Eight, SuitEnum.Clubs));
-            this.Push(new Card(CardEnum.Nine, SuitEnum.Clubs));
-            this.Push(new Card(CardEnum.Ten, SuitEnum.Clubs));
-            this.Push(new Card(CardEnum.Jack, SuitEnum.Clubs));
-            this.Push(new Card(CardEnum.Queen, SuitEnum.Clubs));
-            this.Push(new Card(CardEnum.King, SuitEnum.Clubs));
-            this.Push(new Card(CardEnum.Ace, SuitEnum.Clubs));
+            Cards.Push(new Card(CardEnum.Two, SuitEnum.Clubs));
+            Cards.Push(new Card(CardEnum.Three, SuitEnum.Clubs));
+            Cards.Push(new Card(CardEnum.Four, SuitEnum.Clubs));
+            Cards.Push(new Card(CardEnum.Five, SuitEnum.Clubs));
+            Cards.Push(new Card(CardEnum.Six, SuitEnum.Clubs));
+            Cards.Push(new Card(CardEnum.Seven, SuitEnum.Clubs));
+            Cards.Push(new Card(CardEnum.Eight, SuitEnum.Clubs));
+            Cards.Push(new Card(CardEnum.Nine, SuitEnum.Clubs));
+            Cards.Push(new Card(CardEnum.Ten, SuitEnum.Clubs));
+            Cards.Push(new Card(CardEnum.Jack, SuitEnum.Clubs));
+            Cards.Push(new Card(CardEnum.Queen, SuitEnum.Clubs));
+            Cards.Push(new Card(CardEnum.King, SuitEnum.Clubs));
+            Cards.Push(new Card(CardEnum.Ace, SuitEnum.Clubs));
 
-            this.Push(new Card(CardEnum.Two, SuitEnum.Diamonds));
-            this.Push(new Card(CardEnum.Three, SuitEnum.Diamonds));
-            this.Push(new Card(CardEnum.Four, SuitEnum.Diamonds));
-            this.Push(new Card(CardEnum.Five, SuitEnum.Diamonds));
-            this.Push(new Card(CardEnum.Six, SuitEnum.Diamonds));
-            this.Push(new Card(CardEnum.Seven, SuitEnum.Diamonds));
-            this.Push(new Card(CardEnum.Eight, SuitEnum.Diamonds));
-            this.Push(new Card(CardEnum.Nine, SuitEnum.Diamonds));
-            this.Push(new Card(CardEnum.Ten, SuitEnum.Diamonds));
-            this.Push(new Card(CardEnum.Jack, SuitEnum.Diamonds));
-            this.Push(new Card(CardEnum.Queen, SuitEnum.Diamonds));
-            this.Push(new Card(CardEnum.King, SuitEnum.Diamonds));
-            this.Push(new Card(CardEnum.Ace, SuitEnum.Diamonds));
+            Cards.Push(new Card(CardEnum.Two, SuitEnum.Diamonds));
+            Cards.Push(new Card(CardEnum.Three, SuitEnum.Diamonds));
+            Cards.Push(new Card(CardEnum.Four, SuitEnum.Diamonds));
+            Cards.Push(new Card(CardEnum.Five, SuitEnum.Diamonds));
+            Cards.Push(new Card(CardEnum.Six, SuitEnum.Diamonds));
+            Cards.Push(new Card(CardEnum.Seven, SuitEnum.Diamonds));
+            Cards.Push(new Card(CardEnum.Eight, SuitEnum.Diamonds));
+            Cards.Push(new Card(CardEnum.Nine, SuitEnum.Diamonds));
+            Cards.Push(new Card(CardEnum.Ten, SuitEnum.Diamonds));
+            Cards.Push(new Card(CardEnum.Jack, SuitEnum.Diamonds));
+            Cards.Push(new Card(CardEnum.Queen, SuitEnum.Diamonds));
+            Cards.Push(new Card(CardEnum.King, SuitEnum.Diamonds));
+            Cards.Push(new Card(CardEnum.Ace, SuitEnum.Diamonds));
 
         }
         /// <summary>
         /// Shuffles the cards in the Deck.
         /// </summary>
         /// <remarks>If the Deck is not full (Count=52) then the Deck will be reinitialized with 52 Cards and shuffled.</remarks>
-        public void Shuffle()
+        private void Shuffle()
         {
-            //Collection<Card> col = new Collection<Card>();
             List<Card> lst = new List<Card>();
             Random r = ServerState.ServerLevelRandomNumberGenerator;
             Card c;
             int j;
-
-            if (this.Count != 52)
-            {
-                //cards have been dealt (popped from stack), 
-                //or the deck has not been created yet, 
-                //so lets start fresh.
-                //NEVER shuffle a partial deck.
-                InitDeck();
-            }
-
             for (int i = 0; i < 52; i++)
             {
-                c = this.Pop();
+                c = Cards.Pop();
                 lst.Add(c);
             }
 
@@ -132,7 +124,7 @@ namespace SevenStuds.Models
                 j = r.Next(0, 52 - i);
                 c = lst[j];
                 lst.RemoveAt(j);
-                this.Push(c);
+                Cards.Push(c);
             }
         }
         /// <summary>
@@ -143,19 +135,26 @@ namespace SevenStuds.Models
         /// This function will reduce the deck "Count" by 1.</remarks>
         public Card NextCard()
         {
-            return this.Pop();
+            return Cards.Pop();
         }
 
-        public Deck Clone()
+        public Deck Clone() 
         {
-            // Create a copy of the deck (ideally before any cards are dealt from it)
-            Deck myClone = new Deck(false);
-            while ( myClone.Count > 0 ) {
-                myClone.Pop(); // remove cards until all gone (thought Clear() would do this but not convinced)
-            }            
-            Card[] cards = this.ToArray();
-            for ( int i = 0; i < cards.Length; i++ ) {
-                myClone.Push(cards[i]);
+            // Clone the current deck, keeping the same deck id
+            return this.Clone(this.DeckId);
+        }
+        public Deck Clone(string deckId)
+        {
+            // Clone the current deck, but using the supplied deck id
+            Deck myClone = new Deck(deckId, false);
+            // Remove cards until all gone (thought Clear() would do this but not convinced)
+            while ( myClone.Cards.Count > 0 ) {
+                myClone.Cards.Pop(); 
+            }
+            // Copy the cards across one by one            
+            Card[] cardsAsArray = this.Cards.ToArray();
+            for ( int i = 0; i < cardsAsArray.Length; i++ ) {
+                myClone.Cards.Push(cardsAsArray[i]);
             }
             return myClone;
         }

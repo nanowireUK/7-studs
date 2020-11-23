@@ -71,7 +71,7 @@ namespace SevenStuds.Models
             InitialChipQuantity = 1000;
             Ante = 1;
 
-            CardPack = new Deck(true);
+            //CardPack = new Deck(true);
             HandCommentary = new List<string>();
             LastHandResult = new List<List<string>>();
             MostRecentHandResult = new List<List<PotResult>>();
@@ -266,12 +266,14 @@ namespace SevenStuds.Models
             this.ClearCommentary();
 
             // Set up the pack again
+            string newDeckId = GameNumber + "." + HandsPlayedIncludingCurrent;
             if ( this.IsRunningInTestMode() == false ) {
-                CardPack.Shuffle(); // refreshes the pack and shuffles it
+                // In normal mode, just create a new deck
+                CardPack = new Deck(newDeckId, true ); 
             }
             else {
                 // Need to replace the pack with the next one from the historical game log
-                CardPack = this._TestContext.decks[HandsPlayedIncludingCurrent - 1].Clone();
+                CardPack = this._TestContext.decks[HandsPlayedIncludingCurrent - 1].Clone(newDeckId);
             }
 
             this.LogSnapshotOfGameDeck();
@@ -425,7 +427,7 @@ namespace SevenStuds.Models
             _CardsDealtIncludingCurrent += 1;
             RoundNumberIfCardsJustDealt = _CardsDealtIncludingCurrent; // Will be cleared as soon as next action comes in
             CommunityCard = null;
-            if ( _CardsDealtIncludingCurrent == 7 && CountOfPlayersLeftInHand() > CardPack.Count ) {
+            if ( _CardsDealtIncludingCurrent == 7 && CountOfPlayersLeftInHand() > CardPack.Cards.Count ) {
                 // Edge case: we don't have enough cards to deal to all players (can only happen in round 7 if nearly everyone stayed in up to that point)
                 CommunityCard = DealCard(); // Random card that will be dealt to all players
             }

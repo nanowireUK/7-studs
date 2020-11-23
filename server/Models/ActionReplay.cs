@@ -73,11 +73,12 @@ namespace SevenStuds.Models
         }
 
         private void FixCardOrderInDesererialisedDecks(GameLog historicalGameLog) {
+            // This is really ugly and needs to go somewhere else, probably in Deck itself
             for ( int i = 0; i < historicalGameLog.decks.Count; i++){ 
                 Deck d = historicalGameLog.decks[i];
                 Deck temp = new Deck();
-                while (d.Count != 0) {
-                    temp.Push(d.Pop());
+                while (d.Cards.Count != 0) {
+                    temp.Cards.Push(d.Cards.Pop());
                 }
                 historicalGameLog.decks[i] = temp;
             }

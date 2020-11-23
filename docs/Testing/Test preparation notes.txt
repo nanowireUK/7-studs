@@ -1,0 +1,24 @@
+To convert old-style game logs (where Deck objects inherited from Stack instead of being composed of them):
+- Use Notepad++ JSON plugin to format original JSON to check ok
+- Use Notepad++ JSON plugin to compress the JSON
+- Do the global edits below
+- Use Notepad++ JSON plugin to reformat the JSON
+
+- (1) Global replace (for the initial deck):
+
+	- "decks":[[{"CardValue"
+	- "decks":[{"Cards":[{"CardValue"
+
+	
+- (2) Global replace (for the gaps between decks):
+
+	- }],[{
+	- }]},{"Cards":[{
+
+- (3) Global replace (to close the decks out)
+
+	- }]]}
+	- }]}]}
+	
+decks: list of list of cards
+new:   list of objects that include a list of cards
