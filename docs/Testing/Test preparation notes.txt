@@ -1,24 +1,50 @@
 To convert old-style game logs (where Deck objects inherited from Stack instead of being composed of them):
-- Use Notepad++ JSON plugin to format original JSON to check ok
-- Use Notepad++ JSON plugin to compress the JSON
-- Do the global edits below
-- Use Notepad++ JSON plugin to reformat the JSON
 
-- (1) Global replace (for the initial deck):
+- (1) Use Notepad++ JSON plugin to format original JSON to check ok
 
-	- "decks":[[{"CardValue"
-	- "decks":[{"Cards":[{"CardValue"
+- (2) Use Notepad++ JSON plugin to compress the JSON (Ctrl-Alt-Shift-C)
+      - Having it all as one long string avoids the need for complicated regular expressions that include newlines
+
+- (3) Do the global edits below, which will allow old and new format deck structure:
+      - old format: list of list of cards
+      - new format: list of Deck objects that each include a list of cards
+
+	- (a) Global replace (for change in attribute name):
+
+		- "playersInOrder"
+		- "playersInOrderAtStartOfGame"	
+
+	- (b) Global replace (for the initial deck) ... should be one change only:
+
+		- "decks":[[{"CardValue"
+		- "decks":[{"Cards":[{"CardValue"
+		
+	- (c) Global replace (for the gaps between decks) ... one change per deck:
+
+		- }],[{
+		- }]},{"Cards":[{
+
+	- (d) Global replace (to close the decks out) ... should be one change only:
+
+		- }]]}
+		- }]}]}
+
+- (4) Use Notepad++ JSON plugin to reformat the JSON (Ctrl-Alt-Shift-M)
+
+- (5) Ensure correct 'administrator' is defined	at the top (this is the person who started the game)
+
+- (6) Use the Replay action (from the server screen)
+		- Join any random game with any player name
+		- Paste the entire game log (that you have just reconstructed above) into the Parameters field
+		- Click ReplayGameFromLog
+		- If all runs ok it will return the 'overall game state'
+		- In the Participants area, find a player name and their RejoinCode
+		- Enter these into the User and Parameters area respectively and click Rejoin This Game
+		- Click Get Game Log
+		- That is the cleansed game log, with correct action numbers, deck ids, etc. 
+		- Compare it with the reconstructed game log just to be sure (all differences should be obvious and explainable)
+		- Add comments/notes as required
+		- Save the cleansed game log in the Game Logs area
+
 
 	
-- (2) Global replace (for the gaps between decks):
-
-	- }],[{
-	- }]},{"Cards":[{
-
-- (3) Global replace (to close the decks out)
-
-	- }]]}
-	- }]}]}
-	
-decks: list of list of cards
-new:   list of objects that include a list of cards
