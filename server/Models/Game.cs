@@ -15,6 +15,7 @@ namespace SevenStuds.Models
         public int GameNumber { get; set; }
         public int HandsPlayedIncludingCurrent { get; set; } // 0 = game not yet started
         public int ActionNumber { get; set; }
+        public List<string> rejoinCodes { get; set; }
         public GameModeEnum GameMode { get; set; }
         public int InitialChipQuantity { get; set; }
         public int Ante { get; set; }
@@ -39,7 +40,7 @@ namespace SevenStuds.Models
         public DateTimeOffset StartTime { get; set; }
         public DateTimeOffset LastSuccessfulAction { get; set; }
         protected GameLog _GameLog { get; set; }
-        protected GameLog _TestContext { get; set; }
+        protected GameLog _ReplayContext { get; set; }
         public List<BankruptcyEvent> BankruptcyEventHistoryForGame { get; set; }
         private Dictionary<string, Participant> _ConnectionToParticipantMap { get; set; } 
         private Dictionary<string, Spectator> _ConnectionToSpectatorMap { get; set; } 
@@ -62,11 +63,11 @@ namespace SevenStuds.Models
             return this.Room;
         }
 
-        public void InitialiseGame(GameLog testContext)
+        public void InitialiseGame(GameLog replayContext)
         {
             GameMode = GameModeEnum.LobbyOpen;
             LastSuccessfulAction = DateTimeOffset.Now; // This will be updated as the game progresses but need to set a baseline here
-            SetTestContext(testContext);
+            SetReplayContext(replayContext);
             Participants = new List<Participant>(); // start with empty list of participants
             Spectators = new List<Spectator>(); // start with empty list of spectators
             InitialChipQuantity = 1000;
@@ -102,12 +103,16 @@ namespace SevenStuds.Models
             }
             this.ParentRoom().GameLogs.Add(this._GameLog); // Add the game log to the history of game logs for the room
         }
-        public void SetTestContext(GameLog testContext)
+        public void SetReplayContext(GameLog replayContext)
         {
-            _TestContext = testContext; // Note: this affects some system behaviour ... need to search for IsRunningInTestMode() to see where
+            _ReplayContext = replayContext; // Note: this affects some system behaviour ... need to search for IsRunningInReplayMode() to see where
         }
-        public bool IsRunningInTestMode() {
-            return this._TestContext != null;
+        public GameLog GetReplayContext()
+        {
+            return this._ReplayContext;
+        }
+        public bool IsRunningInReplayMode() {
+            return this._ReplayContext != null;
         }
 
         public void ClearConnectionMappings() {
@@ -162,7 +167,7 @@ namespace SevenStuds.Models
                 p.HandsWon = 0;
             }
             BankruptcyEventHistoryForGame = new List<BankruptcyEvent>();
-            if ( this.IsRunningInTestMode() == false ) {
+            if ( this.IsRunningInReplayMode() == false ) {
                 // Normal game, so randomise player order by picking a random player, deleting and moving to front, repeating a few times
                 Random r = ServerState.ServerLevelRandomNumberGenerator;
                 for (int i = 0; i < 20; i++) {
@@ -176,7 +181,7 @@ namespace SevenStuds.Models
                 // We are running in test mode (i.e. under the control of an ActionReplay command) so set the original player order
                 // First remove any players who have not yet joined (allows for players joining between hands)
                 System.Diagnostics.Debug.WriteLine("Setting player order as per game log");
-                List<String> correctedPlayersInOrder = new List<String>(this._TestContext.playersInOrderAtStartOfGame);
+                List<String> correctedPlayersInOrder = new List<String>(this._ReplayContext.playersInOrderAtStartOfGame);
                 for ( int playerPos = correctedPlayersInOrder.Count - 1; playerPos >= 0; playerPos-- ) {
                     string playerName = correctedPlayersInOrder[playerPos];
                     bool participantExists = false;
@@ -208,11 +213,11 @@ namespace SevenStuds.Models
                 }
                 // Set the right player as the administrator 
                 foreach ( Participant p in Participants) {
-                    if ( p.IsGameAdministrator == false && p.Name == this._TestContext.administrator) {
+                    if ( p.IsGameAdministrator == false && p.Name == this._ReplayContext.administrator) {
                         p.IsGameAdministrator = true;
                         System.Diagnostics.Debug.WriteLine("Setting "+p.Name+" as administrator for the replay");
                     }
-                    if ( p.IsGameAdministrator == true && p.Name != this._TestContext.administrator) {
+                    if ( p.IsGameAdministrator == true && p.Name != this._ReplayContext.administrator) {
                         p.IsGameAdministrator = false;
                     }  
                 }                   
@@ -283,13 +288,13 @@ namespace SevenStuds.Models
 
             // Set up the pack again
             string newDeckId = GameNumber + "." + HandsPlayedIncludingCurrent;
-            if ( this.IsRunningInTestMode() == false ) {
+            if ( this.IsRunningInReplayMode() == false ) {
                 // In normal mode, just create a new deck
                 CardPack = new Deck(newDeckId, true ); 
             }
             else {
                 // Need to replace the pack with the next one from the historical game log
-                CardPack = this._TestContext.decks[HandsPlayedIncludingCurrent - 1].Clone(newDeckId);
+                CardPack = this._ReplayContext.decks[HandsPlayedIncludingCurrent - 1].Clone(newDeckId);
             }
 
             this.TakeSnapshotOfNewDeck();

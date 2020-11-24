@@ -9,6 +9,8 @@ namespace SevenStuds.Models
         // Used to record the progress of a game so that it can later be replayed (mainly intended for retesting scenarios)
         public string roomId { get; set; } // Records room name
         public string administrator { get; set; } // Records name of administrator
+        public int pauseAfter { get; set; } // Used only by ActionReplay ... enables user to request replayed game to be paused after a specific numbered action
+        public int indexOfLastReplayedAction { get; set; } 
         public DateTimeOffset startTimeUtc { get; set; }
         public DateTimeOffset endTimeUtc { get; set; }
         public List<string> playersInOrderAtStartOfGame { get; set; } // Records player names in the order that the game was played
@@ -19,6 +21,8 @@ namespace SevenStuds.Models
             this.playersInOrderAtStartOfGame = new List<string>();
             this.actions = new List<GameLogAction>();
             this.decks = new List<Deck>();
+            this.pauseAfter = 0; 
+            this.indexOfLastReplayedAction = -1; // means that next one will be 0
         }
 
         public void LogEndOfHand(Deck deckUsedForHandJustEnded) {

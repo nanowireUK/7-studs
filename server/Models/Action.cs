@@ -44,8 +44,16 @@ namespace SevenStuds.Models
             ResponseAudience =  ActionResponseAudienceEnum.AllPlayers; // Default audience for action response   
             SignalRGroupNameForAdditionalNotifications = null; // Will stay that way in most cases 
 
-            if ( G.IsRunningInTestMode() ) {
-                ConnectionId = UserName; // Simulate a unique connection id as there won't be a separate connection for each player
+            bool triggeredByRealUser = ( connectionId != "" ); 
+            if ( triggeredByRealUser && G.IsRunningInReplayMode() && ( this.ActionType != ActionEnum.Replay && this.ActionType != ActionEnum.Rejoin ) ) 
+            {
+                System.Diagnostics.Debug.WriteLine("Game was in replay mode but a user triggered an action other than Replay or Rejoin");
+                System.Diagnostics.Debug.WriteLine("Game is being taken out of replay mode and will continue under normal conditions from here");
+                G.SetReplayContext(null);
+            }  
+
+            if ( G.IsRunningInReplayMode() && triggeredByRealUser == false ) {
+                ConnectionId = UserName; // Simulate a unique connection id as there won't be a separate connection for players created via the replay process
             }
 
             // Ensure name is not blank
@@ -104,7 +112,7 @@ namespace SevenStuds.Models
                 if ( p == null /* from above */ && PlayerIndex != -1 && G.Participants[PlayerIndex].IsLockedOutFollowingReplay == true ) {
                     // This is a new connection AND the player is currently locked out following a 'replay' action, 
                     // so do an implicit Rejoin by linking the new connection to the current player
-                    // (note the game will no longer be in test mode at this stage, so IsRunningInTestMode() will show false even though this is as a result of testing)
+                    // (note the game will no longer be in test mode at this stage, so IsRunningInReplayMode() will show false even though this is as a result of testing)
                     G.Participants[PlayerIndex].NoteConnectionId(this.ConnectionId);
                     G.Participants[PlayerIndex].IsLockedOutFollowingReplay = false;
                     // Can continue processing the command now 

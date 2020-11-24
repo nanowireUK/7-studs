@@ -255,7 +255,7 @@ document.getElementById("actionGetLog").addEventListener("click", function (even
     event.preventDefault();
 });
 
-// --------------- Get Game Log (test feature)
+// --------------- Run an ad hoc query (test feature)
 
 document.getElementById("actionAdHocQuery").addEventListener("click", function (event) {
     var roomId = getRoomId();
@@ -275,6 +275,16 @@ document.getElementById("actionReplay").addEventListener("click", function (even
     var leaverCount = getLeaverCount();
     var gameLog = getModifiers();
     connection.invoke("UserClickedReplay", roomId, user, leaverCount, gameLog).catch(logError);
+    event.preventDefault();
+});
+
+// --------------- Step through a game that is being replayed (same replay command but with no game log as a parameter)
+
+document.getElementById("actionStep").addEventListener("click", function (event) {
+    var roomId = getRoomId();
+    var user = getUser();
+    var leaverCount = getLeaverCount();
+    connection.invoke("UserClickedReplay", roomId, user, leaverCount, "").catch(logError);
     event.preventDefault();
 });
 
