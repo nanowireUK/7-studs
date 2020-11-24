@@ -31,6 +31,7 @@ namespace SevenStuds.Hubs
 
         // --------------------------------------------------------------------------------------------------
         // Internal methods
+
         private async Task UserClickedActionButton(ActionEnum actionType, string roomId, string user, string leavers, string parameters)
         {
             Action a = ActionFactory.NewAction(Context.ConnectionId, actionType, roomId, user, leavers, parameters);
@@ -80,6 +81,7 @@ namespace SevenStuds.Hubs
                     targetMethod = "ReceiveGameLog";
                     break;
                 case ActionResponseTypeEnum.OverallGameState:
+                    AddRejoinCodes(g);
                     resultAsJson = g.AsJson();
                     targetMethod = "ReceiveOverallGameState";
                     break;
@@ -136,6 +138,12 @@ namespace SevenStuds.Hubs
                     break;
                  default:
                     throw new System.Exception("7Studs User Exception: Unsupported response audience");  // e.g. Admin
+            }
+        }
+        private void AddRejoinCodes(Game g) {
+            g.rejoinCodes = new List<string>();
+            foreach ( Participant p in g.Participants ) {
+                g.rejoinCodes.Add(p.Name+": "+p.RejoinCode);
             }
         }
     }
