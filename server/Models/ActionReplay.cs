@@ -52,6 +52,14 @@ namespace SevenStuds.Models
                 System.Diagnostics.Debug.WriteLine("Replaying game from supplied game log");
                 G.InitialiseGame(replayContext); // Clear the current game and set the replay context (this affects various game behaviours)
 
+                // Add all the players (note that the replay log should not contain join actions for the players who joined at the start of the game)
+                foreach ( string playerName in replayContext.playersInOrderAtStartOfGame ) {
+                    Participant newPlayer = new Participant(playerName);
+                    newPlayer.IsGameAdministrator = ( playerName == replayContext.administrator ); 
+                    G.Participants.Add(newPlayer);
+                }
+                G.SetActionAvailabilityBasedOnCurrentPlayer(); // Ensures the initial section of available actions is set
+ 
                 // Replay each game action in the recorded order (including joins and starts)
                 for ( int actionIndex = 0; actionIndex < replayContext.actions.Count; actionIndex++ ) {
                     replayContext.indexOfLastReplayedAction += 1;
