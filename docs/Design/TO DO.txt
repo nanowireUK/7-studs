@@ -1,13 +1,5 @@
 ----------------------------------------- SERVER-SIDE TO DO (higher priority first) ---------------------------------
-Focus on logging games
 
-Ensure that sub-objects have no references to parent objects? Is this realistic (e.g always passing parameters downwards)?
-
-Some way of keeping track of available memory?
-
-Can you have a room without a game ... should be possible, before first game and possibly between games
-
-* Rejoin obliterates whatever the previous move was (in the status message) ... possible to prepend the rejoin to current message?
 * Allow admin to reject a player prior to starting or continuing a game
 * Allow admin to forcibly remove an inactive player (like an involuntary leave)
 * Protect ad hoc query further ... can we use config to provide a secret prefix for the request number? I.e. nothing visible in GitHub
@@ -18,9 +10,7 @@ Can you have a room without a game ... should be possible, before first game and
 * Extend lobby data to include game event summary ... timings, # of hands played, joiners, order in which people went to zero chips, chips for those left in
 * Database to preserve/restore game status
 * Why does setting the admin sometimes not work (as part of leave game)?
-* Add game time, hands played, etc.
 * Think about whether any hands should be automatically revealed, e.g. in hand order
-* Tidy up hand commentary (remove references to cards)
 * Handle Admin activities (remove player, ...). What if admin is themselves disconnected/indisposed?
 * Add some parameters to game lobby (ante, stash, checkboxes for rule options e.g. randomise on restart)
 * Show hands in a clear way (e.g. full house as 333AA not A33A3)
@@ -33,6 +23,7 @@ Can you have a room without a game ... should be possible, before first game and
 ----------------------------------------- CLIENT-SIDE THOUGHTS ---------------------------------
 * Make it possible to toggle to a vertical view (with players stacked on top to enable a skinny side-panel view)
 ----------------------------------------- DONE (most recent first) ---------------------------------------
+DONE * Add game time, hands played, etc.
 DONE * Maintain a log of results of previous games against each room
 DONE * Allow for players joining from the lobby mid-game (ensure they get funds etc.)
 DONE * Fix double commentary

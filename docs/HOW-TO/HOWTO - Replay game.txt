@@ -1,0 +1,33 @@
+To replay a game from Visual Studio Code using a saved GameLog from e.g. .\docs\Testing\Game Logs
+
+1) Start the client:
+   - From the Menu, click Terminal > New Terminal
+   - Enter 'cd client'
+   - Enter 'npm start'
+   - If it says 'Something is already running on port 3000', hit enter to start on a different port
+   - At this point a web page will open saying 'Cannot connect to server'
+   - Leave this page open
+2) Hit F5 (or select Run > Start Debugging from the menu) to start the server and bring up the server page (index.cshtml) in another browser window
+3) Enter a new Room name and any player name (it will be discarded in a later step so the name doesn't matter)
+4) Click 'Join'
+5) Prepare your GameLog in an external editor such as Notepad++ (e.g. copy from one of the saved game logs)
+   - If desired, add a line "PauseAfter": 50 to cause the replay to pause after the action with an "ActionNumber" of 50
+6) Copy and paste the prepared game log into the Parameters field
+7) Click 'Replay Game From Log'
+8) Check the Debug Console for results, but if all runs ok the server web page will show the 'Overall game state'
+9) Copy and paste the rejoinCodes section into e.g. Notepad++ for use in later steps
+10) In the client web page (from step 1):
+    - Click Refresh (this should now show the Seven Studs login page)
+    - Enter the Room name that was used for the replay
+    - Enter a player name and rejoin code from the list of rejoin codes and click Join
+    - This will bring you to the game state as it was at the end of the log (or as it was following the action that you paused at)
+
+    ///////////////// Need to understand this: if you open a second window it will show the same as the first one. How do you get it to allow you to login agan
+		- Enter these into the User and Parameters area respectively and click Rejoin This Game
+		- Click Get Game Log
+		- That is the cleansed game log, with correct action numbers, deck ids, etc. 
+		- Compare it with the reconstructed game log just to be sure (all differences should be obvious and explainable)
+		- Add comments/notes as required
+		- Save the cleansed game log in the Game Logs area
+
+        Server/- (6) Use the Replay action (from the server screen)
