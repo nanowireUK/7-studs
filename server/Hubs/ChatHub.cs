@@ -143,7 +143,7 @@ namespace SevenStuds.Hubs
         private void AddRejoinCodes(Game g) {
             g.rejoinCodes = new List<string>();
             foreach ( Participant p in g.Participants ) {
-                g.rejoinCodes.Add(p.Name+": "+p.RejoinCode);
+                g.rejoinCodes.Add( ( p.IsGameAdministrator ? "*" : "" ) + p.Name + ": " + p.RejoinCode );
             }
         }
     }
