@@ -1,8 +1,7 @@
 {
 	"notes": "2020-11-14 game 1 replayed",
-	"startTimeUtc": "2020-11-22T19:25:46.6660928+00:00",
-	"endTimeUtc": "2020-11-22T19:25:49.182901+00:00",
 	"administrator": "John",
+	"pauseAfter": 0,
 	"playersInOrderAtStartOfGame": [
 		"Jon",
 		"John",
@@ -14,112 +13,11 @@
 	"actions": [
 		{
 			"ActionNumber": 1,
-			"ActionType": 1,
-			"UserName": "John",
-			"Parameters": null,
-			"StatusMessage": "John joined game as administrator. Await new player or start the game",
-			"HandCommentary": [
-				"John joined game as administrator"
-			],
-			"HandSummaries": [
-				"John Folded=False Covered=False Out=False Cards="
-			]
-		},
-		{
-			"ActionNumber": 2,
-			"ActionType": 1,
-			"UserName": "Adam",
-			"Parameters": null,
-			"StatusMessage": "Adam joined game. Await new player or start the game",
-			"HandCommentary": [
-				"Adam joined game"
-			],
-			"HandSummaries": [
-				"John Folded=False Covered=False Out=False Cards=",
-				"Adam Folded=False Covered=False Out=False Cards="
-			]
-		},
-		{
-			"ActionNumber": 3,
-			"ActionType": 1,
-			"UserName": "Dan",
-			"Parameters": null,
-			"StatusMessage": "Dan joined game. Await new player or start the game",
-			"HandCommentary": [
-				"Dan joined game"
-			],
-			"HandSummaries": [
-				"John Folded=False Covered=False Out=False Cards=",
-				"Adam Folded=False Covered=False Out=False Cards=",
-				"Dan Folded=False Covered=False Out=False Cards="
-			]
-		},
-		{
-			"ActionNumber": 4,
-			"ActionType": 1,
-			"UserName": "Phil",
-			"Parameters": null,
-			"StatusMessage": "Phil joined game. Await new player or start the game",
-			"HandCommentary": [
-				"Phil joined game"
-			],
-			"HandSummaries": [
-				"John Folded=False Covered=False Out=False Cards=",
-				"Adam Folded=False Covered=False Out=False Cards=",
-				"Dan Folded=False Covered=False Out=False Cards=",
-				"Phil Folded=False Covered=False Out=False Cards="
-			]
-		},
-		{
-			"ActionNumber": 5,
-			"ActionType": 1,
-			"UserName": "Andrew",
-			"Parameters": null,
-			"StatusMessage": "Andrew joined game. Await new player or start the game",
-			"HandCommentary": [
-				"Andrew joined game"
-			],
-			"HandSummaries": [
-				"John Folded=False Covered=False Out=False Cards=",
-				"Adam Folded=False Covered=False Out=False Cards=",
-				"Dan Folded=False Covered=False Out=False Cards=",
-				"Phil Folded=False Covered=False Out=False Cards=",
-				"Andrew Folded=False Covered=False Out=False Cards="
-			]
-		},
-		{
-			"ActionNumber": 6,
-			"ActionType": 1,
-			"UserName": "Jon",
-			"Parameters": null,
-			"StatusMessage": "Jon joined game. Await new player or start the game",
-			"HandCommentary": [
-				"Jon joined game"
-			],
-			"HandSummaries": [
-				"John Folded=False Covered=False Out=False Cards=",
-				"Adam Folded=False Covered=False Out=False Cards=",
-				"Dan Folded=False Covered=False Out=False Cards=",
-				"Phil Folded=False Covered=False Out=False Cards=",
-				"Andrew Folded=False Covered=False Out=False Cards=",
-				"Jon Folded=False Covered=False Out=False Cards="
-			]
-		},
-		{
-			"ActionNumber": 1,
 			"ActionType": 4,
 			"UserName": "John",
 			"Parameters": null,
 			"StatusMessage": "John started the game (player order now randomised). Andrew to bet",
-			"HandCommentary": [],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Ah 5c 4c ",
-				"John Folded=False Covered=False Out=False Cards=Jd 3d Ts ",
-				"Adam Folded=False Covered=False Out=False Cards=9h 7h Jc ",
-				"Dan Folded=False Covered=False Out=False Cards=4h Ad 7c ",
-				"Phil Folded=False Covered=False Out=False Cards=9s 7d 5s ",
-				"Andrew Folded=False Covered=False Out=False Cards=Tc 2s Kd "
-			]
+			"HandCommentary": []
 		},
 		{
 			"ActionNumber": 2,
@@ -130,14 +28,6 @@
 			"HandCommentary": [
 				"Andrew folded",
 				"Jon to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Ah 5c 4c ",
-				"John Folded=False Covered=False Out=False Cards=Jd 3d Ts ",
-				"Adam Folded=False Covered=False Out=False Cards=9h 7h Jc ",
-				"Dan Folded=False Covered=False Out=False Cards=4h Ad 7c ",
-				"Phil Folded=False Covered=False Out=False Cards=9s 7d 5s ",
-				"Andrew Folded=True Covered=False Out=False Cards=Tc 2s Kd "
 			]
 		},
 		{
@@ -149,14 +39,6 @@
 			"HandCommentary": [
 				"Jon checked",
 				"John to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Ah 5c 4c ",
-				"John Folded=False Covered=False Out=False Cards=Jd 3d Ts ",
-				"Adam Folded=False Covered=False Out=False Cards=9h 7h Jc ",
-				"Dan Folded=False Covered=False Out=False Cards=4h Ad 7c ",
-				"Phil Folded=False Covered=False Out=False Cards=9s 7d 5s ",
-				"Andrew Folded=True Covered=False Out=False Cards=Tc 2s Kd "
 			]
 		},
 		{
@@ -168,14 +50,6 @@
 			"HandCommentary": [
 				"John checked",
 				"Adam to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Ah 5c 4c ",
-				"John Folded=False Covered=False Out=False Cards=Jd 3d Ts ",
-				"Adam Folded=False Covered=False Out=False Cards=9h 7h Jc ",
-				"Dan Folded=False Covered=False Out=False Cards=4h Ad 7c ",
-				"Phil Folded=False Covered=False Out=False Cards=9s 7d 5s ",
-				"Andrew Folded=True Covered=False Out=False Cards=Tc 2s Kd "
 			]
 		},
 		{
@@ -187,14 +61,6 @@
 			"HandCommentary": [
 				"Adam checked",
 				"Dan to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Ah 5c 4c ",
-				"John Folded=False Covered=False Out=False Cards=Jd 3d Ts ",
-				"Adam Folded=False Covered=False Out=False Cards=9h 7h Jc ",
-				"Dan Folded=False Covered=False Out=False Cards=4h Ad 7c ",
-				"Phil Folded=False Covered=False Out=False Cards=9s 7d 5s ",
-				"Andrew Folded=True Covered=False Out=False Cards=Tc 2s Kd "
 			]
 		},
 		{
@@ -206,14 +72,6 @@
 			"HandCommentary": [
 				"Dan checked",
 				"Phil to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Ah 5c 4c ",
-				"John Folded=False Covered=False Out=False Cards=Jd 3d Ts ",
-				"Adam Folded=False Covered=False Out=False Cards=9h 7h Jc ",
-				"Dan Folded=False Covered=False Out=False Cards=4h Ad 7c ",
-				"Phil Folded=False Covered=False Out=False Cards=9s 7d 5s ",
-				"Andrew Folded=True Covered=False Out=False Cards=Tc 2s Kd "
 			]
 		},
 		{
@@ -225,14 +83,6 @@
 			"HandCommentary": [
 				"Phil checked",
 				"Started next round, Phil to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Ah 5c 4c Kc ",
-				"John Folded=False Covered=False Out=False Cards=Jd 3d Ts 6h ",
-				"Adam Folded=False Covered=False Out=False Cards=9h 7h Jc 4s ",
-				"Dan Folded=False Covered=False Out=False Cards=4h Ad 7c 5d ",
-				"Phil Folded=False Covered=False Out=False Cards=9s 7d 5s 5h ",
-				"Andrew Folded=True Covered=False Out=False Cards=Tc 2s Kd "
 			]
 		},
 		{
@@ -244,14 +94,6 @@
 			"HandCommentary": [
 				"Phil raised by 15",
 				"Jon to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Ah 5c 4c Kc ",
-				"John Folded=False Covered=False Out=False Cards=Jd 3d Ts 6h ",
-				"Adam Folded=False Covered=False Out=False Cards=9h 7h Jc 4s ",
-				"Dan Folded=False Covered=False Out=False Cards=4h Ad 7c 5d ",
-				"Phil Folded=False Covered=False Out=False Cards=9s 7d 5s 5h ",
-				"Andrew Folded=True Covered=False Out=False Cards=Tc 2s Kd "
 			]
 		},
 		{
@@ -263,14 +105,6 @@
 			"HandCommentary": [
 				"Jon folded",
 				"John to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Ah 5c 4c Kc ",
-				"John Folded=False Covered=False Out=False Cards=Jd 3d Ts 6h ",
-				"Adam Folded=False Covered=False Out=False Cards=9h 7h Jc 4s ",
-				"Dan Folded=False Covered=False Out=False Cards=4h Ad 7c 5d ",
-				"Phil Folded=False Covered=False Out=False Cards=9s 7d 5s 5h ",
-				"Andrew Folded=True Covered=False Out=False Cards=Tc 2s Kd "
 			]
 		},
 		{
@@ -282,14 +116,6 @@
 			"HandCommentary": [
 				"John folded",
 				"Adam to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Ah 5c 4c Kc ",
-				"John Folded=True Covered=False Out=False Cards=Jd 3d Ts 6h ",
-				"Adam Folded=False Covered=False Out=False Cards=9h 7h Jc 4s ",
-				"Dan Folded=False Covered=False Out=False Cards=4h Ad 7c 5d ",
-				"Phil Folded=False Covered=False Out=False Cards=9s 7d 5s 5h ",
-				"Andrew Folded=True Covered=False Out=False Cards=Tc 2s Kd "
 			]
 		},
 		{
@@ -301,14 +127,6 @@
 			"HandCommentary": [
 				"Adam paid 15 to call",
 				"Dan to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Ah 5c 4c Kc ",
-				"John Folded=True Covered=False Out=False Cards=Jd 3d Ts 6h ",
-				"Adam Folded=False Covered=False Out=False Cards=9h 7h Jc 4s ",
-				"Dan Folded=False Covered=False Out=False Cards=4h Ad 7c 5d ",
-				"Phil Folded=False Covered=False Out=False Cards=9s 7d 5s 5h ",
-				"Andrew Folded=True Covered=False Out=False Cards=Tc 2s Kd "
 			]
 		},
 		{
@@ -320,14 +138,6 @@
 			"HandCommentary": [
 				"Dan paid 15 to call",
 				"Started next round, Phil to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Ah 5c 4c Kc ",
-				"John Folded=True Covered=False Out=False Cards=Jd 3d Ts 6h ",
-				"Adam Folded=False Covered=False Out=False Cards=9h 7h Jc 4s 4d ",
-				"Dan Folded=False Covered=False Out=False Cards=4h Ad 7c 5d 6d ",
-				"Phil Folded=False Covered=False Out=False Cards=9s 7d 5s 5h Kh ",
-				"Andrew Folded=True Covered=False Out=False Cards=Tc 2s Kd "
 			]
 		},
 		{
@@ -339,14 +149,6 @@
 			"HandCommentary": [
 				"Phil checked",
 				"Adam to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Ah 5c 4c Kc ",
-				"John Folded=True Covered=False Out=False Cards=Jd 3d Ts 6h ",
-				"Adam Folded=False Covered=False Out=False Cards=9h 7h Jc 4s 4d ",
-				"Dan Folded=False Covered=False Out=False Cards=4h Ad 7c 5d 6d ",
-				"Phil Folded=False Covered=False Out=False Cards=9s 7d 5s 5h Kh ",
-				"Andrew Folded=True Covered=False Out=False Cards=Tc 2s Kd "
 			]
 		},
 		{
@@ -358,14 +160,6 @@
 			"HandCommentary": [
 				"Adam checked",
 				"Dan to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Ah 5c 4c Kc ",
-				"John Folded=True Covered=False Out=False Cards=Jd 3d Ts 6h ",
-				"Adam Folded=False Covered=False Out=False Cards=9h 7h Jc 4s 4d ",
-				"Dan Folded=False Covered=False Out=False Cards=4h Ad 7c 5d 6d ",
-				"Phil Folded=False Covered=False Out=False Cards=9s 7d 5s 5h Kh ",
-				"Andrew Folded=True Covered=False Out=False Cards=Tc 2s Kd "
 			]
 		},
 		{
@@ -377,14 +171,6 @@
 			"HandCommentary": [
 				"Dan checked",
 				"Started next round, Phil to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Ah 5c 4c Kc ",
-				"John Folded=True Covered=False Out=False Cards=Jd 3d Ts 6h ",
-				"Adam Folded=False Covered=False Out=False Cards=9h 7h Jc 4s 4d 3s ",
-				"Dan Folded=False Covered=False Out=False Cards=4h Ad 7c 5d 6d Td ",
-				"Phil Folded=False Covered=False Out=False Cards=9s 7d 5s 5h Kh 9d ",
-				"Andrew Folded=True Covered=False Out=False Cards=Tc 2s Kd "
 			]
 		},
 		{
@@ -396,14 +182,6 @@
 			"HandCommentary": [
 				"Phil raised by 50",
 				"Adam to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Ah 5c 4c Kc ",
-				"John Folded=True Covered=False Out=False Cards=Jd 3d Ts 6h ",
-				"Adam Folded=False Covered=False Out=False Cards=9h 7h Jc 4s 4d 3s ",
-				"Dan Folded=False Covered=False Out=False Cards=4h Ad 7c 5d 6d Td ",
-				"Phil Folded=False Covered=False Out=False Cards=9s 7d 5s 5h Kh 9d ",
-				"Andrew Folded=True Covered=False Out=False Cards=Tc 2s Kd "
 			]
 		},
 		{
@@ -415,14 +193,6 @@
 			"HandCommentary": [
 				"Adam folded",
 				"Dan to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Ah 5c 4c Kc ",
-				"John Folded=True Covered=False Out=False Cards=Jd 3d Ts 6h ",
-				"Adam Folded=True Covered=False Out=False Cards=9h 7h Jc 4s 4d 3s ",
-				"Dan Folded=False Covered=False Out=False Cards=4h Ad 7c 5d 6d Td ",
-				"Phil Folded=False Covered=False Out=False Cards=9s 7d 5s 5h Kh 9d ",
-				"Andrew Folded=True Covered=False Out=False Cards=Tc 2s Kd "
 			]
 		},
 		{
@@ -434,14 +204,6 @@
 			"HandCommentary": [
 				"Dan paid 50 to call",
 				"Started next round, Phil to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Ah 5c 4c Kc ",
-				"John Folded=True Covered=False Out=False Cards=Jd 3d Ts 6h ",
-				"Adam Folded=True Covered=False Out=False Cards=9h 7h Jc 4s 4d 3s ",
-				"Dan Folded=False Covered=False Out=False Cards=4h Ad 7c 5d 6d Td Th ",
-				"Phil Folded=False Covered=False Out=False Cards=9s 7d 5s 5h Kh 9d 9c ",
-				"Andrew Folded=True Covered=False Out=False Cards=Tc 2s Kd "
 			]
 		},
 		{
@@ -453,14 +215,6 @@
 			"HandCommentary": [
 				"Phil raised by 250",
 				"Dan to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Ah 5c 4c Kc ",
-				"John Folded=True Covered=False Out=False Cards=Jd 3d Ts 6h ",
-				"Adam Folded=True Covered=False Out=False Cards=9h 7h Jc 4s 4d 3s ",
-				"Dan Folded=False Covered=False Out=False Cards=4h Ad 7c 5d 6d Td Th ",
-				"Phil Folded=False Covered=False Out=False Cards=9s 7d 5s 5h Kh 9d 9c ",
-				"Andrew Folded=True Covered=False Out=False Cards=Tc 2s Kd "
 			]
 		},
 		{
@@ -472,14 +226,6 @@
 			"HandCommentary": [
 				"Dan paid 250 to call",
 				"Betting completed, proceeding to hand reveal stage, Phil to reveal (or fold)"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Ah 5c 4c Kc ",
-				"John Folded=True Covered=False Out=False Cards=Jd 3d Ts 6h ",
-				"Adam Folded=True Covered=False Out=False Cards=9h 7h Jc 4s 4d 3s ",
-				"Dan Folded=False Covered=False Out=False Cards=4h Ad 7c 5d 6d Td Th ",
-				"Phil Folded=False Covered=False Out=False Cards=9s 7d 5s 5h Kh 9d 9c ",
-				"Andrew Folded=True Covered=False Out=False Cards=Tc 2s Kd "
 			]
 		},
 		{
@@ -491,14 +237,6 @@
 			"HandCommentary": [
 				"Phil revealed their hand details",
 				"Dan to reveal (or fold)"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Ah 5c 4c Kc ",
-				"John Folded=True Covered=False Out=False Cards=Jd 3d Ts 6h ",
-				"Adam Folded=True Covered=False Out=False Cards=9h 7h Jc 4s 4d 3s ",
-				"Dan Folded=False Covered=False Out=False Cards=4h Ad 7c 5d 6d Td Th ",
-				"Phil Folded=False Covered=False Out=False Cards=9s 7d 5s 5h Kh 9d 9c ",
-				"Andrew Folded=True Covered=False Out=False Cards=Tc 2s Kd "
 			]
 		},
 		{
@@ -518,14 +256,6 @@
 				"Pot 0: Andrew lost 1 after folding",
 				"Waiting for administrator to start next hand.",
 				"Reveal hands if desired, or administrator to start next hand (or reopen lobby)"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Ah 5c 4c Kc ",
-				"John Folded=True Covered=False Out=False Cards=Jd 3d Ts 6h ",
-				"Adam Folded=True Covered=False Out=False Cards=9h 7h Jc 4s 4d 3s ",
-				"Dan Folded=False Covered=False Out=False Cards=4h Ad 7c 5d 6d Td Th ",
-				"Phil Folded=False Covered=False Out=False Cards=9s 7d 5s 5h Kh 9d 9c ",
-				"Andrew Folded=True Covered=False Out=False Cards=Tc 2s Kd "
 			]
 		},
 		{
@@ -534,15 +264,7 @@
 			"UserName": "John",
 			"Parameters": null,
 			"StatusMessage": "John started next hand. Phil to bet",
-			"HandCommentary": [],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Jd 5c 3d ",
-				"John Folded=False Covered=False Out=False Cards=Ah Tc 2c ",
-				"Adam Folded=False Covered=False Out=False Cards=8c 7h 3s ",
-				"Dan Folded=False Covered=False Out=False Cards=2d 9c 3h ",
-				"Phil Folded=False Covered=False Out=False Cards=9s 6s Jc ",
-				"Andrew Folded=False Covered=False Out=False Cards=Ts 9h Th "
-			]
+			"HandCommentary": []
 		},
 		{
 			"ActionNumber": 24,
@@ -553,14 +275,6 @@
 			"HandCommentary": [
 				"Phil checked",
 				"Andrew to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Jd 5c 3d ",
-				"John Folded=False Covered=False Out=False Cards=Ah Tc 2c ",
-				"Adam Folded=False Covered=False Out=False Cards=8c 7h 3s ",
-				"Dan Folded=False Covered=False Out=False Cards=2d 9c 3h ",
-				"Phil Folded=False Covered=False Out=False Cards=9s 6s Jc ",
-				"Andrew Folded=False Covered=False Out=False Cards=Ts 9h Th "
 			]
 		},
 		{
@@ -572,14 +286,6 @@
 			"HandCommentary": [
 				"Andrew checked",
 				"Jon to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Jd 5c 3d ",
-				"John Folded=False Covered=False Out=False Cards=Ah Tc 2c ",
-				"Adam Folded=False Covered=False Out=False Cards=8c 7h 3s ",
-				"Dan Folded=False Covered=False Out=False Cards=2d 9c 3h ",
-				"Phil Folded=False Covered=False Out=False Cards=9s 6s Jc ",
-				"Andrew Folded=False Covered=False Out=False Cards=Ts 9h Th "
 			]
 		},
 		{
@@ -591,14 +297,6 @@
 			"HandCommentary": [
 				"Jon checked",
 				"John to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Jd 5c 3d ",
-				"John Folded=False Covered=False Out=False Cards=Ah Tc 2c ",
-				"Adam Folded=False Covered=False Out=False Cards=8c 7h 3s ",
-				"Dan Folded=False Covered=False Out=False Cards=2d 9c 3h ",
-				"Phil Folded=False Covered=False Out=False Cards=9s 6s Jc ",
-				"Andrew Folded=False Covered=False Out=False Cards=Ts 9h Th "
 			]
 		},
 		{
@@ -610,14 +308,6 @@
 			"HandCommentary": [
 				"John raised by 10",
 				"Adam to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Jd 5c 3d ",
-				"John Folded=False Covered=False Out=False Cards=Ah Tc 2c ",
-				"Adam Folded=False Covered=False Out=False Cards=8c 7h 3s ",
-				"Dan Folded=False Covered=False Out=False Cards=2d 9c 3h ",
-				"Phil Folded=False Covered=False Out=False Cards=9s 6s Jc ",
-				"Andrew Folded=False Covered=False Out=False Cards=Ts 9h Th "
 			]
 		},
 		{
@@ -629,14 +319,6 @@
 			"HandCommentary": [
 				"Adam paid 10 to call",
 				"Dan to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Jd 5c 3d ",
-				"John Folded=False Covered=False Out=False Cards=Ah Tc 2c ",
-				"Adam Folded=False Covered=False Out=False Cards=8c 7h 3s ",
-				"Dan Folded=False Covered=False Out=False Cards=2d 9c 3h ",
-				"Phil Folded=False Covered=False Out=False Cards=9s 6s Jc ",
-				"Andrew Folded=False Covered=False Out=False Cards=Ts 9h Th "
 			]
 		},
 		{
@@ -648,14 +330,6 @@
 			"HandCommentary": [
 				"Dan folded",
 				"Phil to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Jd 5c 3d ",
-				"John Folded=False Covered=False Out=False Cards=Ah Tc 2c ",
-				"Adam Folded=False Covered=False Out=False Cards=8c 7h 3s ",
-				"Dan Folded=True Covered=False Out=False Cards=2d 9c 3h ",
-				"Phil Folded=False Covered=False Out=False Cards=9s 6s Jc ",
-				"Andrew Folded=False Covered=False Out=False Cards=Ts 9h Th "
 			]
 		},
 		{
@@ -667,14 +341,6 @@
 			"HandCommentary": [
 				"Phil paid 10 to call",
 				"Andrew to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Jd 5c 3d ",
-				"John Folded=False Covered=False Out=False Cards=Ah Tc 2c ",
-				"Adam Folded=False Covered=False Out=False Cards=8c 7h 3s ",
-				"Dan Folded=True Covered=False Out=False Cards=2d 9c 3h ",
-				"Phil Folded=False Covered=False Out=False Cards=9s 6s Jc ",
-				"Andrew Folded=False Covered=False Out=False Cards=Ts 9h Th "
 			]
 		},
 		{
@@ -686,14 +352,6 @@
 			"HandCommentary": [
 				"Andrew paid 10 to call",
 				"Jon to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Jd 5c 3d ",
-				"John Folded=False Covered=False Out=False Cards=Ah Tc 2c ",
-				"Adam Folded=False Covered=False Out=False Cards=8c 7h 3s ",
-				"Dan Folded=True Covered=False Out=False Cards=2d 9c 3h ",
-				"Phil Folded=False Covered=False Out=False Cards=9s 6s Jc ",
-				"Andrew Folded=False Covered=False Out=False Cards=Ts 9h Th "
 			]
 		},
 		{
@@ -705,14 +363,6 @@
 			"HandCommentary": [
 				"Jon folded",
 				"Started next round, Adam to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Jd 5c 3d ",
-				"John Folded=False Covered=False Out=False Cards=Ah Tc 2c 7c ",
-				"Adam Folded=False Covered=False Out=False Cards=8c 7h 3s Jh ",
-				"Dan Folded=True Covered=False Out=False Cards=2d 9c 3h ",
-				"Phil Folded=False Covered=False Out=False Cards=9s 6s Jc 3c ",
-				"Andrew Folded=False Covered=False Out=False Cards=Ts 9h Th 9d "
 			]
 		},
 		{
@@ -724,14 +374,6 @@
 			"HandCommentary": [
 				"Adam checked",
 				"Phil to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Jd 5c 3d ",
-				"John Folded=False Covered=False Out=False Cards=Ah Tc 2c 7c ",
-				"Adam Folded=False Covered=False Out=False Cards=8c 7h 3s Jh ",
-				"Dan Folded=True Covered=False Out=False Cards=2d 9c 3h ",
-				"Phil Folded=False Covered=False Out=False Cards=9s 6s Jc 3c ",
-				"Andrew Folded=False Covered=False Out=False Cards=Ts 9h Th 9d "
 			]
 		},
 		{
@@ -743,14 +385,6 @@
 			"HandCommentary": [
 				"Phil checked",
 				"Andrew to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Jd 5c 3d ",
-				"John Folded=False Covered=False Out=False Cards=Ah Tc 2c 7c ",
-				"Adam Folded=False Covered=False Out=False Cards=8c 7h 3s Jh ",
-				"Dan Folded=True Covered=False Out=False Cards=2d 9c 3h ",
-				"Phil Folded=False Covered=False Out=False Cards=9s 6s Jc 3c ",
-				"Andrew Folded=False Covered=False Out=False Cards=Ts 9h Th 9d "
 			]
 		},
 		{
@@ -762,14 +396,6 @@
 			"HandCommentary": [
 				"Andrew checked",
 				"John to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Jd 5c 3d ",
-				"John Folded=False Covered=False Out=False Cards=Ah Tc 2c 7c ",
-				"Adam Folded=False Covered=False Out=False Cards=8c 7h 3s Jh ",
-				"Dan Folded=True Covered=False Out=False Cards=2d 9c 3h ",
-				"Phil Folded=False Covered=False Out=False Cards=9s 6s Jc 3c ",
-				"Andrew Folded=False Covered=False Out=False Cards=Ts 9h Th 9d "
 			]
 		},
 		{
@@ -781,14 +407,6 @@
 			"HandCommentary": [
 				"John checked",
 				"Started next round, Adam to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Jd 5c 3d ",
-				"John Folded=False Covered=False Out=False Cards=Ah Tc 2c 7c 8d ",
-				"Adam Folded=False Covered=False Out=False Cards=8c 7h 3s Jh 7d ",
-				"Dan Folded=True Covered=False Out=False Cards=2d 9c 3h ",
-				"Phil Folded=False Covered=False Out=False Cards=9s 6s Jc 3c 4d ",
-				"Andrew Folded=False Covered=False Out=False Cards=Ts 9h Th 9d 4h "
 			]
 		},
 		{
@@ -800,14 +418,6 @@
 			"HandCommentary": [
 				"Adam checked",
 				"Phil to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Jd 5c 3d ",
-				"John Folded=False Covered=False Out=False Cards=Ah Tc 2c 7c 8d ",
-				"Adam Folded=False Covered=False Out=False Cards=8c 7h 3s Jh 7d ",
-				"Dan Folded=True Covered=False Out=False Cards=2d 9c 3h ",
-				"Phil Folded=False Covered=False Out=False Cards=9s 6s Jc 3c 4d ",
-				"Andrew Folded=False Covered=False Out=False Cards=Ts 9h Th 9d 4h "
 			]
 		},
 		{
@@ -819,14 +429,6 @@
 			"HandCommentary": [
 				"Phil checked",
 				"Andrew to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Jd 5c 3d ",
-				"John Folded=False Covered=False Out=False Cards=Ah Tc 2c 7c 8d ",
-				"Adam Folded=False Covered=False Out=False Cards=8c 7h 3s Jh 7d ",
-				"Dan Folded=True Covered=False Out=False Cards=2d 9c 3h ",
-				"Phil Folded=False Covered=False Out=False Cards=9s 6s Jc 3c 4d ",
-				"Andrew Folded=False Covered=False Out=False Cards=Ts 9h Th 9d 4h "
 			]
 		},
 		{
@@ -838,14 +440,6 @@
 			"HandCommentary": [
 				"Andrew checked",
 				"John to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Jd 5c 3d ",
-				"John Folded=False Covered=False Out=False Cards=Ah Tc 2c 7c 8d ",
-				"Adam Folded=False Covered=False Out=False Cards=8c 7h 3s Jh 7d ",
-				"Dan Folded=True Covered=False Out=False Cards=2d 9c 3h ",
-				"Phil Folded=False Covered=False Out=False Cards=9s 6s Jc 3c 4d ",
-				"Andrew Folded=False Covered=False Out=False Cards=Ts 9h Th 9d 4h "
 			]
 		},
 		{
@@ -857,14 +451,6 @@
 			"HandCommentary": [
 				"John checked",
 				"Started next round, John to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Jd 5c 3d ",
-				"John Folded=False Covered=False Out=False Cards=Ah Tc 2c 7c 8d Kh ",
-				"Adam Folded=False Covered=False Out=False Cards=8c 7h 3s Jh 7d Td ",
-				"Dan Folded=True Covered=False Out=False Cards=2d 9c 3h ",
-				"Phil Folded=False Covered=False Out=False Cards=9s 6s Jc 3c 4d Qh ",
-				"Andrew Folded=False Covered=False Out=False Cards=Ts 9h Th 9d 4h Qd "
 			]
 		},
 		{
@@ -876,14 +462,6 @@
 			"HandCommentary": [
 				"John checked",
 				"Adam to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Jd 5c 3d ",
-				"John Folded=False Covered=False Out=False Cards=Ah Tc 2c 7c 8d Kh ",
-				"Adam Folded=False Covered=False Out=False Cards=8c 7h 3s Jh 7d Td ",
-				"Dan Folded=True Covered=False Out=False Cards=2d 9c 3h ",
-				"Phil Folded=False Covered=False Out=False Cards=9s 6s Jc 3c 4d Qh ",
-				"Andrew Folded=False Covered=False Out=False Cards=Ts 9h Th 9d 4h Qd "
 			]
 		},
 		{
@@ -895,14 +473,6 @@
 			"HandCommentary": [
 				"Adam checked",
 				"Phil to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Jd 5c 3d ",
-				"John Folded=False Covered=False Out=False Cards=Ah Tc 2c 7c 8d Kh ",
-				"Adam Folded=False Covered=False Out=False Cards=8c 7h 3s Jh 7d Td ",
-				"Dan Folded=True Covered=False Out=False Cards=2d 9c 3h ",
-				"Phil Folded=False Covered=False Out=False Cards=9s 6s Jc 3c 4d Qh ",
-				"Andrew Folded=False Covered=False Out=False Cards=Ts 9h Th 9d 4h Qd "
 			]
 		},
 		{
@@ -914,14 +484,6 @@
 			"HandCommentary": [
 				"Phil checked",
 				"Andrew to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Jd 5c 3d ",
-				"John Folded=False Covered=False Out=False Cards=Ah Tc 2c 7c 8d Kh ",
-				"Adam Folded=False Covered=False Out=False Cards=8c 7h 3s Jh 7d Td ",
-				"Dan Folded=True Covered=False Out=False Cards=2d 9c 3h ",
-				"Phil Folded=False Covered=False Out=False Cards=9s 6s Jc 3c 4d Qh ",
-				"Andrew Folded=False Covered=False Out=False Cards=Ts 9h Th 9d 4h Qd "
 			]
 		},
 		{
@@ -933,14 +495,6 @@
 			"HandCommentary": [
 				"Andrew raised by 10",
 				"John to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Jd 5c 3d ",
-				"John Folded=False Covered=False Out=False Cards=Ah Tc 2c 7c 8d Kh ",
-				"Adam Folded=False Covered=False Out=False Cards=8c 7h 3s Jh 7d Td ",
-				"Dan Folded=True Covered=False Out=False Cards=2d 9c 3h ",
-				"Phil Folded=False Covered=False Out=False Cards=9s 6s Jc 3c 4d Qh ",
-				"Andrew Folded=False Covered=False Out=False Cards=Ts 9h Th 9d 4h Qd "
 			]
 		},
 		{
@@ -952,14 +506,6 @@
 			"HandCommentary": [
 				"John folded",
 				"Adam to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Jd 5c 3d ",
-				"John Folded=True Covered=False Out=False Cards=Ah Tc 2c 7c 8d Kh ",
-				"Adam Folded=False Covered=False Out=False Cards=8c 7h 3s Jh 7d Td ",
-				"Dan Folded=True Covered=False Out=False Cards=2d 9c 3h ",
-				"Phil Folded=False Covered=False Out=False Cards=9s 6s Jc 3c 4d Qh ",
-				"Andrew Folded=False Covered=False Out=False Cards=Ts 9h Th 9d 4h Qd "
 			]
 		},
 		{
@@ -971,14 +517,6 @@
 			"HandCommentary": [
 				"Adam paid 10 to call",
 				"Phil to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Jd 5c 3d ",
-				"John Folded=True Covered=False Out=False Cards=Ah Tc 2c 7c 8d Kh ",
-				"Adam Folded=False Covered=False Out=False Cards=8c 7h 3s Jh 7d Td ",
-				"Dan Folded=True Covered=False Out=False Cards=2d 9c 3h ",
-				"Phil Folded=False Covered=False Out=False Cards=9s 6s Jc 3c 4d Qh ",
-				"Andrew Folded=False Covered=False Out=False Cards=Ts 9h Th 9d 4h Qd "
 			]
 		},
 		{
@@ -990,14 +528,6 @@
 			"HandCommentary": [
 				"Phil paid 10 to call",
 				"Started next round, Phil to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Jd 5c 3d ",
-				"John Folded=True Covered=False Out=False Cards=Ah Tc 2c 7c 8d Kh ",
-				"Adam Folded=False Covered=False Out=False Cards=8c 7h 3s Jh 7d Td 8s ",
-				"Dan Folded=True Covered=False Out=False Cards=2d 9c 3h ",
-				"Phil Folded=False Covered=False Out=False Cards=9s 6s Jc 3c 4d Qh Kd ",
-				"Andrew Folded=False Covered=False Out=False Cards=Ts 9h Th 9d 4h Qd 6c "
 			]
 		},
 		{
@@ -1009,14 +539,6 @@
 			"HandCommentary": [
 				"Phil checked",
 				"Andrew to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Jd 5c 3d ",
-				"John Folded=True Covered=False Out=False Cards=Ah Tc 2c 7c 8d Kh ",
-				"Adam Folded=False Covered=False Out=False Cards=8c 7h 3s Jh 7d Td 8s ",
-				"Dan Folded=True Covered=False Out=False Cards=2d 9c 3h ",
-				"Phil Folded=False Covered=False Out=False Cards=9s 6s Jc 3c 4d Qh Kd ",
-				"Andrew Folded=False Covered=False Out=False Cards=Ts 9h Th 9d 4h Qd 6c "
 			]
 		},
 		{
@@ -1028,14 +550,6 @@
 			"HandCommentary": [
 				"Andrew checked",
 				"Adam to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Jd 5c 3d ",
-				"John Folded=True Covered=False Out=False Cards=Ah Tc 2c 7c 8d Kh ",
-				"Adam Folded=False Covered=False Out=False Cards=8c 7h 3s Jh 7d Td 8s ",
-				"Dan Folded=True Covered=False Out=False Cards=2d 9c 3h ",
-				"Phil Folded=False Covered=False Out=False Cards=9s 6s Jc 3c 4d Qh Kd ",
-				"Andrew Folded=False Covered=False Out=False Cards=Ts 9h Th 9d 4h Qd 6c "
 			]
 		},
 		{
@@ -1047,14 +561,6 @@
 			"HandCommentary": [
 				"Adam raised by 30",
 				"Phil to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Jd 5c 3d ",
-				"John Folded=True Covered=False Out=False Cards=Ah Tc 2c 7c 8d Kh ",
-				"Adam Folded=False Covered=False Out=False Cards=8c 7h 3s Jh 7d Td 8s ",
-				"Dan Folded=True Covered=False Out=False Cards=2d 9c 3h ",
-				"Phil Folded=False Covered=False Out=False Cards=9s 6s Jc 3c 4d Qh Kd ",
-				"Andrew Folded=False Covered=False Out=False Cards=Ts 9h Th 9d 4h Qd 6c "
 			]
 		},
 		{
@@ -1066,14 +572,6 @@
 			"HandCommentary": [
 				"Phil folded",
 				"Andrew to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Jd 5c 3d ",
-				"John Folded=True Covered=False Out=False Cards=Ah Tc 2c 7c 8d Kh ",
-				"Adam Folded=False Covered=False Out=False Cards=8c 7h 3s Jh 7d Td 8s ",
-				"Dan Folded=True Covered=False Out=False Cards=2d 9c 3h ",
-				"Phil Folded=True Covered=False Out=False Cards=9s 6s Jc 3c 4d Qh Kd ",
-				"Andrew Folded=False Covered=False Out=False Cards=Ts 9h Th 9d 4h Qd 6c "
 			]
 		},
 		{
@@ -1093,14 +591,6 @@
 				"Pot 0: Andrew lost 21 after folding",
 				"Waiting for administrator to start next hand.",
 				"Reveal hands if desired, or administrator to start next hand (or reopen lobby)"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Jd 5c 3d ",
-				"John Folded=True Covered=False Out=False Cards=Ah Tc 2c 7c 8d Kh ",
-				"Adam Folded=False Covered=False Out=False Cards=8c 7h 3s Jh 7d Td 8s ",
-				"Dan Folded=True Covered=False Out=False Cards=2d 9c 3h ",
-				"Phil Folded=True Covered=False Out=False Cards=9s 6s Jc 3c 4d Qh Kd ",
-				"Andrew Folded=True Covered=False Out=False Cards=Ts 9h Th 9d 4h Qd 6c "
 			]
 		},
 		{
@@ -1109,15 +599,7 @@
 			"UserName": "John",
 			"Parameters": null,
 			"StatusMessage": "John started next hand. Andrew to bet",
-			"HandCommentary": [],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Jh 9c 5s ",
-				"John Folded=False Covered=False Out=False Cards=Qs As 3h ",
-				"Adam Folded=False Covered=False Out=False Cards=8s Td 9d ",
-				"Dan Folded=False Covered=False Out=False Cards=Qc 6s 8c ",
-				"Phil Folded=False Covered=False Out=False Cards=Ad Kh 3d ",
-				"Andrew Folded=False Covered=False Out=False Cards=Jc 7c Ac "
-			]
+			"HandCommentary": []
 		},
 		{
 			"ActionNumber": 54,
@@ -1128,14 +610,6 @@
 			"HandCommentary": [
 				"Andrew checked",
 				"Jon to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Jh 9c 5s ",
-				"John Folded=False Covered=False Out=False Cards=Qs As 3h ",
-				"Adam Folded=False Covered=False Out=False Cards=8s Td 9d ",
-				"Dan Folded=False Covered=False Out=False Cards=Qc 6s 8c ",
-				"Phil Folded=False Covered=False Out=False Cards=Ad Kh 3d ",
-				"Andrew Folded=False Covered=False Out=False Cards=Jc 7c Ac "
 			]
 		},
 		{
@@ -1147,14 +621,6 @@
 			"HandCommentary": [
 				"Jon checked",
 				"John to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Jh 9c 5s ",
-				"John Folded=False Covered=False Out=False Cards=Qs As 3h ",
-				"Adam Folded=False Covered=False Out=False Cards=8s Td 9d ",
-				"Dan Folded=False Covered=False Out=False Cards=Qc 6s 8c ",
-				"Phil Folded=False Covered=False Out=False Cards=Ad Kh 3d ",
-				"Andrew Folded=False Covered=False Out=False Cards=Jc 7c Ac "
 			]
 		},
 		{
@@ -1166,14 +632,6 @@
 			"HandCommentary": [
 				"John raised by 10",
 				"Adam to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Jh 9c 5s ",
-				"John Folded=False Covered=False Out=False Cards=Qs As 3h ",
-				"Adam Folded=False Covered=False Out=False Cards=8s Td 9d ",
-				"Dan Folded=False Covered=False Out=False Cards=Qc 6s 8c ",
-				"Phil Folded=False Covered=False Out=False Cards=Ad Kh 3d ",
-				"Andrew Folded=False Covered=False Out=False Cards=Jc 7c Ac "
 			]
 		},
 		{
@@ -1185,14 +643,6 @@
 			"HandCommentary": [
 				"Adam paid 10 to call",
 				"Dan to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Jh 9c 5s ",
-				"John Folded=False Covered=False Out=False Cards=Qs As 3h ",
-				"Adam Folded=False Covered=False Out=False Cards=8s Td 9d ",
-				"Dan Folded=False Covered=False Out=False Cards=Qc 6s 8c ",
-				"Phil Folded=False Covered=False Out=False Cards=Ad Kh 3d ",
-				"Andrew Folded=False Covered=False Out=False Cards=Jc 7c Ac "
 			]
 		},
 		{
@@ -1204,14 +654,6 @@
 			"HandCommentary": [
 				"Dan paid 10 to call",
 				"Phil to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Jh 9c 5s ",
-				"John Folded=False Covered=False Out=False Cards=Qs As 3h ",
-				"Adam Folded=False Covered=False Out=False Cards=8s Td 9d ",
-				"Dan Folded=False Covered=False Out=False Cards=Qc 6s 8c ",
-				"Phil Folded=False Covered=False Out=False Cards=Ad Kh 3d ",
-				"Andrew Folded=False Covered=False Out=False Cards=Jc 7c Ac "
 			]
 		},
 		{
@@ -1223,14 +665,6 @@
 			"HandCommentary": [
 				"Phil paid 10 to stay in and raised by 15",
 				"Andrew to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Jh 9c 5s ",
-				"John Folded=False Covered=False Out=False Cards=Qs As 3h ",
-				"Adam Folded=False Covered=False Out=False Cards=8s Td 9d ",
-				"Dan Folded=False Covered=False Out=False Cards=Qc 6s 8c ",
-				"Phil Folded=False Covered=False Out=False Cards=Ad Kh 3d ",
-				"Andrew Folded=False Covered=False Out=False Cards=Jc 7c Ac "
 			]
 		},
 		{
@@ -1242,14 +676,6 @@
 			"HandCommentary": [
 				"Andrew paid 25 to call",
 				"Jon to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Jh 9c 5s ",
-				"John Folded=False Covered=False Out=False Cards=Qs As 3h ",
-				"Adam Folded=False Covered=False Out=False Cards=8s Td 9d ",
-				"Dan Folded=False Covered=False Out=False Cards=Qc 6s 8c ",
-				"Phil Folded=False Covered=False Out=False Cards=Ad Kh 3d ",
-				"Andrew Folded=False Covered=False Out=False Cards=Jc 7c Ac "
 			]
 		},
 		{
@@ -1261,14 +687,6 @@
 			"HandCommentary": [
 				"Jon paid 25 to call",
 				"John to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Jh 9c 5s ",
-				"John Folded=False Covered=False Out=False Cards=Qs As 3h ",
-				"Adam Folded=False Covered=False Out=False Cards=8s Td 9d ",
-				"Dan Folded=False Covered=False Out=False Cards=Qc 6s 8c ",
-				"Phil Folded=False Covered=False Out=False Cards=Ad Kh 3d ",
-				"Andrew Folded=False Covered=False Out=False Cards=Jc 7c Ac "
 			]
 		},
 		{
@@ -1280,14 +698,6 @@
 			"HandCommentary": [
 				"John paid 15 to call",
 				"Adam to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Jh 9c 5s ",
-				"John Folded=False Covered=False Out=False Cards=Qs As 3h ",
-				"Adam Folded=False Covered=False Out=False Cards=8s Td 9d ",
-				"Dan Folded=False Covered=False Out=False Cards=Qc 6s 8c ",
-				"Phil Folded=False Covered=False Out=False Cards=Ad Kh 3d ",
-				"Andrew Folded=False Covered=False Out=False Cards=Jc 7c Ac "
 			]
 		},
 		{
@@ -1299,14 +709,6 @@
 			"HandCommentary": [
 				"Adam paid 15 to call",
 				"Dan to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Jh 9c 5s ",
-				"John Folded=False Covered=False Out=False Cards=Qs As 3h ",
-				"Adam Folded=False Covered=False Out=False Cards=8s Td 9d ",
-				"Dan Folded=False Covered=False Out=False Cards=Qc 6s 8c ",
-				"Phil Folded=False Covered=False Out=False Cards=Ad Kh 3d ",
-				"Andrew Folded=False Covered=False Out=False Cards=Jc 7c Ac "
 			]
 		},
 		{
@@ -1318,14 +720,6 @@
 			"HandCommentary": [
 				"Dan paid 15 to call",
 				"Started next round, Jon to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Jh 9c 5s 5d ",
-				"John Folded=False Covered=False Out=False Cards=Qs As 3h 4c ",
-				"Adam Folded=False Covered=False Out=False Cards=8s Td 9d 7s ",
-				"Dan Folded=False Covered=False Out=False Cards=Qc 6s 8c Jd ",
-				"Phil Folded=False Covered=False Out=False Cards=Ad Kh 3d 4d ",
-				"Andrew Folded=False Covered=False Out=False Cards=Jc 7c Ac Ts "
 			]
 		},
 		{
@@ -1337,14 +731,6 @@
 			"HandCommentary": [
 				"Jon checked",
 				"John to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Jh 9c 5s 5d ",
-				"John Folded=False Covered=False Out=False Cards=Qs As 3h 4c ",
-				"Adam Folded=False Covered=False Out=False Cards=8s Td 9d 7s ",
-				"Dan Folded=False Covered=False Out=False Cards=Qc 6s 8c Jd ",
-				"Phil Folded=False Covered=False Out=False Cards=Ad Kh 3d 4d ",
-				"Andrew Folded=False Covered=False Out=False Cards=Jc 7c Ac Ts "
 			]
 		},
 		{
@@ -1356,14 +742,6 @@
 			"HandCommentary": [
 				"John checked",
 				"Adam to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Jh 9c 5s 5d ",
-				"John Folded=False Covered=False Out=False Cards=Qs As 3h 4c ",
-				"Adam Folded=False Covered=False Out=False Cards=8s Td 9d 7s ",
-				"Dan Folded=False Covered=False Out=False Cards=Qc 6s 8c Jd ",
-				"Phil Folded=False Covered=False Out=False Cards=Ad Kh 3d 4d ",
-				"Andrew Folded=False Covered=False Out=False Cards=Jc 7c Ac Ts "
 			]
 		},
 		{
@@ -1375,14 +753,6 @@
 			"HandCommentary": [
 				"Adam checked",
 				"Dan to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Jh 9c 5s 5d ",
-				"John Folded=False Covered=False Out=False Cards=Qs As 3h 4c ",
-				"Adam Folded=False Covered=False Out=False Cards=8s Td 9d 7s ",
-				"Dan Folded=False Covered=False Out=False Cards=Qc 6s 8c Jd ",
-				"Phil Folded=False Covered=False Out=False Cards=Ad Kh 3d 4d ",
-				"Andrew Folded=False Covered=False Out=False Cards=Jc 7c Ac Ts "
 			]
 		},
 		{
@@ -1394,14 +764,6 @@
 			"HandCommentary": [
 				"Dan checked",
 				"Phil to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Jh 9c 5s 5d ",
-				"John Folded=False Covered=False Out=False Cards=Qs As 3h 4c ",
-				"Adam Folded=False Covered=False Out=False Cards=8s Td 9d 7s ",
-				"Dan Folded=False Covered=False Out=False Cards=Qc 6s 8c Jd ",
-				"Phil Folded=False Covered=False Out=False Cards=Ad Kh 3d 4d ",
-				"Andrew Folded=False Covered=False Out=False Cards=Jc 7c Ac Ts "
 			]
 		},
 		{
@@ -1413,14 +775,6 @@
 			"HandCommentary": [
 				"Phil checked",
 				"Andrew to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Jh 9c 5s 5d ",
-				"John Folded=False Covered=False Out=False Cards=Qs As 3h 4c ",
-				"Adam Folded=False Covered=False Out=False Cards=8s Td 9d 7s ",
-				"Dan Folded=False Covered=False Out=False Cards=Qc 6s 8c Jd ",
-				"Phil Folded=False Covered=False Out=False Cards=Ad Kh 3d 4d ",
-				"Andrew Folded=False Covered=False Out=False Cards=Jc 7c Ac Ts "
 			]
 		},
 		{
@@ -1432,14 +786,6 @@
 			"HandCommentary": [
 				"Andrew checked",
 				"Started next round, Jon to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Jh 9c 5s 5d 9h ",
-				"John Folded=False Covered=False Out=False Cards=Qs As 3h 4c Ah ",
-				"Adam Folded=False Covered=False Out=False Cards=8s Td 9d 7s 3s ",
-				"Dan Folded=False Covered=False Out=False Cards=Qc 6s 8c Jd 7h ",
-				"Phil Folded=False Covered=False Out=False Cards=Ad Kh 3d 4d 3c ",
-				"Andrew Folded=False Covered=False Out=False Cards=Jc 7c Ac Ts 6h "
 			]
 		},
 		{
@@ -1451,14 +797,6 @@
 			"HandCommentary": [
 				"Jon raised by 30",
 				"John to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Jh 9c 5s 5d 9h ",
-				"John Folded=False Covered=False Out=False Cards=Qs As 3h 4c Ah ",
-				"Adam Folded=False Covered=False Out=False Cards=8s Td 9d 7s 3s ",
-				"Dan Folded=False Covered=False Out=False Cards=Qc 6s 8c Jd 7h ",
-				"Phil Folded=False Covered=False Out=False Cards=Ad Kh 3d 4d 3c ",
-				"Andrew Folded=False Covered=False Out=False Cards=Jc 7c Ac Ts 6h "
 			]
 		},
 		{
@@ -1470,14 +808,6 @@
 			"HandCommentary": [
 				"John paid 30 to call",
 				"Adam to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Jh 9c 5s 5d 9h ",
-				"John Folded=False Covered=False Out=False Cards=Qs As 3h 4c Ah ",
-				"Adam Folded=False Covered=False Out=False Cards=8s Td 9d 7s 3s ",
-				"Dan Folded=False Covered=False Out=False Cards=Qc 6s 8c Jd 7h ",
-				"Phil Folded=False Covered=False Out=False Cards=Ad Kh 3d 4d 3c ",
-				"Andrew Folded=False Covered=False Out=False Cards=Jc 7c Ac Ts 6h "
 			]
 		},
 		{
@@ -1489,14 +819,6 @@
 			"HandCommentary": [
 				"Adam paid 30 to call",
 				"Dan to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Jh 9c 5s 5d 9h ",
-				"John Folded=False Covered=False Out=False Cards=Qs As 3h 4c Ah ",
-				"Adam Folded=False Covered=False Out=False Cards=8s Td 9d 7s 3s ",
-				"Dan Folded=False Covered=False Out=False Cards=Qc 6s 8c Jd 7h ",
-				"Phil Folded=False Covered=False Out=False Cards=Ad Kh 3d 4d 3c ",
-				"Andrew Folded=False Covered=False Out=False Cards=Jc 7c Ac Ts 6h "
 			]
 		},
 		{
@@ -1508,14 +830,6 @@
 			"HandCommentary": [
 				"Dan folded",
 				"Phil to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Jh 9c 5s 5d 9h ",
-				"John Folded=False Covered=False Out=False Cards=Qs As 3h 4c Ah ",
-				"Adam Folded=False Covered=False Out=False Cards=8s Td 9d 7s 3s ",
-				"Dan Folded=True Covered=False Out=False Cards=Qc 6s 8c Jd 7h ",
-				"Phil Folded=False Covered=False Out=False Cards=Ad Kh 3d 4d 3c ",
-				"Andrew Folded=False Covered=False Out=False Cards=Jc 7c Ac Ts 6h "
 			]
 		},
 		{
@@ -1527,14 +841,6 @@
 			"HandCommentary": [
 				"Phil paid 30 to call",
 				"Andrew to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Jh 9c 5s 5d 9h ",
-				"John Folded=False Covered=False Out=False Cards=Qs As 3h 4c Ah ",
-				"Adam Folded=False Covered=False Out=False Cards=8s Td 9d 7s 3s ",
-				"Dan Folded=True Covered=False Out=False Cards=Qc 6s 8c Jd 7h ",
-				"Phil Folded=False Covered=False Out=False Cards=Ad Kh 3d 4d 3c ",
-				"Andrew Folded=False Covered=False Out=False Cards=Jc 7c Ac Ts 6h "
 			]
 		},
 		{
@@ -1546,14 +852,6 @@
 			"HandCommentary": [
 				"Andrew folded",
 				"Started next round, Adam to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Jh 9c 5s 5d 9h 2h ",
-				"John Folded=False Covered=False Out=False Cards=Qs As 3h 4c Ah 6d ",
-				"Adam Folded=False Covered=False Out=False Cards=8s Td 9d 7s 3s 9s ",
-				"Dan Folded=True Covered=False Out=False Cards=Qc 6s 8c Jd 7h ",
-				"Phil Folded=False Covered=False Out=False Cards=Ad Kh 3d 4d 3c 2d ",
-				"Andrew Folded=True Covered=False Out=False Cards=Jc 7c Ac Ts 6h "
 			]
 		},
 		{
@@ -1565,14 +863,6 @@
 			"HandCommentary": [
 				"Adam checked",
 				"Phil to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Jh 9c 5s 5d 9h 2h ",
-				"John Folded=False Covered=False Out=False Cards=Qs As 3h 4c Ah 6d ",
-				"Adam Folded=False Covered=False Out=False Cards=8s Td 9d 7s 3s 9s ",
-				"Dan Folded=True Covered=False Out=False Cards=Qc 6s 8c Jd 7h ",
-				"Phil Folded=False Covered=False Out=False Cards=Ad Kh 3d 4d 3c 2d ",
-				"Andrew Folded=True Covered=False Out=False Cards=Jc 7c Ac Ts 6h "
 			]
 		},
 		{
@@ -1584,14 +874,6 @@
 			"HandCommentary": [
 				"Phil raised by 15",
 				"Jon to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Jh 9c 5s 5d 9h 2h ",
-				"John Folded=False Covered=False Out=False Cards=Qs As 3h 4c Ah 6d ",
-				"Adam Folded=False Covered=False Out=False Cards=8s Td 9d 7s 3s 9s ",
-				"Dan Folded=True Covered=False Out=False Cards=Qc 6s 8c Jd 7h ",
-				"Phil Folded=False Covered=False Out=False Cards=Ad Kh 3d 4d 3c 2d ",
-				"Andrew Folded=True Covered=False Out=False Cards=Jc 7c Ac Ts 6h "
 			]
 		},
 		{
@@ -1603,14 +885,6 @@
 			"HandCommentary": [
 				"Jon paid 15 to call",
 				"John to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Jh 9c 5s 5d 9h 2h ",
-				"John Folded=False Covered=False Out=False Cards=Qs As 3h 4c Ah 6d ",
-				"Adam Folded=False Covered=False Out=False Cards=8s Td 9d 7s 3s 9s ",
-				"Dan Folded=True Covered=False Out=False Cards=Qc 6s 8c Jd 7h ",
-				"Phil Folded=False Covered=False Out=False Cards=Ad Kh 3d 4d 3c 2d ",
-				"Andrew Folded=True Covered=False Out=False Cards=Jc 7c Ac Ts 6h "
 			]
 		},
 		{
@@ -1622,14 +896,6 @@
 			"HandCommentary": [
 				"John paid 15 to call",
 				"Adam to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Jh 9c 5s 5d 9h 2h ",
-				"John Folded=False Covered=False Out=False Cards=Qs As 3h 4c Ah 6d ",
-				"Adam Folded=False Covered=False Out=False Cards=8s Td 9d 7s 3s 9s ",
-				"Dan Folded=True Covered=False Out=False Cards=Qc 6s 8c Jd 7h ",
-				"Phil Folded=False Covered=False Out=False Cards=Ad Kh 3d 4d 3c 2d ",
-				"Andrew Folded=True Covered=False Out=False Cards=Jc 7c Ac Ts 6h "
 			]
 		},
 		{
@@ -1641,14 +907,6 @@
 			"HandCommentary": [
 				"Adam paid 15 to call",
 				"Started next round, Adam to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Jh 9c 5s 5d 9h 2h Qh ",
-				"John Folded=False Covered=False Out=False Cards=Qs As 3h 4c Ah 6d 2s ",
-				"Adam Folded=False Covered=False Out=False Cards=8s Td 9d 7s 3s 9s 4h ",
-				"Dan Folded=True Covered=False Out=False Cards=Qc 6s 8c Jd 7h ",
-				"Phil Folded=False Covered=False Out=False Cards=Ad Kh 3d 4d 3c 2d 5h ",
-				"Andrew Folded=True Covered=False Out=False Cards=Jc 7c Ac Ts 6h "
 			]
 		},
 		{
@@ -1660,14 +918,6 @@
 			"HandCommentary": [
 				"Adam checked",
 				"Phil to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Jh 9c 5s 5d 9h 2h Qh ",
-				"John Folded=False Covered=False Out=False Cards=Qs As 3h 4c Ah 6d 2s ",
-				"Adam Folded=False Covered=False Out=False Cards=8s Td 9d 7s 3s 9s 4h ",
-				"Dan Folded=True Covered=False Out=False Cards=Qc 6s 8c Jd 7h ",
-				"Phil Folded=False Covered=False Out=False Cards=Ad Kh 3d 4d 3c 2d 5h ",
-				"Andrew Folded=True Covered=False Out=False Cards=Jc 7c Ac Ts 6h "
 			]
 		},
 		{
@@ -1679,14 +929,6 @@
 			"HandCommentary": [
 				"Phil raised by 50",
 				"Jon to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Jh 9c 5s 5d 9h 2h Qh ",
-				"John Folded=False Covered=False Out=False Cards=Qs As 3h 4c Ah 6d 2s ",
-				"Adam Folded=False Covered=False Out=False Cards=8s Td 9d 7s 3s 9s 4h ",
-				"Dan Folded=True Covered=False Out=False Cards=Qc 6s 8c Jd 7h ",
-				"Phil Folded=False Covered=False Out=False Cards=Ad Kh 3d 4d 3c 2d 5h ",
-				"Andrew Folded=True Covered=False Out=False Cards=Jc 7c Ac Ts 6h "
 			]
 		},
 		{
@@ -1698,14 +940,6 @@
 			"HandCommentary": [
 				"Jon folded",
 				"John to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Jh 9c 5s 5d 9h 2h Qh ",
-				"John Folded=False Covered=False Out=False Cards=Qs As 3h 4c Ah 6d 2s ",
-				"Adam Folded=False Covered=False Out=False Cards=8s Td 9d 7s 3s 9s 4h ",
-				"Dan Folded=True Covered=False Out=False Cards=Qc 6s 8c Jd 7h ",
-				"Phil Folded=False Covered=False Out=False Cards=Ad Kh 3d 4d 3c 2d 5h ",
-				"Andrew Folded=True Covered=False Out=False Cards=Jc 7c Ac Ts 6h "
 			]
 		},
 		{
@@ -1717,14 +951,6 @@
 			"HandCommentary": [
 				"John paid 50 to call",
 				"Adam to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Jh 9c 5s 5d 9h 2h Qh ",
-				"John Folded=False Covered=False Out=False Cards=Qs As 3h 4c Ah 6d 2s ",
-				"Adam Folded=False Covered=False Out=False Cards=8s Td 9d 7s 3s 9s 4h ",
-				"Dan Folded=True Covered=False Out=False Cards=Qc 6s 8c Jd 7h ",
-				"Phil Folded=False Covered=False Out=False Cards=Ad Kh 3d 4d 3c 2d 5h ",
-				"Andrew Folded=True Covered=False Out=False Cards=Jc 7c Ac Ts 6h "
 			]
 		},
 		{
@@ -1736,14 +962,6 @@
 			"HandCommentary": [
 				"Adam folded",
 				"Betting completed, proceeding to hand reveal stage, Phil to reveal (or fold)"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Jh 9c 5s 5d 9h 2h Qh ",
-				"John Folded=False Covered=False Out=False Cards=Qs As 3h 4c Ah 6d 2s ",
-				"Adam Folded=True Covered=False Out=False Cards=8s Td 9d 7s 3s 9s 4h ",
-				"Dan Folded=True Covered=False Out=False Cards=Qc 6s 8c Jd 7h ",
-				"Phil Folded=False Covered=False Out=False Cards=Ad Kh 3d 4d 3c 2d 5h ",
-				"Andrew Folded=True Covered=False Out=False Cards=Jc 7c Ac Ts 6h "
 			]
 		},
 		{
@@ -1755,14 +973,6 @@
 			"HandCommentary": [
 				"Phil revealed their hand details",
 				"John to reveal (or fold)"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Jh 9c 5s 5d 9h 2h Qh ",
-				"John Folded=False Covered=False Out=False Cards=Qs As 3h 4c Ah 6d 2s ",
-				"Adam Folded=True Covered=False Out=False Cards=8s Td 9d 7s 3s 9s 4h ",
-				"Dan Folded=True Covered=False Out=False Cards=Qc 6s 8c Jd 7h ",
-				"Phil Folded=False Covered=False Out=False Cards=Ad Kh 3d 4d 3c 2d 5h ",
-				"Andrew Folded=True Covered=False Out=False Cards=Jc 7c Ac Ts 6h "
 			]
 		},
 		{
@@ -1782,14 +992,6 @@
 				"Pot 0: Andrew lost 26 after folding",
 				"Waiting for administrator to start next hand.",
 				"Reveal hands if desired, or administrator to start next hand (or reopen lobby)"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Jh 9c 5s 5d 9h 2h Qh ",
-				"John Folded=False Covered=False Out=False Cards=Qs As 3h 4c Ah 6d 2s ",
-				"Adam Folded=True Covered=False Out=False Cards=8s Td 9d 7s 3s 9s 4h ",
-				"Dan Folded=True Covered=False Out=False Cards=Qc 6s 8c Jd 7h ",
-				"Phil Folded=False Covered=False Out=False Cards=Ad Kh 3d 4d 3c 2d 5h ",
-				"Andrew Folded=True Covered=False Out=False Cards=Jc 7c Ac Ts 6h "
 			]
 		},
 		{
@@ -1800,14 +1002,6 @@
 			"StatusMessage": "Adam revealed their hand details. Reveal hands if desired, or administrator to start next hand (or reopen lobby)",
 			"HandCommentary": [
 				"Adam revealed their hand details"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Jh 9c 5s 5d 9h 2h Qh ",
-				"John Folded=False Covered=False Out=False Cards=Qs As 3h 4c Ah 6d 2s ",
-				"Adam Folded=True Covered=False Out=False Cards=8s Td 9d 7s 3s 9s 4h ",
-				"Dan Folded=True Covered=False Out=False Cards=Qc 6s 8c Jd 7h ",
-				"Phil Folded=False Covered=False Out=False Cards=Ad Kh 3d 4d 3c 2d 5h ",
-				"Andrew Folded=True Covered=False Out=False Cards=Jc 7c Ac Ts 6h "
 			]
 		},
 		{
@@ -1816,15 +1010,7 @@
 			"UserName": "John",
 			"Parameters": null,
 			"StatusMessage": "John started next hand. Phil to bet",
-			"HandCommentary": [],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Tc As Ts ",
-				"John Folded=False Covered=False Out=False Cards=5s 9c Ac ",
-				"Adam Folded=False Covered=False Out=False Cards=6d 8c Kh ",
-				"Dan Folded=False Covered=False Out=False Cards=3s 6h 4c ",
-				"Phil Folded=False Covered=False Out=False Cards=2d 3c Ad ",
-				"Andrew Folded=False Covered=False Out=False Cards=9s 4d 7d "
-			]
+			"HandCommentary": []
 		},
 		{
 			"ActionNumber": 91,
@@ -1835,14 +1021,6 @@
 			"HandCommentary": [
 				"Phil raised by 25",
 				"Andrew to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Tc As Ts ",
-				"John Folded=False Covered=False Out=False Cards=5s 9c Ac ",
-				"Adam Folded=False Covered=False Out=False Cards=6d 8c Kh ",
-				"Dan Folded=False Covered=False Out=False Cards=3s 6h 4c ",
-				"Phil Folded=False Covered=False Out=False Cards=2d 3c Ad ",
-				"Andrew Folded=False Covered=False Out=False Cards=9s 4d 7d "
 			]
 		},
 		{
@@ -1854,14 +1032,6 @@
 			"HandCommentary": [
 				"Andrew folded",
 				"Jon to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Tc As Ts ",
-				"John Folded=False Covered=False Out=False Cards=5s 9c Ac ",
-				"Adam Folded=False Covered=False Out=False Cards=6d 8c Kh ",
-				"Dan Folded=False Covered=False Out=False Cards=3s 6h 4c ",
-				"Phil Folded=False Covered=False Out=False Cards=2d 3c Ad ",
-				"Andrew Folded=True Covered=False Out=False Cards=9s 4d 7d "
 			]
 		},
 		{
@@ -1873,14 +1043,6 @@
 			"HandCommentary": [
 				"Jon paid 25 to call",
 				"John to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Tc As Ts ",
-				"John Folded=False Covered=False Out=False Cards=5s 9c Ac ",
-				"Adam Folded=False Covered=False Out=False Cards=6d 8c Kh ",
-				"Dan Folded=False Covered=False Out=False Cards=3s 6h 4c ",
-				"Phil Folded=False Covered=False Out=False Cards=2d 3c Ad ",
-				"Andrew Folded=True Covered=False Out=False Cards=9s 4d 7d "
 			]
 		},
 		{
@@ -1892,14 +1054,6 @@
 			"HandCommentary": [
 				"John paid 25 to call",
 				"Adam to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Tc As Ts ",
-				"John Folded=False Covered=False Out=False Cards=5s 9c Ac ",
-				"Adam Folded=False Covered=False Out=False Cards=6d 8c Kh ",
-				"Dan Folded=False Covered=False Out=False Cards=3s 6h 4c ",
-				"Phil Folded=False Covered=False Out=False Cards=2d 3c Ad ",
-				"Andrew Folded=True Covered=False Out=False Cards=9s 4d 7d "
 			]
 		},
 		{
@@ -1911,14 +1065,6 @@
 			"HandCommentary": [
 				"Adam folded",
 				"Dan to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Tc As Ts ",
-				"John Folded=False Covered=False Out=False Cards=5s 9c Ac ",
-				"Adam Folded=True Covered=False Out=False Cards=6d 8c Kh ",
-				"Dan Folded=False Covered=False Out=False Cards=3s 6h 4c ",
-				"Phil Folded=False Covered=False Out=False Cards=2d 3c Ad ",
-				"Andrew Folded=True Covered=False Out=False Cards=9s 4d 7d "
 			]
 		},
 		{
@@ -1930,14 +1076,6 @@
 			"HandCommentary": [
 				"Dan paid 25 to call",
 				"Started next round, Phil to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Tc As Ts Qs ",
-				"John Folded=False Covered=False Out=False Cards=5s 9c Ac 7c ",
-				"Adam Folded=True Covered=False Out=False Cards=6d 8c Kh ",
-				"Dan Folded=False Covered=False Out=False Cards=3s 6h 4c Qd ",
-				"Phil Folded=False Covered=False Out=False Cards=2d 3c Ad 9d ",
-				"Andrew Folded=True Covered=False Out=False Cards=9s 4d 7d "
 			]
 		},
 		{
@@ -1949,14 +1087,6 @@
 			"HandCommentary": [
 				"Phil raised by 25",
 				"Jon to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Tc As Ts Qs ",
-				"John Folded=False Covered=False Out=False Cards=5s 9c Ac 7c ",
-				"Adam Folded=True Covered=False Out=False Cards=6d 8c Kh ",
-				"Dan Folded=False Covered=False Out=False Cards=3s 6h 4c Qd ",
-				"Phil Folded=False Covered=False Out=False Cards=2d 3c Ad 9d ",
-				"Andrew Folded=True Covered=False Out=False Cards=9s 4d 7d "
 			]
 		},
 		{
@@ -1968,14 +1098,6 @@
 			"HandCommentary": [
 				"Jon paid 25 to call",
 				"John to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Tc As Ts Qs ",
-				"John Folded=False Covered=False Out=False Cards=5s 9c Ac 7c ",
-				"Adam Folded=True Covered=False Out=False Cards=6d 8c Kh ",
-				"Dan Folded=False Covered=False Out=False Cards=3s 6h 4c Qd ",
-				"Phil Folded=False Covered=False Out=False Cards=2d 3c Ad 9d ",
-				"Andrew Folded=True Covered=False Out=False Cards=9s 4d 7d "
 			]
 		},
 		{
@@ -1987,14 +1109,6 @@
 			"HandCommentary": [
 				"John paid 25 to call",
 				"Dan to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Tc As Ts Qs ",
-				"John Folded=False Covered=False Out=False Cards=5s 9c Ac 7c ",
-				"Adam Folded=True Covered=False Out=False Cards=6d 8c Kh ",
-				"Dan Folded=False Covered=False Out=False Cards=3s 6h 4c Qd ",
-				"Phil Folded=False Covered=False Out=False Cards=2d 3c Ad 9d ",
-				"Andrew Folded=True Covered=False Out=False Cards=9s 4d 7d "
 			]
 		},
 		{
@@ -2006,14 +1120,6 @@
 			"HandCommentary": [
 				"Dan folded",
 				"Started next round, Phil to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Tc As Ts Qs 4h ",
-				"John Folded=False Covered=False Out=False Cards=5s 9c Ac 7c Th ",
-				"Adam Folded=True Covered=False Out=False Cards=6d 8c Kh ",
-				"Dan Folded=True Covered=False Out=False Cards=3s 6h 4c Qd ",
-				"Phil Folded=False Covered=False Out=False Cards=2d 3c Ad 9d 9h ",
-				"Andrew Folded=True Covered=False Out=False Cards=9s 4d 7d "
 			]
 		},
 		{
@@ -2025,14 +1131,6 @@
 			"HandCommentary": [
 				"Phil raised by 50",
 				"Jon to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Tc As Ts Qs 4h ",
-				"John Folded=False Covered=False Out=False Cards=5s 9c Ac 7c Th ",
-				"Adam Folded=True Covered=False Out=False Cards=6d 8c Kh ",
-				"Dan Folded=True Covered=False Out=False Cards=3s 6h 4c Qd ",
-				"Phil Folded=False Covered=False Out=False Cards=2d 3c Ad 9d 9h ",
-				"Andrew Folded=True Covered=False Out=False Cards=9s 4d 7d "
 			]
 		},
 		{
@@ -2044,14 +1142,6 @@
 			"HandCommentary": [
 				"Jon folded",
 				"John to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Tc As Ts Qs 4h ",
-				"John Folded=False Covered=False Out=False Cards=5s 9c Ac 7c Th ",
-				"Adam Folded=True Covered=False Out=False Cards=6d 8c Kh ",
-				"Dan Folded=True Covered=False Out=False Cards=3s 6h 4c Qd ",
-				"Phil Folded=False Covered=False Out=False Cards=2d 3c Ad 9d 9h ",
-				"Andrew Folded=True Covered=False Out=False Cards=9s 4d 7d "
 			]
 		},
 		{
@@ -2071,14 +1161,6 @@
 				"Pot 0: Andrew lost 1 after folding",
 				"Waiting for administrator to start next hand.",
 				"Reveal hands if desired, or administrator to start next hand (or reopen lobby)"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Tc As Ts Qs 4h ",
-				"John Folded=True Covered=False Out=False Cards=5s 9c Ac 7c Th ",
-				"Adam Folded=True Covered=False Out=False Cards=6d 8c Kh ",
-				"Dan Folded=True Covered=False Out=False Cards=3s 6h 4c Qd ",
-				"Phil Folded=False Covered=False Out=False Cards=2d 3c Ad 9d 9h ",
-				"Andrew Folded=True Covered=False Out=False Cards=9s 4d 7d "
 			]
 		},
 		{
@@ -2087,15 +1169,7 @@
 			"UserName": "John",
 			"Parameters": null,
 			"StatusMessage": "John started next hand. Andrew to bet",
-			"HandCommentary": [],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Kc 8d Jh ",
-				"John Folded=False Covered=False Out=False Cards=7d 5s 7s ",
-				"Adam Folded=False Covered=False Out=False Cards=Ts 3c Th ",
-				"Dan Folded=False Covered=False Out=False Cards=Qc Tc 9s ",
-				"Phil Folded=False Covered=False Out=False Cards=8s 6h Td ",
-				"Andrew Folded=False Covered=False Out=False Cards=4c Ad Js "
-			]
+			"HandCommentary": []
 		},
 		{
 			"ActionNumber": 105,
@@ -2106,14 +1180,6 @@
 			"HandCommentary": [
 				"Andrew checked",
 				"Jon to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Kc 8d Jh ",
-				"John Folded=False Covered=False Out=False Cards=7d 5s 7s ",
-				"Adam Folded=False Covered=False Out=False Cards=Ts 3c Th ",
-				"Dan Folded=False Covered=False Out=False Cards=Qc Tc 9s ",
-				"Phil Folded=False Covered=False Out=False Cards=8s 6h Td ",
-				"Andrew Folded=False Covered=False Out=False Cards=4c Ad Js "
 			]
 		},
 		{
@@ -2125,14 +1191,6 @@
 			"HandCommentary": [
 				"Jon checked",
 				"John to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Kc 8d Jh ",
-				"John Folded=False Covered=False Out=False Cards=7d 5s 7s ",
-				"Adam Folded=False Covered=False Out=False Cards=Ts 3c Th ",
-				"Dan Folded=False Covered=False Out=False Cards=Qc Tc 9s ",
-				"Phil Folded=False Covered=False Out=False Cards=8s 6h Td ",
-				"Andrew Folded=False Covered=False Out=False Cards=4c Ad Js "
 			]
 		},
 		{
@@ -2144,14 +1202,6 @@
 			"HandCommentary": [
 				"John checked",
 				"Adam to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Kc 8d Jh ",
-				"John Folded=False Covered=False Out=False Cards=7d 5s 7s ",
-				"Adam Folded=False Covered=False Out=False Cards=Ts 3c Th ",
-				"Dan Folded=False Covered=False Out=False Cards=Qc Tc 9s ",
-				"Phil Folded=False Covered=False Out=False Cards=8s 6h Td ",
-				"Andrew Folded=False Covered=False Out=False Cards=4c Ad Js "
 			]
 		},
 		{
@@ -2163,14 +1213,6 @@
 			"HandCommentary": [
 				"Adam checked",
 				"Dan to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Kc 8d Jh ",
-				"John Folded=False Covered=False Out=False Cards=7d 5s 7s ",
-				"Adam Folded=False Covered=False Out=False Cards=Ts 3c Th ",
-				"Dan Folded=False Covered=False Out=False Cards=Qc Tc 9s ",
-				"Phil Folded=False Covered=False Out=False Cards=8s 6h Td ",
-				"Andrew Folded=False Covered=False Out=False Cards=4c Ad Js "
 			]
 		},
 		{
@@ -2182,14 +1224,6 @@
 			"HandCommentary": [
 				"Dan checked",
 				"Phil to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Kc 8d Jh ",
-				"John Folded=False Covered=False Out=False Cards=7d 5s 7s ",
-				"Adam Folded=False Covered=False Out=False Cards=Ts 3c Th ",
-				"Dan Folded=False Covered=False Out=False Cards=Qc Tc 9s ",
-				"Phil Folded=False Covered=False Out=False Cards=8s 6h Td ",
-				"Andrew Folded=False Covered=False Out=False Cards=4c Ad Js "
 			]
 		},
 		{
@@ -2201,14 +1235,6 @@
 			"HandCommentary": [
 				"Phil checked",
 				"Started next round, Adam to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Kc 8d Jh 2s ",
-				"John Folded=False Covered=False Out=False Cards=7d 5s 7s 5c ",
-				"Adam Folded=False Covered=False Out=False Cards=Ts 3c Th Ac ",
-				"Dan Folded=False Covered=False Out=False Cards=Qc Tc 9s 7h ",
-				"Phil Folded=False Covered=False Out=False Cards=8s 6h Td Kd ",
-				"Andrew Folded=False Covered=False Out=False Cards=4c Ad Js 4d "
 			]
 		},
 		{
@@ -2220,14 +1246,6 @@
 			"HandCommentary": [
 				"Adam checked",
 				"Dan to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Kc 8d Jh 2s ",
-				"John Folded=False Covered=False Out=False Cards=7d 5s 7s 5c ",
-				"Adam Folded=False Covered=False Out=False Cards=Ts 3c Th Ac ",
-				"Dan Folded=False Covered=False Out=False Cards=Qc Tc 9s 7h ",
-				"Phil Folded=False Covered=False Out=False Cards=8s 6h Td Kd ",
-				"Andrew Folded=False Covered=False Out=False Cards=4c Ad Js 4d "
 			]
 		},
 		{
@@ -2239,14 +1257,6 @@
 			"HandCommentary": [
 				"Dan checked",
 				"Phil to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Kc 8d Jh 2s ",
-				"John Folded=False Covered=False Out=False Cards=7d 5s 7s 5c ",
-				"Adam Folded=False Covered=False Out=False Cards=Ts 3c Th Ac ",
-				"Dan Folded=False Covered=False Out=False Cards=Qc Tc 9s 7h ",
-				"Phil Folded=False Covered=False Out=False Cards=8s 6h Td Kd ",
-				"Andrew Folded=False Covered=False Out=False Cards=4c Ad Js 4d "
 			]
 		},
 		{
@@ -2258,14 +1268,6 @@
 			"HandCommentary": [
 				"Phil checked",
 				"Andrew to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Kc 8d Jh 2s ",
-				"John Folded=False Covered=False Out=False Cards=7d 5s 7s 5c ",
-				"Adam Folded=False Covered=False Out=False Cards=Ts 3c Th Ac ",
-				"Dan Folded=False Covered=False Out=False Cards=Qc Tc 9s 7h ",
-				"Phil Folded=False Covered=False Out=False Cards=8s 6h Td Kd ",
-				"Andrew Folded=False Covered=False Out=False Cards=4c Ad Js 4d "
 			]
 		},
 		{
@@ -2277,14 +1279,6 @@
 			"HandCommentary": [
 				"Andrew checked",
 				"Jon to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Kc 8d Jh 2s ",
-				"John Folded=False Covered=False Out=False Cards=7d 5s 7s 5c ",
-				"Adam Folded=False Covered=False Out=False Cards=Ts 3c Th Ac ",
-				"Dan Folded=False Covered=False Out=False Cards=Qc Tc 9s 7h ",
-				"Phil Folded=False Covered=False Out=False Cards=8s 6h Td Kd ",
-				"Andrew Folded=False Covered=False Out=False Cards=4c Ad Js 4d "
 			]
 		},
 		{
@@ -2296,14 +1290,6 @@
 			"HandCommentary": [
 				"Jon checked",
 				"John to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Kc 8d Jh 2s ",
-				"John Folded=False Covered=False Out=False Cards=7d 5s 7s 5c ",
-				"Adam Folded=False Covered=False Out=False Cards=Ts 3c Th Ac ",
-				"Dan Folded=False Covered=False Out=False Cards=Qc Tc 9s 7h ",
-				"Phil Folded=False Covered=False Out=False Cards=8s 6h Td Kd ",
-				"Andrew Folded=False Covered=False Out=False Cards=4c Ad Js 4d "
 			]
 		},
 		{
@@ -2315,14 +1301,6 @@
 			"HandCommentary": [
 				"John raised by 15",
 				"Adam to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Kc 8d Jh 2s ",
-				"John Folded=False Covered=False Out=False Cards=7d 5s 7s 5c ",
-				"Adam Folded=False Covered=False Out=False Cards=Ts 3c Th Ac ",
-				"Dan Folded=False Covered=False Out=False Cards=Qc Tc 9s 7h ",
-				"Phil Folded=False Covered=False Out=False Cards=8s 6h Td Kd ",
-				"Andrew Folded=False Covered=False Out=False Cards=4c Ad Js 4d "
 			]
 		},
 		{
@@ -2334,14 +1312,6 @@
 			"HandCommentary": [
 				"Adam paid 15 to stay in and raised by 10",
 				"Dan to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Kc 8d Jh 2s ",
-				"John Folded=False Covered=False Out=False Cards=7d 5s 7s 5c ",
-				"Adam Folded=False Covered=False Out=False Cards=Ts 3c Th Ac ",
-				"Dan Folded=False Covered=False Out=False Cards=Qc Tc 9s 7h ",
-				"Phil Folded=False Covered=False Out=False Cards=8s 6h Td Kd ",
-				"Andrew Folded=False Covered=False Out=False Cards=4c Ad Js 4d "
 			]
 		},
 		{
@@ -2353,14 +1323,6 @@
 			"HandCommentary": [
 				"Dan folded",
 				"Phil to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Kc 8d Jh 2s ",
-				"John Folded=False Covered=False Out=False Cards=7d 5s 7s 5c ",
-				"Adam Folded=False Covered=False Out=False Cards=Ts 3c Th Ac ",
-				"Dan Folded=True Covered=False Out=False Cards=Qc Tc 9s 7h ",
-				"Phil Folded=False Covered=False Out=False Cards=8s 6h Td Kd ",
-				"Andrew Folded=False Covered=False Out=False Cards=4c Ad Js 4d "
 			]
 		},
 		{
@@ -2372,14 +1334,6 @@
 			"HandCommentary": [
 				"Phil paid 25 to call",
 				"Andrew to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Kc 8d Jh 2s ",
-				"John Folded=False Covered=False Out=False Cards=7d 5s 7s 5c ",
-				"Adam Folded=False Covered=False Out=False Cards=Ts 3c Th Ac ",
-				"Dan Folded=True Covered=False Out=False Cards=Qc Tc 9s 7h ",
-				"Phil Folded=False Covered=False Out=False Cards=8s 6h Td Kd ",
-				"Andrew Folded=False Covered=False Out=False Cards=4c Ad Js 4d "
 			]
 		},
 		{
@@ -2391,14 +1345,6 @@
 			"HandCommentary": [
 				"Andrew folded",
 				"Jon to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Kc 8d Jh 2s ",
-				"John Folded=False Covered=False Out=False Cards=7d 5s 7s 5c ",
-				"Adam Folded=False Covered=False Out=False Cards=Ts 3c Th Ac ",
-				"Dan Folded=True Covered=False Out=False Cards=Qc Tc 9s 7h ",
-				"Phil Folded=False Covered=False Out=False Cards=8s 6h Td Kd ",
-				"Andrew Folded=True Covered=False Out=False Cards=4c Ad Js 4d "
 			]
 		},
 		{
@@ -2410,14 +1356,6 @@
 			"HandCommentary": [
 				"Jon folded",
 				"John to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Kc 8d Jh 2s ",
-				"John Folded=False Covered=False Out=False Cards=7d 5s 7s 5c ",
-				"Adam Folded=False Covered=False Out=False Cards=Ts 3c Th Ac ",
-				"Dan Folded=True Covered=False Out=False Cards=Qc Tc 9s 7h ",
-				"Phil Folded=False Covered=False Out=False Cards=8s 6h Td Kd ",
-				"Andrew Folded=True Covered=False Out=False Cards=4c Ad Js 4d "
 			]
 		},
 		{
@@ -2429,14 +1367,6 @@
 			"HandCommentary": [
 				"John paid 10 to call",
 				"Started next round, Adam to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Kc 8d Jh 2s ",
-				"John Folded=False Covered=False Out=False Cards=7d 5s 7s 5c 4h ",
-				"Adam Folded=False Covered=False Out=False Cards=Ts 3c Th Ac Qd ",
-				"Dan Folded=True Covered=False Out=False Cards=Qc Tc 9s 7h ",
-				"Phil Folded=False Covered=False Out=False Cards=8s 6h Td Kd 7c ",
-				"Andrew Folded=True Covered=False Out=False Cards=4c Ad Js 4d "
 			]
 		},
 		{
@@ -2448,14 +1378,6 @@
 			"HandCommentary": [
 				"Adam raised by 10",
 				"Phil to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Kc 8d Jh 2s ",
-				"John Folded=False Covered=False Out=False Cards=7d 5s 7s 5c 4h ",
-				"Adam Folded=False Covered=False Out=False Cards=Ts 3c Th Ac Qd ",
-				"Dan Folded=True Covered=False Out=False Cards=Qc Tc 9s 7h ",
-				"Phil Folded=False Covered=False Out=False Cards=8s 6h Td Kd 7c ",
-				"Andrew Folded=True Covered=False Out=False Cards=4c Ad Js 4d "
 			]
 		},
 		{
@@ -2467,14 +1389,6 @@
 			"HandCommentary": [
 				"Phil paid 10 to call",
 				"John to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Kc 8d Jh 2s ",
-				"John Folded=False Covered=False Out=False Cards=7d 5s 7s 5c 4h ",
-				"Adam Folded=False Covered=False Out=False Cards=Ts 3c Th Ac Qd ",
-				"Dan Folded=True Covered=False Out=False Cards=Qc Tc 9s 7h ",
-				"Phil Folded=False Covered=False Out=False Cards=8s 6h Td Kd 7c ",
-				"Andrew Folded=True Covered=False Out=False Cards=4c Ad Js 4d "
 			]
 		},
 		{
@@ -2486,14 +1400,6 @@
 			"HandCommentary": [
 				"John paid 10 to call",
 				"Started next round, Adam to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Kc 8d Jh 2s ",
-				"John Folded=False Covered=False Out=False Cards=7d 5s 7s 5c 4h 6d ",
-				"Adam Folded=False Covered=False Out=False Cards=Ts 3c Th Ac Qd Qs ",
-				"Dan Folded=True Covered=False Out=False Cards=Qc Tc 9s 7h ",
-				"Phil Folded=False Covered=False Out=False Cards=8s 6h Td Kd 7c 6s ",
-				"Andrew Folded=True Covered=False Out=False Cards=4c Ad Js 4d "
 			]
 		},
 		{
@@ -2505,14 +1411,6 @@
 			"HandCommentary": [
 				"Adam raised by 31",
 				"Phil to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Kc 8d Jh 2s ",
-				"John Folded=False Covered=False Out=False Cards=7d 5s 7s 5c 4h 6d ",
-				"Adam Folded=False Covered=False Out=False Cards=Ts 3c Th Ac Qd Qs ",
-				"Dan Folded=True Covered=False Out=False Cards=Qc Tc 9s 7h ",
-				"Phil Folded=False Covered=False Out=False Cards=8s 6h Td Kd 7c 6s ",
-				"Andrew Folded=True Covered=False Out=False Cards=4c Ad Js 4d "
 			]
 		},
 		{
@@ -2524,14 +1422,6 @@
 			"HandCommentary": [
 				"Phil folded",
 				"John to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Kc 8d Jh 2s ",
-				"John Folded=False Covered=False Out=False Cards=7d 5s 7s 5c 4h 6d ",
-				"Adam Folded=False Covered=False Out=False Cards=Ts 3c Th Ac Qd Qs ",
-				"Dan Folded=True Covered=False Out=False Cards=Qc Tc 9s 7h ",
-				"Phil Folded=True Covered=False Out=False Cards=8s 6h Td Kd 7c 6s ",
-				"Andrew Folded=True Covered=False Out=False Cards=4c Ad Js 4d "
 			]
 		},
 		{
@@ -2543,14 +1433,6 @@
 			"HandCommentary": [
 				"John paid 31 to call",
 				"Started next round, Adam to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Kc 8d Jh 2s ",
-				"John Folded=False Covered=False Out=False Cards=7d 5s 7s 5c 4h 6d Kh ",
-				"Adam Folded=False Covered=False Out=False Cards=Ts 3c Th Ac Qd Qs 4s ",
-				"Dan Folded=True Covered=False Out=False Cards=Qc Tc 9s 7h ",
-				"Phil Folded=True Covered=False Out=False Cards=8s 6h Td Kd 7c 6s ",
-				"Andrew Folded=True Covered=False Out=False Cards=4c Ad Js 4d "
 			]
 		},
 		{
@@ -2562,14 +1444,6 @@
 			"HandCommentary": [
 				"Adam checked",
 				"John to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Kc 8d Jh 2s ",
-				"John Folded=False Covered=False Out=False Cards=7d 5s 7s 5c 4h 6d Kh ",
-				"Adam Folded=False Covered=False Out=False Cards=Ts 3c Th Ac Qd Qs 4s ",
-				"Dan Folded=True Covered=False Out=False Cards=Qc Tc 9s 7h ",
-				"Phil Folded=True Covered=False Out=False Cards=8s 6h Td Kd 7c 6s ",
-				"Andrew Folded=True Covered=False Out=False Cards=4c Ad Js 4d "
 			]
 		},
 		{
@@ -2581,14 +1455,6 @@
 			"HandCommentary": [
 				"John checked",
 				"Betting completed, proceeding to hand reveal stage, Adam to reveal (or fold)"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Kc 8d Jh 2s ",
-				"John Folded=False Covered=False Out=False Cards=7d 5s 7s 5c 4h 6d Kh ",
-				"Adam Folded=False Covered=False Out=False Cards=Ts 3c Th Ac Qd Qs 4s ",
-				"Dan Folded=True Covered=False Out=False Cards=Qc Tc 9s 7h ",
-				"Phil Folded=True Covered=False Out=False Cards=8s 6h Td Kd 7c 6s ",
-				"Andrew Folded=True Covered=False Out=False Cards=4c Ad Js 4d "
 			]
 		},
 		{
@@ -2600,14 +1466,6 @@
 			"HandCommentary": [
 				"Adam revealed their hand details",
 				"John to reveal (or fold)"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Kc 8d Jh 2s ",
-				"John Folded=False Covered=False Out=False Cards=7d 5s 7s 5c 4h 6d Kh ",
-				"Adam Folded=False Covered=False Out=False Cards=Ts 3c Th Ac Qd Qs 4s ",
-				"Dan Folded=True Covered=False Out=False Cards=Qc Tc 9s 7h ",
-				"Phil Folded=True Covered=False Out=False Cards=8s 6h Td Kd 7c 6s ",
-				"Andrew Folded=True Covered=False Out=False Cards=4c Ad Js 4d "
 			]
 		},
 		{
@@ -2627,14 +1485,6 @@
 				"Pot 0: Andrew lost 1 after folding",
 				"Waiting for administrator to start next hand.",
 				"Reveal hands if desired, or administrator to start next hand (or reopen lobby)"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Kc 8d Jh 2s ",
-				"John Folded=False Covered=False Out=False Cards=7d 5s 7s 5c 4h 6d Kh ",
-				"Adam Folded=False Covered=False Out=False Cards=Ts 3c Th Ac Qd Qs 4s ",
-				"Dan Folded=True Covered=False Out=False Cards=Qc Tc 9s 7h ",
-				"Phil Folded=True Covered=False Out=False Cards=8s 6h Td Kd 7c 6s ",
-				"Andrew Folded=True Covered=False Out=False Cards=4c Ad Js 4d "
 			]
 		},
 		{
@@ -2643,15 +1493,7 @@
 			"UserName": "John",
 			"Parameters": null,
 			"StatusMessage": "John started next hand. Adam to bet",
-			"HandCommentary": [],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=5h Ah 3s ",
-				"John Folded=False Covered=False Out=False Cards=Tc 5s 2h ",
-				"Adam Folded=False Covered=False Out=False Cards=4h 3d Kh ",
-				"Dan Folded=False Covered=False Out=False Cards=Qs Js 5c ",
-				"Phil Folded=False Covered=False Out=False Cards=9d 9s Ks ",
-				"Andrew Folded=False Covered=False Out=False Cards=5d 4s Ts "
-			]
+			"HandCommentary": []
 		},
 		{
 			"ActionNumber": 134,
@@ -2662,14 +1504,6 @@
 			"HandCommentary": [
 				"Adam checked",
 				"Dan to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=5h Ah 3s ",
-				"John Folded=False Covered=False Out=False Cards=Tc 5s 2h ",
-				"Adam Folded=False Covered=False Out=False Cards=4h 3d Kh ",
-				"Dan Folded=False Covered=False Out=False Cards=Qs Js 5c ",
-				"Phil Folded=False Covered=False Out=False Cards=9d 9s Ks ",
-				"Andrew Folded=False Covered=False Out=False Cards=5d 4s Ts "
 			]
 		},
 		{
@@ -2681,14 +1515,6 @@
 			"HandCommentary": [
 				"Dan checked",
 				"Phil to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=5h Ah 3s ",
-				"John Folded=False Covered=False Out=False Cards=Tc 5s 2h ",
-				"Adam Folded=False Covered=False Out=False Cards=4h 3d Kh ",
-				"Dan Folded=False Covered=False Out=False Cards=Qs Js 5c ",
-				"Phil Folded=False Covered=False Out=False Cards=9d 9s Ks ",
-				"Andrew Folded=False Covered=False Out=False Cards=5d 4s Ts "
 			]
 		},
 		{
@@ -2700,14 +1526,6 @@
 			"HandCommentary": [
 				"Phil raised by 20",
 				"Andrew to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=5h Ah 3s ",
-				"John Folded=False Covered=False Out=False Cards=Tc 5s 2h ",
-				"Adam Folded=False Covered=False Out=False Cards=4h 3d Kh ",
-				"Dan Folded=False Covered=False Out=False Cards=Qs Js 5c ",
-				"Phil Folded=False Covered=False Out=False Cards=9d 9s Ks ",
-				"Andrew Folded=False Covered=False Out=False Cards=5d 4s Ts "
 			]
 		},
 		{
@@ -2719,14 +1537,6 @@
 			"HandCommentary": [
 				"Andrew paid 20 to call",
 				"Jon to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=5h Ah 3s ",
-				"John Folded=False Covered=False Out=False Cards=Tc 5s 2h ",
-				"Adam Folded=False Covered=False Out=False Cards=4h 3d Kh ",
-				"Dan Folded=False Covered=False Out=False Cards=Qs Js 5c ",
-				"Phil Folded=False Covered=False Out=False Cards=9d 9s Ks ",
-				"Andrew Folded=False Covered=False Out=False Cards=5d 4s Ts "
 			]
 		},
 		{
@@ -2738,14 +1548,6 @@
 			"HandCommentary": [
 				"Jon paid 20 to call",
 				"John to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=5h Ah 3s ",
-				"John Folded=False Covered=False Out=False Cards=Tc 5s 2h ",
-				"Adam Folded=False Covered=False Out=False Cards=4h 3d Kh ",
-				"Dan Folded=False Covered=False Out=False Cards=Qs Js 5c ",
-				"Phil Folded=False Covered=False Out=False Cards=9d 9s Ks ",
-				"Andrew Folded=False Covered=False Out=False Cards=5d 4s Ts "
 			]
 		},
 		{
@@ -2757,14 +1559,6 @@
 			"HandCommentary": [
 				"John folded",
 				"Adam to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=5h Ah 3s ",
-				"John Folded=True Covered=False Out=False Cards=Tc 5s 2h ",
-				"Adam Folded=False Covered=False Out=False Cards=4h 3d Kh ",
-				"Dan Folded=False Covered=False Out=False Cards=Qs Js 5c ",
-				"Phil Folded=False Covered=False Out=False Cards=9d 9s Ks ",
-				"Andrew Folded=False Covered=False Out=False Cards=5d 4s Ts "
 			]
 		},
 		{
@@ -2776,14 +1570,6 @@
 			"HandCommentary": [
 				"Adam folded",
 				"Dan to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=5h Ah 3s ",
-				"John Folded=True Covered=False Out=False Cards=Tc 5s 2h ",
-				"Adam Folded=True Covered=False Out=False Cards=4h 3d Kh ",
-				"Dan Folded=False Covered=False Out=False Cards=Qs Js 5c ",
-				"Phil Folded=False Covered=False Out=False Cards=9d 9s Ks ",
-				"Andrew Folded=False Covered=False Out=False Cards=5d 4s Ts "
 			]
 		},
 		{
@@ -2795,14 +1581,6 @@
 			"HandCommentary": [
 				"Dan paid 20 to call",
 				"Started next round, Phil to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=5h Ah 3s 4c ",
-				"John Folded=True Covered=False Out=False Cards=Tc 5s 2h ",
-				"Adam Folded=True Covered=False Out=False Cards=4h 3d Kh ",
-				"Dan Folded=False Covered=False Out=False Cards=Qs Js 5c Jc ",
-				"Phil Folded=False Covered=False Out=False Cards=9d 9s Ks 3h ",
-				"Andrew Folded=False Covered=False Out=False Cards=5d 4s Ts Qd "
 			]
 		},
 		{
@@ -2814,14 +1592,6 @@
 			"HandCommentary": [
 				"Phil checked",
 				"Andrew to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=5h Ah 3s 4c ",
-				"John Folded=True Covered=False Out=False Cards=Tc 5s 2h ",
-				"Adam Folded=True Covered=False Out=False Cards=4h 3d Kh ",
-				"Dan Folded=False Covered=False Out=False Cards=Qs Js 5c Jc ",
-				"Phil Folded=False Covered=False Out=False Cards=9d 9s Ks 3h ",
-				"Andrew Folded=False Covered=False Out=False Cards=5d 4s Ts Qd "
 			]
 		},
 		{
@@ -2833,14 +1603,6 @@
 			"HandCommentary": [
 				"Andrew checked",
 				"Jon to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=5h Ah 3s 4c ",
-				"John Folded=True Covered=False Out=False Cards=Tc 5s 2h ",
-				"Adam Folded=True Covered=False Out=False Cards=4h 3d Kh ",
-				"Dan Folded=False Covered=False Out=False Cards=Qs Js 5c Jc ",
-				"Phil Folded=False Covered=False Out=False Cards=9d 9s Ks 3h ",
-				"Andrew Folded=False Covered=False Out=False Cards=5d 4s Ts Qd "
 			]
 		},
 		{
@@ -2852,14 +1614,6 @@
 			"HandCommentary": [
 				"Jon raised by 20",
 				"Dan to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=5h Ah 3s 4c ",
-				"John Folded=True Covered=False Out=False Cards=Tc 5s 2h ",
-				"Adam Folded=True Covered=False Out=False Cards=4h 3d Kh ",
-				"Dan Folded=False Covered=False Out=False Cards=Qs Js 5c Jc ",
-				"Phil Folded=False Covered=False Out=False Cards=9d 9s Ks 3h ",
-				"Andrew Folded=False Covered=False Out=False Cards=5d 4s Ts Qd "
 			]
 		},
 		{
@@ -2871,14 +1625,6 @@
 			"HandCommentary": [
 				"Dan paid 20 to call",
 				"Phil to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=5h Ah 3s 4c ",
-				"John Folded=True Covered=False Out=False Cards=Tc 5s 2h ",
-				"Adam Folded=True Covered=False Out=False Cards=4h 3d Kh ",
-				"Dan Folded=False Covered=False Out=False Cards=Qs Js 5c Jc ",
-				"Phil Folded=False Covered=False Out=False Cards=9d 9s Ks 3h ",
-				"Andrew Folded=False Covered=False Out=False Cards=5d 4s Ts Qd "
 			]
 		},
 		{
@@ -2890,14 +1636,6 @@
 			"HandCommentary": [
 				"Phil paid 20 to call",
 				"Andrew to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=5h Ah 3s 4c ",
-				"John Folded=True Covered=False Out=False Cards=Tc 5s 2h ",
-				"Adam Folded=True Covered=False Out=False Cards=4h 3d Kh ",
-				"Dan Folded=False Covered=False Out=False Cards=Qs Js 5c Jc ",
-				"Phil Folded=False Covered=False Out=False Cards=9d 9s Ks 3h ",
-				"Andrew Folded=False Covered=False Out=False Cards=5d 4s Ts Qd "
 			]
 		},
 		{
@@ -2909,14 +1647,6 @@
 			"HandCommentary": [
 				"Andrew paid 20 to call",
 				"Started next round, Andrew to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=5h Ah 3s 4c 9c ",
-				"John Folded=True Covered=False Out=False Cards=Tc 5s 2h ",
-				"Adam Folded=True Covered=False Out=False Cards=4h 3d Kh ",
-				"Dan Folded=False Covered=False Out=False Cards=Qs Js 5c Jc 7s ",
-				"Phil Folded=False Covered=False Out=False Cards=9d 9s Ks 3h 6c ",
-				"Andrew Folded=False Covered=False Out=False Cards=5d 4s Ts Qd Qc "
 			]
 		},
 		{
@@ -2928,14 +1658,6 @@
 			"HandCommentary": [
 				"Andrew raised by 20",
 				"Jon to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=5h Ah 3s 4c 9c ",
-				"John Folded=True Covered=False Out=False Cards=Tc 5s 2h ",
-				"Adam Folded=True Covered=False Out=False Cards=4h 3d Kh ",
-				"Dan Folded=False Covered=False Out=False Cards=Qs Js 5c Jc 7s ",
-				"Phil Folded=False Covered=False Out=False Cards=9d 9s Ks 3h 6c ",
-				"Andrew Folded=False Covered=False Out=False Cards=5d 4s Ts Qd Qc "
 			]
 		},
 		{
@@ -2947,14 +1669,6 @@
 			"HandCommentary": [
 				"Jon paid 20 to call",
 				"Dan to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=5h Ah 3s 4c 9c ",
-				"John Folded=True Covered=False Out=False Cards=Tc 5s 2h ",
-				"Adam Folded=True Covered=False Out=False Cards=4h 3d Kh ",
-				"Dan Folded=False Covered=False Out=False Cards=Qs Js 5c Jc 7s ",
-				"Phil Folded=False Covered=False Out=False Cards=9d 9s Ks 3h 6c ",
-				"Andrew Folded=False Covered=False Out=False Cards=5d 4s Ts Qd Qc "
 			]
 		},
 		{
@@ -2966,14 +1680,6 @@
 			"HandCommentary": [
 				"Dan paid 20 to call",
 				"Phil to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=5h Ah 3s 4c 9c ",
-				"John Folded=True Covered=False Out=False Cards=Tc 5s 2h ",
-				"Adam Folded=True Covered=False Out=False Cards=4h 3d Kh ",
-				"Dan Folded=False Covered=False Out=False Cards=Qs Js 5c Jc 7s ",
-				"Phil Folded=False Covered=False Out=False Cards=9d 9s Ks 3h 6c ",
-				"Andrew Folded=False Covered=False Out=False Cards=5d 4s Ts Qd Qc "
 			]
 		},
 		{
@@ -2985,14 +1691,6 @@
 			"HandCommentary": [
 				"Phil paid 20 to call",
 				"Started next round, Andrew to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=5h Ah 3s 4c 9c 2c ",
-				"John Folded=True Covered=False Out=False Cards=Tc 5s 2h ",
-				"Adam Folded=True Covered=False Out=False Cards=4h 3d Kh ",
-				"Dan Folded=False Covered=False Out=False Cards=Qs Js 5c Jc 7s 2d ",
-				"Phil Folded=False Covered=False Out=False Cards=9d 9s Ks 3h 6c As ",
-				"Andrew Folded=False Covered=False Out=False Cards=5d 4s Ts Qd Qc Td "
 			]
 		},
 		{
@@ -3004,14 +1702,6 @@
 			"HandCommentary": [
 				"Andrew raised by 40",
 				"Jon to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=5h Ah 3s 4c 9c 2c ",
-				"John Folded=True Covered=False Out=False Cards=Tc 5s 2h ",
-				"Adam Folded=True Covered=False Out=False Cards=4h 3d Kh ",
-				"Dan Folded=False Covered=False Out=False Cards=Qs Js 5c Jc 7s 2d ",
-				"Phil Folded=False Covered=False Out=False Cards=9d 9s Ks 3h 6c As ",
-				"Andrew Folded=False Covered=False Out=False Cards=5d 4s Ts Qd Qc Td "
 			]
 		},
 		{
@@ -3023,14 +1713,6 @@
 			"HandCommentary": [
 				"Jon paid 40 to call",
 				"Dan to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=5h Ah 3s 4c 9c 2c ",
-				"John Folded=True Covered=False Out=False Cards=Tc 5s 2h ",
-				"Adam Folded=True Covered=False Out=False Cards=4h 3d Kh ",
-				"Dan Folded=False Covered=False Out=False Cards=Qs Js 5c Jc 7s 2d ",
-				"Phil Folded=False Covered=False Out=False Cards=9d 9s Ks 3h 6c As ",
-				"Andrew Folded=False Covered=False Out=False Cards=5d 4s Ts Qd Qc Td "
 			]
 		},
 		{
@@ -3042,14 +1724,6 @@
 			"HandCommentary": [
 				"Dan folded",
 				"Phil to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=5h Ah 3s 4c 9c 2c ",
-				"John Folded=True Covered=False Out=False Cards=Tc 5s 2h ",
-				"Adam Folded=True Covered=False Out=False Cards=4h 3d Kh ",
-				"Dan Folded=True Covered=False Out=False Cards=Qs Js 5c Jc 7s 2d ",
-				"Phil Folded=False Covered=False Out=False Cards=9d 9s Ks 3h 6c As ",
-				"Andrew Folded=False Covered=False Out=False Cards=5d 4s Ts Qd Qc Td "
 			]
 		},
 		{
@@ -3061,14 +1735,6 @@
 			"HandCommentary": [
 				"Phil folded",
 				"Started next round, Andrew to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=5h Ah 3s 4c 9c 2c Ac ",
-				"John Folded=True Covered=False Out=False Cards=Tc 5s 2h ",
-				"Adam Folded=True Covered=False Out=False Cards=4h 3d Kh ",
-				"Dan Folded=True Covered=False Out=False Cards=Qs Js 5c Jc 7s 2d ",
-				"Phil Folded=True Covered=False Out=False Cards=9d 9s Ks 3h 6c As ",
-				"Andrew Folded=False Covered=False Out=False Cards=5d 4s Ts Qd Qc Td 8d "
 			]
 		},
 		{
@@ -3080,14 +1746,6 @@
 			"HandCommentary": [
 				"Andrew checked",
 				"Jon to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=5h Ah 3s 4c 9c 2c Ac ",
-				"John Folded=True Covered=False Out=False Cards=Tc 5s 2h ",
-				"Adam Folded=True Covered=False Out=False Cards=4h 3d Kh ",
-				"Dan Folded=True Covered=False Out=False Cards=Qs Js 5c Jc 7s 2d ",
-				"Phil Folded=True Covered=False Out=False Cards=9d 9s Ks 3h 6c As ",
-				"Andrew Folded=False Covered=False Out=False Cards=5d 4s Ts Qd Qc Td 8d "
 			]
 		},
 		{
@@ -3099,14 +1757,6 @@
 			"HandCommentary": [
 				"Jon checked",
 				"Betting completed, proceeding to hand reveal stage, Andrew to reveal (or fold)"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=5h Ah 3s 4c 9c 2c Ac ",
-				"John Folded=True Covered=False Out=False Cards=Tc 5s 2h ",
-				"Adam Folded=True Covered=False Out=False Cards=4h 3d Kh ",
-				"Dan Folded=True Covered=False Out=False Cards=Qs Js 5c Jc 7s 2d ",
-				"Phil Folded=True Covered=False Out=False Cards=9d 9s Ks 3h 6c As ",
-				"Andrew Folded=False Covered=False Out=False Cards=5d 4s Ts Qd Qc Td 8d "
 			]
 		},
 		{
@@ -3118,14 +1768,6 @@
 			"HandCommentary": [
 				"Andrew revealed their hand details",
 				"Jon to reveal (or fold)"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=5h Ah 3s 4c 9c 2c Ac ",
-				"John Folded=True Covered=False Out=False Cards=Tc 5s 2h ",
-				"Adam Folded=True Covered=False Out=False Cards=4h 3d Kh ",
-				"Dan Folded=True Covered=False Out=False Cards=Qs Js 5c Jc 7s 2d ",
-				"Phil Folded=True Covered=False Out=False Cards=9d 9s Ks 3h 6c As ",
-				"Andrew Folded=False Covered=False Out=False Cards=5d 4s Ts Qd Qc Td 8d "
 			]
 		},
 		{
@@ -3145,14 +1787,6 @@
 				"Pot 0: Andrew lost 101 with Queens and Tens",
 				"Waiting for administrator to start next hand.",
 				"Reveal hands if desired, or administrator to start next hand (or reopen lobby)"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=5h Ah 3s 4c 9c 2c Ac ",
-				"John Folded=True Covered=False Out=False Cards=Tc 5s 2h ",
-				"Adam Folded=True Covered=False Out=False Cards=4h 3d Kh ",
-				"Dan Folded=True Covered=False Out=False Cards=Qs Js 5c Jc 7s 2d ",
-				"Phil Folded=True Covered=False Out=False Cards=9d 9s Ks 3h 6c As ",
-				"Andrew Folded=False Covered=False Out=False Cards=5d 4s Ts Qd Qc Td 8d "
 			]
 		},
 		{
@@ -3161,15 +1795,7 @@
 			"UserName": "John",
 			"Parameters": null,
 			"StatusMessage": "John started next hand. Jon to bet",
-			"HandCommentary": [],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Jd 5h Ac ",
-				"John Folded=False Covered=False Out=False Cards=6s 5s 7c ",
-				"Adam Folded=False Covered=False Out=False Cards=5c 7s 3s ",
-				"Dan Folded=False Covered=False Out=False Cards=Jc 9h 9c ",
-				"Phil Folded=False Covered=False Out=False Cards=Ks 7d Td ",
-				"Andrew Folded=False Covered=False Out=False Cards=8d Jh 5d "
-			]
+			"HandCommentary": []
 		},
 		{
 			"ActionNumber": 161,
@@ -3180,14 +1806,6 @@
 			"HandCommentary": [
 				"Jon checked",
 				"John to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Jd 5h Ac ",
-				"John Folded=False Covered=False Out=False Cards=6s 5s 7c ",
-				"Adam Folded=False Covered=False Out=False Cards=5c 7s 3s ",
-				"Dan Folded=False Covered=False Out=False Cards=Jc 9h 9c ",
-				"Phil Folded=False Covered=False Out=False Cards=Ks 7d Td ",
-				"Andrew Folded=False Covered=False Out=False Cards=8d Jh 5d "
 			]
 		},
 		{
@@ -3199,14 +1817,6 @@
 			"HandCommentary": [
 				"John raised by 10",
 				"Adam to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Jd 5h Ac ",
-				"John Folded=False Covered=False Out=False Cards=6s 5s 7c ",
-				"Adam Folded=False Covered=False Out=False Cards=5c 7s 3s ",
-				"Dan Folded=False Covered=False Out=False Cards=Jc 9h 9c ",
-				"Phil Folded=False Covered=False Out=False Cards=Ks 7d Td ",
-				"Andrew Folded=False Covered=False Out=False Cards=8d Jh 5d "
 			]
 		},
 		{
@@ -3218,14 +1828,6 @@
 			"HandCommentary": [
 				"Adam paid 10 to call",
 				"Dan to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Jd 5h Ac ",
-				"John Folded=False Covered=False Out=False Cards=6s 5s 7c ",
-				"Adam Folded=False Covered=False Out=False Cards=5c 7s 3s ",
-				"Dan Folded=False Covered=False Out=False Cards=Jc 9h 9c ",
-				"Phil Folded=False Covered=False Out=False Cards=Ks 7d Td ",
-				"Andrew Folded=False Covered=False Out=False Cards=8d Jh 5d "
 			]
 		},
 		{
@@ -3237,14 +1839,6 @@
 			"HandCommentary": [
 				"Dan paid 10 to call",
 				"Phil to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Jd 5h Ac ",
-				"John Folded=False Covered=False Out=False Cards=6s 5s 7c ",
-				"Adam Folded=False Covered=False Out=False Cards=5c 7s 3s ",
-				"Dan Folded=False Covered=False Out=False Cards=Jc 9h 9c ",
-				"Phil Folded=False Covered=False Out=False Cards=Ks 7d Td ",
-				"Andrew Folded=False Covered=False Out=False Cards=8d Jh 5d "
 			]
 		},
 		{
@@ -3256,14 +1850,6 @@
 			"HandCommentary": [
 				"Phil paid 10 to call",
 				"Andrew to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Jd 5h Ac ",
-				"John Folded=False Covered=False Out=False Cards=6s 5s 7c ",
-				"Adam Folded=False Covered=False Out=False Cards=5c 7s 3s ",
-				"Dan Folded=False Covered=False Out=False Cards=Jc 9h 9c ",
-				"Phil Folded=False Covered=False Out=False Cards=Ks 7d Td ",
-				"Andrew Folded=False Covered=False Out=False Cards=8d Jh 5d "
 			]
 		},
 		{
@@ -3275,14 +1861,6 @@
 			"HandCommentary": [
 				"Andrew folded",
 				"Jon to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Jd 5h Ac ",
-				"John Folded=False Covered=False Out=False Cards=6s 5s 7c ",
-				"Adam Folded=False Covered=False Out=False Cards=5c 7s 3s ",
-				"Dan Folded=False Covered=False Out=False Cards=Jc 9h 9c ",
-				"Phil Folded=False Covered=False Out=False Cards=Ks 7d Td ",
-				"Andrew Folded=True Covered=False Out=False Cards=8d Jh 5d "
 			]
 		},
 		{
@@ -3294,14 +1872,6 @@
 			"HandCommentary": [
 				"Jon folded",
 				"Started next round, Phil to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Jd 5h Ac ",
-				"John Folded=False Covered=False Out=False Cards=6s 5s 7c 7h ",
-				"Adam Folded=False Covered=False Out=False Cards=5c 7s 3s Js ",
-				"Dan Folded=False Covered=False Out=False Cards=Jc 9h 9c 8h ",
-				"Phil Folded=False Covered=False Out=False Cards=Ks 7d Td Th ",
-				"Andrew Folded=True Covered=False Out=False Cards=8d Jh 5d "
 			]
 		},
 		{
@@ -3313,14 +1883,6 @@
 			"HandCommentary": [
 				"Phil checked",
 				"John to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Jd 5h Ac ",
-				"John Folded=False Covered=False Out=False Cards=6s 5s 7c 7h ",
-				"Adam Folded=False Covered=False Out=False Cards=5c 7s 3s Js ",
-				"Dan Folded=False Covered=False Out=False Cards=Jc 9h 9c 8h ",
-				"Phil Folded=False Covered=False Out=False Cards=Ks 7d Td Th ",
-				"Andrew Folded=True Covered=False Out=False Cards=8d Jh 5d "
 			]
 		},
 		{
@@ -3332,14 +1894,6 @@
 			"HandCommentary": [
 				"John raised by 15",
 				"Adam to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Jd 5h Ac ",
-				"John Folded=False Covered=False Out=False Cards=6s 5s 7c 7h ",
-				"Adam Folded=False Covered=False Out=False Cards=5c 7s 3s Js ",
-				"Dan Folded=False Covered=False Out=False Cards=Jc 9h 9c 8h ",
-				"Phil Folded=False Covered=False Out=False Cards=Ks 7d Td Th ",
-				"Andrew Folded=True Covered=False Out=False Cards=8d Jh 5d "
 			]
 		},
 		{
@@ -3351,14 +1905,6 @@
 			"HandCommentary": [
 				"Adam paid 15 to call",
 				"Dan to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Jd 5h Ac ",
-				"John Folded=False Covered=False Out=False Cards=6s 5s 7c 7h ",
-				"Adam Folded=False Covered=False Out=False Cards=5c 7s 3s Js ",
-				"Dan Folded=False Covered=False Out=False Cards=Jc 9h 9c 8h ",
-				"Phil Folded=False Covered=False Out=False Cards=Ks 7d Td Th ",
-				"Andrew Folded=True Covered=False Out=False Cards=8d Jh 5d "
 			]
 		},
 		{
@@ -3370,14 +1916,6 @@
 			"HandCommentary": [
 				"Dan paid 15 to call",
 				"Phil to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Jd 5h Ac ",
-				"John Folded=False Covered=False Out=False Cards=6s 5s 7c 7h ",
-				"Adam Folded=False Covered=False Out=False Cards=5c 7s 3s Js ",
-				"Dan Folded=False Covered=False Out=False Cards=Jc 9h 9c 8h ",
-				"Phil Folded=False Covered=False Out=False Cards=Ks 7d Td Th ",
-				"Andrew Folded=True Covered=False Out=False Cards=8d Jh 5d "
 			]
 		},
 		{
@@ -3389,14 +1927,6 @@
 			"HandCommentary": [
 				"Phil paid 15 to call",
 				"Started next round, Phil to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Jd 5h Ac ",
-				"John Folded=False Covered=False Out=False Cards=6s 5s 7c 7h 6c ",
-				"Adam Folded=False Covered=False Out=False Cards=5c 7s 3s Js Ts ",
-				"Dan Folded=False Covered=False Out=False Cards=Jc 9h 9c 8h 2s ",
-				"Phil Folded=False Covered=False Out=False Cards=Ks 7d Td Th Ah ",
-				"Andrew Folded=True Covered=False Out=False Cards=8d Jh 5d "
 			]
 		},
 		{
@@ -3408,14 +1938,6 @@
 			"HandCommentary": [
 				"Phil checked",
 				"John to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Jd 5h Ac ",
-				"John Folded=False Covered=False Out=False Cards=6s 5s 7c 7h 6c ",
-				"Adam Folded=False Covered=False Out=False Cards=5c 7s 3s Js Ts ",
-				"Dan Folded=False Covered=False Out=False Cards=Jc 9h 9c 8h 2s ",
-				"Phil Folded=False Covered=False Out=False Cards=Ks 7d Td Th Ah ",
-				"Andrew Folded=True Covered=False Out=False Cards=8d Jh 5d "
 			]
 		},
 		{
@@ -3427,14 +1949,6 @@
 			"HandCommentary": [
 				"John raised by 25",
 				"Adam to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Jd 5h Ac ",
-				"John Folded=False Covered=False Out=False Cards=6s 5s 7c 7h 6c ",
-				"Adam Folded=False Covered=False Out=False Cards=5c 7s 3s Js Ts ",
-				"Dan Folded=False Covered=False Out=False Cards=Jc 9h 9c 8h 2s ",
-				"Phil Folded=False Covered=False Out=False Cards=Ks 7d Td Th Ah ",
-				"Andrew Folded=True Covered=False Out=False Cards=8d Jh 5d "
 			]
 		},
 		{
@@ -3446,14 +1960,6 @@
 			"HandCommentary": [
 				"Adam paid 25 to call",
 				"Dan to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Jd 5h Ac ",
-				"John Folded=False Covered=False Out=False Cards=6s 5s 7c 7h 6c ",
-				"Adam Folded=False Covered=False Out=False Cards=5c 7s 3s Js Ts ",
-				"Dan Folded=False Covered=False Out=False Cards=Jc 9h 9c 8h 2s ",
-				"Phil Folded=False Covered=False Out=False Cards=Ks 7d Td Th Ah ",
-				"Andrew Folded=True Covered=False Out=False Cards=8d Jh 5d "
 			]
 		},
 		{
@@ -3465,14 +1971,6 @@
 			"HandCommentary": [
 				"Dan paid 25 to call",
 				"Phil to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Jd 5h Ac ",
-				"John Folded=False Covered=False Out=False Cards=6s 5s 7c 7h 6c ",
-				"Adam Folded=False Covered=False Out=False Cards=5c 7s 3s Js Ts ",
-				"Dan Folded=False Covered=False Out=False Cards=Jc 9h 9c 8h 2s ",
-				"Phil Folded=False Covered=False Out=False Cards=Ks 7d Td Th Ah ",
-				"Andrew Folded=True Covered=False Out=False Cards=8d Jh 5d "
 			]
 		},
 		{
@@ -3484,14 +1982,6 @@
 			"HandCommentary": [
 				"Phil paid 25 to call",
 				"Started next round, Phil to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Jd 5h Ac ",
-				"John Folded=False Covered=False Out=False Cards=6s 5s 7c 7h 6c Kc ",
-				"Adam Folded=False Covered=False Out=False Cards=5c 7s 3s Js Ts 4c ",
-				"Dan Folded=False Covered=False Out=False Cards=Jc 9h 9c 8h 2s 8s ",
-				"Phil Folded=False Covered=False Out=False Cards=Ks 7d Td Th Ah Kh ",
-				"Andrew Folded=True Covered=False Out=False Cards=8d Jh 5d "
 			]
 		},
 		{
@@ -3503,14 +1993,6 @@
 			"HandCommentary": [
 				"Phil raised by 50",
 				"John to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Jd 5h Ac ",
-				"John Folded=False Covered=False Out=False Cards=6s 5s 7c 7h 6c Kc ",
-				"Adam Folded=False Covered=False Out=False Cards=5c 7s 3s Js Ts 4c ",
-				"Dan Folded=False Covered=False Out=False Cards=Jc 9h 9c 8h 2s 8s ",
-				"Phil Folded=False Covered=False Out=False Cards=Ks 7d Td Th Ah Kh ",
-				"Andrew Folded=True Covered=False Out=False Cards=8d Jh 5d "
 			]
 		},
 		{
@@ -3522,14 +2004,6 @@
 			"HandCommentary": [
 				"John paid 50 to call",
 				"Adam to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Jd 5h Ac ",
-				"John Folded=False Covered=False Out=False Cards=6s 5s 7c 7h 6c Kc ",
-				"Adam Folded=False Covered=False Out=False Cards=5c 7s 3s Js Ts 4c ",
-				"Dan Folded=False Covered=False Out=False Cards=Jc 9h 9c 8h 2s 8s ",
-				"Phil Folded=False Covered=False Out=False Cards=Ks 7d Td Th Ah Kh ",
-				"Andrew Folded=True Covered=False Out=False Cards=8d Jh 5d "
 			]
 		},
 		{
@@ -3541,14 +2015,6 @@
 			"HandCommentary": [
 				"Adam folded",
 				"Dan to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Jd 5h Ac ",
-				"John Folded=False Covered=False Out=False Cards=6s 5s 7c 7h 6c Kc ",
-				"Adam Folded=True Covered=False Out=False Cards=5c 7s 3s Js Ts 4c ",
-				"Dan Folded=False Covered=False Out=False Cards=Jc 9h 9c 8h 2s 8s ",
-				"Phil Folded=False Covered=False Out=False Cards=Ks 7d Td Th Ah Kh ",
-				"Andrew Folded=True Covered=False Out=False Cards=8d Jh 5d "
 			]
 		},
 		{
@@ -3560,14 +2026,6 @@
 			"HandCommentary": [
 				"Dan paid 50 to call",
 				"Started next round, Phil to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Jd 5h Ac ",
-				"John Folded=False Covered=False Out=False Cards=6s 5s 7c 7h 6c Kc 3c ",
-				"Adam Folded=True Covered=False Out=False Cards=5c 7s 3s Js Ts 4c ",
-				"Dan Folded=False Covered=False Out=False Cards=Jc 9h 9c 8h 2s 8s 4d ",
-				"Phil Folded=False Covered=False Out=False Cards=Ks 7d Td Th Ah Kh Qs ",
-				"Andrew Folded=True Covered=False Out=False Cards=8d Jh 5d "
 			]
 		},
 		{
@@ -3579,14 +2037,6 @@
 			"HandCommentary": [
 				"Phil raised by 100",
 				"John to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Jd 5h Ac ",
-				"John Folded=False Covered=False Out=False Cards=6s 5s 7c 7h 6c Kc 3c ",
-				"Adam Folded=True Covered=False Out=False Cards=5c 7s 3s Js Ts 4c ",
-				"Dan Folded=False Covered=False Out=False Cards=Jc 9h 9c 8h 2s 8s 4d ",
-				"Phil Folded=False Covered=False Out=False Cards=Ks 7d Td Th Ah Kh Qs ",
-				"Andrew Folded=True Covered=False Out=False Cards=8d Jh 5d "
 			]
 		},
 		{
@@ -3598,14 +2048,6 @@
 			"HandCommentary": [
 				"John paid 100 to call",
 				"Dan to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Jd 5h Ac ",
-				"John Folded=False Covered=False Out=False Cards=6s 5s 7c 7h 6c Kc 3c ",
-				"Adam Folded=True Covered=False Out=False Cards=5c 7s 3s Js Ts 4c ",
-				"Dan Folded=False Covered=False Out=False Cards=Jc 9h 9c 8h 2s 8s 4d ",
-				"Phil Folded=False Covered=False Out=False Cards=Ks 7d Td Th Ah Kh Qs ",
-				"Andrew Folded=True Covered=False Out=False Cards=8d Jh 5d "
 			]
 		},
 		{
@@ -3617,14 +2059,6 @@
 			"HandCommentary": [
 				"Dan paid 100 to call",
 				"Betting completed, proceeding to hand reveal stage, Phil to reveal (or fold)"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Jd 5h Ac ",
-				"John Folded=False Covered=False Out=False Cards=6s 5s 7c 7h 6c Kc 3c ",
-				"Adam Folded=True Covered=False Out=False Cards=5c 7s 3s Js Ts 4c ",
-				"Dan Folded=False Covered=False Out=False Cards=Jc 9h 9c 8h 2s 8s 4d ",
-				"Phil Folded=False Covered=False Out=False Cards=Ks 7d Td Th Ah Kh Qs ",
-				"Andrew Folded=True Covered=False Out=False Cards=8d Jh 5d "
 			]
 		},
 		{
@@ -3636,14 +2070,6 @@
 			"HandCommentary": [
 				"Phil revealed their hand details",
 				"John to reveal (or fold)"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Jd 5h Ac ",
-				"John Folded=False Covered=False Out=False Cards=6s 5s 7c 7h 6c Kc 3c ",
-				"Adam Folded=True Covered=False Out=False Cards=5c 7s 3s Js Ts 4c ",
-				"Dan Folded=False Covered=False Out=False Cards=Jc 9h 9c 8h 2s 8s 4d ",
-				"Phil Folded=False Covered=False Out=False Cards=Ks 7d Td Th Ah Kh Qs ",
-				"Andrew Folded=True Covered=False Out=False Cards=8d Jh 5d "
 			]
 		},
 		{
@@ -3655,14 +2081,6 @@
 			"HandCommentary": [
 				"John revealed their hand details",
 				"Dan to reveal (or fold)"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Jd 5h Ac ",
-				"John Folded=False Covered=False Out=False Cards=6s 5s 7c 7h 6c Kc 3c ",
-				"Adam Folded=True Covered=False Out=False Cards=5c 7s 3s Js Ts 4c ",
-				"Dan Folded=False Covered=False Out=False Cards=Jc 9h 9c 8h 2s 8s 4d ",
-				"Phil Folded=False Covered=False Out=False Cards=Ks 7d Td Th Ah Kh Qs ",
-				"Andrew Folded=True Covered=False Out=False Cards=8d Jh 5d "
 			]
 		},
 		{
@@ -3682,14 +2100,6 @@
 				"Pot 0: Andrew lost 1 after folding",
 				"Waiting for administrator to start next hand.",
 				"Reveal hands if desired, or administrator to start next hand (or reopen lobby)"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Jd 5h Ac ",
-				"John Folded=False Covered=False Out=False Cards=6s 5s 7c 7h 6c Kc 3c ",
-				"Adam Folded=True Covered=False Out=False Cards=5c 7s 3s Js Ts 4c ",
-				"Dan Folded=False Covered=False Out=False Cards=Jc 9h 9c 8h 2s 8s 4d ",
-				"Phil Folded=False Covered=False Out=False Cards=Ks 7d Td Th Ah Kh Qs ",
-				"Andrew Folded=True Covered=False Out=False Cards=8d Jh 5d "
 			]
 		},
 		{
@@ -3698,15 +2108,7 @@
 			"UserName": "John",
 			"Parameters": null,
 			"StatusMessage": "John started next hand. Dan to bet",
-			"HandCommentary": [],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=7d 5h 4h ",
-				"John Folded=False Covered=False Out=False Cards=Jh 8c 3s ",
-				"Adam Folded=False Covered=False Out=False Cards=As 8s 6h ",
-				"Dan Folded=False Covered=False Out=False Cards=Ah 5d Kh ",
-				"Phil Folded=False Covered=False Out=False Cards=Td Qs 5c ",
-				"Andrew Folded=False Covered=False Out=False Cards=9d 6c 3c "
-			]
+			"HandCommentary": []
 		},
 		{
 			"ActionNumber": 189,
@@ -3717,14 +2119,6 @@
 			"HandCommentary": [
 				"Dan raised by 5",
 				"Phil to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=7d 5h 4h ",
-				"John Folded=False Covered=False Out=False Cards=Jh 8c 3s ",
-				"Adam Folded=False Covered=False Out=False Cards=As 8s 6h ",
-				"Dan Folded=False Covered=False Out=False Cards=Ah 5d Kh ",
-				"Phil Folded=False Covered=False Out=False Cards=Td Qs 5c ",
-				"Andrew Folded=False Covered=False Out=False Cards=9d 6c 3c "
 			]
 		},
 		{
@@ -3736,14 +2130,6 @@
 			"HandCommentary": [
 				"Phil paid 5 to call",
 				"Andrew to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=7d 5h 4h ",
-				"John Folded=False Covered=False Out=False Cards=Jh 8c 3s ",
-				"Adam Folded=False Covered=False Out=False Cards=As 8s 6h ",
-				"Dan Folded=False Covered=False Out=False Cards=Ah 5d Kh ",
-				"Phil Folded=False Covered=False Out=False Cards=Td Qs 5c ",
-				"Andrew Folded=False Covered=False Out=False Cards=9d 6c 3c "
 			]
 		},
 		{
@@ -3755,14 +2141,6 @@
 			"HandCommentary": [
 				"Andrew paid 5 to call",
 				"Jon to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=7d 5h 4h ",
-				"John Folded=False Covered=False Out=False Cards=Jh 8c 3s ",
-				"Adam Folded=False Covered=False Out=False Cards=As 8s 6h ",
-				"Dan Folded=False Covered=False Out=False Cards=Ah 5d Kh ",
-				"Phil Folded=False Covered=False Out=False Cards=Td Qs 5c ",
-				"Andrew Folded=False Covered=False Out=False Cards=9d 6c 3c "
 			]
 		},
 		{
@@ -3774,14 +2152,6 @@
 			"HandCommentary": [
 				"Jon paid 5 to call",
 				"John to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=7d 5h 4h ",
-				"John Folded=False Covered=False Out=False Cards=Jh 8c 3s ",
-				"Adam Folded=False Covered=False Out=False Cards=As 8s 6h ",
-				"Dan Folded=False Covered=False Out=False Cards=Ah 5d Kh ",
-				"Phil Folded=False Covered=False Out=False Cards=Td Qs 5c ",
-				"Andrew Folded=False Covered=False Out=False Cards=9d 6c 3c "
 			]
 		},
 		{
@@ -3793,14 +2163,6 @@
 			"HandCommentary": [
 				"John paid 5 to call",
 				"Adam to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=7d 5h 4h ",
-				"John Folded=False Covered=False Out=False Cards=Jh 8c 3s ",
-				"Adam Folded=False Covered=False Out=False Cards=As 8s 6h ",
-				"Dan Folded=False Covered=False Out=False Cards=Ah 5d Kh ",
-				"Phil Folded=False Covered=False Out=False Cards=Td Qs 5c ",
-				"Andrew Folded=False Covered=False Out=False Cards=9d 6c 3c "
 			]
 		},
 		{
@@ -3812,14 +2174,6 @@
 			"HandCommentary": [
 				"Adam paid 5 to call",
 				"Started next round, Dan to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=7d 5h 4h 9s ",
-				"John Folded=False Covered=False Out=False Cards=Jh 8c 3s Th ",
-				"Adam Folded=False Covered=False Out=False Cards=As 8s 6h 2s ",
-				"Dan Folded=False Covered=False Out=False Cards=Ah 5d Kh Kd ",
-				"Phil Folded=False Covered=False Out=False Cards=Td Qs 5c 7c ",
-				"Andrew Folded=False Covered=False Out=False Cards=9d 6c 3c 2c "
 			]
 		},
 		{
@@ -3831,14 +2185,6 @@
 			"HandCommentary": [
 				"Dan raised by 15",
 				"Phil to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=7d 5h 4h 9s ",
-				"John Folded=False Covered=False Out=False Cards=Jh 8c 3s Th ",
-				"Adam Folded=False Covered=False Out=False Cards=As 8s 6h 2s ",
-				"Dan Folded=False Covered=False Out=False Cards=Ah 5d Kh Kd ",
-				"Phil Folded=False Covered=False Out=False Cards=Td Qs 5c 7c ",
-				"Andrew Folded=False Covered=False Out=False Cards=9d 6c 3c 2c "
 			]
 		},
 		{
@@ -3850,14 +2196,6 @@
 			"HandCommentary": [
 				"Phil folded",
 				"Andrew to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=7d 5h 4h 9s ",
-				"John Folded=False Covered=False Out=False Cards=Jh 8c 3s Th ",
-				"Adam Folded=False Covered=False Out=False Cards=As 8s 6h 2s ",
-				"Dan Folded=False Covered=False Out=False Cards=Ah 5d Kh Kd ",
-				"Phil Folded=True Covered=False Out=False Cards=Td Qs 5c 7c ",
-				"Andrew Folded=False Covered=False Out=False Cards=9d 6c 3c 2c "
 			]
 		},
 		{
@@ -3869,14 +2207,6 @@
 			"HandCommentary": [
 				"Andrew paid 15 to call",
 				"Jon to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=7d 5h 4h 9s ",
-				"John Folded=False Covered=False Out=False Cards=Jh 8c 3s Th ",
-				"Adam Folded=False Covered=False Out=False Cards=As 8s 6h 2s ",
-				"Dan Folded=False Covered=False Out=False Cards=Ah 5d Kh Kd ",
-				"Phil Folded=True Covered=False Out=False Cards=Td Qs 5c 7c ",
-				"Andrew Folded=False Covered=False Out=False Cards=9d 6c 3c 2c "
 			]
 		},
 		{
@@ -3888,14 +2218,6 @@
 			"HandCommentary": [
 				"Jon folded",
 				"John to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=7d 5h 4h 9s ",
-				"John Folded=False Covered=False Out=False Cards=Jh 8c 3s Th ",
-				"Adam Folded=False Covered=False Out=False Cards=As 8s 6h 2s ",
-				"Dan Folded=False Covered=False Out=False Cards=Ah 5d Kh Kd ",
-				"Phil Folded=True Covered=False Out=False Cards=Td Qs 5c 7c ",
-				"Andrew Folded=False Covered=False Out=False Cards=9d 6c 3c 2c "
 			]
 		},
 		{
@@ -3907,14 +2229,6 @@
 			"HandCommentary": [
 				"John folded",
 				"Adam to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=7d 5h 4h 9s ",
-				"John Folded=True Covered=False Out=False Cards=Jh 8c 3s Th ",
-				"Adam Folded=False Covered=False Out=False Cards=As 8s 6h 2s ",
-				"Dan Folded=False Covered=False Out=False Cards=Ah 5d Kh Kd ",
-				"Phil Folded=True Covered=False Out=False Cards=Td Qs 5c 7c ",
-				"Andrew Folded=False Covered=False Out=False Cards=9d 6c 3c 2c "
 			]
 		},
 		{
@@ -3926,14 +2240,6 @@
 			"HandCommentary": [
 				"Adam folded",
 				"Started next round, Dan to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=7d 5h 4h 9s ",
-				"John Folded=True Covered=False Out=False Cards=Jh 8c 3s Th ",
-				"Adam Folded=True Covered=False Out=False Cards=As 8s 6h 2s ",
-				"Dan Folded=False Covered=False Out=False Cards=Ah 5d Kh Kd 3d ",
-				"Phil Folded=True Covered=False Out=False Cards=Td Qs 5c 7c ",
-				"Andrew Folded=False Covered=False Out=False Cards=9d 6c 3c 2c 9c "
 			]
 		},
 		{
@@ -3945,14 +2251,6 @@
 			"HandCommentary": [
 				"Dan raised by 5",
 				"Andrew to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=7d 5h 4h 9s ",
-				"John Folded=True Covered=False Out=False Cards=Jh 8c 3s Th ",
-				"Adam Folded=True Covered=False Out=False Cards=As 8s 6h 2s ",
-				"Dan Folded=False Covered=False Out=False Cards=Ah 5d Kh Kd 3d ",
-				"Phil Folded=True Covered=False Out=False Cards=Td Qs 5c 7c ",
-				"Andrew Folded=False Covered=False Out=False Cards=9d 6c 3c 2c 9c "
 			]
 		},
 		{
@@ -3964,14 +2262,6 @@
 			"HandCommentary": [
 				"Andrew paid 5 to call",
 				"Started next round, Dan to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=7d 5h 4h 9s ",
-				"John Folded=True Covered=False Out=False Cards=Jh 8c 3s Th ",
-				"Adam Folded=True Covered=False Out=False Cards=As 8s 6h 2s ",
-				"Dan Folded=False Covered=False Out=False Cards=Ah 5d Kh Kd 3d Js ",
-				"Phil Folded=True Covered=False Out=False Cards=Td Qs 5c 7c ",
-				"Andrew Folded=False Covered=False Out=False Cards=9d 6c 3c 2c 9c Jc "
 			]
 		},
 		{
@@ -3983,14 +2273,6 @@
 			"HandCommentary": [
 				"Dan checked",
 				"Andrew to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=7d 5h 4h 9s ",
-				"John Folded=True Covered=False Out=False Cards=Jh 8c 3s Th ",
-				"Adam Folded=True Covered=False Out=False Cards=As 8s 6h 2s ",
-				"Dan Folded=False Covered=False Out=False Cards=Ah 5d Kh Kd 3d Js ",
-				"Phil Folded=True Covered=False Out=False Cards=Td Qs 5c 7c ",
-				"Andrew Folded=False Covered=False Out=False Cards=9d 6c 3c 2c 9c Jc "
 			]
 		},
 		{
@@ -4002,14 +2284,6 @@
 			"HandCommentary": [
 				"Andrew raised by 25",
 				"Dan to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=7d 5h 4h 9s ",
-				"John Folded=True Covered=False Out=False Cards=Jh 8c 3s Th ",
-				"Adam Folded=True Covered=False Out=False Cards=As 8s 6h 2s ",
-				"Dan Folded=False Covered=False Out=False Cards=Ah 5d Kh Kd 3d Js ",
-				"Phil Folded=True Covered=False Out=False Cards=Td Qs 5c 7c ",
-				"Andrew Folded=False Covered=False Out=False Cards=9d 6c 3c 2c 9c Jc "
 			]
 		},
 		{
@@ -4021,14 +2295,6 @@
 			"HandCommentary": [
 				"Dan paid 25 to stay in and raised by 100",
 				"Andrew to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=7d 5h 4h 9s ",
-				"John Folded=True Covered=False Out=False Cards=Jh 8c 3s Th ",
-				"Adam Folded=True Covered=False Out=False Cards=As 8s 6h 2s ",
-				"Dan Folded=False Covered=False Out=False Cards=Ah 5d Kh Kd 3d Js ",
-				"Phil Folded=True Covered=False Out=False Cards=Td Qs 5c 7c ",
-				"Andrew Folded=False Covered=False Out=False Cards=9d 6c 3c 2c 9c Jc "
 			]
 		},
 		{
@@ -4040,14 +2306,6 @@
 			"HandCommentary": [
 				"Andrew paid 100 to stay in and raised by 217",
 				"Dan to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=7d 5h 4h 9s ",
-				"John Folded=True Covered=False Out=False Cards=Jh 8c 3s Th ",
-				"Adam Folded=True Covered=False Out=False Cards=As 8s 6h 2s ",
-				"Dan Folded=False Covered=False Out=False Cards=Ah 5d Kh Kd 3d Js ",
-				"Phil Folded=True Covered=False Out=False Cards=Td Qs 5c 7c ",
-				"Andrew Folded=False Covered=False Out=False Cards=9d 6c 3c 2c 9c Jc "
 			]
 		},
 		{
@@ -4059,14 +2317,6 @@
 			"HandCommentary": [
 				"Dan paid 217 to call",
 				"Started next round, Dan to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=7d 5h 4h 9s ",
-				"John Folded=True Covered=False Out=False Cards=Jh 8c 3s Th ",
-				"Adam Folded=True Covered=False Out=False Cards=As 8s 6h 2s ",
-				"Dan Folded=False Covered=False Out=False Cards=Ah 5d Kh Kd 3d Js 5s ",
-				"Phil Folded=True Covered=False Out=False Cards=Td Qs 5c 7c ",
-				"Andrew Folded=False Covered=False Out=False Cards=9d 6c 3c 2c 9c Jc 4d "
 			]
 		},
 		{
@@ -4078,14 +2328,6 @@
 			"HandCommentary": [
 				"Dan checked",
 				"Andrew to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=7d 5h 4h 9s ",
-				"John Folded=True Covered=False Out=False Cards=Jh 8c 3s Th ",
-				"Adam Folded=True Covered=False Out=False Cards=As 8s 6h 2s ",
-				"Dan Folded=False Covered=False Out=False Cards=Ah 5d Kh Kd 3d Js 5s ",
-				"Phil Folded=True Covered=False Out=False Cards=Td Qs 5c 7c ",
-				"Andrew Folded=False Covered=False Out=False Cards=9d 6c 3c 2c 9c Jc 4d "
 			]
 		},
 		{
@@ -4097,14 +2339,6 @@
 			"HandCommentary": [
 				"Andrew checked",
 				"Betting completed, proceeding to hand reveal stage, Dan to reveal (or fold)"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=7d 5h 4h 9s ",
-				"John Folded=True Covered=False Out=False Cards=Jh 8c 3s Th ",
-				"Adam Folded=True Covered=False Out=False Cards=As 8s 6h 2s ",
-				"Dan Folded=False Covered=False Out=False Cards=Ah 5d Kh Kd 3d Js 5s ",
-				"Phil Folded=True Covered=False Out=False Cards=Td Qs 5c 7c ",
-				"Andrew Folded=False Covered=False Out=False Cards=9d 6c 3c 2c 9c Jc 4d "
 			]
 		},
 		{
@@ -4116,14 +2350,6 @@
 			"HandCommentary": [
 				"Dan revealed their hand details",
 				"Andrew to reveal (or fold)"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=7d 5h 4h 9s ",
-				"John Folded=True Covered=False Out=False Cards=Jh 8c 3s Th ",
-				"Adam Folded=True Covered=False Out=False Cards=As 8s 6h 2s ",
-				"Dan Folded=False Covered=False Out=False Cards=Ah 5d Kh Kd 3d Js 5s ",
-				"Phil Folded=True Covered=False Out=False Cards=Td Qs 5c 7c ",
-				"Andrew Folded=False Covered=False Out=False Cards=9d 6c 3c 2c 9c Jc 4d "
 			]
 		},
 		{
@@ -4143,14 +2369,6 @@
 				"Pot 0: Phil lost 6 after folding",
 				"Waiting for administrator to start next hand.",
 				"Reveal hands if desired, or administrator to start next hand (or reopen lobby)"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=7d 5h 4h 9s ",
-				"John Folded=True Covered=False Out=False Cards=Jh 8c 3s Th ",
-				"Adam Folded=True Covered=False Out=False Cards=As 8s 6h 2s ",
-				"Dan Folded=False Covered=False Out=False Cards=Ah 5d Kh Kd 3d Js 5s ",
-				"Phil Folded=True Covered=False Out=False Cards=Td Qs 5c 7c ",
-				"Andrew Folded=False Covered=False Out=False Cards=9d 6c 3c 2c 9c Jc 4d "
 			]
 		},
 		{
@@ -4159,15 +2377,7 @@
 			"UserName": "John",
 			"Parameters": null,
 			"StatusMessage": "John started next hand. Andrew to bet",
-			"HandCommentary": [],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Qs 6c Qh ",
-				"John Folded=False Covered=False Out=False Cards=4s 8c 9h ",
-				"Adam Folded=False Covered=False Out=False Cards=As Th 2c ",
-				"Dan Folded=False Covered=False Out=True Cards=",
-				"Phil Folded=False Covered=False Out=False Cards=6s 2h 7h ",
-				"Andrew Folded=False Covered=False Out=False Cards=8h Qc Kh "
-			]
+			"HandCommentary": []
 		},
 		{
 			"ActionNumber": 213,
@@ -4178,14 +2388,6 @@
 			"HandCommentary": [
 				"Andrew checked",
 				"Jon to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Qs 6c Qh ",
-				"John Folded=False Covered=False Out=False Cards=4s 8c 9h ",
-				"Adam Folded=False Covered=False Out=False Cards=As Th 2c ",
-				"Dan Folded=False Covered=False Out=True Cards=",
-				"Phil Folded=False Covered=False Out=False Cards=6s 2h 7h ",
-				"Andrew Folded=False Covered=False Out=False Cards=8h Qc Kh "
 			]
 		},
 		{
@@ -4197,14 +2399,6 @@
 			"HandCommentary": [
 				"Jon raised by 5",
 				"John to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Qs 6c Qh ",
-				"John Folded=False Covered=False Out=False Cards=4s 8c 9h ",
-				"Adam Folded=False Covered=False Out=False Cards=As Th 2c ",
-				"Dan Folded=False Covered=False Out=True Cards=",
-				"Phil Folded=False Covered=False Out=False Cards=6s 2h 7h ",
-				"Andrew Folded=False Covered=False Out=False Cards=8h Qc Kh "
 			]
 		},
 		{
@@ -4216,14 +2410,6 @@
 			"HandCommentary": [
 				"John paid 5 to stay in and raised by 20",
 				"Adam to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Qs 6c Qh ",
-				"John Folded=False Covered=False Out=False Cards=4s 8c 9h ",
-				"Adam Folded=False Covered=False Out=False Cards=As Th 2c ",
-				"Dan Folded=False Covered=False Out=True Cards=",
-				"Phil Folded=False Covered=False Out=False Cards=6s 2h 7h ",
-				"Andrew Folded=False Covered=False Out=False Cards=8h Qc Kh "
 			]
 		},
 		{
@@ -4235,14 +2421,6 @@
 			"HandCommentary": [
 				"Adam paid 25 to call",
 				"Phil to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Qs 6c Qh ",
-				"John Folded=False Covered=False Out=False Cards=4s 8c 9h ",
-				"Adam Folded=False Covered=False Out=False Cards=As Th 2c ",
-				"Dan Folded=False Covered=False Out=True Cards=",
-				"Phil Folded=False Covered=False Out=False Cards=6s 2h 7h ",
-				"Andrew Folded=False Covered=False Out=False Cards=8h Qc Kh "
 			]
 		},
 		{
@@ -4254,14 +2432,6 @@
 			"HandCommentary": [
 				"Phil folded",
 				"Andrew to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Qs 6c Qh ",
-				"John Folded=False Covered=False Out=False Cards=4s 8c 9h ",
-				"Adam Folded=False Covered=False Out=False Cards=As Th 2c ",
-				"Dan Folded=False Covered=False Out=True Cards=",
-				"Phil Folded=True Covered=False Out=False Cards=6s 2h 7h ",
-				"Andrew Folded=False Covered=False Out=False Cards=8h Qc Kh "
 			]
 		},
 		{
@@ -4273,14 +2443,6 @@
 			"HandCommentary": [
 				"Andrew paid 25 to call",
 				"Jon to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Qs 6c Qh ",
-				"John Folded=False Covered=False Out=False Cards=4s 8c 9h ",
-				"Adam Folded=False Covered=False Out=False Cards=As Th 2c ",
-				"Dan Folded=False Covered=False Out=True Cards=",
-				"Phil Folded=True Covered=False Out=False Cards=6s 2h 7h ",
-				"Andrew Folded=False Covered=False Out=False Cards=8h Qc Kh "
 			]
 		},
 		{
@@ -4292,14 +2454,6 @@
 			"HandCommentary": [
 				"Jon paid 20 to call",
 				"Started next round, Andrew to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Qs 6c Qh 9d ",
-				"John Folded=False Covered=False Out=False Cards=4s 8c 9h Tc ",
-				"Adam Folded=False Covered=False Out=False Cards=As Th 2c 8d ",
-				"Dan Folded=False Covered=False Out=True Cards=",
-				"Phil Folded=True Covered=False Out=False Cards=6s 2h 7h ",
-				"Andrew Folded=False Covered=False Out=False Cards=8h Qc Kh Ks "
 			]
 		},
 		{
@@ -4311,14 +2465,6 @@
 			"HandCommentary": [
 				"Andrew raised by 15",
 				"Jon to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Qs 6c Qh 9d ",
-				"John Folded=False Covered=False Out=False Cards=4s 8c 9h Tc ",
-				"Adam Folded=False Covered=False Out=False Cards=As Th 2c 8d ",
-				"Dan Folded=False Covered=False Out=True Cards=",
-				"Phil Folded=True Covered=False Out=False Cards=6s 2h 7h ",
-				"Andrew Folded=False Covered=False Out=False Cards=8h Qc Kh Ks "
 			]
 		},
 		{
@@ -4330,14 +2476,6 @@
 			"HandCommentary": [
 				"Jon paid 15 to call",
 				"John to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Qs 6c Qh 9d ",
-				"John Folded=False Covered=False Out=False Cards=4s 8c 9h Tc ",
-				"Adam Folded=False Covered=False Out=False Cards=As Th 2c 8d ",
-				"Dan Folded=False Covered=False Out=True Cards=",
-				"Phil Folded=True Covered=False Out=False Cards=6s 2h 7h ",
-				"Andrew Folded=False Covered=False Out=False Cards=8h Qc Kh Ks "
 			]
 		},
 		{
@@ -4349,14 +2487,6 @@
 			"HandCommentary": [
 				"John paid 15 to stay in and raised by 25",
 				"Adam to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Qs 6c Qh 9d ",
-				"John Folded=False Covered=False Out=False Cards=4s 8c 9h Tc ",
-				"Adam Folded=False Covered=False Out=False Cards=As Th 2c 8d ",
-				"Dan Folded=False Covered=False Out=True Cards=",
-				"Phil Folded=True Covered=False Out=False Cards=6s 2h 7h ",
-				"Andrew Folded=False Covered=False Out=False Cards=8h Qc Kh Ks "
 			]
 		},
 		{
@@ -4368,14 +2498,6 @@
 			"HandCommentary": [
 				"Adam folded",
 				"Andrew to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Qs 6c Qh 9d ",
-				"John Folded=False Covered=False Out=False Cards=4s 8c 9h Tc ",
-				"Adam Folded=True Covered=False Out=False Cards=As Th 2c 8d ",
-				"Dan Folded=False Covered=False Out=True Cards=",
-				"Phil Folded=True Covered=False Out=False Cards=6s 2h 7h ",
-				"Andrew Folded=False Covered=False Out=False Cards=8h Qc Kh Ks "
 			]
 		},
 		{
@@ -4387,14 +2509,6 @@
 			"HandCommentary": [
 				"Andrew paid 25 to call",
 				"Jon to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Qs 6c Qh 9d ",
-				"John Folded=False Covered=False Out=False Cards=4s 8c 9h Tc ",
-				"Adam Folded=True Covered=False Out=False Cards=As Th 2c 8d ",
-				"Dan Folded=False Covered=False Out=True Cards=",
-				"Phil Folded=True Covered=False Out=False Cards=6s 2h 7h ",
-				"Andrew Folded=False Covered=False Out=False Cards=8h Qc Kh Ks "
 			]
 		},
 		{
@@ -4406,14 +2520,6 @@
 			"HandCommentary": [
 				"Jon paid 25 to call",
 				"Started next round, Andrew to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Qs 6c Qh 9d 8s ",
-				"John Folded=False Covered=False Out=False Cards=4s 8c 9h Tc 7c ",
-				"Adam Folded=True Covered=False Out=False Cards=As Th 2c 8d ",
-				"Dan Folded=False Covered=False Out=True Cards=",
-				"Phil Folded=True Covered=False Out=False Cards=6s 2h 7h ",
-				"Andrew Folded=False Covered=False Out=False Cards=8h Qc Kh Ks 3c "
 			]
 		},
 		{
@@ -4425,14 +2531,6 @@
 			"HandCommentary": [
 				"Andrew folded",
 				"Jon to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Qs 6c Qh 9d 8s ",
-				"John Folded=False Covered=False Out=False Cards=4s 8c 9h Tc 7c ",
-				"Adam Folded=True Covered=False Out=False Cards=As Th 2c 8d ",
-				"Dan Folded=False Covered=False Out=True Cards=",
-				"Phil Folded=True Covered=False Out=False Cards=6s 2h 7h ",
-				"Andrew Folded=True Covered=False Out=False Cards=8h Qc Kh Ks 3c "
 			]
 		},
 		{
@@ -4444,14 +2542,6 @@
 			"HandCommentary": [
 				"Jon checked",
 				"John to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Qs 6c Qh 9d 8s ",
-				"John Folded=False Covered=False Out=False Cards=4s 8c 9h Tc 7c ",
-				"Adam Folded=True Covered=False Out=False Cards=As Th 2c 8d ",
-				"Dan Folded=False Covered=False Out=True Cards=",
-				"Phil Folded=True Covered=False Out=False Cards=6s 2h 7h ",
-				"Andrew Folded=True Covered=False Out=False Cards=8h Qc Kh Ks 3c "
 			]
 		},
 		{
@@ -4463,14 +2553,6 @@
 			"HandCommentary": [
 				"John raised by 300",
 				"Jon to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Qs 6c Qh 9d 8s ",
-				"John Folded=False Covered=False Out=False Cards=4s 8c 9h Tc 7c ",
-				"Adam Folded=True Covered=False Out=False Cards=As Th 2c 8d ",
-				"Dan Folded=False Covered=False Out=True Cards=",
-				"Phil Folded=True Covered=False Out=False Cards=6s 2h 7h ",
-				"Andrew Folded=True Covered=False Out=False Cards=8h Qc Kh Ks 3c "
 			]
 		},
 		{
@@ -4490,14 +2572,6 @@
 				"Pot 0: Andrew lost 66 after folding",
 				"Waiting for administrator to start next hand.",
 				"Reveal hands if desired, or administrator to start next hand (or reopen lobby)"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Qs 6c Qh 9d 8s ",
-				"John Folded=False Covered=False Out=False Cards=4s 8c 9h Tc 7c ",
-				"Adam Folded=True Covered=False Out=False Cards=As Th 2c 8d ",
-				"Dan Folded=False Covered=False Out=True Cards=",
-				"Phil Folded=True Covered=False Out=False Cards=6s 2h 7h ",
-				"Andrew Folded=True Covered=False Out=False Cards=8h Qc Kh Ks 3c "
 			]
 		},
 		{
@@ -4506,15 +2580,7 @@
 			"UserName": "John",
 			"Parameters": null,
 			"StatusMessage": "John started next hand. Phil to bet",
-			"HandCommentary": [],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Ad 3c 9s ",
-				"John Folded=False Covered=False Out=False Cards=6h Ah 4s ",
-				"Adam Folded=False Covered=False Out=False Cards=As 3s Kc ",
-				"Dan Folded=False Covered=False Out=True Cards=",
-				"Phil Folded=False Covered=False Out=False Cards=Kh 5s Kd ",
-				"Andrew Folded=False Covered=False Out=False Cards=5h Tc 4h "
-			]
+			"HandCommentary": []
 		},
 		{
 			"ActionNumber": 231,
@@ -4525,14 +2591,6 @@
 			"HandCommentary": [
 				"Phil checked",
 				"Andrew to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Ad 3c 9s ",
-				"John Folded=False Covered=False Out=False Cards=6h Ah 4s ",
-				"Adam Folded=False Covered=False Out=False Cards=As 3s Kc ",
-				"Dan Folded=False Covered=False Out=True Cards=",
-				"Phil Folded=False Covered=False Out=False Cards=Kh 5s Kd ",
-				"Andrew Folded=False Covered=False Out=False Cards=5h Tc 4h "
 			]
 		},
 		{
@@ -4544,14 +2602,6 @@
 			"HandCommentary": [
 				"Andrew checked",
 				"Jon to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Ad 3c 9s ",
-				"John Folded=False Covered=False Out=False Cards=6h Ah 4s ",
-				"Adam Folded=False Covered=False Out=False Cards=As 3s Kc ",
-				"Dan Folded=False Covered=False Out=True Cards=",
-				"Phil Folded=False Covered=False Out=False Cards=Kh 5s Kd ",
-				"Andrew Folded=False Covered=False Out=False Cards=5h Tc 4h "
 			]
 		},
 		{
@@ -4563,14 +2613,6 @@
 			"HandCommentary": [
 				"Jon checked",
 				"John to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Ad 3c 9s ",
-				"John Folded=False Covered=False Out=False Cards=6h Ah 4s ",
-				"Adam Folded=False Covered=False Out=False Cards=As 3s Kc ",
-				"Dan Folded=False Covered=False Out=True Cards=",
-				"Phil Folded=False Covered=False Out=False Cards=Kh 5s Kd ",
-				"Andrew Folded=False Covered=False Out=False Cards=5h Tc 4h "
 			]
 		},
 		{
@@ -4582,14 +2624,6 @@
 			"HandCommentary": [
 				"John raised by 150",
 				"Adam to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Ad 3c 9s ",
-				"John Folded=False Covered=False Out=False Cards=6h Ah 4s ",
-				"Adam Folded=False Covered=False Out=False Cards=As 3s Kc ",
-				"Dan Folded=False Covered=False Out=True Cards=",
-				"Phil Folded=False Covered=False Out=False Cards=Kh 5s Kd ",
-				"Andrew Folded=False Covered=False Out=False Cards=5h Tc 4h "
 			]
 		},
 		{
@@ -4601,14 +2635,6 @@
 			"HandCommentary": [
 				"Adam paid 150 to call",
 				"Phil to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Ad 3c 9s ",
-				"John Folded=False Covered=False Out=False Cards=6h Ah 4s ",
-				"Adam Folded=False Covered=False Out=False Cards=As 3s Kc ",
-				"Dan Folded=False Covered=False Out=True Cards=",
-				"Phil Folded=False Covered=False Out=False Cards=Kh 5s Kd ",
-				"Andrew Folded=False Covered=False Out=False Cards=5h Tc 4h "
 			]
 		},
 		{
@@ -4620,14 +2646,6 @@
 			"HandCommentary": [
 				"Phil paid 150 to call",
 				"Andrew to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Ad 3c 9s ",
-				"John Folded=False Covered=False Out=False Cards=6h Ah 4s ",
-				"Adam Folded=False Covered=False Out=False Cards=As 3s Kc ",
-				"Dan Folded=False Covered=False Out=True Cards=",
-				"Phil Folded=False Covered=False Out=False Cards=Kh 5s Kd ",
-				"Andrew Folded=False Covered=False Out=False Cards=5h Tc 4h "
 			]
 		},
 		{
@@ -4639,14 +2657,6 @@
 			"HandCommentary": [
 				"Andrew folded",
 				"Jon to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Ad 3c 9s ",
-				"John Folded=False Covered=False Out=False Cards=6h Ah 4s ",
-				"Adam Folded=False Covered=False Out=False Cards=As 3s Kc ",
-				"Dan Folded=False Covered=False Out=True Cards=",
-				"Phil Folded=False Covered=False Out=False Cards=Kh 5s Kd ",
-				"Andrew Folded=True Covered=False Out=False Cards=5h Tc 4h "
 			]
 		},
 		{
@@ -4658,14 +2668,6 @@
 			"HandCommentary": [
 				"Jon paid 150 to call",
 				"Started next round, Adam to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Ad 3c 9s 7h ",
-				"John Folded=False Covered=False Out=False Cards=6h Ah 4s 9c ",
-				"Adam Folded=False Covered=False Out=False Cards=As 3s Kc 8c ",
-				"Dan Folded=False Covered=False Out=True Cards=",
-				"Phil Folded=False Covered=False Out=False Cards=Kh 5s Kd 7s ",
-				"Andrew Folded=True Covered=False Out=False Cards=5h Tc 4h "
 			]
 		},
 		{
@@ -4677,14 +2679,6 @@
 			"HandCommentary": [
 				"Adam checked",
 				"Phil to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Ad 3c 9s 7h ",
-				"John Folded=False Covered=False Out=False Cards=6h Ah 4s 9c ",
-				"Adam Folded=False Covered=False Out=False Cards=As 3s Kc 8c ",
-				"Dan Folded=False Covered=False Out=True Cards=",
-				"Phil Folded=False Covered=False Out=False Cards=Kh 5s Kd 7s ",
-				"Andrew Folded=True Covered=False Out=False Cards=5h Tc 4h "
 			]
 		},
 		{
@@ -4696,14 +2690,6 @@
 			"HandCommentary": [
 				"Phil checked",
 				"Jon to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Ad 3c 9s 7h ",
-				"John Folded=False Covered=False Out=False Cards=6h Ah 4s 9c ",
-				"Adam Folded=False Covered=False Out=False Cards=As 3s Kc 8c ",
-				"Dan Folded=False Covered=False Out=True Cards=",
-				"Phil Folded=False Covered=False Out=False Cards=Kh 5s Kd 7s ",
-				"Andrew Folded=True Covered=False Out=False Cards=5h Tc 4h "
 			]
 		},
 		{
@@ -4715,14 +2701,6 @@
 			"HandCommentary": [
 				"Jon checked",
 				"John to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Ad 3c 9s 7h ",
-				"John Folded=False Covered=False Out=False Cards=6h Ah 4s 9c ",
-				"Adam Folded=False Covered=False Out=False Cards=As 3s Kc 8c ",
-				"Dan Folded=False Covered=False Out=True Cards=",
-				"Phil Folded=False Covered=False Out=False Cards=Kh 5s Kd 7s ",
-				"Andrew Folded=True Covered=False Out=False Cards=5h Tc 4h "
 			]
 		},
 		{
@@ -4734,14 +2712,6 @@
 			"HandCommentary": [
 				"John raised by 75",
 				"Adam to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Ad 3c 9s 7h ",
-				"John Folded=False Covered=False Out=False Cards=6h Ah 4s 9c ",
-				"Adam Folded=False Covered=False Out=False Cards=As 3s Kc 8c ",
-				"Dan Folded=False Covered=False Out=True Cards=",
-				"Phil Folded=False Covered=False Out=False Cards=Kh 5s Kd 7s ",
-				"Andrew Folded=True Covered=False Out=False Cards=5h Tc 4h "
 			]
 		},
 		{
@@ -4753,14 +2723,6 @@
 			"HandCommentary": [
 				"Adam paid 75 to call",
 				"Phil to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Ad 3c 9s 7h ",
-				"John Folded=False Covered=False Out=False Cards=6h Ah 4s 9c ",
-				"Adam Folded=False Covered=False Out=False Cards=As 3s Kc 8c ",
-				"Dan Folded=False Covered=False Out=True Cards=",
-				"Phil Folded=False Covered=False Out=False Cards=Kh 5s Kd 7s ",
-				"Andrew Folded=True Covered=False Out=False Cards=5h Tc 4h "
 			]
 		},
 		{
@@ -4772,14 +2734,6 @@
 			"HandCommentary": [
 				"Phil paid 75 to call",
 				"Jon to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Ad 3c 9s 7h ",
-				"John Folded=False Covered=False Out=False Cards=6h Ah 4s 9c ",
-				"Adam Folded=False Covered=False Out=False Cards=As 3s Kc 8c ",
-				"Dan Folded=False Covered=False Out=True Cards=",
-				"Phil Folded=False Covered=False Out=False Cards=Kh 5s Kd 7s ",
-				"Andrew Folded=True Covered=False Out=False Cards=5h Tc 4h "
 			]
 		},
 		{
@@ -4791,14 +2745,6 @@
 			"HandCommentary": [
 				"Jon paid 75 to call",
 				"Started next round, Adam to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Ad 3c 9s 7h 4c ",
-				"John Folded=False Covered=False Out=False Cards=6h Ah 4s 9c Js ",
-				"Adam Folded=False Covered=False Out=False Cards=As 3s Kc 8c Qs ",
-				"Dan Folded=False Covered=False Out=True Cards=",
-				"Phil Folded=False Covered=False Out=False Cards=Kh 5s Kd 7s 6s ",
-				"Andrew Folded=True Covered=False Out=False Cards=5h Tc 4h "
 			]
 		},
 		{
@@ -4810,14 +2756,6 @@
 			"HandCommentary": [
 				"Adam checked",
 				"Phil to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Ad 3c 9s 7h 4c ",
-				"John Folded=False Covered=False Out=False Cards=6h Ah 4s 9c Js ",
-				"Adam Folded=False Covered=False Out=False Cards=As 3s Kc 8c Qs ",
-				"Dan Folded=False Covered=False Out=True Cards=",
-				"Phil Folded=False Covered=False Out=False Cards=Kh 5s Kd 7s 6s ",
-				"Andrew Folded=True Covered=False Out=False Cards=5h Tc 4h "
 			]
 		},
 		{
@@ -4829,14 +2767,6 @@
 			"HandCommentary": [
 				"Phil checked",
 				"Jon to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Ad 3c 9s 7h 4c ",
-				"John Folded=False Covered=False Out=False Cards=6h Ah 4s 9c Js ",
-				"Adam Folded=False Covered=False Out=False Cards=As 3s Kc 8c Qs ",
-				"Dan Folded=False Covered=False Out=True Cards=",
-				"Phil Folded=False Covered=False Out=False Cards=Kh 5s Kd 7s 6s ",
-				"Andrew Folded=True Covered=False Out=False Cards=5h Tc 4h "
 			]
 		},
 		{
@@ -4848,14 +2778,6 @@
 			"HandCommentary": [
 				"Jon checked",
 				"John to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Ad 3c 9s 7h 4c ",
-				"John Folded=False Covered=False Out=False Cards=6h Ah 4s 9c Js ",
-				"Adam Folded=False Covered=False Out=False Cards=As 3s Kc 8c Qs ",
-				"Dan Folded=False Covered=False Out=True Cards=",
-				"Phil Folded=False Covered=False Out=False Cards=Kh 5s Kd 7s 6s ",
-				"Andrew Folded=True Covered=False Out=False Cards=5h Tc 4h "
 			]
 		},
 		{
@@ -4867,14 +2789,6 @@
 			"HandCommentary": [
 				"John checked",
 				"Started next round, Phil to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Ad 3c 9s 7h 4c 2h ",
-				"John Folded=False Covered=False Out=False Cards=6h Ah 4s 9c Js 6d ",
-				"Adam Folded=False Covered=False Out=False Cards=As 3s Kc 8c Qs 2c ",
-				"Dan Folded=False Covered=False Out=True Cards=",
-				"Phil Folded=False Covered=False Out=False Cards=Kh 5s Kd 7s 6s Ac ",
-				"Andrew Folded=True Covered=False Out=False Cards=5h Tc 4h "
 			]
 		},
 		{
@@ -4886,14 +2800,6 @@
 			"HandCommentary": [
 				"Phil checked",
 				"Jon to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Ad 3c 9s 7h 4c 2h ",
-				"John Folded=False Covered=False Out=False Cards=6h Ah 4s 9c Js 6d ",
-				"Adam Folded=False Covered=False Out=False Cards=As 3s Kc 8c Qs 2c ",
-				"Dan Folded=False Covered=False Out=True Cards=",
-				"Phil Folded=False Covered=False Out=False Cards=Kh 5s Kd 7s 6s Ac ",
-				"Andrew Folded=True Covered=False Out=False Cards=5h Tc 4h "
 			]
 		},
 		{
@@ -4905,14 +2811,6 @@
 			"HandCommentary": [
 				"Jon raised by 150",
 				"John to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Ad 3c 9s 7h 4c 2h ",
-				"John Folded=False Covered=False Out=False Cards=6h Ah 4s 9c Js 6d ",
-				"Adam Folded=False Covered=False Out=False Cards=As 3s Kc 8c Qs 2c ",
-				"Dan Folded=False Covered=False Out=True Cards=",
-				"Phil Folded=False Covered=False Out=False Cards=Kh 5s Kd 7s 6s Ac ",
-				"Andrew Folded=True Covered=False Out=False Cards=5h Tc 4h "
 			]
 		},
 		{
@@ -4924,14 +2822,6 @@
 			"HandCommentary": [
 				"John paid 150 to call",
 				"Adam to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Ad 3c 9s 7h 4c 2h ",
-				"John Folded=False Covered=False Out=False Cards=6h Ah 4s 9c Js 6d ",
-				"Adam Folded=False Covered=False Out=False Cards=As 3s Kc 8c Qs 2c ",
-				"Dan Folded=False Covered=False Out=True Cards=",
-				"Phil Folded=False Covered=False Out=False Cards=Kh 5s Kd 7s 6s Ac ",
-				"Andrew Folded=True Covered=False Out=False Cards=5h Tc 4h "
 			]
 		},
 		{
@@ -4943,14 +2833,6 @@
 			"HandCommentary": [
 				"Adam paid 150 to call",
 				"Phil to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Ad 3c 9s 7h 4c 2h ",
-				"John Folded=False Covered=False Out=False Cards=6h Ah 4s 9c Js 6d ",
-				"Adam Folded=False Covered=False Out=False Cards=As 3s Kc 8c Qs 2c ",
-				"Dan Folded=False Covered=False Out=True Cards=",
-				"Phil Folded=False Covered=False Out=False Cards=Kh 5s Kd 7s 6s Ac ",
-				"Andrew Folded=True Covered=False Out=False Cards=5h Tc 4h "
 			]
 		},
 		{
@@ -4962,14 +2844,6 @@
 			"HandCommentary": [
 				"Phil paid 150 to call",
 				"Started next round, Phil to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Ad 3c 9s 7h 4c 2h Th ",
-				"John Folded=False Covered=False Out=False Cards=6h Ah 4s 9c Js 6d Jh ",
-				"Adam Folded=False Covered=False Out=False Cards=As 3s Kc 8c Qs 2c 2d ",
-				"Dan Folded=False Covered=False Out=True Cards=",
-				"Phil Folded=False Covered=False Out=False Cards=Kh 5s Kd 7s 6s Ac Jd ",
-				"Andrew Folded=True Covered=False Out=False Cards=5h Tc 4h "
 			]
 		},
 		{
@@ -4981,14 +2855,6 @@
 			"HandCommentary": [
 				"Phil checked",
 				"Jon to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Ad 3c 9s 7h 4c 2h Th ",
-				"John Folded=False Covered=False Out=False Cards=6h Ah 4s 9c Js 6d Jh ",
-				"Adam Folded=False Covered=False Out=False Cards=As 3s Kc 8c Qs 2c 2d ",
-				"Dan Folded=False Covered=False Out=True Cards=",
-				"Phil Folded=False Covered=False Out=False Cards=Kh 5s Kd 7s 6s Ac Jd ",
-				"Andrew Folded=True Covered=False Out=False Cards=5h Tc 4h "
 			]
 		},
 		{
@@ -5000,14 +2866,6 @@
 			"HandCommentary": [
 				"Jon raised by 250",
 				"John to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Ad 3c 9s 7h 4c 2h Th ",
-				"John Folded=False Covered=False Out=False Cards=6h Ah 4s 9c Js 6d Jh ",
-				"Adam Folded=False Covered=False Out=False Cards=As 3s Kc 8c Qs 2c 2d ",
-				"Dan Folded=False Covered=False Out=True Cards=",
-				"Phil Folded=False Covered=False Out=False Cards=Kh 5s Kd 7s 6s Ac Jd ",
-				"Andrew Folded=True Covered=False Out=False Cards=5h Tc 4h "
 			]
 		},
 		{
@@ -5019,14 +2877,6 @@
 			"HandCommentary": [
 				"John paid 250 to stay in and raised by 74",
 				"Adam to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Ad 3c 9s 7h 4c 2h Th ",
-				"John Folded=False Covered=False Out=False Cards=6h Ah 4s 9c Js 6d Jh ",
-				"Adam Folded=False Covered=False Out=False Cards=As 3s Kc 8c Qs 2c 2d ",
-				"Dan Folded=False Covered=False Out=True Cards=",
-				"Phil Folded=False Covered=False Out=False Cards=Kh 5s Kd 7s 6s Ac Jd ",
-				"Andrew Folded=True Covered=False Out=False Cards=5h Tc 4h "
 			]
 		},
 		{
@@ -5038,14 +2888,6 @@
 			"HandCommentary": [
 				"Adam paid 324 to call",
 				"Phil to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Ad 3c 9s 7h 4c 2h Th ",
-				"John Folded=False Covered=False Out=False Cards=6h Ah 4s 9c Js 6d Jh ",
-				"Adam Folded=False Covered=False Out=False Cards=As 3s Kc 8c Qs 2c 2d ",
-				"Dan Folded=False Covered=False Out=True Cards=",
-				"Phil Folded=False Covered=False Out=False Cards=Kh 5s Kd 7s 6s Ac Jd ",
-				"Andrew Folded=True Covered=False Out=False Cards=5h Tc 4h "
 			]
 		},
 		{
@@ -5057,14 +2899,6 @@
 			"HandCommentary": [
 				"Phil paid 324 to call",
 				"Jon to bet"
-			],
-			"HandSummaries": [
-				"Jon Folded=False Covered=False Out=False Cards=Ad 3c 9s 7h 4c 2h Th ",
-				"John Folded=False Covered=False Out=False Cards=6h Ah 4s 9c Js 6d Jh ",
-				"Adam Folded=False Covered=False Out=False Cards=As 3s Kc 8c Qs 2c 2d ",
-				"Dan Folded=False Covered=False Out=True Cards=",
-				"Phil Folded=False Covered=False Out=False Cards=Kh 5s Kd 7s 6s Ac Jd ",
-				"Andrew Folded=True Covered=False Out=False Cards=5h Tc 4h "
 			]
 		},
 		{
@@ -5076,14 +2910,6 @@
 			"HandCommentary": [
 				"Jon folded",
 				"Betting completed, proceeding to hand reveal stage, John to reveal (or fold)"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Ad 3c 9s 7h 4c 2h Th ",
-				"John Folded=False Covered=False Out=False Cards=6h Ah 4s 9c Js 6d Jh ",
-				"Adam Folded=False Covered=False Out=False Cards=As 3s Kc 8c Qs 2c 2d ",
-				"Dan Folded=False Covered=False Out=True Cards=",
-				"Phil Folded=False Covered=False Out=False Cards=Kh 5s Kd 7s 6s Ac Jd ",
-				"Andrew Folded=True Covered=False Out=False Cards=5h Tc 4h "
 			]
 		},
 		{
@@ -5095,14 +2921,6 @@
 			"HandCommentary": [
 				"John revealed their hand details",
 				"Adam to reveal (or fold)"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Ad 3c 9s 7h 4c 2h Th ",
-				"John Folded=False Covered=False Out=False Cards=6h Ah 4s 9c Js 6d Jh ",
-				"Adam Folded=False Covered=False Out=False Cards=As 3s Kc 8c Qs 2c 2d ",
-				"Dan Folded=False Covered=False Out=True Cards=",
-				"Phil Folded=False Covered=False Out=False Cards=Kh 5s Kd 7s 6s Ac Jd ",
-				"Andrew Folded=True Covered=False Out=False Cards=5h Tc 4h "
 			]
 		},
 		{
@@ -5114,14 +2932,6 @@
 			"HandCommentary": [
 				"Adam folded",
 				"Phil to reveal (or fold)"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Ad 3c 9s 7h 4c 2h Th ",
-				"John Folded=False Covered=False Out=False Cards=6h Ah 4s 9c Js 6d Jh ",
-				"Adam Folded=True Covered=False Out=False Cards=As 3s Kc 8c Qs 2c 2d ",
-				"Dan Folded=False Covered=False Out=True Cards=",
-				"Phil Folded=False Covered=False Out=False Cards=Kh 5s Kd 7s 6s Ac Jd ",
-				"Andrew Folded=True Covered=False Out=False Cards=5h Tc 4h "
 			]
 		},
 		{
@@ -5141,14 +2951,6 @@
 				"Pot 0: Andrew lost 1 after folding",
 				"Waiting for administrator to start next hand.",
 				"Reveal hands if desired, or administrator to start next hand (or reopen lobby)"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Ad 3c 9s 7h 4c 2h Th ",
-				"John Folded=False Covered=False Out=False Cards=6h Ah 4s 9c Js 6d Jh ",
-				"Adam Folded=True Covered=False Out=False Cards=As 3s Kc 8c Qs 2c 2d ",
-				"Dan Folded=False Covered=False Out=True Cards=",
-				"Phil Folded=False Covered=False Out=False Cards=Kh 5s Kd 7s 6s Ac Jd ",
-				"Andrew Folded=True Covered=False Out=False Cards=5h Tc 4h "
 			]
 		},
 		{
@@ -5159,14 +2961,6 @@
 			"StatusMessage": "Jon revealed their hand details. Reveal hands if desired, or administrator to start next hand (or reopen lobby)",
 			"HandCommentary": [
 				"Jon revealed their hand details"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Ad 3c 9s 7h 4c 2h Th ",
-				"John Folded=False Covered=False Out=False Cards=6h Ah 4s 9c Js 6d Jh ",
-				"Adam Folded=True Covered=False Out=False Cards=As 3s Kc 8c Qs 2c 2d ",
-				"Dan Folded=False Covered=False Out=True Cards=",
-				"Phil Folded=False Covered=False Out=False Cards=Kh 5s Kd 7s 6s Ac Jd ",
-				"Andrew Folded=True Covered=False Out=False Cards=5h Tc 4h "
 			]
 		},
 		{
@@ -5177,14 +2971,6 @@
 			"StatusMessage": "John reopened the game lobby. Await players leaving/joining, or continue the game, or start a new one",
 			"HandCommentary": [
 				"John reopened the game lobby"
-			],
-			"HandSummaries": [
-				"Jon Folded=True Covered=False Out=False Cards=Ad 3c 9s 7h 4c 2h Th ",
-				"John Folded=False Covered=False Out=False Cards=6h Ah 4s 9c Js 6d Jh ",
-				"Adam Folded=True Covered=False Out=False Cards=As 3s Kc 8c Qs 2c 2d ",
-				"Dan Folded=False Covered=False Out=True Cards=",
-				"Phil Folded=False Covered=False Out=False Cards=Kh 5s Kd 7s 6s Ac Jd ",
-				"Andrew Folded=True Covered=False Out=False Cards=5h Tc 4h "
 			]
 		}
 	],
