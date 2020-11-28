@@ -8,7 +8,7 @@ import {
     leave,
 } from './redux/slices/game';
 
-import { selectGameId, selectRejoinCode } from './redux/slices/hub';
+import { selectRoomId, selectRejoinCode } from './redux/slices/hub';
 
 import Lobby from './Lobby';
 import Player from './components/Player';
@@ -19,7 +19,7 @@ import Pot from './components/Pot';
 function Game() {
     const players = useSelector(selectPlayers);
     const inLobby = useSelector(selectInLobby);
-    const gameId = useSelector(selectGameId);
+    const roomId = useSelector(selectRoomId);
     const rejoinCode = useSelector(selectRejoinCode);
     const dispatch = useDispatch();
 
@@ -77,7 +77,7 @@ function Game() {
                 rows={['xsmall', 'auto', 'xsmall']}
             >
                 <Box pad="small" gridArea="gameStatus" background="brand" direction="row" fill justify="between">
-                    <Text basis="full" alignSelf="center" size="xxlarge">{gameId}</Text>
+                    <Text basis="full" alignSelf="center" size="xxlarge">{roomId}</Text>
                     <Box justify="center">
                         <Text alignSelf="center" size="large">{rejoinCode}</Text>
                         <Button color="accent-1" onClick={leaveGame}>Leave</Button>

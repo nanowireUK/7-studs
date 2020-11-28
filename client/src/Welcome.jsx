@@ -4,10 +4,10 @@ import { TextInput, Button, Box, Heading, Text } from 'grommet';
 
 import { join, rejoin } from './redux/slices/hub';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectGameId, selectUsername } from './redux/slices/hub';
+import { selectRoomId, selectUsername } from './redux/slices/hub';
 
 function Welcome() {
-    const [roomId, setRoomId] = useState(useSelector(selectGameId) || '');
+    const [roomId, setRoomId] = useState(useSelector(selectRoomId) || '');
     const [playerName, setPlayerName] = useState(useSelector(selectUsername) || '');
     const [rejoinCode, setRejoinCode] = useState('');
 

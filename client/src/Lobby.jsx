@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectPlayers, selectCanDoAction, start, proceed, leave, PlayerActions, selectCurrentGameStandings, selectPreviousGameResults } from './redux/slices/game';
-import { selectUsername, selectGameId } from './redux/slices/hub';
+import { selectUsername, selectRoomId } from './redux/slices/hub';
 import { Text, Box, Button, Heading } from 'grommet';
 
 function ordinal(i) {
@@ -14,7 +14,7 @@ function ordinal(i) {
 
 function Lobby () {
     const players = useSelector(selectPlayers);
-    const gameId = useSelector(selectGameId);
+    const roomId = useSelector(selectRoomId);
     const username = useSelector(selectUsername);
     const canStart = useSelector(selectCanDoAction(PlayerActions.START));
     const canContinue = useSelector(selectCanDoAction(PlayerActions.CONINUE));
@@ -49,7 +49,7 @@ function Lobby () {
             width="500px"
             gap="small"
             margin="auto">
-        <Heading>7 Studs - {gameId}</Heading>
+        <Heading>7 Studs - {roomId}</Heading>
         {playerList}
         <Box direction="row" gap="xsmall" wrap>
             {canStart && <Button margin="xxsmall" primary label="Start new game"

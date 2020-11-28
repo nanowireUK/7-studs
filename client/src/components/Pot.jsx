@@ -45,7 +45,7 @@ export default function PotArea () {
                 {lastHandResult.map((potResult, potIndex) => (
                     <Box flex="grow" key={potIndex} pad="small">
                         {potResult.map((resultLine, index) => (
-                            <Box flex="grow" key={index}><Text size="xlarge">{resultLine}</Text></Box>
+                            <Box flex="grow" key={index}><Text>{resultLine}</Text></Box>
                         ))}
                     </Box>
                 ))}

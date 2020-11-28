@@ -15,7 +15,7 @@ import {
     reconnecting,
     awaitingResponse,
     setRejoinCode,
-    setGameId,
+    setRoomId,
     setLeaverCount,
 } from '../slices/hub';
 
@@ -36,12 +36,12 @@ export const connection = new HubConnectionBuilder()
 export default (store) => {
     connection.on('ReceiveMyGameState', (msg) => {
         const game = JSON.parse(msg);
-        const { MyRejoinCode, CountOfLeavers, GameId } = game;
+        const { MyRejoinCode, CountOfLeavers, RoomId } = game;
 
         localStorage.setItem('rejoinCode', MyRejoinCode);
 
         store.dispatch(setRejoinCode(MyRejoinCode));
-        store.dispatch(setGameId(GameId));
+        store.dispatch(setRoomId(RoomId));
         store.dispatch(setLeaverCount(CountOfLeavers));
         store.dispatch(updateGame(game));
         store.dispatch(awaitingResponse(false));
