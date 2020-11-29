@@ -81,7 +81,7 @@ namespace SevenStuds.Models
                 System.Diagnostics.Debug.WriteLine("Use the game state to find each player and rejoin each of them from a separate browser using their respective rejoin codes.");
             }
             if ( inconsistenciesFound > 0 ) {
-                 System.Diagnostics.Debug.WriteLine("WARNING: " + inconsistenciesFound + "inconsistencies in results were identified ... please review the replay log");
+                 System.Diagnostics.Debug.WriteLine("WARNING: " + inconsistenciesFound + " inconsistencies in results were identified ... please review the replay log");
             }
             if ( allMovesReplayed ) {
                 System.Diagnostics.Debug.WriteLine("Game is no longer in replay mode and will continue under normal conditions from here");

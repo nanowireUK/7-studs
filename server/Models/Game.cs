@@ -614,7 +614,7 @@ namespace SevenStuds.Models
             this.Participants[playerIndex].UncommittedChips -= amt; // Reduce the player's pile of chips before adding them to the various pots
             AddCommentary(amountLeftToAdd +" is to be added to the pot (or pots)");
             for ( int pot = 0; pot < Pots.Count; pot++) {
-                if ( amountLeftToAdd > 0) {
+                //if ( amountLeftToAdd > 0) {
                     int maxContributionToThisPotByAnyPlayer = MaxChipsInSpecifiedPotForAnyPlayer(pot);
                     AddCommentary("Max chips currently in pot " + (pot+1) + " = " + maxContributionToThisPotByAnyPlayer);
                     int myExistingContributionToThisPot = ChipsInSpecifiedPotForSpecifiedPlayer (pot, playerIndex);
@@ -631,7 +631,8 @@ namespace SevenStuds.Models
                             AddCommentary("Adding "+ amountLeftToAdd +" to open pot (should be as a result of covering the pot)");
                             this.Pots[pot][playerIndex] += amountLeftToAdd;
                             amountLeftToAdd = 0;
-                            SplitPotAbovePlayersAmount(pot,  playerIndex); // Will change pot structure but this loop will end anyway as nothing left to add
+                            SplitPotAbovePlayersAmount(pot,  playerIndex); // This will change the pot structure but we'll break out of this loop now so not a problem
+                            break; 
                         }                        
                     }
                     else {
@@ -651,10 +652,11 @@ namespace SevenStuds.Models
                             AddCommentary("Adding "+ amountLeftToAdd +" to partially satisfy commitment to pot #" + (pot+1));
                             this.Pots[pot][playerIndex] += amountLeftToAdd;
                             amountLeftToAdd = 0;
-                            SplitPotAbovePlayersAmount(pot,  playerIndex); // Will change pot structure but this loop will end anyway as nothing left to add
+                            SplitPotAbovePlayersAmount(pot,  playerIndex); // This will change the pot structure but we'll break out of this loop now so not a problem
+                            break; 
                         }
                     }
-                }
+                //}
             }
         }
 
