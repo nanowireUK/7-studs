@@ -6,6 +6,7 @@ import {
     selectInLobby,
     selectPlayers,
     leave,
+    selectActionReference,
 } from './redux/slices/game';
 
 import { selectRoomId, selectRejoinCode } from './redux/slices/hub';
@@ -21,6 +22,7 @@ function Game() {
     const inLobby = useSelector(selectInLobby);
     const roomId = useSelector(selectRoomId);
     const rejoinCode = useSelector(selectRejoinCode);
+    const actionReference = useSelector(selectActionReference);
     const dispatch = useDispatch();
 
     const mobileLayout = useContext(ResponsiveContext) === 'small';
@@ -101,7 +103,7 @@ function Game() {
                     </Box>
                 </Grid>
                 <Box gridArea="actions" border direction="column" justify="between" pad="xsmall">
-                    <Box></Box>
+                    <Box><Text size="xsmall" color="grey">{actionReference}</Text></Box>
                     <Box alignSelf="end"><GameActions /></Box>
                 </Box>
             </Grid>

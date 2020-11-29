@@ -96,6 +96,8 @@ export const selectCallAmount = (state) => state.game.MyCallAmount;
 
 export const selectCommunityCard = (state) => state.game.CommunityCard;
 
+export const selectActionReference = (state) => `${state.game.RoomId}-${state.game.GameNumber}.${state.game.ActionNumber}`;
+
 export const PlayerActions = Object.freeze({
     START: 'Start',
     CHECK: 'Check',
