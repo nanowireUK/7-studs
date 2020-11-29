@@ -1,4 +1,4 @@
-To convert old-style game logs (where Deck objects inherited from Stack instead of being composed of them):
+To convert old-style game logs (where Deck objects inherit from Stack instead of being composed of them):
 
 - (1) Use Notepad++ JSON plugin to format original JSON to check ok
 
@@ -33,7 +33,9 @@ To convert old-style game logs (where Deck objects inherited from Stack instead 
 
 - (5) Ensure correct 'administrator' is defined	at the top (this is the person who started the game)
 
-- (6) Use the Replay action (from the server screen)
+- (6) Remove any JOIN actions that appear before the START action (as these joins will be done automatically by the REPLAY)
+
+- (7) Use the Replay action (from the server screen)
 		- Join any random game with any player name
 		- Paste the entire game log (that you have just reconstructed above) into the Parameters field
 		- Click ReplayGameFromLog

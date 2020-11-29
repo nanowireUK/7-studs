@@ -22,7 +22,7 @@ To replay a game from Visual Studio Code using a saved GameLog from e.g. .\docs\
     - Enter a player name and rejoin code from the list of rejoin codes and click Join
     - This will bring you to the game state as it was at the end of the log (or as it was following the action that you paused at)
 
-    ///////////////// Need to understand this: if you open a second window it will show the same as the first one. How do you get it to allow you to login agan
+    ///////////////// Need to understand this: if you open a second window it will show the same as the first one. How do you get it to allow you to login again --> LEAVE
 		- Enter these into the User and Parameters area respectively and click Rejoin This Game
 		- Click Get Game Log
 		- That is the cleansed game log, with correct action numbers, deck ids, etc. 
