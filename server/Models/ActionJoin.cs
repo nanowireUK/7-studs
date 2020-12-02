@@ -29,7 +29,7 @@ namespace SevenStuds.Models
             // If the player is joining a game that is already in progress, ensure they are allocated chips
             if ( G.HandsPlayedIncludingCurrent > 0 ) {
                 p.UncommittedChips = G.InitialChipQuantity;
-                G.Pots[0].Add(0); // Add a new empty position to pot 0
+                G.Pots[0].Add(0); // Add a new empty position to pot 0 (all players should have 0 chips in the pot at this stage)
                 p.Hand = new List<Card>();
             }
 

@@ -117,6 +117,15 @@ namespace SevenStuds.Models
                 System.Diagnostics.Debug.WriteLine("    ORIGINAL : " + gla.StatusMessage);
                 System.Diagnostics.Debug.WriteLine("    REPLAY   : " + G.StatusMessage);
             }
+            if ( gla.PlayerSummaries != null && gla.PlayerSummaries != "" ) {
+                string new_ps = G.PlayerSummaries();
+                if ( new_ps != gla.PlayerSummaries ) {
+                    resultsAreConsistent = false;
+                    System.Diagnostics.Debug.WriteLine("  Player Summaries are not consistent:");
+                    System.Diagnostics.Debug.WriteLine("    ORIGINAL : " + gla.PlayerSummaries);
+                    System.Diagnostics.Debug.WriteLine("    REPLAY   : " + new_ps);
+                }
+            }
             return resultsAreConsistent;
         }
         private void FixCardOrderInDesererialisedDecks(GameLog replayContext) {

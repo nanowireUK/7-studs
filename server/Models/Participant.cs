@@ -36,6 +36,7 @@ namespace SevenStuds.Models
         public int _FullHandRank { get; set; }
         public string _VisibleHandDescription { get; set; }
         public string _FullHandDescription { get; set; }
+        public string _VisibleHandSummary { get; set; }
         public string _HandSummary { get; set; }
         public int GainOrLossInLastHand { get; set; }
         private PokerHand _PokerHand { get; set; }
@@ -91,8 +92,14 @@ namespace SevenStuds.Models
             this._FullHandDescription = /*_PokerHand.ToString(HandToStringFormatEnum.ShortCardsHeld) + ": " + */ _PokerHand.ToString(HandToStringFormatEnum.HandDescription);
             this._FullHandRank = _PokerHand.Rank;  
             this._HandSummary = "";
-            foreach ( Card c in this.Hand) {
-                this._HandSummary += c.ToString(CardToStringFormatEnum.ShortCardName) + " ";
+            this._VisibleHandSummary = "";
+            for ( int ci = 0; ci < this.Hand.Count; ci++ ) {
+                Card c = this.Hand[ci];
+                string cardCode = c.ToString(CardToStringFormatEnum.ShortCardName);
+                this._HandSummary += cardCode + " ";
+                if ( g.CardPositionIsVisible[ci] == true ) {
+                    this._VisibleHandSummary += cardCode + ( ci+1 < this.Hand.Count ? " " : "");
+                }
             }
         }
 
@@ -107,6 +114,7 @@ namespace SevenStuds.Models
             this._FullHandDescription = null;
             this._FullHandRank = int.MaxValue;  
             this._HandSummary = "";
+            this._VisibleHandSummary = "";
         } 
 
         public void PrepareForNextBettingRound(Game g, int roundNumber) {
@@ -214,8 +222,14 @@ namespace SevenStuds.Models
                 this._FullHandDescription = /*_PokerHand.ToString(HandToStringFormatEnum.ShortCardsHeld) + ": " + */ _PokerHand.ToString(HandToStringFormatEnum.HandDescription);
                 this._FullHandRank = _PokerHand.Rank;
                 this._HandSummary = "";
-                foreach ( Card c in this.Hand) {
-                    this._HandSummary += c.ToString(CardToStringFormatEnum.ShortCardName) + " ";
+                this._VisibleHandSummary = "";
+                for ( int ci = 0; ci < this.Hand.Count; ci++ ) {
+                    Card c = this.Hand[ci];
+                    string cardCode = c.ToString(CardToStringFormatEnum.ShortCardName);
+                    this._HandSummary += cardCode + " ";
+                    if ( g.CardPositionIsVisible[ci] == true ) {
+                        this._VisibleHandSummary += cardCode + ( ci+1 < this.Hand.Count ? " " : "");
+                    }
                 }
             }
         }              

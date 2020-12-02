@@ -155,7 +155,7 @@ namespace SevenStuds.Models
             }
         }
 
-        public void StartGame()
+        public void StartNewGame()
         {
             GameNumber++;
             HandsPlayedIncludingCurrent = 0;
@@ -252,13 +252,26 @@ namespace SevenStuds.Models
             // Clear the pots 
             ClearHandDataBetweenHands();
         }
-
-        public void ClearHandDataBetweenHands() {
+        public bool PotsAreEmpty() {
+            // 
+            if ( this.Pots == null ){
+                return true;
+            }
+            return this.Pots[0].Count == 0;
+        }
+        public void InitialisePots() {
+            // Reset the pots (one pot only and everyone has 0 until the next hand starts)
             this.Pots = new List<List<int>>();
             this.Pots.Add(new List<int>());
             foreach (Participant p in Participants)
             {
                 this.Pots[0].Add(0); 
+            }
+        }
+        public void ClearHandDataBetweenHands() {
+            this.InitialisePots();
+            foreach (Participant p in Participants)
+            {
                 p.Hand = new List<Card>();
             }
         }
@@ -298,20 +311,19 @@ namespace SevenStuds.Models
             }
 
             this.TakeSnapshotOfNewDeck();
+            this.ClearHandDataBetweenHands();
 
-            this.Pots = new List<List<int>>();
-            this.Pots.Add(new List<int>());
-
-            foreach (Participant p in Participants)
+            for (int i = 0; i < Participants.Count; i++ )
             {
+                Participant p = Participants[i];
                 p.IsSharingHandDetails = false;
                 if ( p.UncommittedChips > 0 ) {
                     p.StartNewHandForActivePlayer(this);
-                    this.Pots[0].Add(this.Ante); 
+                    this.Pots[0][i] = this.Ante; 
                 }
                 else {
                     p.StartNewHandForBankruptPlayer(this);
-                    this.Pots[0].Add(0); // record their place in the pot, but with a zero contribution
+                    this.Pots[0][i] = 0; // Should already be 0 but setting it explicity to be clear
                 }
             }
             this.IndexOfParticipantToTakeNextAction = GetIndexOfPlayerToBetFirst();
@@ -320,7 +332,8 @@ namespace SevenStuds.Models
             _CheckIsAvailable = true;
             _CardsDealtIncludingCurrent = MaxCardsDealtSoFar();
             RoundNumberIfCardsJustDealt = _CardsDealtIncludingCurrent; // Will be cleared as soon as next action comes in
-         }
+        }
+
         public void SetActionAvailability(ActionEnum ac, AvailabilityEnum av) 
         {
             ActionAvailability aa;
@@ -335,7 +348,8 @@ namespace SevenStuds.Models
                 ActionAvailabilityList.Add(aa); // Also add it to the list that is in included in the JSON export 
 
             }
-        }         
+        } 
+
 
         public void SetActionAvailabilityBasedOnCurrentPlayer() 
         {
@@ -849,6 +863,8 @@ namespace SevenStuds.Models
                 }                
             }
 
+            ClearRemnantsFromLastGame(); // Ensures that player summaries will not show anything still in the pots
+
             // Identify anyone who became backrupt during the hand. 
             for (int p = 0; p < Participants.Count ; p++) {
                 if ( Participants[p].UncommittedChips == 0 && Participants[p].IsOutOfThisGame == false ) {
@@ -950,26 +966,45 @@ namespace SevenStuds.Models
                 a, 
                 this.ActionNumber,
                 this.StatusMessage,
+                this.PlayerSummaries(),
                 this.HandCommentary
-                // , this.HandSummaries()
+
                 ));
             this.LastSuccessfulAction = DateTimeOffset.Now; 
         }
 
-        // public List<string> HandSummaries()
-        // {
-        //     List<string> r = new List<string>();
-        //     foreach ( Participant p in this.Participants ) {
-        //         r.Add(
-        //             p.Name 
-        //             + " Folded=" + p.HasFolded
-        //             + " Covered=" + p.HasCovered
-        //             + " Out=" + p.IsOutOfThisGame
-        //             + " Cards=" + p._HandSummary
-        //         );
-        //     }
-        //     return r;
-        // }
+        public string PlayerSummaries()
+        {
+            string r = "";
+            for ( int i = 0; i < Participants.Count; i++ ) {
+                Participant p = Participants[i];
+                r += 
+                    p.Name.Substring(0,1) 
+                    + "["
+                    + ( p.IsOutOfThisGame ? "O" : "" )
+                    + ( p.HasFolded ? "F" : "" )
+                    + ( p.HasCovered ? "C" : "" )
+                    + ( i == IndexOfParticipantDealingThisHand ? "D" : "" )
+                    + ( p.HasDisconnected ? "X" : "" )
+                    + "]"+ p.UncommittedChips + PlayersPotContributions(i)
+                    + ( p._VisibleHandSummary == null ? "" : p._VisibleHandSummary.Replace(" ","") )
+                    + ( i < Participants.Count ? " " : "" )
+                ;
+            }
+            return r;
+        }
+        public string PlayersPotContributions(int player_no) {
+            if ( PotsAreEmpty() ) {
+                return "";
+            }
+            string r = "(";
+            for ( int pot_no = 0; pot_no < Pots.Count; pot_no++ ){
+                r += Pots[pot_no][player_no];
+                r += ( ( pot_no + 1 < Pots.Count ) ? "," : "" );
+            }
+            r += ")";
+            return r;
+        }
         public string GameLogAsJson() {
             return this._GameLog.AsJson();
         }

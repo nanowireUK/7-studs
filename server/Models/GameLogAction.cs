@@ -13,8 +13,8 @@ namespace SevenStuds.Models
         public string StatusMessage { get; set; }
         private string LastEvent { get; set; }
         private string NextAction { get; set; }        
-        public List<string> HandCommentary { get; set; } // a copy of NextAction at the point the command completes, for checking on replaying
-        //public List<string> HandSummaries { get; set; } // list each player's hand
+        public string PlayerSummaries { get; set; } 
+        public List<string> HandCommentary { get; set; } 
         public GameLogAction() {
             // Constructor without parameters required by the JSON deserialiser (along with setters for the public variables)
         }        
@@ -22,8 +22,8 @@ namespace SevenStuds.Models
                 Action argAction, 
                 int argActionNumber, 
                 string argStatusMessage,
+                string argPlayerSummaries,
                 List<string> argCommentary
-                // , List<string> argHandSummaries
                 ) {
             this.ActionType = argAction.ActionType;
             this.ActionNumber = argActionNumber;
@@ -35,11 +35,7 @@ namespace SevenStuds.Models
                 // Take a snapshot of the original commentary
                 this.HandCommentary.Add(s);
             }
-            // this.HandSummaries = new List<String>();
-            // foreach ( string s in argHandSummaries ) {
-            //     // Take a snapshot of the original hand summary
-            //     this.HandSummaries.Add(s);
-            // }            
+            this.PlayerSummaries = argPlayerSummaries;
         }
     }
 }
