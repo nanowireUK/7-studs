@@ -10,6 +10,8 @@ import { useContainerDimensions } from '../utils/hooks';
 
 import PokerCard from './PokerCard';
 
+import theme from '../theme';
+
 function CardRow ({ cards, invisibleToOthers = false, name, showRowName }) {
     const ref = useRef(null);
     const dimensions = useContainerDimensions(ref);
@@ -63,7 +65,7 @@ function Player ({ name, chips, cards, isDealer, isAdmin, isCurrentPlayer, isMe,
                         </Box>
                         <Box direction="row" align="center" onMouseOver={() => setShowPotContribution(true)} onMouseOut={() => setShowPotContribution(false)}>
                             <Box width="xsmall" align="end"><Text size="xlarge">{showPotContribution ? `-${potContribution}` : chips}</Text></Box>
-                            <Box height="30px" width="xxsmall"><Chip /></Box>
+                            <Box height="30px" width="xxsmall"><Chip fill={isDealer ? theme.global.colors["accent-1"] : 'black'}/></Box>
                         </Box>
                     </Box>
                     <Box flex="grow" direction="row" justify="between">
