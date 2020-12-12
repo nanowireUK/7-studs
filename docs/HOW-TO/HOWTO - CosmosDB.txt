@@ -1,0 +1,58 @@
+
+    
+    private static string databaseId = "JDtest1"; // was ToDoList
+    private static string containerId = "Items";
+    
+    private static CosmosClient cosmosClient; Provides a client-side logical representation of the Azure Cosmos DB account.
+        //     This client can be used to configure and execute requests in the Azure DB database service. 
+        //     CosmosClient is thread-safe. Its recommended to maintain a single instance of CosmosClient per lifetime of the
+        //     application which enables efficient connection management and performance. Please refer to the performance guide.
+
+        this.cosmosClient = new CosmosClient(EndpointUri, PrimaryKey, new CosmosClientOptions() { ApplicationName = "CosmosDBDotnetQuickstart" });
+
+    private static Database database;
+        //     Operations for reading or deleting an existing database. See Microsoft.Azure.Cosmos.Database.Client
+        //     for creating new databases, and reading/querying all databases; use `client.Databases`.
+        //     Note: all these operations make calls against a fixed budget. You should design
+        //     your system such that these calls scale sub-linearly with your application. For
+        //     instance, do not call `database.ReadAsync()` before every single `container.ReadItemAsync()`
+        //     call to ensure the database exists; do this once on application start up.
+
+        this.database = await this.cosmosClient.CreateDatabaseIfNotExistsAsync(databaseId);
+
+    private static Container container;
+        //     Operations for reading, replacing, or deleting a specific, existing container
+        //     or item in a container by id. There are two different types of operations. 
+        //     1. The object operations where it serializes and deserializes the item on request/response
+        //     2. The stream response which takes a Stream containing a JSON serialized object
+        //     and returns a response containing a Stream See Microsoft.Azure.Cosmos.Database
+        //     for creating new containers, and reading/querying all containers.
+        //     Note: all these operations make calls against a fixed budget. You should design
+        //     your system such that these calls scale sub linearly with your application. For
+        //     instance, do not call `container.readAsync()` before every single `container.readItemAsync()`
+        //     call to ensure the container exists; do this once on application start up.
+
+        this.container = await this.database.CreateContainerIfNotExistsAsync(containerId, "/LastName", 400);
+        int? throughput = await this.container.ReadThroughputAsync();
+        await this.container.ReplaceThroughputAsync(newThroughput);
+
+        DatabaseResponse databaseResourceResponse = await this.database.DeleteAsync();
+
+        ItemResponse<Family> andersenFamilyResponse = await this.container.ReadItemAsync<Family>(andersenFamily.Id, new PartitionKey(andersenFamily.LastName));
+        ItemResponse<Family> andersenFamilyResponse = await this.container.CreateItemAsync<Family>(andersenFamily, new PartitionKey(andersenFamily.LastName));
+
+        var sqlQueryText = "SELECT * FROM c WHERE c.LastName = 'Andersen'";
+        QueryDefinition queryDefinition = new QueryDefinition(sqlQueryText);
+        FeedIterator<Family> queryResultSetIterator = this.container.GetItemQueryIterator<Family>(queryDefinition);
+
+        ItemResponse<Family> wakefieldFamilyResponse = await this.container.ReadItemAsync<Family>("Wakefield.7", new PartitionKey("Wakefield"));
+        var itemBody = wakefieldFamilyResponse.Resource;
+        wakefieldFamilyResponse = await this.container.ReplaceItemAsync<Family>(itemBody, itemBody.Id, new PartitionKey(itemBody.LastName));
+
+        ItemResponse<Family> wakefieldFamilyResponse = await this.container.DeleteItemAsync<Family>(familyId,new PartitionKey(partitionKeyValue));
+            
+
+
+        Program p = new PokerDB();
+
+

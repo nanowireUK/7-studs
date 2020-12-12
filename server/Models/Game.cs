@@ -962,15 +962,17 @@ namespace SevenStuds.Models
 
         public void LogActionWithResults(Action a) {
             this.ActionNumber++;
-            this._GameLog.actions.Add(new GameLogAction(
+            GameLogAction gla = new GameLogAction(
                 a, 
                 this.ActionNumber,
                 this.StatusMessage,
                 this.PlayerSummaries(),
                 this.HandCommentary
-
-                ));
+                );
+            this._GameLog.actions.Add(gla);
             this.LastSuccessfulAction = DateTimeOffset.Now; 
+            // Log the action to the DB
+            PokerDB.StoreGameLogAction(gla);
         }
 
         public string PlayerSummaries()

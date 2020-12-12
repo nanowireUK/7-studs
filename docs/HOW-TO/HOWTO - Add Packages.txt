@@ -1,0 +1,8 @@
+See https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-add-package
+
+Then e.g.:
+
+    cd server
+    dotnet add SevenStuds.csproj package Microsoft.Azure.Cosmos
+
+Think it might identify the csproj file automatically if necessary
