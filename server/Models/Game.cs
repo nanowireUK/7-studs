@@ -270,10 +270,10 @@ namespace SevenStuds.Models
         }
         public void ClearHandDataBetweenHands() {
             this.InitialisePots();
-            foreach (Participant p in Participants)
-            {
-                p.Hand = new List<Card>();
-            }
+            // foreach (Participant p in Participants)
+            // {
+            //     p.Hand = new List<Card>();
+            // }
         }
 
         public void StartNextHand()
@@ -312,6 +312,12 @@ namespace SevenStuds.Models
 
             this.TakeSnapshotOfNewDeck();
             this.ClearHandDataBetweenHands();
+
+            // Temporarily moved from ClearHandDataBetweenHands
+            foreach (Participant p in Participants)
+            {
+                p.Hand = new List<Card>();
+            }
 
             for (int i = 0; i < Participants.Count; i++ )
             {
