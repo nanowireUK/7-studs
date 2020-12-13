@@ -288,6 +288,17 @@ document.getElementById("actionStep").addEventListener("click", function (event)
     event.preventDefault();
 });
 
+// --------------- Step through a game that is being replayed (same replay command but with no game log as a parameter)
+
+document.getElementById("actionAdvance").addEventListener("click", function (event) {
+    var roomId = getRoomId();
+    var user = getUser();
+    var leaverCount = getLeaverCount();
+    var targetStep = getModifiers();
+    connection.invoke("UserClickedReplay", roomId, user, leaverCount, targetStep).catch(logError);
+    event.preventDefault();
+});
+
 // --------------- Get My Game State (test feature)
 
 document.getElementById("actionGetMyState").addEventListener("click", function (event) {

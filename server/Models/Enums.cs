@@ -101,6 +101,13 @@ namespace SevenStuds.Models
         NoOneElseLeft = 2,
         PlayerWasNotInThisPot = 3
     }
+
+    public enum ReplayModeEnum : int
+    {
+        NewGameLog = 0,
+        AdvanceOneStep = 1,
+        AdvanceToNamedStep = 2
+    }
    
     /// <summary>
     /// Enumeration values are used to calculate hand rank keys

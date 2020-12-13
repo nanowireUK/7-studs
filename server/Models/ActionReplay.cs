@@ -14,34 +14,46 @@ namespace SevenStuds.Models
         }
         public override void ProcessAction()
         {
-            // ActionReplay works in two related modes:
+            // ActionReplay works in three related modes:
             // - If a game log is supplied as a parameter, a new game will be created and replayed from that log
             //   - If a 'pauseAfter' attribute is included in that game log, the replay will be paused after any action with a number >= the pauseAfter number
             // - If no parameter is passed, the replay will process the next unprocessed action
+            // - If a numeric parameter is passed, it will effectively reset the pauseAfter value (i.e. it is like a continue to step 'n')
             // Note that if any player (who has rejoined the game in the meantime) make a move in the UI, this will exit the 'replay' mode and play will continue as normal
 
-            bool parameterlessCall = ( this.Parameters == null || this.Parameters == "" );
-            if ( parameterlessCall && G.IsRunningInReplayMode() == false ) {
-                throw new HubException("Stepwise Replay (i.e. without supplying a GameLog) is not possible at this stage as there is no current replay context");
+            GameLog replayContext = G.GetReplayContext(); // Can be null at this point
+            ReplayModeEnum replayMode;
+            int advanceToActionNumber = 0;
+            if ( this.Parameters != null && this.Parameters.Length >= 5 ) {
+                // Parameter is neither blank, nor short enough to be a number, so assume we are handling a new game log
+                replayMode = ReplayModeEnum.NewGameLog; 
+            }
+            else if ( this.Parameters == null || this.Parameters == "" ) {
+                // Parameter is blank, so assume user is stepping through an existing replay one step at a time
+                replayMode = ReplayModeEnum.AdvanceOneStep;
+                if ( G.IsRunningInReplayMode() == false ) {
+                    throw new HubException("Stepwise Replay (i.e. without supplying a GameLog) is not possible at this stage as there is no current replay context");
+                }
+            }
+            else {
+                // Only other option is a numeric parameter, which would be a request to advance an existing replay to a given action number (inclusive)
+                replayMode = ReplayModeEnum.AdvanceToNamedStep;
+                if ( int.TryParse(Parameters, out advanceToActionNumber) == false ) {
+                    throw new HubException("A numeric action number is required by the Replay(AdvanceTo) action");
+                }
+                if ( G.IsRunningInReplayMode() == false ) {
+                    throw new HubException("Advancing to a given step is not possible at this stage as there is no current replay context");
+                }
+                // if ( advanceToActionNumber <= replayContext.indexOfLastReplayedAction ) {
+                //     throw new HubException("Requested target step (" + advanceToActionNumber + ") is not after the currently reached step (" + replayContext.indexOfLastReplayedAction + ")");
+                // }  
             }
 
-            GameLog replayContext = G.GetReplayContext(); // Can be null at this point
-            bool allMovesReplayed = false;
             bool actionSucceeded;
             int inconsistenciesFound = 0;
 
-            if ( parameterlessCall) {
-                // Handle a single step
-                ResponseType = ActionResponseTypeEnum.PlayerCentricGameState; // All connected players will receive their own view of the updated game state
-                ResponseAudience =  ActionResponseAudienceEnum.AllPlayers; // All connected players will receive an update
-                replayContext.indexOfLastReplayedAction++; // Move to next action
-                GameLogAction gla = replayContext.actions[replayContext.indexOfLastReplayedAction];
-                actionSucceeded = ReplayAction(gla);
-                inconsistenciesFound += ( actionSucceeded ? 0 : 1);
-                allMovesReplayed = ( replayContext.indexOfLastReplayedAction >= ( replayContext.actions.Count - 1 ) );
-            }
-            else {
-                // Handle the (more complicated) replaying of multiple steps from a supplied game log
+            if ( replayMode == ReplayModeEnum.NewGameLog ) {
+                // Handle the most complicated scenario of taking a game log and playing it through to the end or to the action number named in the log in the pauseAfter attribute 
                 ResponseType = ActionResponseTypeEnum.OverallGameState; // On completion of replay, the tester will have the overall game state returned to them
                 ResponseAudience =  ActionResponseAudienceEnum.Caller; // Tester will then have to rejoin each player using their respective rejoin codes
                 G.ClearConnectionMappings();
@@ -69,21 +81,48 @@ namespace SevenStuds.Models
                     replayContext.indexOfLastReplayedAction = actionIndex;
                     if ( replayContext.pauseAfter > 0 && gla.ActionNumber >= replayContext.pauseAfter ) {
                         // The user asked us to pause after processing a given action (and to leave the replay in a paused state that can be stepped through)
-                        System.Diagnostics.Debug.WriteLine("Replay paused due to pauseAfter("+replayContext.pauseAfter+") request ... step via Replay with no parameters");
+                        System.Diagnostics.Debug.WriteLine("Replay paused due to pauseAfter ("+replayContext.pauseAfter
+                            +") request ... single step via Replay with no parameters or advance multiple steps by specifying target action number");
                         break;
                     }
                 }
-                allMovesReplayed = ( replayContext.indexOfLastReplayedAction >= ( replayContext.actions.Count - 1 ) );
                 // Mark each player as locked ... this will be unlocked once someone rejoins as that player using a unique new connection                
                 foreach ( Participant p in G.Participants ) {
                     p.IsLockedOutFollowingReplay = true;
                 }
                 System.Diagnostics.Debug.WriteLine("Use the game state to find each player and rejoin each of them from a separate browser using their respective rejoin codes.");
             }
+            else if ( replayMode == ReplayModeEnum.AdvanceToNamedStep ) {
+                // Continue the replay until we have completed a step whose action number (not index) is not less than the requested action number
+                ResponseType = ActionResponseTypeEnum.PlayerCentricGameState; // All connected players will receive their own view of the updated game state
+                ResponseAudience =  ActionResponseAudienceEnum.AllPlayers; // All connected players will receive an update
+                for ( int actionIndex = replayContext.indexOfLastReplayedAction + 1; actionIndex < replayContext.actions.Count; actionIndex++ ) {
+                    replayContext.indexOfLastReplayedAction = actionIndex;
+                    GameLogAction gla = replayContext.actions[actionIndex];
+                    actionSucceeded = ReplayAction(gla);
+                    inconsistenciesFound += ( actionSucceeded == true ? 0 : 1 );
+                    if ( gla.ActionNumber >= advanceToActionNumber ) {
+                        // We have reached (and processed) the requested target action
+                        System.Diagnostics.Debug.WriteLine("Replay has advanced to requested point and will pause again (if log not exhausted)");
+                        break;
+                    }
+                }
+            }            
+            else if ( replayMode == ReplayModeEnum.AdvanceOneStep ) {
+                // Move a paused replay forward one step
+                ResponseType = ActionResponseTypeEnum.PlayerCentricGameState; // All connected players will receive their own view of the updated game state
+                ResponseAudience =  ActionResponseAudienceEnum.AllPlayers; // All connected players will receive an update
+                replayContext.indexOfLastReplayedAction++; // Move to next action
+                GameLogAction gla = replayContext.actions[replayContext.indexOfLastReplayedAction];
+                actionSucceeded = ReplayAction(gla);
+                inconsistenciesFound += ( actionSucceeded ? 0 : 1);
+            }            
+
             if ( inconsistenciesFound > 0 ) {
                  System.Diagnostics.Debug.WriteLine("WARNING: " + inconsistenciesFound + " inconsistencies in results were identified ... please review the replay log");
             }
-            if ( allMovesReplayed ) {
+           
+            if ( replayContext.indexOfLastReplayedAction >= ( replayContext.actions.Count - 1 ) ) {
                 System.Diagnostics.Debug.WriteLine("Game is no longer in replay mode and will continue under normal conditions from here");
                 G.SetReplayContext(null);
             }
