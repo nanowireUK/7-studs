@@ -1,3 +1,5 @@
+using System;
+
 namespace SevenStuds.Models
 {  
     /// <summary>  
@@ -20,8 +22,8 @@ namespace SevenStuds.Models
             p.HasFolded = true;
 
             if ( p.UncommittedChips == 0 ) {
-                // Player is now bankrupt 
-                G.BankruptcyEventHistoryForGame.Add(new BankruptcyEvent(p.Name, false));
+                // Player is now bankrupt
+                p.TimeOfBankruptcy = DateTimeOffset.Now;
             }
 
             // Find and set next player (could be no one if all players have now folded)

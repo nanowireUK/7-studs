@@ -41,7 +41,7 @@ namespace SevenStuds.Models
         public DateTimeOffset LastSuccessfulAction { get; set; }
         protected GameLog _GameLog { get; set; }
         protected GameLog _ReplayContext { get; set; }
-        public List<BankruptcyEvent> BankruptcyEventHistoryForGame { get; set; }
+        public List<LeavingRecord> LeaversLogForGame { get; set; }
         private Dictionary<string, Participant> _ConnectionToParticipantMap { get; set; } 
         private Dictionary<string, Spectator> _ConnectionToSpectatorMap { get; set; } 
         public List<List<int>> Pots { get; set; } // pot(s) built up in the current hand (over multiple rounds of betting)
@@ -166,7 +166,7 @@ namespace SevenStuds.Models
                 p.UncommittedChips = this.InitialChipQuantity;
                 p.HandsWon = 0;
             }
-            BankruptcyEventHistoryForGame = new List<BankruptcyEvent>();
+            LeaversLogForGame = new List<LeavingRecord>();
             if ( this.IsRunningInReplayMode() == false ) {
                 // Normal game, so randomise player order by picking a random player, deleting and moving to front, repeating a few times
                 Random r = ServerState.ServerLevelRandomNumberGenerator;
@@ -224,8 +224,6 @@ namespace SevenStuds.Models
             }
             StartTime = DateTimeOffset.Now;
             StartNewGameLog(); // start a new log for this game
-
-
         }
 
         public void RemoveDisconnectedPlayersFromGameState() {
@@ -323,6 +321,7 @@ namespace SevenStuds.Models
             {
                 Participant p = Participants[i];
                 p.IsSharingHandDetails = false;
+                p.HasBeenActiveInCurrentGame = true;
                 if ( p.UncommittedChips > 0 ) {
                     p.StartNewHandForActivePlayer(this);
                     this.Pots[0][i] = this.Ante; 
@@ -508,7 +507,7 @@ namespace SevenStuds.Models
                 if (
                     Participants[ZbiOfNextPlayerToInspect].HasFolded == false // i.e. player has not folded out of this hand
                     && Participants[ZbiOfNextPlayerToInspect].HasCovered == false // i.e. player has not covered the pot 
-                    && Participants[ZbiOfNextPlayerToInspect].IsOutOfThisGame == false // i.e. player was in the hand to start off with
+                    && Participants[ZbiOfNextPlayerToInspect].StartedHandWithNoFunds == false // i.e. player was in the hand to start off with
                     //&& this.ChipsInAllPotsForSpecifiedPlayer(ZbiOfNextPlayerToInspect) > 0 // i.e. player was in the hand to start off with
                     && 
                     ( // players hand is the first to be checked or is better than any checked so far
@@ -529,7 +528,7 @@ namespace SevenStuds.Models
             {
                  if ( 
                     Participants[i].HasFolded == false // i.e. player has not folded out of this hand
-                    && Participants[i].IsOutOfThisGame == false // i.e. player has not yet lost all of their funds
+                    && Participants[i].StartedHandWithNoFunds == false // i.e. player has not yet lost all of their funds
                     && this.ChipsInAllPotsForSpecifiedPlayer(i) > 0 // i.e. player was in the hand to start off with
                 )
                 {
@@ -596,7 +595,7 @@ namespace SevenStuds.Models
                 if ( i != playerIndex 
                     && p.HasCovered == false
                     && p.HasFolded == false
-                    && p.IsOutOfThisGame == false
+                    && p.StartedHandWithNoFunds == false
                 ) {
                     int thisPlayersCommittedChips = ChipsInAllPotsForSpecifiedPlayer(i);
                     if ( ( p.UncommittedChips + thisPlayersCommittedChips ) > maxAvailableToOtherActivePlayers ) {
@@ -739,7 +738,7 @@ namespace SevenStuds.Models
                     int ZbiOfNextPlayerToInspect = (firstToReveal + i) % Participants.Count;
                     if ( Participants[ZbiOfNextPlayerToInspect].IsSharingHandDetails == false
                         && Participants[ZbiOfNextPlayerToInspect].HasFolded == false // i.e. player has not folded out of this hand
-                        && Participants[ZbiOfNextPlayerToInspect].IsOutOfThisGame == false // i.e. player has not yet lost all of their funds
+                        && Participants[ZbiOfNextPlayerToInspect].StartedHandWithNoFunds == false // i.e. player has not yet lost all of their funds
                     ) {
                         IndexOfParticipantToTakeNextAction = ZbiOfNextPlayerToInspect;
                         NextAction = /*Trigger + ", " +*/ Participants[IndexOfParticipantToTakeNextAction].Name + " to reveal (or fold)"; 
@@ -768,7 +767,7 @@ namespace SevenStuds.Models
                 }
                 if ( Participants[ZbiOfNextPlayerToInspect].HasFolded == false // i.e. player has not folded out of this hand
                     && Participants[ZbiOfNextPlayerToInspect].HasCovered == false // i.e. player has not covered the pot
-                    && Participants[ZbiOfNextPlayerToInspect].IsOutOfThisGame == false // i.e. player has not yet lost all of their funds
+                    && Participants[ZbiOfNextPlayerToInspect].StartedHandWithNoFunds == false // i.e. player has not yet lost all of their funds
                 ) {
                     return ZbiOfNextPlayerToInspect;
                 }
@@ -873,9 +872,10 @@ namespace SevenStuds.Models
 
             // Identify anyone who became backrupt during the hand. 
             for (int p = 0; p < Participants.Count ; p++) {
-                if ( Participants[p].UncommittedChips == 0 && Participants[p].IsOutOfThisGame == false ) {
+                DateTimeOffset now = DateTimeOffset.Now;
+                if ( Participants[p].UncommittedChips == 0 && Participants[p].StartedHandWithNoFunds == false ) {
                     // Player is now bankrupt having been in this hand with some funds at the beginning of the hand
-                    BankruptcyEventHistoryForGame.Add(new BankruptcyEvent(Participants[p].Name, false));
+                    Participants[p].TimeOfBankruptcy = now;
                 }
             }
             
@@ -987,7 +987,7 @@ namespace SevenStuds.Models
                 r += 
                     p.Name.Substring(0,1) 
                     + "["
-                    + ( p.IsOutOfThisGame ? "O" : "" )
+                    + ( p.StartedHandWithNoFunds ? "O" : "" )
                     + ( p.HasFolded ? "F" : "" )
                     + ( p.HasCovered ? "C" : "" )
                     + ( i == IndexOfParticipantDealingThisHand ? "D" : "" )
@@ -1017,43 +1017,5 @@ namespace SevenStuds.Models
         public int MinutesSinceLastAction() {
             return Convert.ToInt32( (DateTimeOffset.Now - this.LastSuccessfulAction).TotalMinutes);
         }
-        public List<LobbyDataCurrentGame> SortedListOfWinnersAndLosers() {
-            DateTimeOffset now = DateTimeOffset.Now;
-            List<LobbyDataCurrentGame> result = new List<LobbyDataCurrentGame>();
-            // First add all players who are still in the game, without worrying about the order as the list will be sorted later
-            foreach ( Participant p in Participants ) {
-                if ( p.UncommittedChips > 0 ) {
-                    result.Add(new LobbyDataCurrentGame(p.Name, p.UncommittedChips, now));
-                }
-            }
-            // Now add the details of the bankruptcies
-            if ( BankruptcyEventHistoryForGame != null ) {
-                foreach ( BankruptcyEvent e in BankruptcyEventHistoryForGame ) {
-                    result.Add(new LobbyDataCurrentGame(e.BankruptPlayerName, 0, e.OccurredAt_UTC));
-                } 
-            }           
-            // Now sort the array by (1) funds descending, (2) date they went backrupt, descending and finally (3) by name
-            result.Sort(
-                delegate(LobbyDataCurrentGame x, LobbyDataCurrentGame y) 
-                {
-                    // See https://www.codeproject.com/Tips/761275/How-to-Sort-a-List
-
-                    // Sort by total funds in descending order
-                    int a = y.RemainingFunds.CompareTo(x.RemainingFunds);
-                    // If both players have same funds remaining (which might be zero) then sort by the time they went bankrupt
-                    if (a == 0)
-                        a = y.EventTimeAsUTC.CompareTo(x.EventTimeAsUTC);
-                    // If both players 
-                    if (a == 0)
-                        a = x.PlayerName.CompareTo(y.PlayerName);                    
-
-                    return a;
-                }
-            );
-            // Add some game data ahead of the sorted list
-            return result;
-            }
-        
-
     }
 }

@@ -108,6 +108,14 @@ namespace SevenStuds.Models
         AdvanceOneStep = 1,
         AdvanceToNamedStep = 2
     }
+
+    public enum PlayerStatusEnum : int
+    {
+        // Note that higher numbers sort first
+        Spectator = 0,
+        QueuingForNextGame = 1,
+        PartOfMostRecentGame = 2
+    }
    
     /// <summary>
     /// Enumeration values are used to calculate hand rank keys

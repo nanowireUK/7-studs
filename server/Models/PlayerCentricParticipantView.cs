@@ -42,7 +42,7 @@ namespace SevenStuds.Models
             IsSharingHandDetails = observedPlayer.IsSharingHandDetails;   
             HasFolded = observedPlayer.HasFolded;
             HasCovered = observedPlayer.HasCovered;
-            IsOutOfThisGame = observedPlayer.IsOutOfThisGame; 
+            IsOutOfThisGame = observedPlayer.StartedHandWithNoFunds; 
             HasDisconnected = observedPlayer.HasDisconnected; 
             VisibleHandDescription = observedPlayer._VisibleHandDescription;
             GainOrLossInLastHand = observedPlayer.GainOrLossInLastHand;

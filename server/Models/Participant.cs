@@ -15,6 +15,7 @@ namespace SevenStuds.Models
             this.IsLockedOutFollowingReplay = false;
             this.IsGameAdministrator = false;
             this.IsSharingHandDetails = false;
+            this.HasBeenActiveInCurrentGame = false;
         }
         [Required]
         
@@ -22,13 +23,15 @@ namespace SevenStuds.Models
         public int UncommittedChips { get; set; }
         public Boolean HasFolded { get; set; }
         public Boolean HasCovered { get; set; }
-        public Boolean IsOutOfThisGame { get; set; } // i.e. had no funds at the start of the current hand
+        public Boolean StartedHandWithNoFunds { get; set; } // i.e. had no funds at the start of the current hand
         public Boolean HasDisconnected { get; set; } // Player has chosen to leave the game (i.e. is no longer connected and will be removed at end of hand)
         public Boolean IsSharingHandDetails { get; set; }
         public Boolean WonSomethingInCurrentHand { get; set; }
         public int HandsWon { get; set; } 
         public string RejoinCode { get; set; } // e.g. 3 alphanumeric characters that enables a disconnected player to rejoin as the same person
         public string ParticipantLevelSignalRGroupName { get; set; }
+        public Boolean HasBeenActiveInCurrentGame { get; set; }
+        public DateTimeOffset TimeOfBankruptcy { get; set; }
         private List<string> _ConnectionIds { get; set; }
                 
         [Required]
@@ -70,7 +73,7 @@ namespace SevenStuds.Models
             this.UncommittedChips -= g.Ante;
             this.HasFolded = false;
             this.HasCovered = false;
-            this.IsOutOfThisGame = false;
+            this.StartedHandWithNoFunds = false;
             this.Hand = new List<Card>();
             this.Hand.Add(g.DealCard()); // 1st random card
             this.Hand.Add(g.DealCard()); // 2nd random card
@@ -107,7 +110,7 @@ namespace SevenStuds.Models
             //this.ChipsCommittedToCurrentBettingRound = 0;
             this.HasFolded = false;
             this.HasCovered = false;
-            this.IsOutOfThisGame = true;
+            this.StartedHandWithNoFunds = true;
             this.Hand = new List<Card>();
             this._VisibleHandDescription = null;
             this._VisibleHandRank = int.MaxValue;
@@ -119,7 +122,7 @@ namespace SevenStuds.Models
 
         public void PrepareForNextBettingRound(Game g, int roundNumber) {
             // Check whether player is still in, and deal them a new card if so (or the community card if specified)
-            if ( this.HasFolded == false & this.IsOutOfThisGame == false ) {
+            if ( this.HasFolded == false & this.StartedHandWithNoFunds == false ) {
                 if ( g.CommunityCard == null ) {
                     this.Hand.Add(g.DealCard()); // random card, usual scenario
                 }
