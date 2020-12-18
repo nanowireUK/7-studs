@@ -62,7 +62,6 @@ export const join = (roomId, username) => (dispatch, getState, connection) => {
     connection
         .invoke('UserClickedJoin', roomId, username)
         .then(() => {
-            console.log('User clicked join')
             localStorage.setItem('roomId', roomId);
             localStorage.setItem('username', username);
             dispatch(setUsername(username));

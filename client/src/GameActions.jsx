@@ -193,7 +193,6 @@ export default function GameActionsWithKeyboard () {
             default:
                 break;
         }
-        console.log(e);
     }
 
     return (<Keyboard target="document" onKeyDown={handleKeyPress}>
