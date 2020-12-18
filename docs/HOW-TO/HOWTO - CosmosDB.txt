@@ -56,3 +56,14 @@
         Program p = new PokerDB();
 
 
+        Create 'Items' container with 10GB storage capacity 
+        and 400 Request Units per second (RU/s) throughput capacity, 
+        for up to 400 reads/sec. Estimated hourly bill: $0.033 USD
+
+        Phil provisioned a new serverless account: 7-studs-cosmos (previous one was 7-studs-cosmosdb)
+        DB: SevenStuds
+        Container: Games
+        Partition Key: /GameId
+        Unique Key: didn't supply one 
+
+

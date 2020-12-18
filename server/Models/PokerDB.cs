@@ -7,24 +7,48 @@ using Microsoft.Azure.Cosmos;
 
 namespace SevenStuds.Models
 {
-    public static class PokerDB
+    public class PokerDB
     {
-        // The Azure Cosmos DB endpoint for running this sample.
-        private static readonly string EndpointUri = ConfigurationManager.AppSettings["EndPointUri"];
-        // The primary key for the Azure Cosmos account.
-        private static readonly string PrimaryKey = ConfigurationManager.AppSettings["PrimaryKey"];
-        // The Cosmos client instance
-        private static CosmosClient cosmosClient;
-        // The database we will create
-        private static Database database;
-        // The container we will create.
-        private static Container container;
-        // The name of the database and container we will create
-        private static string databaseId = "JDtest1"; // was ToDoList
-        private static string containerId = "Items";
-
-        public static void StoreGameLogAction(GameLogAction gla)
+        private readonly string EndpointUri = ConfigurationManager.AppSettings["EndPointUri"]; // CosmosDB enpoint
+        private readonly string PrimaryKey = ConfigurationManager.AppSettings["PrimaryKey"]; // Primary key for the Azure Cosmos account.
+        private CosmosClient cosmosClient; // The Cosmos client instance
+        private Database database; // The database we will create
+        private Container container; // The container we will create.
+        private string databaseId = "SevenStuds"; // The name of our database
+        private string containerId = "Games"; // The name of our container within the database
+        public PokerDB() {
+            // 
+            this.cosmosClient = new CosmosClient(EndpointUri, PrimaryKey, new CosmosClientOptions() { ApplicationName = "SevenStuds" });
+            this.GetDatabaseLink();
+            this.GetContainerLink();
+        }
+        public void GetDatabaseLink() {
+            this.database = this.cosmosClient.GetDatabase(databaseId);
+            //this.database = await this.cosmosClient.CreateDatabaseIfNotExistsAsync(databaseId);
+        }
+        public void GetContainerLink() {
+            this.container = this.database.GetContainer(containerId);
+            //this.container = await this.database.CreateContainerIfNotExistsAsync(containerId, "/GameId", 400);            
+        }
+        public void StoreGameLogAction(GameLogAction gla)
         {
+            string sampleJson = @"{
+                ""notes"": ""game 4 ... recreated after 'covered with 0' bug fix (and changing correction at action 170 from 480 chips to 20 chips) then log re-extracted"",
+                ""roomId"": ""Poker2811"",
+                ""administrator"": ""John"",
+                ""pauseAfter"": 0,
+                ""indexOfLastReplayedAction"": -1,
+                ""startTimeUtc"": ""2020-11-28T23:12:54.350355+00:00"",
+                ""endTimeUtc"": ""2020-11-29T00:14:01.9553818+00:00"",
+                ""playersInOrderAtStartOfGame"": [
+                    ""Andrew"",
+                    ""Paul"",
+                    ""Nigel"",
+                    ""John"",
+                    ""Fabrice"",
+                    ""DanW""
+                ]
+                }";
             Console.WriteLine("Hello World, time is now "+DateTime.Now.ToString());
             try
             {
@@ -57,7 +81,7 @@ namespace SevenStuds.Models
         public async Task GetStartedDemoAsync()
         {
             // Create a new instance of the Cosmos Client
-            this.cosmosClient = new CosmosClient(EndpointUri, PrimaryKey, new CosmosClientOptions() { ApplicationName = "CosmosDBDotnetQuickstart" });
+
             await this.CreateDatabaseAsync();
             await this.CreateContainerAsync();
             await this.ScaleContainerAsync();

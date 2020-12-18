@@ -11,12 +11,13 @@ namespace SevenStuds.Models
         // Also provides other room-level functions (where a room may have hosted a whole series of games)
         public static PokerHandRankingTable RankingTable = new PokerHandRankingTable(); // Only need one of these
         public static Card DummyCard = new Card(CardEnum.Dummy, SuitEnum.Clubs);
+
+        public static PokerDB OurDB = new PokerDB();
         public static Boolean IsRunningOnPublicServer() {
             string origin_value = Environment.GetEnvironmentVariable("SevenStudsOrigin");
             if ( origin_value == null ) { return false; }
             return ( origin_value == "https://7studsserver.azurewebsites.net/" );
         }
-
         public static Random ServerLevelRandomNumberGenerator = new Random();
         public static Boolean RoomExists(string roomId) {
             return RoomList.ContainsKey(roomId.ToLower());
