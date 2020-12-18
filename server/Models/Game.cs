@@ -67,6 +67,7 @@ namespace SevenStuds.Models
         {
             GameMode = GameModeEnum.LobbyOpen;
             LastSuccessfulAction = DateTimeOffset.Now; // This will be updated as the game progresses but need to set a baseline here
+            StartTime = DateTimeOffset.Now; // At this point the time just represents the time the game was created
             SetReplayContext(replayContext);
             Participants = new List<Participant>(); // start with empty list of participants
             Spectators = new List<Spectator>(); // start with empty list of spectators
