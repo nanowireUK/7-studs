@@ -162,6 +162,7 @@ namespace SevenStuds.Models
             HandsPlayedIncludingCurrent = 0;
             ActionNumber = 0;
             CountOfLeavers = 0;
+            RemoveDisconnectedPlayersFromGameState();
             foreach ( Participant p in Participants )
             {
                 p.UncommittedChips = this.InitialChipQuantity;
@@ -232,18 +233,20 @@ namespace SevenStuds.Models
             for (int player = Participants.Count - 1; player > 0; player--) {
                 // Starting from the end of the player array, remove any players that have disconnected during the last hand
                 if ( Participants[player].HasDisconnected == true ) {
+                    if ( Participants[player].HasBeenActiveInCurrentGame == true ) {
+                        for (int i = 0; i < Pots.Count; i++) {
+                            Pots[i].RemoveAt(player); // Remove this player's slot from the pot array (the pot should be empty at this point anyway)
+                        }
+                        if ( player == IndexOfParticipantDealingThisHand ) {
+                            // Removed player was the dealer, so notionally move the 'dealership' back one slot (and allow for wraparound)
+                            IndexOfParticipantDealingThisHand = ( 
+                                IndexOfParticipantDealingThisHand > 0 
+                                ? IndexOfParticipantDealingThisHand - 1 // go back one slot
+                                : Participants.Count - 1 // wraparound to last player in the list
+                            )  ;
+                        }
+                    }
                     Participants.RemoveAt(player);
-                    for (int i = 0; i < Pots.Count; i++) {
-                        Pots[i].RemoveAt(player); // Remove this player's slot from the pot array (the pot should be empty at this point anyway)
-                    }
-                    if ( player == IndexOfParticipantDealingThisHand ) {
-                        // Removed player was the dealer, so notionally move the 'dealership' back one slot (and allow for wraparound)
-                        IndexOfParticipantDealingThisHand = ( 
-                            IndexOfParticipantDealingThisHand > 0 
-                            ? IndexOfParticipantDealingThisHand - 1 // go back one slot
-                            : Participants.Count - 1 // wraparound to last player in the list
-                        )  ;
-                    }
                 }
             }
         }
