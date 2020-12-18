@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.SignalR;
+
 namespace SevenStuds.Models
 {  
     /// <summary>  
@@ -17,6 +19,17 @@ namespace SevenStuds.Models
             // THIS NEEDS TO WORK FROM A ROOM PERSPECTIVE
             // STARTING A GAME SHOULD ASSIGN PLAYERS TO IT (i.e. JOIN IS A ROOM LEVEL FUNCTION NOT A GAME LEVEL)
             // CHANGE PARTICIPANT TO PLAYER?
+
+            // Check there are still enough connected players to start a game
+            int stillIn = 0;
+            foreach ( Participant p in G.Participants ) {
+                if ( p.HasDisconnected == false ) {
+                    stillIn++;
+                }
+            }
+            if ( stillIn < 2 ) {
+                throw new HubException("You need at least two players before you can start a game");
+            }  
 
             if ( G.HandsPlayedIncludingCurrent > 0 ) {
                 // Archive the results of the last game before setting up the new one 
