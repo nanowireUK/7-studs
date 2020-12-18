@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 
 import { RangeInput, TextInput, Box } from 'grommet';
 
-export default function RaiseSlider({ min, max, value, setValue}) {
+export default function RaiseSlider({ min, max, value, setValue, submitRaise }) {
     const [indexValue, setIndexValue] = useState(0);
     const raiseSteps = useMemo(() => {
         const initialRaiseSteps = [1,2,3,4,5,10,15,20,25,30,40,50,75,100,150,200,250,300,400,500,600,700,800,900,1000,2000,5000,10000];
@@ -21,6 +21,10 @@ export default function RaiseSlider({ min, max, value, setValue}) {
                     if (raiseBy >= min && raiseBy <= max) setValue(raiseBy);
                     if (raiseBy > max) setValue(max);
                 }
+            }}
+            
+            onKeyPress={(e) => {
+                if (e.key === 'Enter') submitRaise();
             }}/>
             </Box>
             <RangeInput min={0} max={raiseSteps.length - 1} value={indexValue} step={1} onChange={(e) => {

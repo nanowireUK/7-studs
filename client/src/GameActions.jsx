@@ -1,6 +1,6 @@
 import React, { useState, useContext} from 'react';
 
-import { Box, Button, Keyboard, ResponsiveContext, Text } from 'grommet';
+import { Box, Button, Keyboard, ResponsiveContext } from 'grommet';
 import { useSelector, useDispatch } from 'react-redux';
 
 import RaiseSlider from './components/RaiseSlider';
@@ -132,16 +132,17 @@ function GameActions () {
             </Box>
          );
     } else if (handInProgress) {
+        const submitRaise = () => {
+            if (raiseIsValid) {
+                dispatch(raise(raiseAmount.toString()));
+                endRaising();
+            }
+        }
+
         if (isRaising) return <Box direction="row" gap="xsmall">
-            <Button primary label={`Raise${callAmount ? ` + ${callAmount} to call` : ''}`} onClick={() => {
-                if (raiseIsValid) {
-                  dispatch(raise(raiseAmount.toString()));
-                  endRaising();
-                }
-            }} />
-            <Text></Text>
+            <Button primary label={`Raise${callAmount ? ` + ${callAmount} to call` : ''}`} onClick={submitRaise} />
             <Box direction="column" gap="xsmall">
-                <RaiseSlider min={ante} max={maxRaise} value={raiseAmount} setValue={setRaiseAmount} />
+                <RaiseSlider submitRaise={submitRaise} min={ante} max={maxRaise} value={raiseAmount} setValue={setRaiseAmount} />
             </Box>
             <Button label="Cancel" onClick={endRaising} />
         </Box>;
