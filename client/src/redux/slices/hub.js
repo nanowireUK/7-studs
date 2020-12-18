@@ -10,7 +10,7 @@ export const hubSlice = createSlice({
     name: 'hub',
     initialState: {
         connectionState: ConnectionState.RECONNECTING,
-        roomId: localStorage.getItem('roomId') || null,
+        roomId: window.location.pathname.replace(/\//g, '') || localStorage.getItem('roomId') || null,
         username: localStorage.getItem('username') || null,
         rejoinCode: localStorage.getItem('rejoinCode') || null,
         leaverCount: 0,
@@ -62,6 +62,7 @@ export const join = (roomId, username) => (dispatch, getState, connection) => {
     connection
         .invoke('UserClickedJoin', roomId, username)
         .then(() => {
+            window.history.pushState(null, '', roomId)
             localStorage.setItem('roomId', roomId);
             localStorage.setItem('username', username);
             dispatch(setUsername(username));
@@ -74,6 +75,7 @@ export const rejoin = (roomId, username, rejoinCode) => (dispatch, getState, con
     connection
         .invoke('UserClickedRejoin', roomId, username, rejoinCode)
         .then(() => {
+            window.history.pushState(null, '', roomId)
             localStorage.setItem('roomId', roomId);
             localStorage.setItem('username', username);
             localStorage.setItem('rejoinCode', rejoinCode);
