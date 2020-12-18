@@ -66,24 +66,26 @@ namespace SevenStuds.Models
             List<LobbyDataCurrentGame> result = new List<LobbyDataCurrentGame>();
             // First add all players who are still registered in the game, without worrying about the order as the list will be sorted later
             foreach ( Participant p in g.Participants ) {
-                result.Add(new LobbyDataCurrentGame(
-                    p.Name, 
-                    ( p.HasBeenActiveInCurrentGame ? PlayerStatusEnum.PartOfMostRecentGame : PlayerStatusEnum.QueuingForNextGame ),
-                    p.UncommittedChips, 
-                    false, // has not left
-                    ( p.TimeOfBankruptcy == null ? now : p.TimeOfBankruptcy )
-                    ));
+                if ( p.HasDisconnected == false ) {
+                    result.Add(new LobbyDataCurrentGame(
+                        p.Name, 
+                        ( p.HasBeenActiveInCurrentGame ? PlayerStatusEnum.PartOfMostRecentGame : PlayerStatusEnum.QueuingForNextGame ),
+                        p.UncommittedChips, 
+                        false, // has not left
+                        ( p.TimeOfBankruptcy == null ? now : p.TimeOfBankruptcy )
+                        ));
+                }
             }
             // Now add the details of the leavers (but not if they have already been added because not yet completely removed from Participant list)
             if ( g.LeaversLogForGame != null ) {
                 foreach ( LeavingRecord leaver in g.LeaversLogForGame ) {
                     Boolean leaverIsNoLongerInParticipantList = true;
-                    foreach ( Participant p in g.Participants ) {
-                        if ( p.ParticipantLevelSignalRGroupName == leaver.LeavingParticipantLevelSignalRGroupName ) {
-                            leaverIsNoLongerInParticipantList = false;
-                            break;
-                        }
-                    }
+                    // foreach ( Participant p in g.Participants ) {
+                    //     if ( p.ParticipantLevelSignalRGroupName == leaver.LeavingParticipantLevelSignalRGroupName ) {
+                    //         leaverIsNoLongerInParticipantList = false;
+                    //         break;
+                    //     }
+                    // }
                     if ( leaverIsNoLongerInParticipantList ) {
                         result.Add(new LobbyDataCurrentGame(
                             leaver.LeavingParticipantName, 

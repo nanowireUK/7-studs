@@ -83,6 +83,7 @@ namespace SevenStuds.Models
             _ActionAvailability = new Dictionary<ActionEnum, ActionAvailability>();
             ActionAvailabilityList = new List<ActionAvailability>();
             HandsPlayedIncludingCurrent = 0;
+            LeaversLogForGame = new List<LeavingRecord>();
             CountOfLeavers = 0;
             ActionNumber = 0;
             SetActionAvailabilityBasedOnCurrentPlayer(); // Ensures the initial section of available actions is set
