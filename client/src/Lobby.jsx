@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectPlayers, selectCanDoAction, start, proceed, leave, PlayerActions, selectCurrentGameStandings, selectPreviousGameResults } from './redux/slices/game';
+import { selectPlayers, selectCanDoAction, start, proceed, leave, PlayerActions, selectCurrentGameStandings, selectIsAdmin, selectAdminName } from './redux/slices/game';
 import { selectUsername, selectRoomId, selectRejoinCode } from './redux/slices/hub';
 import { Text, Box, Button, Heading, Grid } from 'grommet';
 
@@ -12,16 +12,42 @@ function ordinal(i) {
     return i + "th";
 }
 
+function Player ({ name, hasLeftRoom, remainingFunds, status, position }) {
+    const username = useSelector(selectUsername);
+    const isMe = username === name;
+
+    const isSpectator = status === 'Spectator';
+    const inMostRecentGame = status === 'PartOfMostRecentGame';
+    const textColor = hasLeftRoom ? 'gray' : 'black';
+
+        return <Box
+            direction="row"
+            gap="xsmall"
+        >
+            <Text color={textColor}>{inMostRecentGame ? `${ordinal(position + 1)}:` : '-'}</Text>
+            <Text color={textColor} weight={isMe ? 'bold' : 'normal'}>{name}</Text>
+            <Text color={textColor}>
+                {(() => {
+                    if (inMostRecentGame) return `(${remainingFunds})`;
+                    else if (isSpectator) return '(Spectating)';
+                    return '';
+                })()}
+            </Text>
+        </Box>
+}
+
 function Lobby () {
     const players = useSelector(selectPlayers);
     const roomId = useSelector(selectRoomId);
     const rejoinCode = useSelector(selectRejoinCode);
+
     const username = useSelector(selectUsername);
     const canStart = useSelector(selectCanDoAction(PlayerActions.START));
     const canContinue = useSelector(selectCanDoAction(PlayerActions.CONINUE));
+    const isAdmin = useSelector(selectIsAdmin);
+    const adminName = useSelector(selectAdminName);
 
     const currentGameStandings = useSelector(selectCurrentGameStandings);
-    const previousGameResults = useSelector(selectPreviousGameResults);
 
     const dispatch = useDispatch();
 
@@ -38,8 +64,8 @@ function Lobby () {
     }
 
     const playerList = currentGameStandings.length ?
-        currentGameStandings.map(({ PlayerName, RemainingFunds }, position) => (
-            <Box key={PlayerName}><Text weight={PlayerName === username ? 'bold' : 'normal'}>{ordinal(position + 1)}: {PlayerName} ({RemainingFunds})</Text></Box>
+        currentGameStandings.map(({ name, ...player }, position) => (
+            <Player key={name} name={name} {...player} position={position} />
         )) : players.map(({ name }) => <Text key={name} weight={name === username ? 'bold' : 'normal'}>{name}</Text>);
 
     return <div style={{ height: '100vh' }}>
@@ -53,33 +79,41 @@ function Lobby () {
             columns={['fill']}
             rows={['xsmall', 'auto', 'xsmall']}
         >
-            <Box pad="small" gridArea="header" direction="column">
+            <Box pad="small" gridArea="header" direction="column" 
+            background="brand">
                 <Box margin="small" alignSelf="end" alignContent="center" fill="vertical" justify="center">
                     <Text alignSelf="center" size="large">{rejoinCode}</Text>
                     <Button color="accent-1" onClick={leaveGame}>Leave</Button>
                 </Box>
             </Box>
             <Box
-            justify="center"
-            direction="column"
-            width="500px"
-            gap="small"
-            margin="auto"
-            gridArea="lobby">
-                <Heading>7 Studs - {roomId}</Heading>
-                {playerList}
-                <Box direction="row" gap="xsmall" wrap>
-                    {canStart && <Button margin="xxsmall" primary label="Start new game"
-                        onClick={startGame} />}
-                    {canContinue && <Button margin="xxsmall" primary label="Continue game"
-                        onClick={continueGame} />}
-                </Box>
-                {previousGameResults ? (
-                    <Box>
-                        <Heading level={2}>Previous Games</Heading>
-                        {previousGameResults.map((result, index) => <Text key={index}>{result}</Text>)}
+                pad="small"
+                justify="center"
+                direction="column"
+                width="500px"
+                gap="small"
+                margin="auto"
+                gridArea="lobby"
+            >
+                <Box
+                    justify="center"
+                    border={true}
+                    margin="xsmall"
+                    pad="small"
+                    round="small"
+                >
+                    <Heading margin="small">7 Studs - {roomId}</Heading>
+                    <Box pad="medium">
+                        {playerList}
                     </Box>
-                ) : null}
+                    <Box direction="row" gap="xsmall" justify="end">
+                        {!isAdmin && <Text>Waiting for {adminName} to start a game</Text>}
+                        {canStart && <Button margin="xxsmall" primary label="Start new game"
+                            onClick={startGame} />}
+                        {canContinue && <Button margin="xxsmall" primary label="Continue game"
+                            onClick={continueGame} />}
+                    </Box>
+                </Box>
             </Box>
         </Grid>
     </div>;

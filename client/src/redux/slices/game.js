@@ -29,8 +29,20 @@ export const selectGame = (state) => state.game;
 
 export const selectMyHandDescription = (state) => state.game.MyHandDescription;
 
-export const selectPreviousGameResults = (state) => state.game.LobbyData.PreviousGameResults;
-export const selectCurrentGameStandings = (state) => state.game.LobbyData.CurrentGameStandings;
+export const selectCurrentGameStandings = (state) =>
+    (state.game !== null ? state.game.LobbyData.CurrentGameStandings : []).map(
+        ({
+            PlayerName: name,
+            HasLeftRoom: hasLeftRoom,
+            Status: status,
+            RemainingFunds: remainingFunds
+        }) => ({
+            name,
+            hasLeftRoom,
+            status,
+            remainingFunds
+        })
+    );
 
 export const selectInLobby = (state) =>
     state.game !== null && state.game.GameMode === 'LobbyOpen';
@@ -78,6 +90,8 @@ export const selectPlayers = (state) =>
                    handsWon,
                })
            );
+
+export const selectAdminName = (state) => selectPlayers(state).find(({ isAdmin }) => isAdmin).name;
 
 export const selectPots = (state) => state.game.Pots;
 

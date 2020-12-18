@@ -16,11 +16,17 @@ function Welcome() {
     const dispatch = useDispatch();
 
     const submitJoin = () => {
-        if (rejoinCode.trim() === '') {
-            dispatch(join(roomId, playerName));
-        } else {
-            dispatch(rejoin(roomId, playerName, rejoinCode));
+        if (!isInvalid) {
+            if (rejoinCode.trim() === '') {
+                dispatch(join(roomId, playerName));
+            } else {
+                dispatch(rejoin(roomId, playerName, rejoinCode));
+            }
         }
+    }
+
+    const onKeyPress = (e) => {
+        if (e.key === 'Enter') submitJoin();
     }
 
     return (
@@ -36,16 +42,36 @@ function Welcome() {
 
                 <Box direction="row" justify="end">
                     <Text margin="small" alignSelf="center">Room</Text>
-                    <Box><TextInput placeholder="Room Name" value={roomId} onChange={event => setRoomId(event.target.value)}/></Box>
+                    <Box>
+                        <TextInput
+                            placeholder="Room Name" value={roomId}
+                            onKeyPress={onKeyPress}
+                            onChange={event => setRoomId(event.target.value)}
+                        />
+                    </Box>
                 </Box>
                 <Box direction="row" justify="end">
                     <Text margin="small" alignSelf="center">Player Name</Text>
-                    <Box><TextInput placeholder="Player Name" value={playerName} onChange={event => setPlayerName(event.target.value)} /></Box>
+                    <Box>
+                        <TextInput
+                            placeholder="Player Name"
+                            value={playerName}
+                            onKeyPress={onKeyPress}
+                            onChange={event => setPlayerName(event.target.value)}
+                        />
+                    </Box>
                 </Box>
 
                 <Box direction="row" justify="end">
                     <Text margin="small" alignSelf="center">Rejoin Code</Text>
-                    <Box><TextInput placeholder="Rejoin Code (optional)" value={rejoinCode} onChange={event => setRejoinCode(event.target.value)} /></Box>
+                    <Box>
+                        <TextInput
+                            placeholder="Rejoin Code (optional)"
+                            value={rejoinCode}
+                            onKeyPress={onKeyPress}
+                            onChange={event => setRejoinCode(event.target.value)}
+                        />
+                    </Box>
                 </Box>
                 <Button primary label="Join" onClick={submitJoin} disabled={isInvalid}/>
         </Box>
