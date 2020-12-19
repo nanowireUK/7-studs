@@ -35,9 +35,10 @@ namespace SevenStuds.Models
         public List<List<string>> LastHandResult { get; set; }
         public List<PlayerCentricParticipantView> PlayerViewOfParticipants { get; set; } // ordered list of participants (order represents order around the table)
         public Card CommunityCard { get; set; }
-        public List<Boolean> CardPositionIsVisible { get; set; }
-        public List<List<PotResult>> MostRecentHandResult { get; set; } 
+        public GameStatistics GameStatistics { get; set; } 
         public LobbyData LobbyData { get; set; }
+        public List<Boolean> CardPositionIsVisible { get; set; }
+        public List<List<PotResult>> MostRecentHandResult { get; set; }         
         public PlayerCentricGameView(Game g, int requestedPlayerIndex, int spectatorIndex) {
             // Build up this player's view of the game
             // (note that if player index = -1 it means we're building a view for a spectator and the dealer will be the first player shown)
@@ -59,6 +60,7 @@ namespace SevenStuds.Models
             CommunityCard = g.CommunityCard;
             CardPositionIsVisible = g.CardPositionIsVisible;
             LobbyData = g.LobbyData;
+            GameStatistics = g.GameStatistics;
             LastHandResult = new List<List<string>>(g.LastHandResult); // This definitely needs to be a copy
             MostRecentHandResult = new List<List<PotResult>>(g.MostRecentHandResult); // This definitely needs to be a copy
             GameMode = g.GameMode.ToString();

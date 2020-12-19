@@ -148,6 +148,8 @@ namespace SevenStuds.Models
             }
             // After dealing with the requested action, reset the permissions for each action to reflect the updated game state
             G.SetActionAvailabilityBasedOnCurrentPlayer();
+
+            G.GameStatistics.UpdateStatistics(G); // Record game times etc.
             return R;
         }        
         public abstract void ProcessAction();

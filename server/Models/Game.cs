@@ -51,6 +51,7 @@ namespace SevenStuds.Models
         public List<ActionAvailability> ActionAvailabilityList { get; set; } // This list contains references to the same objects as in the Dictionary       
         public List<Boolean> CardPositionIsVisible { get; } = new List<Boolean>{false, false, true, true, true, true, false};
         public LobbyData LobbyData { get; set; }
+        public GameStatistics GameStatistics { get; set; }
         private Deck CardPack { get; set; } // Starts as a full shuffled deck but is depleted as cards are dealt from it
         private Deck SnapshotOfDeckForCurrentHand { get; set; } // Captures the full shuffled deck as at the start of the hand
         public Game(Room roomRef, int gameNumber) {
@@ -78,6 +79,7 @@ namespace SevenStuds.Models
             HandCommentary = new List<string>();
             LastHandResult = new List<List<string>>();
             MostRecentHandResult = new List<List<PotResult>>();
+            GameStatistics = new GameStatistics(this); // initialise the game stats
 
             _ConnectionToParticipantMap = new Dictionary<string, Participant>(); 
             _ConnectionToSpectatorMap = new Dictionary<string, Spectator>(); 
@@ -315,6 +317,7 @@ namespace SevenStuds.Models
 
             this.TakeSnapshotOfNewDeck();
             this.ClearHandDataBetweenHands();
+            this.GameStatistics.UpdateStatistics(this);
 
             // Temporarily moved from ClearHandDataBetweenHands
             foreach (Participant p in Participants)
@@ -966,7 +969,9 @@ namespace SevenStuds.Models
             return jsonString;
         }  
 
-
+        public void UpdateGameStatistics() {
+            this.GameStatistics.UpdateStatistics(this);
+        }
         public void TakeSnapshotOfNewDeck(){
             this.SnapshotOfDeckForCurrentHand = this.CardPack.Clone();
         } 

@@ -6,31 +6,11 @@ namespace SevenStuds.Models
 {
     public class LobbyData
     {
-        // Used to present the current status of a room
-        public LobbyDataGameStats GameStatistics { get; set; } 
-        public List<LobbyDataCurrentGame> CurrentGameStandings { get; set; } // Will show players and their results in an appopriate order
-        // public List<string> ConnectedPlayers { get; set; } 
-        // public List<string> ConnectedSpectators { get; set; } 
-        public List<string> PreviousGameResults { get; set; } 
+        // Used to present the current status of each player who has been involved in a room in the last game or as someone waiting in the lobby
+        public List<LobbyDataCurrentGame> CurrentGameStandings { get; set; } // Will show players and their results in an appropriate order
         public LobbyData(Game g) {
-            this.AddGameStatistics(g);
-            this.AddGameResult(g);
-            // this.AddConnectedPlayers(g);
-            // this.AddSpectators(g);
-            this.AddPreviousGameResults(g);
-        }
-        private void AddGameResult(Game g) {
             CurrentGameStandings = SortedListOfParticipants(g);
         }
-        private void AddGameStatistics(Game g) {
-            GameStatistics = new LobbyDataGameStats(g);
-        }          
-        private void AddPreviousGameResults(Game g) {
-            // PreviousGameResults = null;
-            // if ( ServerState.RoomHistory.Contains[g.GameId] ) {
-            //     PreviousGameResults = (List<string>) ServerState.RoomHistory[g.GameId];
-            // }
-        }  
         public List<LobbyDataCurrentGame> SortedListOfParticipants(Game g) {
             // List all players who joined and/or left during the lifetime of the current game
             // (noting that details of previous leavers are cleared when a new game starts)
@@ -42,7 +22,8 @@ namespace SevenStuds.Models
         
             DateTimeOffset now = DateTimeOffset.Now;
             List<LobbyDataCurrentGame> result = new List<LobbyDataCurrentGame>();
-            // First add all players who are still registered in the game, without worrying about the order as the list will be sorted later
+
+            // First add all players who are still connected to the game, without worrying about the order as the list will be sorted later
             foreach ( Participant p in g.Participants ) {
                 if ( p.HasDisconnected == false ) {
                     result.Add(new LobbyDataCurrentGame(
@@ -54,30 +35,23 @@ namespace SevenStuds.Models
                         ));
                 }
             }
-            // Now add the details of the leavers (but not if they have already been added because not yet completely removed from Participant list)
+
+            // Now add the details of the leavers
             if ( g.LeaversLogForGame != null ) {
                 foreach ( LeavingRecord leaver in g.LeaversLogForGame ) {
-                    Boolean leaverIsNoLongerInParticipantList = true;
-                    // foreach ( Participant p in g.Participants ) {
-                    //     if ( p.ParticipantLevelSignalRGroupName == leaver.LeavingParticipantLevelSignalRGroupName ) {
-                    //         leaverIsNoLongerInParticipantList = false;
-                    //         break;
-                    //     }
-                    // }
-                    if ( leaverIsNoLongerInParticipantList ) {
-                        result.Add(new LobbyDataCurrentGame(
-                            leaver.LeavingParticipantName, 
-                            (
-                                leaver.WasSpectator 
-                                ? PlayerStatusEnum.Spectator 
-                                : ( leaver.HasBeenPartOfGame ? PlayerStatusEnum.PartOfMostRecentGame : PlayerStatusEnum.QueuingForNextGame )
-                            ),
-                            leaver.ChipsAtEndOfGame, 
-                            true, // has left
-                            leaver.LeftAt_UTC));
-                    }
+                    result.Add(new LobbyDataCurrentGame(
+                        leaver.LeavingParticipantName, 
+                        (
+                            leaver.WasSpectator 
+                            ? PlayerStatusEnum.Spectator 
+                            : ( leaver.HasBeenPartOfGame ? PlayerStatusEnum.PartOfMostRecentGame : PlayerStatusEnum.QueuingForNextGame )
+                        ),
+                        leaver.ChipsAtEndOfGame, 
+                        true, // has left
+                        leaver.LeftAt_UTC));
                 }
             }
+            
             // Now add active spectators
             foreach ( Spectator p in g.Spectators ) {
                 result.Add(new LobbyDataCurrentGame(
