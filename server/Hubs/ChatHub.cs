@@ -94,19 +94,20 @@ namespace SevenStuds.Hubs
             }
 
             // Now send the appropriate response to the players indicated by the action's ResponseAudience setting
+            var notificationTasks = new List<Task>();
             switch ( a.ResponseAudience )
             {
                 case ActionResponseAudienceEnum.Caller:
                     if ( a.ResponseType == ActionResponseTypeEnum.PlayerCentricGameState ) {
                         resultAsJson = new PlayerCentricGameView(g, a.PlayerIndex, -1).AsJson();
                     }
-                    await Clients.Caller.SendAsync(targetMethod, resultAsJson);
+                    notificationTasks.Add(Clients.Caller.SendAsync(targetMethod, resultAsJson));
                     break;
                 case ActionResponseAudienceEnum.CurrentPlayer:
                     if ( a.ResponseType == ActionResponseTypeEnum.PlayerCentricGameState ) {
                         resultAsJson = new PlayerCentricGameView(g, a.PlayerIndex, -1).AsJson();
                     }
-                    await Clients.Group(g.Participants[a.PlayerIndex].ParticipantLevelSignalRGroupName).SendAsync(targetMethod, resultAsJson);
+                    notificationTasks.Add(Clients.Group(g.Participants[a.PlayerIndex].ParticipantLevelSignalRGroupName).SendAsync(targetMethod, resultAsJson));
                     break;
                 case ActionResponseAudienceEnum.AllPlayers:
                     // Send personalised views to all players sat around the table
@@ -116,7 +117,7 @@ namespace SevenStuds.Hubs
                             // Send each player (including any leaving player) a view of the game from their own perspective
                             resultAsJson = new PlayerCentricGameView(g, i, -1).AsJson();
                         }
-                        await Clients.Group(g.Participants[i].ParticipantLevelSignalRGroupName).SendAsync(targetMethod, resultAsJson);
+                        notificationTasks.Add(Clients.Group(g.Participants[i].ParticipantLevelSignalRGroupName).SendAsync(targetMethod, resultAsJson));
                     }
                     // For any spectators, send a view from the dealer's perspective but with all face-down cards obscured
                     // Note that we have to build a view for each spectator as each spectator has their own rejoin code (this is a bit messy)
@@ -127,18 +128,19 @@ namespace SevenStuds.Hubs
                                 // Send each player (including any leaving player) a view of the game from their own perspective
                                 resultAsJson = new PlayerCentricGameView(g, -1, i).AsJson();
                             }
-                            await Clients.Group(g.Spectators[i].SpectatorLevelSignalRGroupName).SendAsync(targetMethod, resultAsJson);
+                            notificationTasks.Add(Clients.Group(g.Spectators[i].SpectatorLevelSignalRGroupName).SendAsync(targetMethod, resultAsJson));
                         }
                     } 
                     if ( a.ResponseType == ActionResponseTypeEnum.ConfirmToPlayerLeavingAndUpdateRemainingPlayers ) {
                         // Extra bit to notify all of the leaving player's connections that they have left
                         string leavingConfirmationAsJson = "{ \"ok\" }";
-                        await Clients.Group(a.SignalRGroupNameForAdditionalNotifications).SendAsync("ReceiveLeavingConfirmation", leavingConfirmationAsJson);
+                        notificationTasks.Add(Clients.Group(a.SignalRGroupNameForAdditionalNotifications).SendAsync("ReceiveLeavingConfirmation", leavingConfirmationAsJson));
                         }
                     break;
                  default:
                     throw new System.Exception("7Studs User Exception: Unsupported response audience");  // e.g. Admin
             }
+            await Task.WhenAll(notificationTasks); // Wait until all of the notification tasks completed
         }
         private void AddRejoinCodes(Game g) {
             g.rejoinCodes = new List<string>();
