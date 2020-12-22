@@ -1,0 +1,61 @@
+Database structure
+
+
+
+Azure Cosmos DB Emulator: https://localhost:8081/_explorer/index.html
+- Database name: Database name (throughput 400)
+- Container: Games
+  - Partition Key: /gameId (made up of roomId + startTimeUtc with '-' separator)
+  - Unique Key: /docId (made up of docType + docSeq with no spaces)
+
+
+- Document id can be specified or a guid will be generated
+- Item ID + the partition key are unique 
+- Compressing the JSON reduced e.g. 156k down to 107k
+- GameId = e.g. Poker1212-<startdatetime>?
+
+- What is unique key used for?
+
+- https://docs.microsoft.com/en-us/azure/cosmos-db/index-overview#from-trees-to-property-paths
+  - Range indexes can be used on scalar values (string or number)
+  - Spatial indices enable efficient queries on geospatial objects such as - points, lines, polygons, and multipolygon
+  - Composite indices increase the efficiency when you are performing operations on multiple fields
+- https://docs.microsoft.com/en-us/azure/cosmos-db/index-policy
+  - In Azure Cosmos DB, every container has an indexing policy that dictates how the container's items should be indexed
+  - You can customize a container's indexing policy by setting its indexing mode, and include or exclude property paths.
+  INDEXING MODES
+  - Azure Cosmos DB supports two indexing modes:
+    - Consistent: The index is updated synchronously as you create, update or delete items. 
+      This means that the consistency of your read queries will be the consistency configured for the account.
+    - None: Indexing is disabled on the container. 
+      This is commonly used when a container is used as a pure key-value store without the need for secondary indexes. 
+  INDEXING POLICY
+  - By default, indexing policy is set to automatic. It's achieved by setting the automatic property in the indexing policy to true.
+  - A custom indexing policy can specify property paths that are explicitly included or excluded from indexing
+
+A custom indexing policy can specify property paths that are explicitly included or excluded from indexing
+- a path leading to a scalar value (string or number) ends with /?
+- elements from an array are addressed together through the /[] notation (instead of /0, /1 etc.)
+- the /* wildcard can be used to match any elements below the node
+
+    {
+        "indexingMode": "consistent",
+        "includedPaths": [
+            {
+                "path": "/*"
+            }
+        ],
+        "excludedPaths": [
+            {
+                "path": "/path/to/single/excluded/property/?"
+            },
+            {
+                "path": "/path/to/root/of/multiple/excluded/properties/*"
+            }
+        ]
+    }
+
+UNIQUE KEYS
+- https://docs.microsoft.com/en-us/azure/cosmos-db/unique-keys
+- You can define unique keys only when you create an Azure Cosmos container (you have to delete/redefine to change unique keys)
+- null is like any other value (you can't have multiple nulls)

@@ -11,39 +11,14 @@ namespace SevenStuds.Models
         // Also provides other room-level functions (where a room may have hosted a whole series of games)
         public static PokerHandRankingTable RankingTable = new PokerHandRankingTable(); // Only need one of these
         public static Card DummyCard = new Card(CardEnum.Dummy, SuitEnum.Clubs);
+
+        public static PokerDB OurDB = new PokerDB();
         public static Boolean IsRunningOnPublicServer() {
             string origin_value = Environment.GetEnvironmentVariable("SevenStudsOrigin");
             if ( origin_value == null ) { return false; }
             return ( origin_value == "https://7studsserver.azurewebsites.net/" );
         }
-
         public static Random ServerLevelRandomNumberGenerator = new Random();
-
-        // public static Boolean GameExists(string gameId) {
-        //     string lowercaseId = gameId.ToLower();
-        //     return GameList.ContainsKey(lowercaseId);
-        // }
-
-        // public static Game FindOrCreateGame(string gameId) {
-        //     string lowercaseId = gameId.ToLower();
-        //     if ( GameList.ContainsKey(lowercaseId) ) {
-        //         Game g =  (Game) GameList[lowercaseId];
-        //         if ( g.MinutesSinceLastAction() <= 120 ) {
-        //             return g;
-        //         }
-        //         else {
-        //             // Delete the current version of this game so the new one starts 
-        //             EraseGame(lowercaseId);
-        //         }
-        //     }
-        //     Game newGame = new Game(gameId); // Keep original upper/lowercase
-        //     GameList.Add(lowercaseId, newGame);
-        //     return newGame;
-        // }
-        // public static void EraseGame(string gameId) {
-        //     string lowercaseId = gameId.ToLower();
-        //     GameList.Remove(lowercaseId);
-        // }
         public static Boolean RoomExists(string roomId) {
             return RoomList.ContainsKey(roomId.ToLower());
         }

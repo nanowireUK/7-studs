@@ -33,6 +33,11 @@ namespace SevenStuds.Models
 
             // The ProcessAction() method can use the same technique as long as the game state has not changed.
 
+            // Ensure room name is not blank
+            if ( roomId == "" ) {
+                throw new HubException("You tried to "+actionType.ToString().ToLower()+" but you did not specify a room name"); // client catches this as part of action method, i.e. no call to separate client method required
+            }
+
             R = ServerState.FindOrCreateRoom(roomId); // Find our room or create a new one if required
             G = R.ActiveGame;
             ActionType = actionType;

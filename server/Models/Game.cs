@@ -229,6 +229,7 @@ namespace SevenStuds.Models
             }
             StartTime = DateTimeOffset.Now;
             StartNewGameLog(); // start a new log for this game
+            //await ServerState.OurDB.RecordGameStart(this); //////////////////////////////////// do I really have to make everything above this async ??????
         }
 
         public void RemoveDisconnectedPlayersFromGameState() {
@@ -978,15 +979,17 @@ namespace SevenStuds.Models
 
         public void LogActionWithResults(Action a) {
             this.ActionNumber++;
-            this._GameLog.actions.Add(new GameLogAction(
+            GameLogAction gla = new GameLogAction(
                 a, 
                 this.ActionNumber,
                 this.StatusMessage,
                 this.PlayerSummaries(),
                 this.HandCommentary
-
-                ));
+                );
+            this._GameLog.actions.Add(gla);
             this.LastSuccessfulAction = DateTimeOffset.Now; 
+            // Log the action to the DB
+            //////////////////////////////////want this///////////////////////////////////////PokerDB.StoreGameLogAction(gla);
         }
 
         public string PlayerSummaries()
