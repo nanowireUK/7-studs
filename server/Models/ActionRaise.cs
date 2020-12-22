@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.SignalR;
+using System.Threading.Tasks;
 
 namespace SevenStuds.Models
 {  
@@ -11,7 +12,7 @@ namespace SevenStuds.Models
             : base( connectionId, actionType, roomId, user, leavers, raiseAmount)
         {
         }
-        public override void ProcessAction()
+        public override async Task ProcessAction()
         {
             int amountAsInt;
             if ( int.TryParse(Parameters, out amountAsInt) == false ) {

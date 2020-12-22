@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+
 namespace SevenStuds.Models
 {  
     /// <summary>  
@@ -9,7 +11,7 @@ namespace SevenStuds.Models
             : base(connectionId, actionType, roomId, user, leavers)
         {
         }
-        public override void ProcessAction()
+        public override async Task ProcessAction()
         {
             // This is not part of the game but enables the server web page to re-get the player's state for convenience after calling other admin functions
             this.ResponseType = ActionResponseTypeEnum.PlayerCentricGameState;

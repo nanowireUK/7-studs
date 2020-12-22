@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 
 namespace SevenStuds.Models
 {  
@@ -11,7 +12,7 @@ namespace SevenStuds.Models
             : base(connectionId, actionType, roomId, user, leavers)
         {
         }
-        public override void ProcessAction()
+        public override async Task ProcessAction()
         {
             // Handle the fold (note that the base class has already checked the player's eligibility for this action)
             Participant p = G.Participants[PlayerIndex];

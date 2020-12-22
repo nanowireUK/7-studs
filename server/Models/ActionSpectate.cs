@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.SignalR;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SevenStuds.Models
 {  
@@ -13,7 +14,7 @@ namespace SevenStuds.Models
         {
         }
 
-        public override void ProcessAction()
+        public override async Task ProcessAction()
         {
             // Add player as a spectator, i.e. they will not have a place at the table and will only see cards that are currently face up
             // (note that the base class has already checked the player's basic eligibility for this action)

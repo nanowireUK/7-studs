@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.SignalR;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SevenStuds.Models
 {  
@@ -13,7 +14,7 @@ namespace SevenStuds.Models
         {
         }
 
-        public override void ProcessAction()
+        public override async Task ProcessAction()
         {
             G.RemoveDisconnectedPlayersFromGameState(); // clear out disconnected players to possibly make way for new joiner
 

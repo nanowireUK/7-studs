@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.SignalR;
 using System;
+using System.Threading.Tasks;
 
 namespace SevenStuds.Models
 {  
@@ -135,9 +136,9 @@ namespace SevenStuds.Models
         public ActionResponseTypeEnum ResponseType { get; set; }
         public ActionResponseAudienceEnum ResponseAudience { get; set; }
         public string SignalRGroupNameForAdditionalNotifications { get; set; } // a bit of a botch to allow for a player who is leaving
-        public virtual Room ProcessActionAndReturnRoomReference()
+        public virtual async Task<Room> ProcessActionAndReturnRoomReference()
         {
-            this.ProcessAction(); // Use the subclass to implement the specifics of the action
+            await this.ProcessAction(); // Use the subclass to implement the specifics of the action
 
             // Set a status message that combines the last event with the next action
             // (noting that NextAction may not have changed as a result of the current action)
@@ -157,6 +158,6 @@ namespace SevenStuds.Models
             G.GameStatistics.UpdateStatistics(G); // Record game times etc.
             return R;
         }        
-        public abstract void ProcessAction();
+        public abstract Task ProcessAction();
     }     
 }  

@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.SignalR;
+using System.Threading.Tasks;
 
 namespace SevenStuds.Models
 {  
@@ -12,7 +13,7 @@ namespace SevenStuds.Models
         {
         }
 
-        public override void ProcessAction()
+        public override async Task ProcessAction()
         {
             // Add a new connection for the rejoining player (note that the base class has already checked the player's basic eligibility for this action)
 

@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+
 namespace SevenStuds.Models
 {  
     /// <summary>  
@@ -9,7 +11,7 @@ namespace SevenStuds.Models
             : base(connectionId, actionType, roomId, user, leavers)
         {
         }
-        public override void ProcessAction()
+        public override async Task ProcessAction()
         {
             // Record the fact that this player has revealed their hand
             G.Participants[this.PlayerIndex].IsSharingHandDetails = true;

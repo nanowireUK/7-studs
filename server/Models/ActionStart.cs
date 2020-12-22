@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.SignalR;
+using System.Threading.Tasks;
 
 namespace SevenStuds.Models
 {  
@@ -12,7 +13,7 @@ namespace SevenStuds.Models
         {
         }
 
-        public override void ProcessAction()
+        public override async Task ProcessAction()
         {
             // Start a new game (note that the base class has already checked the player's eligibility for this action)
 
@@ -36,7 +37,7 @@ namespace SevenStuds.Models
                 ///////R.AddCompletedGameToRoomHistory(G); 
             }
             G.RecordLastEvent(this.UserName + " started the game (player order now randomised)");
-            G.StartNewGame(); // Initialise the game
+            await G.StartNewGame(); // Initialise the game
             G.StartNextHand(); 
             G.NextAction = G.Participants[G.IndexOfParticipantToTakeNextAction].Name + " to bet"; 
             G.GameMode = GameModeEnum.HandInProgress;

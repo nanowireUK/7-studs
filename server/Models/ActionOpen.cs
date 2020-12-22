@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+
 namespace SevenStuds.Models
 {  
     /// <summary>  
@@ -10,7 +12,7 @@ namespace SevenStuds.Models
         {
         }
 
-        public override void ProcessAction()
+        public override async Task ProcessAction()
         {
             // Note that this command is used to reopen the lobby at the end of a hand
             G.RecordLastEvent(this.UserName + " reopened the game lobby");

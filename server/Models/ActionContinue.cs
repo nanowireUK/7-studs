@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+
 namespace SevenStuds.Models
 {  
     /// <summary>  
@@ -10,7 +12,7 @@ namespace SevenStuds.Models
         {
         }
 
-        public override void ProcessAction()
+        public override async Task ProcessAction()
         {
             // Start the next hand in an existing game (note that the base class has already checked the player's eligibility for this action)
             G.RecordLastEvent(this.UserName + " started next hand");

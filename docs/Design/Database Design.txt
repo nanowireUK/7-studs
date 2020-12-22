@@ -5,8 +5,10 @@ Database structure
 Azure Cosmos DB Emulator: https://localhost:8081/_explorer/index.html
 - Database name: Database name (throughput 400)
 - Container: Games
-  - Partition Key: /gameId (made up of roomId + startTimeUtc with '-' separator)
-  - Unique Key: /docId (made up of docType + docSeq with no spaces)
+  - Partition Key: /gameId (made up of roomId + startTimeUtc with '-' separator) (note: cannot contin)
+  - Unique Key: /id (made up of docType + docSeq with no spaces)
+
+  [JsonProperty(PropertyName = "gameId")] need to be in JSON code for some reason
 
 
 - Document id can be specified or a guid will be generated

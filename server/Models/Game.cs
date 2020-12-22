@@ -4,6 +4,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System;
 using Microsoft.AspNetCore.SignalR;
+using System.Threading.Tasks;
 
 namespace SevenStuds.Models
 {
@@ -159,7 +160,7 @@ namespace SevenStuds.Models
             }
         }
 
-        public void StartNewGame()
+        public async Task StartNewGame()
         {
             GameNumber++;
             HandsPlayedIncludingCurrent = 0;
@@ -229,7 +230,7 @@ namespace SevenStuds.Models
             }
             StartTime = DateTimeOffset.Now;
             StartNewGameLog(); // start a new log for this game
-            //await ServerState.OurDB.RecordGameStart(this); //////////////////////////////////// do I really have to make everything above this async ??????
+            await ServerState.OurDB.RecordGameStart(this); 
         }
 
         public void RemoveDisconnectedPlayersFromGameState() {

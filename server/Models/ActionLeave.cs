@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.SignalR;
+using System.Threading.Tasks;
 
 namespace SevenStuds.Models
 {  
@@ -12,7 +13,7 @@ namespace SevenStuds.Models
         {
         }
 
-        public override void ProcessAction()
+        public override async Task ProcessAction()
         {
             // A spectator can leave at any time as they do not influence the game in any way.
             int spectatorIndex = G.SpectatorIndexFromName(UserName);

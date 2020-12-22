@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.SignalR;
+using System.Threading.Tasks;
 
 namespace SevenStuds.Models
 {  
@@ -12,7 +13,7 @@ namespace SevenStuds.Models
         {
         }
         //public string QueryType;
-        public override void ProcessAction()
+        public override async Task ProcessAction()
         {
             R.AdHocQueryType = this.Parameters; // Note this so that QueryResultAsJson can pick it up
             this.ResponseType = ActionResponseTypeEnum.AdHocServerQuery; 

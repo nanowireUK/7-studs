@@ -35,7 +35,7 @@ namespace SevenStuds.Hubs
         private async Task UserClickedActionButton(ActionEnum actionType, string roomId, string user, string leavers, string parameters)
         {
             Action a = ActionFactory.NewAction(Context.ConnectionId, actionType, roomId, user, leavers, parameters);
-            Room r = a.ProcessActionAndReturnRoomReference();
+            Room r = await a.ProcessActionAndReturnRoomReference();
             Game g = r.ActiveGame;
 
             // New connections may have been linked to players, so link those connections to the relevant game and player groups in SignalR

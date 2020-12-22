@@ -1,5 +1,6 @@
 using System.Text.Json;
 using Microsoft.AspNetCore.SignalR;
+using System.Threading.Tasks;
 
 namespace SevenStuds.Models
 {  
@@ -12,7 +13,7 @@ namespace SevenStuds.Models
             : base(connectionId, actionType, roomId, user, leavers, logAsJson)
         {
         }
-        public override void ProcessAction()
+        public override async Task ProcessAction()
         {
             // ActionReplay works in three related modes:
             // - If a game log is supplied as a parameter, a new game will be created and replayed from that log
@@ -76,7 +77,7 @@ namespace SevenStuds.Models
                 for ( int actionIndex = 0; actionIndex < replayContext.actions.Count; actionIndex++ ) {
                     replayContext.indexOfLastReplayedAction += 1;
                     GameLogAction gla = replayContext.actions[actionIndex];
-                    actionSucceeded = ReplayAction(gla);
+                    actionSucceeded = await ReplayAction(gla);
                     inconsistenciesFound += ( actionSucceeded == true ? 0 : 1 );
                     replayContext.indexOfLastReplayedAction = actionIndex;
                     if ( replayContext.pauseAfter > 0 && gla.ActionNumber >= replayContext.pauseAfter ) {
@@ -99,7 +100,7 @@ namespace SevenStuds.Models
                 for ( int actionIndex = replayContext.indexOfLastReplayedAction + 1; actionIndex < replayContext.actions.Count; actionIndex++ ) {
                     replayContext.indexOfLastReplayedAction = actionIndex;
                     GameLogAction gla = replayContext.actions[actionIndex];
-                    actionSucceeded = ReplayAction(gla);
+                    actionSucceeded = await ReplayAction(gla);
                     inconsistenciesFound += ( actionSucceeded == true ? 0 : 1 );
                     if ( gla.ActionNumber >= advanceToActionNumber ) {
                         // We have reached (and processed) the requested target action
@@ -114,7 +115,7 @@ namespace SevenStuds.Models
                 ResponseAudience =  ActionResponseAudienceEnum.AllPlayers; // All connected players will receive an update
                 replayContext.indexOfLastReplayedAction++; // Move to next action
                 GameLogAction gla = replayContext.actions[replayContext.indexOfLastReplayedAction];
-                actionSucceeded = ReplayAction(gla);
+                actionSucceeded = await ReplayAction(gla);
                 inconsistenciesFound += ( actionSucceeded ? 0 : 1);
             }            
 
@@ -127,7 +128,7 @@ namespace SevenStuds.Models
                 G.SetReplayContext(null);
             }
         }
-        private bool ReplayAction(GameLogAction gla) {
+        private async Task<bool> ReplayAction(GameLogAction gla) {
             bool resultsAreConsistent = true;
             ActionEnum actionType = gla.ActionType;
             Action a = ActionFactory.NewAction(
@@ -142,7 +143,7 @@ namespace SevenStuds.Models
                 "Replaying action "  + gla.ActionNumber + ": "
                 + gla.ActionType.ToString().ToLower() + " by " + gla.UserName);
 
-            a.ProcessActionAndReturnRoomReference(); 
+            await a.ProcessActionAndReturnRoomReference(); 
 
             System.Diagnostics.Debug.WriteLine("  StatusMessage: " + G.StatusMessage);
 

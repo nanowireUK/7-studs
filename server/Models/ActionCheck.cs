@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+
 namespace SevenStuds.Models
 {  
     /// <summary>  
@@ -9,7 +11,7 @@ namespace SevenStuds.Models
             : base(connectionId, actionType, roomId, user, leavers)
         {
         }
-        public override void ProcessAction()
+        public override async Task ProcessAction()
         {          
             // Handle the Check (note that the base class has already checked the player's eligibility for this action)
             if ( G._IndexOfLastPlayerToStartChecking == -1 ){

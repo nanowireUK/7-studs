@@ -29,7 +29,7 @@ namespace SevenStuds.Models
             //this.database = await this.cosmosClient.CreateDatabaseIfNotExistsAsync(databaseId);
         }
         public void GetGamesContainerLink() {
-            this.ourGamesContainer = this.ourDatabase.GetContainer(gamesContainerId); // PartitionKey = GameId
+            this.ourGamesContainer = this.ourDatabase.GetContainer(gamesContainerId); // PartitionKey = /gameId
         }
         public async Task RecordGameStart(Game g)
         {
@@ -51,7 +51,7 @@ namespace SevenStuds.Models
                 playersInOrderAtStartOfGame = players,
                 // Set values that depend on the other values
                 gameId = g.ParentRoom().RoomId + "-" + g.StartTime.ToString(),
-                docId = "GameHeader" + 0               
+                id = "GameHeader" + 0               
             };
 
             Console.WriteLine("Hello World, about to write game header at "+DateTime.Now.ToString());
@@ -59,9 +59,9 @@ namespace SevenStuds.Models
             {
                 // Read the item to see if it exists.  
                 ItemResponse<DocOfTypeGameHeader> readResponse = await this.ourGamesContainer.ReadItemAsync<DocOfTypeGameHeader>(
-                    gameHeader.docId, 
+                    gameHeader.id, 
                     new PartitionKey(gameHeader.gameId));
-                Console.WriteLine("Item in database with id: {0} already exists\n", readResponse.Resource.docId);
+                Console.WriteLine("Item in database with id: {0} already exists\n", readResponse.Resource.id);
             }
             catch(CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
             {
@@ -71,7 +71,7 @@ namespace SevenStuds.Models
                     new PartitionKey(gameHeader.gameId));
 
                 // Note that after creating the item, we can access the body of the item with the Resource property off the ItemResponse. We can also access the RequestCharge property to see the amount of RUs consumed on this request.
-                Console.WriteLine("Created item in database with id: {0} Operation consumed {1} RUs.\n", createResponse.Resource.docId, createResponse.RequestCharge);
+                Console.WriteLine("Created item in database with id: {0} Operation consumed {1} RUs.\n", createResponse.Resource.id, createResponse.RequestCharge);
                 this.consumedRUs += createResponse.RequestCharge; // Add this to our total
             }
         }
