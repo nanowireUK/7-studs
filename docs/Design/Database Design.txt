@@ -1,3 +1,14 @@
+Database structure
+
+
+
+Azure Cosmos DB Emulator: https://localhost:8081/_explorer/index.html
+- Database name: Database name (throughput 400)
+- Container: Games
+  - Partition Key: /gameId (made up of roomId + startTimeUtc with '-' separator)
+  - Unique Key: /docId (made up of docType + docSeq with no spaces)
+
+
 - Document id can be specified or a guid will be generated
 - Item ID + the partition key are unique 
 - Compressing the JSON reduced e.g. 156k down to 107k

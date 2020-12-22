@@ -22,7 +22,6 @@ namespace SevenStuds.Models
             this.cosmosClient = new CosmosClient(EndpointUri, PrimaryKey, new CosmosClientOptions() { ApplicationName = "SevenStuds" });
             this.GetDatabaseLink();
             this.GetGamesContainerLink();
-            this.StoreNewTestObject();
             this.consumedRUs = 0;
         }
         public void GetDatabaseLink() {
@@ -32,53 +31,48 @@ namespace SevenStuds.Models
         public void GetGamesContainerLink() {
             this.ourGamesContainer = this.ourDatabase.GetContainer(gamesContainerId); // PartitionKey = GameId
         }
-        public void StoreNewTestObject()
+        public async Task RecordGameStart(Game g)
         {
-            // Store a test document, allowing the Cosmos DB to generate the document id
-            string sampleJson = @"{
-                ""GameId"": ""Poker2811"",
-                ""administrator"": ""John"",
-                ""pauseAfter"": 0,
-                ""indexOfLastReplayedAction"": -1,
-                ""startTimeUtc"": ""2020-11-28T23:12:54.350355+00:00"",
-                ""endTimeUtc"": ""2020-11-29T00:14:01.9553818+00:00"",
-                ""playersInOrderAtStartOfGame"": [
-                    ""Andrew"",
-                    ""Paul"",
-                    ""Nigel"",
-                    ""John"",
-                    ""Fabrice"",
-                    ""DanW""
-                ]
-                }";
-            Console.WriteLine("Hello World, time is now "+DateTime.Now.ToString());
+            // Store a game header document for the new game
+            
+            List<string> players = new List<string>();
+            foreach ( Participant p in g.Participants ) {
+                players.Add(p.Name);
+            }
+
+            DocOfTypeGameHeader gameHeader = new DocOfTypeGameHeader
+            {
+                roomId = g.ParentRoom().RoomId,
+                docType = "GameHeader",
+                docSeq = 0,
+                administrator = g.Participants[g.GetIndexOfAdministrator()].Name,
+                startTimeUtc = g.StartTime,
+                endTimeUtc = DateTimeOffset.MaxValue, // should be set at end of game
+                playersInOrderAtStartOfGame = players,
+                // Set values that depend on the other values
+                gameId = g.ParentRoom().RoomId + "-" + g.StartTime.ToString(),
+                docId = "GameHeader" + 0               
+            };
+
+            Console.WriteLine("Hello World, about to write game header at "+DateTime.Now.ToString());
             try
             {
                 // Read the item to see if it exists.  
-                ItemResponse<Family> andersenFamilyResponse = await this.ourGamesContainer.ReadItemAsync<Family>(andersenFamily.Id, new PartitionKey(andersenFamily.LastName));
-                Console.WriteLine("Item in database with id: {0} already exists\n", andersenFamilyResponse.Resource.Id);
+                ItemResponse<DocOfTypeGameHeader> readResponse = await this.ourGamesContainer.ReadItemAsync<DocOfTypeGameHeader>(
+                    gameHeader.docId, 
+                    new PartitionKey(gameHeader.gameId));
+                Console.WriteLine("Item in database with id: {0} already exists\n", readResponse.Resource.docId);
             }
             catch(CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
             {
-                // Create an item in the container representing the Andersen family. Note we provide the value of the partition key for this item, which is "Andersen"
-                ItemResponse<Family> andersenFamilyResponse = await this.ourGamesContainer.CreateItemAsync<Family>(andersenFamily, new PartitionKey(andersenFamily.LastName));
+                // Create an item in the container representing the game header. Note we provide the value of the partition key for this item
+                ItemResponse<DocOfTypeGameHeader> createResponse = await this.ourGamesContainer.CreateItemAsync<DocOfTypeGameHeader>(
+                    gameHeader, 
+                    new PartitionKey(gameHeader.gameId));
 
                 // Note that after creating the item, we can access the body of the item with the Resource property off the ItemResponse. We can also access the RequestCharge property to see the amount of RUs consumed on this request.
-                Console.WriteLine("Created item in database with id: {0} Operation consumed {1} RUs.\n", andersenFamilyResponse.Resource.Id, andersenFamilyResponse.RequestCharge);
-            }
-            try
-            {
-                // Read the item to see if it exists
-                ItemResponse<Family> wakefieldFamilyResponse = await this.ourGamesContainer.ReadItemAsync<Family>(wakefieldFamily.Id, new PartitionKey(wakefieldFamily.LastName));
-                Console.WriteLine("Item in database with id: {0} already exists\n", wakefieldFamilyResponse.Resource.Id);
-            }
-            catch(CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
-            {
-                // Create an item in the container representing the Wakefield family. Note we provide the value of the partition key for this item, which is "Wakefield"
-                ItemResponse<Family> wakefieldFamilyResponse = await this.ourGamesContainer.CreateItemAsync<Family>(wakefieldFamily, new PartitionKey(wakefieldFamily.LastName));
-
-                // Note that after creating the item, we can access the body of the item with the Resource property off the ItemResponse. We can also access the RequestCharge property to see the amount of RUs consumed on this request.
-                Console.WriteLine("Created item in database with id: {0} Operation consumed {1} RUs.\n", wakefieldFamilyResponse.Resource.Id, wakefieldFamilyResponse.RequestCharge);
+                Console.WriteLine("Created item in database with id: {0} Operation consumed {1} RUs.\n", createResponse.Resource.docId, createResponse.RequestCharge);
+                this.consumedRUs += createResponse.RequestCharge; // Add this to our total
             }
         }
     }
