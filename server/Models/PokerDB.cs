@@ -9,32 +9,69 @@ namespace SevenStuds.Models
 {
     public class PokerDB
     {
-        private readonly string EndpointUri = ConfigurationManager.AppSettings["EndPointUri"]; // CosmosDB enpoint
+        private DatabaseConnectionStatusEnum dbStatus = DatabaseConnectionStatusEnum.ConnectionNotAttempted;
+        private readonly string EndpointUri = ConfigurationManager.AppSettings["EndPointUri"]; // CosmosDB endpoint
         private readonly string PrimaryKey = ConfigurationManager.AppSettings["PrimaryKey"]; // Primary key for the Azure Cosmos account.
         private CosmosClient cosmosClient; // The Cosmos client instance
         private Database ourDatabase; // The database we will create
         private Container ourGamesContainer; // The container we will create.
-        private double consumedRUs;
+        private double consumedRUs = 0;
         private string databaseId = "SevenStuds"; // The name of our database
         private string gamesContainerId = "Games"; // The name of our container within the database
         public PokerDB() {
-            // 
-            this.cosmosClient = new CosmosClient(EndpointUri, PrimaryKey, new CosmosClientOptions() { ApplicationName = "SevenStuds" });
-            this.GetDatabaseLink();
-            this.GetGamesContainerLink();
-            this.consumedRUs = 0;
+            // Establishes a poker DB object that we will initialise later via methods that will be called in an asynchronous context
         }
-        public void GetDatabaseLink() {
-            this.ourDatabase = this.cosmosClient.GetDatabase(databaseId);
-            //this.database = await this.cosmosClient.CreateDatabaseIfNotExistsAsync(databaseId);
+        public async Task<bool> DatabaseConnectionHasBeenEstablished() {
+            if ( dbStatus == DatabaseConnectionStatusEnum.ConnectionNotAttempted ) {
+                try
+                {
+                    // Establish connection to the DB server
+                    this.cosmosClient = new CosmosClient(EndpointUri, PrimaryKey, new CosmosClientOptions() { ApplicationName = "SevenStuds" });
+
+                    // Get a link to the SevenStuds database (creating it first if necessary)
+                    DatabaseResponse DBresp = await this.cosmosClient.CreateDatabaseIfNotExistsAsync(databaseId);
+                    if ( DBresp.StatusCode == HttpStatusCode.OK ) // Accepted??
+                    {
+                        Console.WriteLine("Database '{0}' already exists\n", DBresp.Database.Id);
+                    }
+                    else if ( DBresp.StatusCode == HttpStatusCode.Created )
+                    {
+                        Console.WriteLine("Database '{0}' has been created\n", DBresp.Database.Id);
+                    }
+                    ourDatabase = DBresp.Database;
+
+                    // Get a link to the Games container  (creating it first if necessary)
+                    ContainerResponse Cresp = await ourDatabase.CreateContainerIfNotExistsAsync(gamesContainerId, "/gameId", 400);
+                    if ( Cresp.StatusCode == HttpStatusCode.OK )
+                    {
+                        Console.WriteLine("Container '{0}' already exists\n", Cresp.Container.Id);
+                    }
+                    else if ( Cresp.StatusCode == HttpStatusCode.Created )
+                    {
+                        Console.WriteLine("Container '{0}' has been created\n", Cresp.Container.Id);
+                    }
+                    ourGamesContainer = Cresp.Container;       
+        
+                    dbStatus = DatabaseConnectionStatusEnum.ConnectionEstablised;
+                }
+                catch(Exception ex) 
+                {
+                    // Note that after creating the item, we can access the body of the item with the Resource property off the ItemResponse. We can also access the RequestCharge property to see the amount of RUs consumed on this request.
+                    Console.WriteLine("Database connection could not be established. Continuing without database. Reported exception = {0}\n", ex.Message);
+                    dbStatus = DatabaseConnectionStatusEnum.ConnectionFailed;
+                }
+            }
+            return dbStatus == DatabaseConnectionStatusEnum.ConnectionEstablised;
         }
-        public void GetGamesContainerLink() {
-            this.ourGamesContainer = this.ourDatabase.GetContainer(gamesContainerId); // PartitionKey = /gameId
-        }
+
         public async Task RecordGameStart(Game g)
         {
             // Store a game header document for the new game
-            
+            bool dbExists = await this.DatabaseConnectionHasBeenEstablished();
+            if ( dbExists == false ){
+                return;
+            }
+
             List<string> players = new List<string>();
             foreach ( Participant p in g.Participants ) {
                 players.Add(p.Name);

@@ -116,6 +116,13 @@ namespace SevenStuds.Models
         QueuingForNextGame = 1,
         PartOfMostRecentGame = 2
     }
+
+    public enum DatabaseConnectionStatusEnum : int
+    {
+        ConnectionNotAttempted = 0,
+        ConnectionFailed = 1,
+        ConnectionEstablised = 2
+    }
    
     /// <summary>
     /// Enumeration values are used to calculate hand rank keys
