@@ -23,9 +23,7 @@ namespace SevenStuds.Models
             G.RecordLastEvent(UserName + " checked");
 
             // Find and set next player (could be no one if all players have now checked)
-            G.SetNextPlayerToActOrHandleEndOfHand(PlayerIndex, G.LastEvent);
-
-            await Task.FromResult(0); // Just to work around compiler warning "This async method lacks 'await' operators and will run synchronously"
+            await G.SetNextPlayerToActOrHandleEndOfHand(PlayerIndex, G.LastEvent);
         }
     }     
 }  

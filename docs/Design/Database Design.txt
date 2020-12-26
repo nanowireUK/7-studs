@@ -8,11 +8,8 @@ Azure Cosmos DB Emulator: https://localhost:8081/_explorer/index.html
   - Partition Key: /gameId (made up of roomId + startTimeUtc with '-' separator) (note: cannot contain special characters)
   - Unique Key: /id (made up of docType + docSeq with no spaces and in following combinations:
     - Gameheader<0>
-    - Action<n>
-    - Deck<n>
-
-  [JsonProperty(PropertyName = "gameId")] need to be in JSON code for some reason
-
+    - Action<n>             ... n = sequential action number for current game (i.e. across multiple hands)
+    - EndOfHandDetails<n>   ... n = sequential hand number for current game (i.e. across multiple hands)
 
 - Document id can be specified or a guid will be generated
 - Item ID + the partition key are unique 

@@ -5,13 +5,11 @@ using System.Collections.Generic;
 
 namespace SevenStuds.Models
 {
-    public class DocOfTypeGameHeader : DatabaseGameItem
+    public class DocOfTypeDeck : DatabaseGameItem
     {
-        public string administrator { get; set; }
-        public DateTimeOffset startTimeUtc { get; set; }
-        public DateTimeOffset endTimeUtc { get; set; }
-        public List<string> playersInOrderAtStartOfGame { get; set; }
-
+        public Deck deck { get; set; }
+        //public LobbyData lobbyData { get; set; } ////////////////////////////// not convinced this is available at this point
+ 
         public override string ToString()
         {
             var options = new JsonSerializerOptions

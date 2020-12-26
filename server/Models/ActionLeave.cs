@@ -89,14 +89,14 @@ namespace SevenStuds.Models
                 if ( G.IndexOfParticipantToTakeNextAction == PlayerIndex ) {
                     // It was player's turn to move anyway, so implement the fold in the same way as if they had just folded in turn
                     G.RecordLastEvent(UserName + " has left the game and effectively folded"+ changeOfAdminMessage);
-                    G.SetNextPlayerToActOrHandleEndOfHand(G.IndexOfParticipantToTakeNextAction, G.LastEvent);   
+                    await G.SetNextPlayerToActOrHandleEndOfHand(G.IndexOfParticipantToTakeNextAction, G.LastEvent);   
                 }
                 else {
                     // They are leaving out of turn, so it will remain the turn of the current player unless the player leaving now means there is only one person left in
                     G.RecordLastEvent(UserName + " has left the game and effectively folded out of turn"+ changeOfAdminMessage);
                     if ( G.CountOfPlayersLeftInHand() == 1 ) {
                         // Everyone has folded except one player
-                        G.NextAction = G.ProcessEndOfHand(G.LastEvent + ", only one player left in, hand ended"); // will also update commentary with hand results
+                        G.NextAction = await G.ProcessEndOfHand(G.LastEvent + ", only one player left in, hand ended"); // will also update commentary with hand results
                         G.AddCommentary(G.NextAction);
                     }
                 }
@@ -115,8 +115,6 @@ namespace SevenStuds.Models
             // Set the response type that will trigger the player's client session to disconnect and everyone else's game state to be updated
             SignalRGroupNameForAdditionalNotifications = p.ParticipantLevelSignalRGroupName;
             ResponseType = ActionResponseTypeEnum.ConfirmToPlayerLeavingAndUpdateRemainingPlayers;   
-
-            await Task.FromResult(0); // Just to work around compiler warning "This async method lacks 'await' operators and will run synchronously"
         }
     }     
 }  

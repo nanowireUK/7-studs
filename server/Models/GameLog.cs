@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace SevenStuds.Models
 {
@@ -25,10 +26,12 @@ namespace SevenStuds.Models
             this.indexOfLastReplayedAction = -1; // means that next one will be 0
         }
 
-        public void LogEndOfHand(Deck deckUsedForHandJustEnded) {
+        public async Task LogEndOfHand(Game g, Deck deckUsedForHandJustEnded) {
             // We'll only know for sure that this is the end of the overall game if someone starts a new one instead of continuing with this one
             this.endTimeUtc = DateTimeOffset.Now;
             this.decks.Add(deckUsedForHandJustEnded);
+            // Log the deck to the DB
+            await ServerState.OurDB.RecordDeck(g);
             //this._GameLog.decks.Add(this.CardPack.Clone());
                         
         }

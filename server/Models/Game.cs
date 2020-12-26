@@ -54,7 +54,7 @@ namespace SevenStuds.Models
         public LobbyData LobbyData { get; set; }
         public GameStatistics GameStatistics { get; set; }
         private Deck CardPack { get; set; } // Starts as a full shuffled deck but is depleted as cards are dealt from it
-        private Deck SnapshotOfDeckForCurrentHand { get; set; } // Captures the full shuffled deck as at the start of the hand
+        public Deck SnapshotOfDeckForCurrentHand { get; set; } // Captures the full shuffled deck as at the start of the hand
         public Game(Room roomRef, int gameNumber) {
             this.Room = roomRef;
             this.GameNumber = gameNumber;
@@ -709,11 +709,11 @@ namespace SevenStuds.Models
         public Card DealCard() {
             return this.CardPack.NextCard(); 
         }
-        public void SetNextPlayerToActOrHandleEndOfHand(int currentPlayerIndex, string Trigger) {
+        public async Task SetNextPlayerToActOrHandleEndOfHand(int currentPlayerIndex, string Trigger) {
             // Check for scenario where only one active player is left
             if ( CountOfPlayersLeftInHand() == 1 ) {
                 // Everyone has folded except one player
-                NextAction = ProcessEndOfHand(Trigger + ", only one player left in, hand ended"); // will also update commentary with hand results
+                NextAction = await ProcessEndOfHand(Trigger + ", only one player left in, hand ended"); // will also update commentary with hand results
                 AddCommentary(NextAction);
                 return;
             }
@@ -757,7 +757,7 @@ namespace SevenStuds.Models
                     }
                 }
                 // If we get here there were no further people to reveal their cards, so it's time to determine the winner
-                ProcessEndOfHand(Trigger + ", all hands revealed, hand ended"); // will also update commentary with hand results
+                await ProcessEndOfHand(Trigger + ", all hands revealed, hand ended"); // will also update commentary with hand results
                 AddCommentary(NextAction);
             }
         }
@@ -794,13 +794,12 @@ namespace SevenStuds.Models
             }
             return -1; // shouldn't be possible as long as we pass admnistratorship on if the current admin leaves the game
         } 
-
-        public string ProcessEndOfHand(string Trigger) {
+        public async Task<string> ProcessEndOfHand(string Trigger) {
             // Something has triggered the end of the hand. Distribute each pot according to winner(s) of that pot.
             // Start with oldest pot and work forwards. 
             // Only players who have contributed to a pot and have not folded are to be considered
             AddCommentary(Trigger);
-            _GameLog.LogEndOfHand(this.SnapshotOfDeckForCurrentHand);
+            await _GameLog.LogEndOfHand(this, this.SnapshotOfDeckForCurrentHand);
 
             ClearResultDetails();
 
