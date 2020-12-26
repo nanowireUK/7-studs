@@ -44,11 +44,11 @@ namespace SevenStuds.Models
             Room newRoom = new Room(roomIdToUse); // Keep original name (respecting upper/lowercase)
             RoomList.Add(lowercaseId, newRoom);
 
-            // Note that other archived rooms may be using up memory ... clear them out after two days
+            // Note that other archived rooms may be using up memory ... clear them out after seven days
             foreach ( string id in RoomList.Keys )
             {
                 Room r = (Room) RoomList[id];
-                if ( r.ActiveGame != null && r.ActiveGame.MinutesSinceLastAction() > ( 2 * 24 * 60) ) {
+                if ( r.ActiveGame != null && r.ActiveGame.MinutesSinceLastAction() > ( 7 * 24 * 60) ) {
                     RoomList.Remove(id);
                 }
             }
