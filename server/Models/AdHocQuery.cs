@@ -23,6 +23,7 @@ namespace SevenStuds.Models
                         foreach (DictionaryEntry de in Environment.GetEnvironmentVariables()) {
                             envVars.Add("Key: " + de.Key + " Value: " + de.Value);
                         }
+                        envVars.Sort();
                         queryResults.Add(ServerState.StringArrayAsJson(envVars));
                         break;   
                     case "list-games": 
