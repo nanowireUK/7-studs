@@ -35,6 +35,7 @@ namespace SevenStuds.Models
         public List<List<string>> LastHandResult { get; set; }
         public List<PlayerCentricParticipantView> PlayerViewOfParticipants { get; set; } // ordered list of participants (order represents order around the table)
         public Card CommunityCard { get; set; }
+        public DatabaseConnectionStatusEnum DatabaseConnectionStatus { get; set; }
         public GameStatistics GameStatistics { get; set; } 
         public LobbyData LobbyData { get; set; }
         public List<Boolean> CardPositionIsVisible { get; set; }
@@ -58,6 +59,7 @@ namespace SevenStuds.Models
             RoundNumberIfCardsJustDealt = g.RoundNumberIfCardsJustDealt;
             CountOfLeavers = g.CountOfLeavers;
             CommunityCard = g.CommunityCard;
+            DatabaseConnectionStatus = ServerState.OurDB.dbStatus;
             CardPositionIsVisible = g.CardPositionIsVisible;
             LobbyData = g.LobbyData;
             GameStatistics = g.GameStatistics;

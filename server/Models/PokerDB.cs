@@ -9,9 +9,11 @@ namespace SevenStuds.Models
 {
     public class PokerDB
     {
-        private DatabaseConnectionStatusEnum dbStatus = DatabaseConnectionStatusEnum.ConnectionNotAttempted;
-        private readonly string EndpointUri = ConfigurationManager.AppSettings["EndPointUri"]; // CosmosDB endpoint
-        private readonly string PrimaryKey = ConfigurationManager.AppSettings["PrimaryKey"]; // Primary key for the Azure Cosmos account.
+        public DatabaseConnectionStatusEnum dbStatus = DatabaseConnectionStatusEnum.ConnectionNotAttempted;
+        private string EndpointUri;
+        //private readonly string EndpointUri = ConfigurationManager.AppSettings["EndPointUri"]; // CosmosDB endpoint
+        private string PrimaryKey;
+        //private readonly string PrimaryKey = ConfigurationManager.AppSettings["PrimaryKey"]; // Primary key for the Azure Cosmos account.
         private CosmosClient cosmosClient; // The Cosmos client instance
         private Database ourDatabase; // The database we will create
         private Container ourGamesContainer; // The container we will create.
@@ -25,6 +27,30 @@ namespace SevenStuds.Models
             if ( dbStatus == DatabaseConnectionStatusEnum.ConnectionNotAttempted ) {
                 try
                 {
+                    // Get the Cosmos DB URI from the relevant environment variable
+                    System.Diagnostics.Debug.WriteLine("Getting env var SevenStudsDbUri");
+                    EndpointUri = Environment.GetEnvironmentVariable("SevenStudsDbUri", EnvironmentVariableTarget.Process);
+                    if ( EndpointUri == null ) {
+                        System.Diagnostics.Debug.WriteLine("Env var SevenStudsDbUri not found, server will continue with database functionality deactivated");
+                        dbStatus = DatabaseConnectionStatusEnum.ConnectionFailed;
+                        return false;
+                    }
+                    else {
+                        System.Diagnostics.Debug.WriteLine("SevenStudsDbUri="+EndpointUri);
+                    }
+
+                    // Get the Cosmos DB PrimaryKey from the relevant environment variable
+                    System.Diagnostics.Debug.WriteLine("Getting env var SevenStudsDbPrimaryKey");
+                    PrimaryKey = Environment.GetEnvironmentVariable("SevenStudsDbPrimaryKey", EnvironmentVariableTarget.Process);
+                    if ( PrimaryKey == null ) {
+                        System.Diagnostics.Debug.WriteLine("Env var SevenStudsDbPrimaryKey not found, server will continue with database functionality deactivated");
+                        dbStatus = DatabaseConnectionStatusEnum.ConnectionFailed;
+                        return false;
+                    }
+                    else {
+                        System.Diagnostics.Debug.WriteLine("SevenStudsDbPrimaryKey="+PrimaryKey);
+                    }
+                                        
                     // Establish connection to the DB server
                     this.cosmosClient = new CosmosClient(EndpointUri, PrimaryKey, new CosmosClientOptions() { ApplicationName = "SevenStuds" });
 
