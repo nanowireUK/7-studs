@@ -47,7 +47,7 @@ function Player ({ name, chips, cards, isDealer, isAdmin, isCurrentPlayer, isMe,
 
     const myHandDescription = useSelector(selectMyHandDescription);
 
-    const outEmojis = ['😭', '😢', '😠', '🤬', '💔', '🚪', '🤯', '😵', '💀', '💩']
+    const outEmojis = ['😭', '😢', '😠', '🤬', '💔', '🗑️', '🤯', '😵', '💀', '💩'];
 
     let status;
     if (hasFolded) status = '(Folded)';
