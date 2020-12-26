@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
-//using System.Collections.Generic;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using System.Collections.Generic;
 
 namespace SevenStuds.Models
 {
@@ -61,5 +63,17 @@ namespace SevenStuds.Models
             // Finally return the room we've just found or created
             return newRoom;
         }
+
+        public static string StringArrayAsJson(List<string> l)
+        {
+            var options = new JsonSerializerOptions
+            {
+                WriteIndented = true,
+                
+            };
+            options.Converters.Add(new JsonStringEnumConverter(null /*JsonNamingPolicy.CamelCase*/));
+            string jsonString = JsonSerializer.Serialize(l, options);
+            return jsonString;
+        }  
     }
 }

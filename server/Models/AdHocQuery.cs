@@ -19,17 +19,20 @@ namespace SevenStuds.Models
                 { 
                     case "list-vars": 
                         // List environment variables 
+                        List<string> envVars = new List<string>();
                         foreach (DictionaryEntry de in Environment.GetEnvironmentVariables()) {
-                            queryResults.Add("Key: " + de.Key + " Value: " + de.Value);
+                            envVars.Add("Key: " + de.Key + " Value: " + de.Value);
                         }
+                        queryResults.Add(ServerState.StringArrayAsJson(envVars));
                         break;   
                     case "list-games": 
                         // List rooms with active games
+                        List<string> games = new List<string>();
                         foreach (DictionaryEntry pair in ServerState.RoomList )
                         {
                             Room r = (Room) pair.Value;
                             Game g = r.ActiveGame;
-                            queryResults.Add(
+                            games.Add(
                                 "Room:" + pair.Key 
                                 + ", Participants:" + g.Participants.Count
                                 + ", Hands:" + g.HandsPlayedIncludingCurrent
@@ -37,6 +40,7 @@ namespace SevenStuds.Models
                                 + " (" + g.MinutesSinceLastAction()+" Minutes Ago)"
                                 );
                         }
+                        queryResults.Add(ServerState.StringArrayAsJson(games));
                         break;  
                     case "list-env": 
                         // Check if running on public server
