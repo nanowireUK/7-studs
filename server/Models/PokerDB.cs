@@ -10,6 +10,7 @@ namespace SevenStuds.Models
     public class PokerDB
     {
         public DatabaseConnectionStatusEnum dbStatus = DatabaseConnectionStatusEnum.ConnectionNotAttempted;
+        public double consumedRUs = 0;
         private string EndpointUri;
         //private readonly string EndpointUri = ConfigurationManager.AppSettings["EndPointUri"]; // CosmosDB endpoint
         private string PrimaryKey;
@@ -17,7 +18,6 @@ namespace SevenStuds.Models
         private CosmosClient cosmosClient; // The Cosmos client instance
         private Database ourDatabase; // The database we will create
         private Container ourGamesContainer; // The container we will create.
-        private double consumedRUs = 0;
         private string databaseId = "SevenStuds"; // The name of our database
         private string gamesContainerId = "Games"; // The name of our container within the database
         public PokerDB() {
@@ -92,11 +92,11 @@ namespace SevenStuds.Models
 
         public async Task RecordGameStart(Game g)
         {
+            // -------------------------------------------------------------------------------------------
             // Store a game header document for the new game
+
             bool dbExists = await this.DatabaseConnectionHasBeenEstablished();
-            if ( dbExists == false ){
-                return;
-            }
+            if ( dbExists == false ) { return; }
 
             List<string> players = new List<string>();
             foreach ( Participant p in g.Participants ) {
@@ -117,27 +117,68 @@ namespace SevenStuds.Models
                 id = "GameHeader" + 0               
             };
 
-            Console.WriteLine("Hello World, about to write game header at "+DateTime.Now.ToString());
-            try
-            {
-                // Read the item to see if it exists.  
-                ItemResponse<DocOfTypeGameHeader> readResponse = await this.ourGamesContainer.ReadItemAsync<DocOfTypeGameHeader>(
-                    gameHeader.id, 
-                    new PartitionKey(gameHeader.gameId));
-                Console.WriteLine("Item in database with id: {0} already exists\n", readResponse.Resource.id);
-            }
-            catch(CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
-            {
+            //Console.WriteLine("Hello World, about to write game header at "+DateTime.Now.ToString());
+            // try
+            // {
+            //     // Read the item to see if it exists.  
+            //     ItemResponse<DocOfTypeGameHeader> readResponse = await this.ourGamesContainer.ReadItemAsync<DocOfTypeGameHeader>(
+            //         gameHeader.id, 
+            //         new PartitionKey(gameHeader.gameId));
+            //     Console.WriteLine("Item in database with id: {0} already exists\n", readResponse.Resource.id);
+            // }
+            // catch(CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+            // {
                 // Create an item in the container representing the game header. Note we provide the value of the partition key for this item
                 ItemResponse<DocOfTypeGameHeader> createResponse = await this.ourGamesContainer.CreateItemAsync<DocOfTypeGameHeader>(
                     gameHeader, 
                     new PartitionKey(gameHeader.gameId));
 
                 // Note that after creating the item, we can access the body of the item with the Resource property off the ItemResponse. We can also access the RequestCharge property to see the amount of RUs consumed on this request.
-                Console.WriteLine("Created item in database with id: {0} Operation consumed {1} RUs.\n", createResponse.Resource.id, createResponse.RequestCharge);
+                Console.WriteLine("Created GameHeader in database with id: {0} Operation consumed {1} RUs.\n", createResponse.Resource.id, createResponse.RequestCharge);
                 this.consumedRUs += createResponse.RequestCharge; // Add this to our total
-            }
+            // }
         }
+
+        public async Task RecordGameLogAction(Game g, GameLogAction gla)
+        {
+            // -------------------------------------------------------------------------------------------
+            // Store a game header document for the new game
+
+            bool dbExists = await this.DatabaseConnectionHasBeenEstablished();
+            if ( dbExists == false ) { return; }
+
+            DocOfTypeGameLogAction gameLogAction = new DocOfTypeGameLogAction
+            {
+                roomId = g.ParentRoom().RoomId,
+                docType = "Action",
+                docSeq = gla.ActionNumber,
+                // Set values that depend on the other values
+                gameId = g.ParentRoom().RoomId + "-" + g.StartTime.ToString(),
+                id = "Action" + gla.ActionNumber,  
+                action = gla      
+            };
+
+            // Console.WriteLine("About to write game log action at "+DateTime.Now.ToString());
+            // try
+            // {
+            //     // Read the item to see if it exists.  
+            //     ItemResponse<DocOfTypeGameLogAction> readResponse = await this.ourGamesContainer.ReadItemAsync<DocOfTypeGameLogAction>(
+            //         gameLogAction.id, 
+            //         new PartitionKey(gameLogAction.gameId));
+            //     Console.WriteLine("Item in database with id: {0} already exists\n", readResponse.Resource.id);
+            // }
+            // catch(CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+            // {
+                // Create an item in the container representing the game header. Note we provide the value of the partition key for this item
+                ItemResponse<DocOfTypeGameLogAction> createResponse = await this.ourGamesContainer.CreateItemAsync<DocOfTypeGameLogAction>(
+                    gameLogAction, 
+                    new PartitionKey(gameLogAction.gameId));
+
+                // Note that after creating the item, we can access the body of the item with the Resource property off the ItemResponse. We can also access the RequestCharge property to see the amount of RUs consumed on this request.
+                Console.WriteLine("Created GameLogAction item in database with id: {0} Operation consumed {1} RUs.\n", createResponse.Resource.id, createResponse.RequestCharge);
+                this.consumedRUs += createResponse.RequestCharge; // Add this to our total
+            // }
+        }        
     }
     //     // </Main>
 

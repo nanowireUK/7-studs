@@ -150,7 +150,7 @@ namespace SevenStuds.Models
                 & this.ActionType != ActionEnum.GetState
                 & this.ActionType != ActionEnum.AdHocQuery ) 
             {
-                G.LogActionWithResults(this); // Note: only log real game actions (not GetState, GetLog, Replay, Rejoin or AdHocQuery)
+                await G.LogActionWithResults(this); // Note: only log real game actions (not GetState, GetLog, Replay, Rejoin or AdHocQuery)
             }
             // After dealing with the requested action, reset the permissions for each action to reflect the updated game state
             G.SetActionAvailabilityBasedOnCurrentPlayer();

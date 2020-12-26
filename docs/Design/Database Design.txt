@@ -3,10 +3,13 @@ Database structure
 
 
 Azure Cosmos DB Emulator: https://localhost:8081/_explorer/index.html
-- Database name: Database name (throughput 400)
+- Database name: SevenStuds (throughput 400)
 - Container: Games
-  - Partition Key: /gameId (made up of roomId + startTimeUtc with '-' separator) (note: cannot contin)
-  - Unique Key: /id (made up of docType + docSeq with no spaces)
+  - Partition Key: /gameId (made up of roomId + startTimeUtc with '-' separator) (note: cannot contain special characters)
+  - Unique Key: /id (made up of docType + docSeq with no spaces and in following combinations:
+    - Gameheader<0>
+    - Action<n>
+    - Deck<n>
 
   [JsonProperty(PropertyName = "gameId")] need to be in JSON code for some reason
 

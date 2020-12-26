@@ -978,7 +978,7 @@ namespace SevenStuds.Models
             this.SnapshotOfDeckForCurrentHand = this.CardPack.Clone();
         } 
 
-        public void LogActionWithResults(Action a) {
+        public async Task LogActionWithResults(Action a) {
             this.ActionNumber++;
             GameLogAction gla = new GameLogAction(
                 a, 
@@ -990,7 +990,7 @@ namespace SevenStuds.Models
             this._GameLog.actions.Add(gla);
             this.LastSuccessfulAction = DateTimeOffset.Now; 
             // Log the action to the DB
-            //////////////////////////////////want this///////////////////////////////////////PokerDB.StoreGameLogAction(gla);
+            await ServerState.OurDB.RecordGameLogAction(this, gla);
         }
 
         public string PlayerSummaries()
