@@ -16,6 +16,8 @@ namespace SevenStuds.Models
             // Doesn't actually do anything beyond letting the hub know what to return
             this.ResponseType = ActionResponseTypeEnum.GameLog;
             this.ResponseAudience = ActionResponseAudienceEnum.Caller;
+
+            await Task.FromResult(0); // Just to work around compiler warning "This async method lacks 'await' operators and will run synchronously"
         }
     }     
 }  

@@ -20,6 +20,7 @@ namespace SevenStuds.Models
             if ( G.GameMode == GameModeEnum.HandsBeingRevealed ){
                 G.SetNextPlayerToActOrHandleEndOfHand(PlayerIndex, G.LastEvent);    
             }
+            await Task.FromResult(0); // Just to work around compiler warning "This async method lacks 'await' operators and will run synchronously"
         }
     }     
 }  

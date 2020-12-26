@@ -21,6 +21,8 @@ namespace SevenStuds.Models
             G.RemoveDisconnectedPlayersFromGameState(); // clear out disconnected players
             G.ClearRemnantsFromLastGame(); // reset pots, hands etc.
             G.LobbyData = new LobbyData(G); // Update the lobby data
+
+            await Task.FromResult(0); // Just to work around compiler warning "This async method lacks 'await' operators and will run synchronously"
         }
     }     
 }  

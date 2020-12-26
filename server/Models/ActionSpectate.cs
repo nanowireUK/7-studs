@@ -13,7 +13,6 @@ namespace SevenStuds.Models
             : base(connectionId, actionType, roomId, user, "-1")
         {
         }
-
         public override async Task ProcessAction()
         {
             // Add player as a spectator, i.e. they will not have a place at the table and will only see cards that are currently face up
@@ -26,6 +25,8 @@ namespace SevenStuds.Models
             // (there is no change to the game state but everyone will see that a spectator has joined and the spectator gets the current game state) 
             ResponseType = ActionResponseTypeEnum.PlayerCentricGameState; // Default response type for actions
             ResponseAudience =  ActionResponseAudienceEnum.AllPlayers; // Default audience for action response   
+            await Task.FromResult(0); // Just to work around compiler warning "This async method lacks 'await' operators and will run synchronously"
+
         }
     }     
 }  

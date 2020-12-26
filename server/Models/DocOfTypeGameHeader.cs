@@ -1,12 +1,12 @@
 using System;
-using Newtonsoft.Json;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Collections.Generic;
 
 namespace SevenStuds.Models
 {
     public class DocOfTypeGameHeader
     {
-        [JsonProperty(PropertyName = "gameId")] // don't understand why but this seems to need to contain the partition key field
         public string gameId { get; set; } // Composite key made up of roomId and startTimeUtc separated by a '-'
         public string id { get; set; } // Composite key made up of docType and docSeq with no space between
         public string roomId { get; set; }
@@ -19,7 +19,13 @@ namespace SevenStuds.Models
 
         public override string ToString()
         {
-            return JsonConvert.SerializeObject(this);
+            var options = new JsonSerializerOptions
+            {
+                WriteIndented = true,
+            };
+            options.Converters.Add(new JsonStringEnumConverter(null /*JsonNamingPolicy.CamelCase*/));
+            string jsonString = JsonSerializer.Serialize(this, options);
+            return jsonString;
         }
     }
 }

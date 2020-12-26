@@ -17,7 +17,9 @@ namespace SevenStuds.Models
         {
             R.AdHocQueryType = this.Parameters; // Note this so that QueryResultAsJson can pick it up
             this.ResponseType = ActionResponseTypeEnum.AdHocServerQuery; 
-            this.ResponseAudience = ActionResponseAudienceEnum.Caller;                  
+            this.ResponseAudience = ActionResponseAudienceEnum.Caller;   
+
+            await Task.FromResult(0); // Just to work around compiler warning "This async method lacks 'await' operators and will run synchronously"
         }
     }     
 }  

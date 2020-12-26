@@ -43,6 +43,8 @@ namespace SevenStuds.Models
             G.NextAction = "Await new player or start the game";
 
             G.LobbyData = new LobbyData(G); // Update the lobby data
+
+            await Task.FromResult(0); // Just to work around compiler warning "This async method lacks 'await' operators and will run synchronously"
         }
     }     
 }  

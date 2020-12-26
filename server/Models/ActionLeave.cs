@@ -114,7 +114,9 @@ namespace SevenStuds.Models
 
             // Set the response type that will trigger the player's client session to disconnect and everyone else's game state to be updated
             SignalRGroupNameForAdditionalNotifications = p.ParticipantLevelSignalRGroupName;
-            ResponseType = ActionResponseTypeEnum.ConfirmToPlayerLeavingAndUpdateRemainingPlayers;           
+            ResponseType = ActionResponseTypeEnum.ConfirmToPlayerLeavingAndUpdateRemainingPlayers;   
+
+            await Task.FromResult(0); // Just to work around compiler warning "This async method lacks 'await' operators and will run synchronously"
         }
     }     
 }  

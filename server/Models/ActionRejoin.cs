@@ -28,6 +28,8 @@ namespace SevenStuds.Models
             //G.RecordLastEvent( "(" + this.UserName + " rejoined game) " + G.LastEvent); // Prepend the rejoin to the previous last event
 
             p.NoteConnectionId(this.ConnectionId);
+
+            await Task.FromResult(0); // Just to work around compiler warning "This async method lacks 'await' operators and will run synchronously"
         }
     }     
 }  

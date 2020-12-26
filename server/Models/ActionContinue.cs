@@ -19,6 +19,8 @@ namespace SevenStuds.Models
             G.StartNextHand(); 
             G.NextAction = G.Participants[G.IndexOfParticipantToTakeNextAction].Name + " to bet"; 
             G.GameMode = GameModeEnum.HandInProgress;
+
+            await Task.FromResult(0); // Just to work around compiler warning "This async method lacks 'await' operators and will run synchronously"
         }
     }     
 }  

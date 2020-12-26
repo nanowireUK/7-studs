@@ -28,7 +28,9 @@ namespace SevenStuds.Models
             }
 
             // Find and set next player (could be no one if all players have now folded)
-            G.SetNextPlayerToActOrHandleEndOfHand(PlayerIndex, G.LastEvent);           
+            G.SetNextPlayerToActOrHandleEndOfHand(PlayerIndex, G.LastEvent);  
+
+            await Task.FromResult(0); // Just to work around compiler warning "This async method lacks 'await' operators and will run synchronously"
         }
     }     
 }  
