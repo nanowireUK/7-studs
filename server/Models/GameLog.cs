@@ -30,10 +30,11 @@ namespace SevenStuds.Models
             // We'll only know for sure that this is the end of the overall game if someone starts a new one instead of continuing with this one
             this.endTimeUtc = DateTimeOffset.Now;
             this.decks.Add(deckUsedForHandJustEnded);
-            // Log the deck to the DB
-            await ServerState.OurDB.RecordDeck(g);
-            //this._GameLog.decks.Add(this.CardPack.Clone());
-                        
+            // Log the deck and the complete game log to the DB
+            var dbTasks = new List<Task>();
+            dbTasks.Add(ServerState.OurDB.RecordDeck(g));
+            dbTasks.Add(ServerState.OurDB.UpsertGameLog(g));
+            await Task.WhenAll(dbTasks); // Wait until all of the DB tasks completed
         }
         public string AsJson()
         {

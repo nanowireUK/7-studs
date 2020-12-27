@@ -122,7 +122,34 @@ namespace SevenStuds.Models
             this.consumedRUs += createResponse.RequestCharge; // Add this to our total
 
         }  
-       public async Task<bool> DatabaseConnectionHasBeenEstablished() {
+        public async Task UpsertGameLog(Game g)
+        {
+            // -------------------------------------------------------------------------------------------
+            // Store the complete game log for the current game (overwriting any previous log for this game, as it is provisionaly stored at the end of each hand)
+
+            bool dbExists = await this.DatabaseConnectionHasBeenEstablished();
+            if ( dbExists == false ) { return; }
+
+            DocOfTypeGameLog gameLog = new DocOfTypeGameLog
+            {
+                roomId = g.ParentRoom().RoomId,
+                docType = "Log",
+                docSeq = 0,
+                // Set values that depend on the other values
+                gameId = g.ParentRoom().RoomId + "-" + g.StartTime.ToString(),
+                id = "Log-0",  
+                log = g._GameLog      
+            };
+
+            ItemResponse<DocOfTypeGameLog> createResponse = await this.ourGamesContainer.UpsertItemAsync<DocOfTypeGameLog>(
+                gameLog, 
+                new PartitionKey(gameLog.gameId));
+
+            // Note that after upserting the item, we can access the body of the item with the Resource property off the ItemResponse. We can also access the RequestCharge property to see the amount of RUs consumed on this request.
+            Console.WriteLine("Upserted GameLogAction item in database with id: {0} Operation consumed {1} RUs.\n", createResponse.Resource.id, createResponse.RequestCharge);
+            this.consumedRUs += createResponse.RequestCharge; // Add this to our total
+        }        
+        public async Task<bool> DatabaseConnectionHasBeenEstablished() {
             if ( dbStatus == DatabaseConnectionStatusEnum.ConnectionNotAttempted ) {
                 try
                 {

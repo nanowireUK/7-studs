@@ -40,7 +40,7 @@ namespace SevenStuds.Models
         public Card CommunityCard { get; set; }
         public DateTimeOffset StartTime { get; set; }
         public DateTimeOffset LastSuccessfulAction { get; set; }
-        protected GameLog _GameLog { get; set; }
+        public GameLog _GameLog { get; set; }
         protected GameLog _ReplayContext { get; set; }
         public List<LeavingRecord> LeaversLogForGame { get; set; }
         private Dictionary<string, Participant> _ConnectionToParticipantMap { get; set; } 
