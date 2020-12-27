@@ -25,7 +25,143 @@ namespace SevenStuds.Models
         public PokerDB() {
             // Establishes a poker DB object that we will initialise later via methods that will be called in an asynchronous context
         }
-        public async Task<bool> DatabaseConnectionHasBeenEstablished() {
+ 
+
+        public async Task RecordGameStart(Game g)
+        {
+            // -------------------------------------------------------------------------------------------
+            // Store a game header document for the new game
+
+            bool dbExists = await this.DatabaseConnectionHasBeenEstablished();
+            if ( dbExists == false ) { return; }
+
+            List<string> players = new List<string>();
+            foreach ( Participant p in g.Participants ) {
+                players.Add(p.Name);
+            }
+
+            DocOfTypeGameHeader gameHeader = new DocOfTypeGameHeader
+            {
+                roomId = g.ParentRoom().RoomId,
+                docType = "GameHeader",
+                docSeq = 0,
+                administrator = g.Participants[g.GetIndexOfAdministrator()].Name,
+                startTimeUtc = g.StartTime,
+                endTimeUtc = DateTimeOffset.MaxValue, // should be set at end of game
+                playersInOrderAtStartOfGame = players,
+                // Set values that depend on the other values
+                gameId = g.ParentRoom().RoomId + "-" + g.StartTime.ToString(),
+                id = "GameHeader-" + 0               
+            };
+
+            //Console.WriteLine("Hello World, about to write game header at "+DateTime.Now.ToString());
+            // try
+            // {
+            //     // Read the item to see if it exists.  
+            //     ItemResponse<DocOfTypeGameHeader> readResponse = await this.ourGamesContainer.ReadItemAsync<DocOfTypeGameHeader>(
+            //         gameHeader.id, 
+            //         new PartitionKey(gameHeader.gameId));
+            //     Console.WriteLine("Item in database with id: {0} already exists\n", readResponse.Resource.id);
+            // }
+            // catch(CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+            // {
+                // Create an item in the container representing the game header. Note we provide the value of the partition key for this item
+                ItemResponse<DocOfTypeGameHeader> createResponse = await this.ourGamesContainer.CreateItemAsync<DocOfTypeGameHeader>(
+                    gameHeader, 
+                    new PartitionKey(gameHeader.gameId));
+
+                // Note that after creating the item, we can access the body of the item with the Resource property off the ItemResponse. We can also access the RequestCharge property to see the amount of RUs consumed on this request.
+                Console.WriteLine("Created GameHeader in database with id: {0} Operation consumed {1} RUs.\n", createResponse.Resource.id, createResponse.RequestCharge);
+                this.consumedRUs += createResponse.RequestCharge; // Add this to our total
+            // }
+        }
+
+        public async Task RecordGameLogAction(Game g, GameLogAction gla)
+        {
+            // -------------------------------------------------------------------------------------------
+            // Store a game header document for the new game
+
+            bool dbExists = await this.DatabaseConnectionHasBeenEstablished();
+            if ( dbExists == false ) { return; }
+
+            DocOfTypeGameLogAction gameLogAction = new DocOfTypeGameLogAction
+            {
+                roomId = g.ParentRoom().RoomId,
+                docType = "Action",
+                docSeq = gla.ActionNumber,
+                // Set values that depend on the other values
+                gameId = g.ParentRoom().RoomId + "-" + g.StartTime.ToString(),
+                id = "Action-" + gla.ActionNumber,  
+                action = gla      
+            };
+
+            // Console.WriteLine("About to write game log action at "+DateTime.Now.ToString());
+            // try
+            // {
+            //     // Read the item to see if it exists.  
+            //     ItemResponse<DocOfTypeGameLogAction> readResponse = await this.ourGamesContainer.ReadItemAsync<DocOfTypeGameLogAction>(
+            //         gameLogAction.id, 
+            //         new PartitionKey(gameLogAction.gameId));
+            //     Console.WriteLine("Item in database with id: {0} already exists\n", readResponse.Resource.id);
+            // }
+            // catch(CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+            // {
+                // Create an item in the container representing the game header. Note we provide the value of the partition key for this item
+                ItemResponse<DocOfTypeGameLogAction> createResponse = await this.ourGamesContainer.CreateItemAsync<DocOfTypeGameLogAction>(
+                    gameLogAction, 
+                    new PartitionKey(gameLogAction.gameId));
+
+                // Note that after creating the item, we can access the body of the item with the Resource property off the ItemResponse. We can also access the RequestCharge property to see the amount of RUs consumed on this request.
+                Console.WriteLine("Created GameLogAction item in database with id: {0} Operation consumed {1} RUs.\n", createResponse.Resource.id, createResponse.RequestCharge);
+                this.consumedRUs += createResponse.RequestCharge; // Add this to our total
+            // }
+        }
+
+        public async Task RecordDeck(Game g)
+        {
+            // -------------------------------------------------------------------------------------------
+            // Store the deck used for the last hand, along with the provisional game results
+
+            bool dbExists = await this.DatabaseConnectionHasBeenEstablished();
+            if ( dbExists == false ) { return; }
+
+            DocOfTypeDeck details = new DocOfTypeDeck
+            {
+                roomId = g.ParentRoom().RoomId,
+                docType = "Deck",
+                docSeq = g.HandsPlayedIncludingCurrent,
+                // Set values that depend on the other values
+                gameId = g.ParentRoom().RoomId + "-" + g.StartTime.ToString(),
+                id = "Deck-" + g.HandsPlayedIncludingCurrent,  
+                deck = g.SnapshotOfDeckForCurrentHand,  
+                //lobbyData = g.LobbyData
+            };
+
+            // Console.WriteLine("About to write game log action at "+DateTime.Now.ToString());
+            // try
+            // {
+            //     // Read the item to see if it exists.  
+            //     ItemResponse<DocOfTypeGameLogAction> readResponse = await this.ourGamesContainer.ReadItemAsync<DocOfTypeGameLogAction>(
+            //         gameLogAction.id, 
+            //         new PartitionKey(gameLogAction.gameId));
+            //     Console.WriteLine("Item in database with id: {0} already exists\n", readResponse.Resource.id);
+            // }
+            // catch(CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+            // {
+                var options = new JsonSerializerOptions { WriteIndented = true, };
+                options.Converters.Add(new JsonStringEnumConverter(null /*JsonNamingPolicy.CamelCase*/));
+                string jsonString = JsonSerializer.Serialize(details, options);
+
+                // Create an item in the container representing the game header. Note we provide the value of the partition key for this item
+                ItemResponse<DocOfTypeDeck> createResponse = await this.ourGamesContainer.CreateItemAsync<DocOfTypeDeck>(
+                    details, 
+                    new PartitionKey(details.gameId));
+                // Note that after creating the item, we can access the body of the item with the Resource property off the ItemResponse. We can also access the RequestCharge property to see the amount of RUs consumed on this request.
+                Console.WriteLine("Created GameLogAction item in database with id: {0} Operation consumed {1} RUs.\n", createResponse.Resource.id, createResponse.RequestCharge);
+                this.consumedRUs += createResponse.RequestCharge; // Add this to our total
+            // }
+        }  
+       public async Task<bool> DatabaseConnectionHasBeenEstablished() {
             if ( dbStatus == DatabaseConnectionStatusEnum.ConnectionNotAttempted ) {
                 try
                 {
@@ -90,142 +226,7 @@ namespace SevenStuds.Models
                 }
             }
             return dbStatus == DatabaseConnectionStatusEnum.ConnectionEstablised;
-        }
-
-        public async Task RecordGameStart(Game g)
-        {
-            // -------------------------------------------------------------------------------------------
-            // Store a game header document for the new game
-
-            bool dbExists = await this.DatabaseConnectionHasBeenEstablished();
-            if ( dbExists == false ) { return; }
-
-            List<string> players = new List<string>();
-            foreach ( Participant p in g.Participants ) {
-                players.Add(p.Name);
-            }
-
-            DocOfTypeGameHeader gameHeader = new DocOfTypeGameHeader
-            {
-                roomId = g.ParentRoom().RoomId,
-                docType = "GameHeader",
-                docSeq = 0,
-                administrator = g.Participants[g.GetIndexOfAdministrator()].Name,
-                startTimeUtc = g.StartTime,
-                endTimeUtc = DateTimeOffset.MaxValue, // should be set at end of game
-                playersInOrderAtStartOfGame = players,
-                // Set values that depend on the other values
-                gameId = g.ParentRoom().RoomId + "-" + g.StartTime.ToString(),
-                id = "GameHeader" + 0               
-            };
-
-            //Console.WriteLine("Hello World, about to write game header at "+DateTime.Now.ToString());
-            // try
-            // {
-            //     // Read the item to see if it exists.  
-            //     ItemResponse<DocOfTypeGameHeader> readResponse = await this.ourGamesContainer.ReadItemAsync<DocOfTypeGameHeader>(
-            //         gameHeader.id, 
-            //         new PartitionKey(gameHeader.gameId));
-            //     Console.WriteLine("Item in database with id: {0} already exists\n", readResponse.Resource.id);
-            // }
-            // catch(CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
-            // {
-                // Create an item in the container representing the game header. Note we provide the value of the partition key for this item
-                ItemResponse<DocOfTypeGameHeader> createResponse = await this.ourGamesContainer.CreateItemAsync<DocOfTypeGameHeader>(
-                    gameHeader, 
-                    new PartitionKey(gameHeader.gameId));
-
-                // Note that after creating the item, we can access the body of the item with the Resource property off the ItemResponse. We can also access the RequestCharge property to see the amount of RUs consumed on this request.
-                Console.WriteLine("Created GameHeader in database with id: {0} Operation consumed {1} RUs.\n", createResponse.Resource.id, createResponse.RequestCharge);
-                this.consumedRUs += createResponse.RequestCharge; // Add this to our total
-            // }
-        }
-
-        public async Task RecordGameLogAction(Game g, GameLogAction gla)
-        {
-            // -------------------------------------------------------------------------------------------
-            // Store a game header document for the new game
-
-            bool dbExists = await this.DatabaseConnectionHasBeenEstablished();
-            if ( dbExists == false ) { return; }
-
-            DocOfTypeGameLogAction gameLogAction = new DocOfTypeGameLogAction
-            {
-                roomId = g.ParentRoom().RoomId,
-                docType = "Action",
-                docSeq = gla.ActionNumber,
-                // Set values that depend on the other values
-                gameId = g.ParentRoom().RoomId + "-" + g.StartTime.ToString(),
-                id = "Action" + gla.ActionNumber,  
-                action = gla      
-            };
-
-            // Console.WriteLine("About to write game log action at "+DateTime.Now.ToString());
-            // try
-            // {
-            //     // Read the item to see if it exists.  
-            //     ItemResponse<DocOfTypeGameLogAction> readResponse = await this.ourGamesContainer.ReadItemAsync<DocOfTypeGameLogAction>(
-            //         gameLogAction.id, 
-            //         new PartitionKey(gameLogAction.gameId));
-            //     Console.WriteLine("Item in database with id: {0} already exists\n", readResponse.Resource.id);
-            // }
-            // catch(CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
-            // {
-                // Create an item in the container representing the game header. Note we provide the value of the partition key for this item
-                ItemResponse<DocOfTypeGameLogAction> createResponse = await this.ourGamesContainer.CreateItemAsync<DocOfTypeGameLogAction>(
-                    gameLogAction, 
-                    new PartitionKey(gameLogAction.gameId));
-
-                // Note that after creating the item, we can access the body of the item with the Resource property off the ItemResponse. We can also access the RequestCharge property to see the amount of RUs consumed on this request.
-                Console.WriteLine("Created GameLogAction item in database with id: {0} Operation consumed {1} RUs.\n", createResponse.Resource.id, createResponse.RequestCharge);
-                this.consumedRUs += createResponse.RequestCharge; // Add this to our total
-            // }
-        }
-
-        public async Task RecordDeck(Game g)
-        {
-            // -------------------------------------------------------------------------------------------
-            // Store the deck used for the last hand, along with the provisional game results
-
-            bool dbExists = await this.DatabaseConnectionHasBeenEstablished();
-            if ( dbExists == false ) { return; }
-
-            DocOfTypeDeck details = new DocOfTypeDeck
-            {
-                roomId = g.ParentRoom().RoomId,
-                docType = "EndOfHandDetails",
-                docSeq = g.HandsPlayedIncludingCurrent,
-                // Set values that depend on the other values
-                gameId = g.ParentRoom().RoomId + "-" + g.StartTime.ToString(),
-                id = "EndOfHandDetails" + g.HandsPlayedIncludingCurrent,  
-                deck = g.SnapshotOfDeckForCurrentHand,  
-                //lobbyData = g.LobbyData
-            };
-
-            // Console.WriteLine("About to write game log action at "+DateTime.Now.ToString());
-            // try
-            // {
-            //     // Read the item to see if it exists.  
-            //     ItemResponse<DocOfTypeGameLogAction> readResponse = await this.ourGamesContainer.ReadItemAsync<DocOfTypeGameLogAction>(
-            //         gameLogAction.id, 
-            //         new PartitionKey(gameLogAction.gameId));
-            //     Console.WriteLine("Item in database with id: {0} already exists\n", readResponse.Resource.id);
-            // }
-            // catch(CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
-            // {
-                var options = new JsonSerializerOptions { WriteIndented = true, };
-                options.Converters.Add(new JsonStringEnumConverter(null /*JsonNamingPolicy.CamelCase*/));
-                string jsonString = JsonSerializer.Serialize(details, options);
-
-                // Create an item in the container representing the game header. Note we provide the value of the partition key for this item
-                ItemResponse<DocOfTypeDeck> createResponse = await this.ourGamesContainer.CreateItemAsync<DocOfTypeDeck>(
-                    details, 
-                    new PartitionKey(details.gameId));
-                // Note that after creating the item, we can access the body of the item with the Resource property off the ItemResponse. We can also access the RequestCharge property to see the amount of RUs consumed on this request.
-                Console.WriteLine("Created GameLogAction item in database with id: {0} Operation consumed {1} RUs.\n", createResponse.Resource.id, createResponse.RequestCharge);
-                this.consumedRUs += createResponse.RequestCharge; // Add this to our total
-            // }
-        }                
+        }                      
     }
     //     // </Main>
 

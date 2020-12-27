@@ -1,22 +1,20 @@
-Database structure
-
+Database structure etc.
 
 
 Azure Cosmos DB Emulator: https://localhost:8081/_explorer/index.html
 - Database name: SevenStuds (throughput 400)
 - Container: Games
   - Partition Key: /gameId (made up of roomId + startTimeUtc with '-' separator) (note: cannot contain special characters)
-  - Unique Key: /id (made up of docType + docSeq with no spaces and in following combinations:
-    - Gameheader<0>
-    - Action<n>             ... n = sequential action number for current game (i.e. across multiple hands)
-    - EndOfHandDetails<n>   ... n = sequential hand number for current game (i.e. across multiple hands)
+  - No specific Unique Key but system automatically includes an 'id' field which is the unique document id within the container
+    - /id (made up of docType + docSeq with no spaces and in following combinations):
+      - Gameheader-<0>
+      - Action-<n>             ... n = sequential action number for current game (i.e. across multiple hands)
+      - Deck-<n>   ... n = sequential hand number for current game (i.e. across multiple hands)
 
 - Document id can be specified or a guid will be generated
 - Item ID + the partition key are unique 
 - Compressing the JSON reduced e.g. 156k down to 107k
 - GameId = e.g. Poker1212-<startdatetime>?
-
-- What is unique key used for?
 
 - https://docs.microsoft.com/en-us/azure/cosmos-db/index-overview#from-trees-to-property-paths
   - Range indexes can be used on scalar values (string or number)
@@ -40,22 +38,32 @@ A custom indexing policy can specify property paths that are explicitly included
 - elements from an array are addressed together through the /[] notation (instead of /0, /1 etc.)
 - the /* wildcard can be used to match any elements below the node
 
-    {
-        "indexingMode": "consistent",
-        "includedPaths": [
-            {
-                "path": "/*"
-            }
-        ],
-        "excludedPaths": [
-            {
-                "path": "/path/to/single/excluded/property/?"
-            },
-            {
-                "path": "/path/to/root/of/multiple/excluded/properties/*"
-            }
-        ]
-    }
+Changing to the following policy reduced a game's worth of logs from 5865 RUs to 3607 RUs
+[note that 1,000,000 RUs cost 21p, so one game costs approx. 0.07p, or approx 13 games for 1p]
+
+{
+    "indexingMode": "consistent",
+    "automatic": true,
+    "includedPaths": [
+        {
+            "path": "/roomId/?"
+        },
+        {
+            "path": "/docType/?"
+        },
+        {
+            "path": "/docSeq/?"
+        }
+    ],
+    "excludedPaths": [
+        {
+            "path": "/*"
+        },
+        {
+            "path": "/\"_etag\"/?"
+        }
+    ]
+}
 
 UNIQUE KEYS
 - https://docs.microsoft.com/en-us/azure/cosmos-db/unique-keys

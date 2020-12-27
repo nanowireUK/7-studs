@@ -17,18 +17,18 @@ namespace SevenStuds.Models
         /// <param name="Shuffled">Optional. If True, Deck will be shuffled after it is initialized.</param>
         /// <remarks>Creates a new Deck with 52 standard playing cards.</remarks>
 
-        public string DeckId { get; set; }
+        public int DeckNumber { get; set; }
         public Stack<Card> Cards { get; set; }
         public Deck() // parameterless constructor is required for the JSON deserialiser
         {
             Cards = new Stack<Card>();
             Cards.Clear(); 
         }
-        public Deck(string deckId, bool shuffle = true)
+        public Deck(int deckNo, bool shuffle = true)
         {
             Cards = new Stack<Card>();
             Cards.Clear(); 
-            DeckId = deckId;
+            DeckNumber = deckNo;
             InitDeck();
             if (shuffle)
             {
@@ -141,12 +141,12 @@ namespace SevenStuds.Models
         public Deck Clone() 
         {
             // Clone the current deck, keeping the same deck id
-            return this.Clone(this.DeckId);
+            return this.Clone(this.DeckNumber);
         }
-        public Deck Clone(string deckId)
+        public Deck Clone(int deckNo)
         {
             // Clone the current deck, but using the supplied deck id
-            Deck myClone = new Deck(deckId, false);
+            Deck myClone = new Deck(deckNo, false);
             // Remove cards until all gone (thought Clear() would do this but not convinced)
             while ( myClone.Cards.Count > 0 ) {
                 myClone.Cards.Pop(); 

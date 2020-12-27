@@ -307,14 +307,14 @@ namespace SevenStuds.Models
             this.ClearCommentary();
 
             // Set up the pack again
-            string newDeckId = GameNumber + "." + HandsPlayedIncludingCurrent;
+            int newDeckNo = HandsPlayedIncludingCurrent;
             if ( this.IsRunningInReplayMode() == false ) {
                 // In normal mode, just create a new deck
-                CardPack = new Deck(newDeckId, true ); 
+                CardPack = new Deck(newDeckNo, true ); 
             }
             else {
                 // Need to replace the pack with the next one from the historical game log
-                CardPack = this._ReplayContext.decks[HandsPlayedIncludingCurrent - 1].Clone(newDeckId);
+                CardPack = this._ReplayContext.decks[HandsPlayedIncludingCurrent - 1].Clone(newDeckNo);
             }
 
             this.TakeSnapshotOfNewDeck();
