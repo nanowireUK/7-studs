@@ -2,7 +2,7 @@ Database structure etc.
 
 
 Azure Cosmos DB Emulator: https://localhost:8081/_explorer/index.html
-- Database name: SevenStuds (throughput 400)
+- Database name: SevenStuds (throughput 400 ... or not specified for Serverless live DB)
 - Container: Games
   - Partition Key: /gameId (made up of roomId + startTimeUtc with '-' separator) (note: cannot contain special characters)
   - No specific Unique Key but system automatically includes an 'id' field which is the unique document id within the container
@@ -10,6 +10,7 @@ Azure Cosmos DB Emulator: https://localhost:8081/_explorer/index.html
       - Gameheader-<0>
       - Action-<n>             ... n = sequential action number for current game (i.e. across multiple hands)
       - Deck-<n>   ... n = sequential hand number for current game (i.e. across multiple hands)
+  - Use Settings to change the indexing policy
 
 - Document id can be specified or a guid will be generated
 - Item ID + the partition key are unique 
