@@ -44,7 +44,7 @@ namespace SevenStuds.Models
             // No one can check from this point onwards (until next card is dealt)
             G._CheckIsAvailable = false;
 
-            // Find and set next player (could be no one if all players have now checked)
+            // Find and set next player (we would expect there to be someone else or we would not have been able to raise in the first place)
             await G.SetNextPlayerToActOrHandleEndOfHand(PlayerIndex, G.LastEvent); 
         }
     }     
