@@ -67,6 +67,7 @@ namespace SevenStuds.Models
                 // Randomly nominate first available active player as administrator
                 foreach ( Participant p1 in G.Participants ) {
                     if ( p1.HasDisconnected == false ) {
+                        p.IsGameAdministrator = false;
                         p1.IsGameAdministrator = true;
                         changeOfAdminMessage = ". " + p1.Name + " is new game administrator";
                         break;
