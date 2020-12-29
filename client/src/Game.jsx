@@ -2,7 +2,8 @@ import React, { useContext, useEffect } from 'react';
 
 import { Howl } from 'howler';
 
-import notifyMp3 from './assets/notify.mp3';
+import notificationSrc from './assets/notify.mp3';
+import airhornSrc from './assets/airhorn.wav';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -35,12 +36,25 @@ function Game() {
     }
 
     useEffect(() => {
-        const sound = new Howl({
-            src: [notifyMp3],
+        const notifySound = new Howl({
+            src: [notificationSrc],
         });
 
-        if (isMyTurn) sound.play();
-        return () => sound.pause();
+        const airhornSound = new Howl({
+            src: [airhornSrc],
+        });
+
+        const timeout = isMyTurn ? setTimeout(() => {
+            airhornSound.play();
+        }, 20000) : -1;
+
+        if (isMyTurn) notifySound.play();
+
+        return () => {
+            notifySound.pause();
+            airhornSound.pause();
+            clearTimeout(timeout);
+        }
     }, [isMyTurn]);
 
     const numPlayers = players.length;
