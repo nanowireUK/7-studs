@@ -37,7 +37,7 @@ function CardRow ({ cards, invisibleToOthers = false, name, showRowName }) {
     )
 }
 
-function Player ({ name, chips, cards, isDealer, isAdmin, isCurrentPlayer, isMe, handDescription = '', hasFolded, isOutOfThisGame, isSharingHandDetails, gainOrLossInLastHand, position, handsWon }) {
+function Player ({ name, chips, cards, isDealer, isAdmin, isCurrentPlayer, isMe, handDescription = '', hasFolded, isOutOfThisGame, isSharingHandDetails, gainOrLossInLastHand, position, handsWon, lastActionInHand, lastActionAmount }) {
     const handCompleted = useSelector(selectHandCompleted);
     const [showMyHandDescription, setShowMyHandDescription] = useState(false);
     const [showPotContribution, setShowPotContribution] = useState(false);
@@ -83,7 +83,7 @@ function Player ({ name, chips, cards, isDealer, isAdmin, isCurrentPlayer, isMe,
                             </Stack>
                         </Box>
                         {handCompleted ?
-                            <Text color={gainOrLossInLastHand > 0 ? 'status-ok' : 'status-error'} margin={{ right: "small"}}>{gainOrLossInLastHand}</Text> : null}
+                            <Text color={gainOrLossInLastHand > 0 ? 'status-ok' : 'status-error'} margin={{ right: "small"}}>{gainOrLossInLastHand}</Text> : <Text color="gray" margin={{ right: "small"}}>{(lastActionInHand || '').toUpperCase()} {lastActionAmount ? lastActionAmount : ''}</Text>}
                     </Box>
 
                     <CardRow name="HAND" showRowName={isMe} invisibleToOthers={isMe && !isSharingHandDetails} cards={[...cards.slice(0, 2), ...cards.slice(6, 7)]} />
