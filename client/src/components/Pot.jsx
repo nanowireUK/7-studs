@@ -60,7 +60,7 @@ export default function PotArea () {
                     <Pot key={index} contents={pot} potNumber={index} />
                 ))}
             </Box>
-            {communityCard ? <Box pad="xsmall" alignSelf={pots.length > 6 ? 'end' : null} height="30%"><PokerCard face={communityCard[0]} suit={communityCard[1]} isCommunity/></Box> : null}
+            {communityCard ? <Box pad="xsmall" alignSelf={pots.length > 6 ? 'end' : null} height="30%"><PokerCard face={communityCard.CardSuit} suit={communityCard.CardValue} isCommunity/></Box> : null /* temp fix for community card*/ }
 
             <Box><Text textAlign="center">{gameStatus}</Text></Box>
         </Box>

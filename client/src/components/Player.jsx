@@ -2,7 +2,7 @@ import React, { useRef, useState, useMemo } from 'react';
 import { Box, Stack, Text } from 'grommet';
 import { Trophy } from 'grommet-icons';
 
-import {ReactComponent as Chip} from '../assets/poker-chip.svg';
+import {ReactComponent as Chip} from '../assets/images/poker-chip.svg';
 import { selectHandCompleted, selectMyHandDescription, selectPots, PlayerActions } from '../redux/slices/game';
 import { useSelector } from 'react-redux';
 

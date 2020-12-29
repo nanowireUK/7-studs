@@ -2,11 +2,11 @@ import React, { useRef } from 'react';
 
 import { Box } from 'grommet';
 
-import {ReactComponent as Heart} from '../assets/suit-hearts.svg';
-import {ReactComponent as Club} from '../assets/suit-clubs.svg';
-import {ReactComponent as Diamond} from '../assets/suit-diamonds.svg';
-import {ReactComponent as Spade} from '../assets/suit-spades.svg';
-import CardBack from '../assets/card-back.svg';
+import {ReactComponent as Heart} from '../assets/images/suit-hearts.svg';
+import {ReactComponent as Club} from '../assets/images/suit-clubs.svg';
+import {ReactComponent as Diamond} from '../assets/images/suit-diamonds.svg';
+import {ReactComponent as Spade} from '../assets/images/suit-spades.svg';
+import CardBack from '../assets/images/card-back.svg';
 
 import { useContainerDimensions } from '../utils/hooks';
 
