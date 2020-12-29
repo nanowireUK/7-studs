@@ -15,6 +15,7 @@ export const hubSlice = createSlice({
         rejoinCode: localStorage.getItem('rejoinCode') || null,
         leaverCount: 0,
         awaitingResponse: false,
+        muted: JSON.parse(localStorage.getItem('muted')) || false,
     },
     reducers: {
         connected: (state) => {
@@ -30,7 +31,8 @@ export const hubSlice = createSlice({
         setRoomId: (state, { payload }) => ({ ...state, roomId: payload }),
         setRejoinCode: (state, { payload }) => ({ ...state, rejoinCode: payload }),
         setLeaverCount: (state, { payload }) => ({ ...state, leaverCount: payload }),
-        awaitingResponse: (state, { payload } ) => ({ ...state, awaitingResponse: payload})
+        awaitingResponse: (state, { payload } ) => ({ ...state, awaitingResponse: payload}),
+        setMuted: (state, { payload} ) => ({ ...state, muted: payload }),
     },
 });
 
@@ -43,6 +45,7 @@ export const {
     setRejoinCode,
     setLeaverCount,
     awaitingResponse,
+    setMuted,
 } = hubSlice.actions;
 
 export const serverConnected = () => (dispatch, getState, connection) => {
@@ -105,5 +108,17 @@ export const selectUsername = (state) => state.hub.username;
 export const selectRejoinCode = (state) => state.hub.rejoinCode;
 
 export const selectConnectionState = (state) => state.hub.connectionState;
+
+export const selectMuted = (state) => state.hub.muted;
+
+export const mute = () => (dispatch) => {
+    localStorage.setItem('muted', true);
+    dispatch(setMuted(true));
+}
+
+export const unmute = () => (dispatch) => {
+    localStorage.setItem('muted', false);
+    dispatch(setMuted(false));
+}
 
 export default hubSlice.reducer;

@@ -72,7 +72,9 @@ export const selectPlayers = (state) =>
                        VisibleHandDescription: handDescription,
                        IsSharingHandDetails: isSharingHandDetails,
                        GainOrLossInLastHand: gainOrLossInLastHand,
-                       HandsWon: handsWon
+                       HandsWon: handsWon,
+                       LastActionInThisHand: lastActionInHand,
+                       LastActionAmount: lastActionAmount,
                     },
                ) => ({
                    name,
@@ -88,6 +90,8 @@ export const selectPlayers = (state) =>
                    isSharingHandDetails,
                    gainOrLossInLastHand,
                    handsWon,
+                   lastActionInHand,
+                   lastActionAmount,
                })
            );
 
