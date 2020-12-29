@@ -26,6 +26,7 @@ namespace SevenStuds.Models
         public Boolean HasDisconnected { get; set; }
         public ActionEnum LastActionInThisHand { get; set; }
         public int LastActionAmount { get; set; }
+        public int RoundNumberOfLastAction { get; set; }
         public string VisibleHandDescription { get; set; }
         public int GainOrLossInLastHand { get; set; }
         public int HandsWon { get; set; }
@@ -50,7 +51,9 @@ namespace SevenStuds.Models
             GainOrLossInLastHand = observedPlayer.GainOrLossInLastHand;
             HandsWon = observedPlayer.HandsWon;
             LastActionInThisHand = observedPlayer.LastActionInThisHand;
-            LastActionAmount = observedPlayer.LastActionAmount;         
+            LastActionAmount = observedPlayer.LastActionAmount;  
+            RoundNumberOfLastAction = observedPlayer.RoundNumberOfLastAction;  
+
             // Add a list of this player's cards, substituting with '?' if the player receiving this data is not allowed to see this card
             Cards = new List<string>();
             for ( int i = 0; i < observedPlayer.Hand.Count; i++ ) {

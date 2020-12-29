@@ -29,6 +29,7 @@ namespace SevenStuds.Models
         public int InitialChipQuantity { get; set; }
         public int Ante { get; set; }
         public int RoundNumberIfCardsJustDealt { get; set; } // So that client know it can animate the deal
+        public int RoundNumber { get; set; }
         public int CountOfLeavers { get; set; }
         public List<string> AvailableActions { get; set; } // A player-centric view of the actions available to them
         public List<List<int>> Pots { get; set; } // pot(s) built up in the current hand (over multiple rounds of betting)
@@ -58,6 +59,7 @@ namespace SevenStuds.Models
             Ante = g.Ante;
             RoomId = g.ParentRoom().RoomId;
             RoundNumberIfCardsJustDealt = g.RoundNumberIfCardsJustDealt;
+            RoundNumber = g.RoundNumber;
             CountOfLeavers = g.CountOfLeavers;
             CommunityCard = g.CommunityCard;
             DatabaseConnectionStatus = ServerState.OurDB.dbStatus;
