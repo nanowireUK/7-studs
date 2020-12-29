@@ -3,7 +3,6 @@ import React, { useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
-    selectInLobby,
     selectPlayers,
     leave,
     selectActionReference,
@@ -11,7 +10,6 @@ import {
 
 import { selectRoomId, selectRejoinCode } from './redux/slices/hub';
 
-import Lobby from './Lobby';
 import Player from './components/Player';
 import { Box, Grid, Text, Button, ResponsiveContext } from 'grommet';
 import GameActions from './GameActions';
@@ -19,7 +17,6 @@ import Pot from './components/Pot';
 
 function Game() {
     const players = useSelector(selectPlayers);
-    const inLobby = useSelector(selectInLobby);
     const roomId = useSelector(selectRoomId);
     const rejoinCode = useSelector(selectRejoinCode);
     const actionReference = useSelector(selectActionReference);
@@ -31,7 +28,8 @@ function Game() {
         dispatch(leave());
     }
 
-    if (inLobby) return <Lobby/>
+    // if (inLobby) return <Lobby/>
+
 
     const numPlayers = players.length;
 
