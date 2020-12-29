@@ -888,16 +888,21 @@ namespace SevenStuds.Models
                 }
             }
             
-            // Check for anyone who has not disconnected and not yet revealed their cards. Also flag up whether the player won anything 
+            // Work through each of the players and note/set various things 
             int unrevealedHands = 0;
             for (int p = 0; p < Participants.Count ; p++) {
                 if ( Participants[p].IsSharingHandDetails == false && Participants[p].HasDisconnected == false) {
+                    // Check for anyone who has not disconnected and not yet revealed their cards
                     unrevealedHands++;
                 }
                 if ( Participants[p].WonSomethingInCurrentHand == true) {
+                    // Update the player's win count if they won anything in this hand
                     Participants[p].HandsWon++;
                 }
             }
+
+            // Clear the 'next player' setting as it's undefined now until the next hand starts
+            IndexOfParticipantToTakeNextAction = -1;
 
             AddCommentary("Waiting for administrator to start next hand.");
 
