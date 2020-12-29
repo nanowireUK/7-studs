@@ -66,7 +66,7 @@ function Player ({ name, chips, cards, isDealer, isAdmin, isCurrentPlayer, isMe,
                             </Box>) : null}
                         </Box>
                         <Box direction="row" align="center" onMouseOver={() => setShowPotContribution(true)} onMouseOut={() => setShowPotContribution(false)}>
-                            <Box width="xsmall" align="end"><Text size="xlarge">{showPotContribution ? `-${potContribution}` : chips}</Text></Box>
+                            <Box width="140px" align="end"><Text size="xlarge">{showPotContribution ? `${potContribution} in pot` : chips}</Text></Box>
                             <Box height="30px" width="xxsmall"><Chip fill={isDealer ? theme.global.colors["accent-1"] : 'black'}/></Box>
                         </Box>
                     </Box>
