@@ -75,6 +75,7 @@ export const selectPlayers = (state) =>
                        HandsWon: handsWon,
                        LastActionInThisHand: lastActionInHand,
                        LastActionAmount: lastActionAmount,
+                       RoundNumberOfLastAction: roundNumberOfLastAction
                     },
                ) => ({
                    name,
@@ -90,8 +91,8 @@ export const selectPlayers = (state) =>
                    isSharingHandDetails,
                    gainOrLossInLastHand,
                    handsWon,
-                   lastActionInHand,
-                   lastActionAmount,
+                   lastActionInHand: roundNumberOfLastAction === state.game.RoundNumber ? lastActionInHand : '',
+                   lastActionAmount: roundNumberOfLastAction === state.game.RoundNumber ? lastActionAmount : 0,
                })
            );
 

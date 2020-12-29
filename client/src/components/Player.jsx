@@ -3,7 +3,7 @@ import { Box, Stack, Text } from 'grommet';
 import { Trophy } from 'grommet-icons';
 
 import {ReactComponent as Chip} from '../assets/poker-chip.svg';
-import { selectHandCompleted, selectMyHandDescription, selectPots } from '../redux/slices/game';
+import { selectHandCompleted, selectMyHandDescription, selectPots, PlayerActions } from '../redux/slices/game';
 import { useSelector } from 'react-redux';
 
 import { useContainerDimensions } from '../utils/hooks';
@@ -11,6 +11,13 @@ import { useContainerDimensions } from '../utils/hooks';
 import PokerCard from './PokerCard';
 
 import theme from '../theme';
+
+function generateLastPlayerAction(lastAction = '', lastActionAmount = 0, chips = 0) {
+    if (![PlayerActions.RAISE, PlayerActions.FOLD, PlayerActions.CALL, PlayerActions.CHECK, PlayerActions.COVER].includes(lastAction)) return ``;
+    if ([PlayerActions.RAISE, PlayerActions.COVER, PlayerActions.CALL].includes(lastAction) && chips === 0) return 'ALL IN';
+    else if (lastActionAmount) return `${lastAction.toUpperCase()} ${lastActionAmount}`;
+    else return lastAction.toUpperCase();
+}
 
 function CardRow ({ cards, invisibleToOthers = false, name, showRowName }) {
     const ref = useRef(null);
@@ -83,7 +90,7 @@ function Player ({ name, chips, cards, isDealer, isAdmin, isCurrentPlayer, isMe,
                             </Stack>
                         </Box>
                         {handCompleted ?
-                            <Text color={gainOrLossInLastHand > 0 ? 'status-ok' : 'status-error'} margin={{ right: "small"}}>{gainOrLossInLastHand}</Text> : <Text color="gray" margin={{ right: "small"}}>{(lastActionInHand || '').toUpperCase()} {lastActionAmount ? lastActionAmount : ''}</Text>}
+                            <Text color={gainOrLossInLastHand > 0 ? 'status-ok' : 'status-error'} margin={{ right: "small"}}>{gainOrLossInLastHand}</Text> : <Text color="gray" margin={{ right: "small"}}>{generateLastPlayerAction(lastActionInHand, lastActionAmount, chips)}</Text>}
                     </Box>
 
                     <CardRow name="HAND" showRowName={isMe} invisibleToOthers={isMe && !isSharingHandDetails} cards={[...cards.slice(0, 2), ...cards.slice(6, 7)]} />
