@@ -348,6 +348,7 @@ namespace SevenStuds.Models
             _CheckIsAvailable = true;
             _CardsDealtIncludingCurrent = MaxCardsDealtSoFar();
             RoundNumberIfCardsJustDealt = _CardsDealtIncludingCurrent; // Will be cleared as soon as next action comes in
+            RoundNumber = _CardsDealtIncludingCurrent; // Kept for entire round
         }
 
         public void SetActionAvailability(ActionEnum ac, AvailabilityEnum av) 
