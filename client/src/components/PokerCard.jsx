@@ -6,6 +6,7 @@ import {ReactComponent as Heart} from '../assets/suit-hearts.svg';
 import {ReactComponent as Club} from '../assets/suit-clubs.svg';
 import {ReactComponent as Diamond} from '../assets/suit-diamonds.svg';
 import {ReactComponent as Spade} from '../assets/suit-spades.svg';
+import CardBack from '../assets/card-back.svg';
 
 import { useContainerDimensions } from '../utils/hooks';
 
@@ -62,7 +63,7 @@ export default function PokerCard ({ face, suit, invisibleToOthers = false }) {
     const { height } = useContainerDimensions(cardRef);
 
     if (face === '?' || suit === '?') return (<Box ref={cardRef} direction="row" title='Hidden' elevation="xsmall" pad="xsmall" border round="xsmall" gap="xsmall" background={{
-        image: "url(https://upload.wikimedia.org/wikipedia/commons/3/30/Card_back_05a.svg)", // need to double check license and possibly find suitable alternative if appropriate (LGPL-2)
+        image: `url(${CardBack})`, // need to double check license and possibly find suitable alternative if appropriate (LGPL-2)
         size: "115%"
     }}>
         <Box pad="xsmall" direction="column" align="center" justify="around" width={`${height + 2}px`} testborder={{ color: 'blue', style: 'dashed' }}></Box>
