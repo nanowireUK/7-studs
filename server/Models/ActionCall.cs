@@ -25,6 +25,7 @@ namespace SevenStuds.Models
             
             G.Participants[PlayerIndex].LastActionInThisHand = this.ActionType;
             G.Participants[PlayerIndex].LastActionAmount = catchupAmount;
+            G.Participants[PlayerIndex].RoundNumberOfLastAction = G._CardsDealtIncludingCurrent;
             
             // Find and set next player (could be no one if all players have now called)
             await G.SetNextPlayerToActOrHandleEndOfHand(PlayerIndex, G.LastEvent);

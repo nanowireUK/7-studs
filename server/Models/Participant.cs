@@ -29,6 +29,7 @@ namespace SevenStuds.Models
         public Boolean WonSomethingInCurrentHand { get; set; }
         public ActionEnum LastActionInThisHand { get; set; }
         public int LastActionAmount { get; set; }
+        public int RoundNumberOfLastAction { get; set; }
         public int HandsWon { get; set; } 
         public string RejoinCode { get; set; } // e.g. 3 alphanumeric characters that enables a disconnected player to rejoin as the same person
         public string ParticipantLevelSignalRGroupName { get; set; }
