@@ -1,4 +1,4 @@
-import React, { useState, useContext} from 'react';
+import React, { useState, useContext, useEffect} from 'react';
 
 import { Box, Button, Keyboard, ResponsiveContext } from 'grommet';
 import { useSelector, useDispatch } from 'react-redux';
@@ -24,7 +24,7 @@ function Raise ({ setIsRaising }) {
 
     const clickRaise = () => setIsRaising(true);
 
-    return <Button primary label="Raise" onClick={clickRaise} disabled={!canRaise} />
+    return <Button primary label="Raise [R]" onClick={clickRaise} disabled={!canRaise} />
 }
 
 function Check () {
@@ -102,7 +102,7 @@ function OpenLobby () {
 }
 
 
-function GameActions () {
+function GameActions ({ isRaising, setIsRaising, raiseAmount, setRaiseAmount, submitRaise, endRaising }) {
     const handInProgress = useSelector(selectHandInProgress);
     const handsBeingRevealed = useSelector(selectHandsBeingRevealed);
     const handCompleted = useSelector(selectHandCompleted);
@@ -111,17 +111,9 @@ function GameActions () {
     const maxRaise = useSelector(selectMaxRaise);
     const callAmount = useSelector(selectCallAmount);
 
-    const dispatch = useDispatch();
+    useEffect(() => {
 
-    const [isRaising, setIsRaising] = useState(false);
-    const [raiseAmount, setRaiseAmount] = useState(1);
-
-    const endRaising = () => {
-        setIsRaising(false);
-        setRaiseAmount(ante);
-    }
-
-    const raiseIsValid = raiseAmount >= ante && raiseAmount <= maxRaise;
+    })
 
     if (handCompleted) {
          return (
@@ -132,19 +124,12 @@ function GameActions () {
             </Box>
          );
     } else if (handInProgress) {
-        const submitRaise = () => {
-            if (raiseIsValid) {
-                dispatch(raise(raiseAmount.toString()));
-                endRaising();
-            }
-        }
-
         if (isRaising) return <Box direction="row" gap="xsmall">
-            <Button primary label={`Raise${callAmount ? ` + ${callAmount} to call` : ''}`} onClick={submitRaise} />
+            <Button primary label={`Raise${callAmount ? ` + ${callAmount} to call` : ''} [Enter]`} onClick={submitRaise} />
             <Box direction="column" gap="xsmall">
                 <RaiseSlider submitRaise={submitRaise} min={ante} max={maxRaise} value={raiseAmount} setValue={setRaiseAmount} />
             </Box>
-            <Button label="Cancel" onClick={endRaising} />
+            <Button label="Cancel [Esc]" onClick={endRaising} />
         </Box>;
         return (
             <Box direction="row" gap="xsmall">
@@ -172,31 +157,62 @@ export default function GameActionsWithKeyboard () {
     const canCover = useSelector(selectCanDoAction(PlayerActions.COVER));
     const canFold = useSelector(selectCanDoAction(PlayerActions.FOLD));
     const canReveal = useSelector(selectCanDoAction(PlayerActions.REVEAL));
+    const canRaise = useSelector(selectCanDoAction(PlayerActions.RAISE));
+
+    const ante = useSelector(selectAnte);
+    const maxRaise = useSelector(selectMaxRaise);
 
     const dispatch = useDispatch();
-    function handleKeyPress (e) {
-        switch (e.key.toUpperCase()) {
-            case 'K':
-                if (canCheck) dispatch(check());
-                break;
-            case 'F':
-                if (canFold) dispatch(fold());
-                break;
-            case 'C':
-                if (canCall) dispatch(call());
-                break;
-            case 'X':
-                if (canCover) dispatch(cover());
-                break;
-            case 'S':
-                if (canReveal) dispatch(reveal());
-                break;
-            default:
-                break;
+
+    const [isRaising, setIsRaising] = useState(false);
+    const [raiseAmount, setRaiseAmount] = useState(1);
+
+    const raiseIsValid = raiseAmount >= ante && raiseAmount <= maxRaise;
+
+    useEffect(() => {
+        if (isRaising && !canRaise) setIsRaising(false);
+    }, [canRaise, isRaising]);
+
+    const endRaising = () => {
+        setIsRaising(false);
+        setRaiseAmount(ante);
+    }
+
+    const submitRaise = () => {
+        if (raiseIsValid) {
+            dispatch(raise(raiseAmount.toString()));
+            endRaising();
         }
     }
 
+    function handleKeyPress (e) {
+        if (!isRaising) {
+            switch (e.key.toUpperCase()) {
+                case 'K':
+                    if (canCheck) dispatch(check());
+                    break;
+                case 'F':
+                    if (canFold) dispatch(fold());
+                    break;
+                case 'C':
+                    if (canCall) dispatch(call());
+                    break;
+                case 'X':
+                    if (canCover) dispatch(cover());
+                    break;
+                case 'S':
+                    if (canReveal) dispatch(reveal());
+                    break;
+                case 'R':
+                    if (canRaise) setIsRaising(true);
+                    break;
+                default:
+                    break;
+            }
+        } else if (e.key.toUpperCase() === 'ESCAPE') setIsRaising(false);
+    }
+
     return (<Keyboard target="document" onKeyDown={handleKeyPress}>
-        <GameActions />
+        <GameActions isRaising={canRaise && isRaising} setIsRaising={setIsRaising} raiseAmount={raiseAmount} setRaiseAmount={setRaiseAmount} submitRaise={submitRaise} endRaising={endRaising}/>
     </Keyboard>)
 }
