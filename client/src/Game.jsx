@@ -2,8 +2,8 @@ import React, { useContext, useEffect } from 'react';
 
 import { Howl } from 'howler';
 
-import notificationSrc from './assets/notify.mp3';
-import airhornSrc from './assets/airhorn.wav';
+import notificationSrc from './assets/audio/notify.mp3';
+import airhornSrc from './assets/audio/airhorn.mp3';
 
 import { useDispatch, useSelector } from 'react-redux';
 
