@@ -18,7 +18,7 @@ function Pot ({contents, potNumber}) {
             </Box>
         </Box>
 
-        {showDrop ? <Drop align={{ top: 'bottom'}} plain target={ref.current} onClickOutside={() => setShowDrop(false)} onEsc={() => setShowDrop(false)}>
+        {showDrop ? <Drop align={{ bottom: 'top'}} plain target={ref.current} onClickOutside={() => setShowDrop(false)} onEsc={() => setShowDrop(false)}>
             <Box elevation="small" pad="small" background="white" round border>
                 <Text margin={{ bottom: 'small'}} size="large" weight="bold">Contributions for Pot {potNumber + 1}</Text>
                 {contents.map((value, index) => value > 0 ? (
