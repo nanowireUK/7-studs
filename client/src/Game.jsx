@@ -14,10 +14,11 @@ import {
     selectIsMyTurn
 } from './redux/slices/game';
 
-import { selectRoomId, selectRejoinCode } from './redux/slices/hub';
+import { selectRoomId, selectRejoinCode, mute, unmute, selectMuted } from './redux/slices/hub';
 
 import Player from './components/Player';
 import { Box, Grid, Text, Button, ResponsiveContext } from 'grommet';
+import { Volume, VolumeMute } from 'grommet-icons';
 import GameActions from './GameActions';
 import Pot from './components/Pot';
 
@@ -27,6 +28,7 @@ function Game() {
     const rejoinCode = useSelector(selectRejoinCode);
     const actionReference = useSelector(selectActionReference);
     const isMyTurn = useSelector(selectIsMyTurn);
+    const isMuted = useSelector(selectMuted);
     const dispatch = useDispatch();
 
     const mobileLayout = useContext(ResponsiveContext) === 'small';
@@ -44,18 +46,16 @@ function Game() {
             src: [airhornSrc],
         });
 
-        const timeout = isMyTurn ? setTimeout(() => {
-            airhornSound.play();
-        }, 20000) : -1;
+        const timeout = isMyTurn && !isMuted ? setTimeout(airhornSound.play, 20000) : -1;
 
-        if (isMyTurn) notifySound.play();
+        if (isMyTurn && !isMuted) notifySound.play();
 
         return () => {
             notifySound.pause();
             airhornSound.pause();
             clearTimeout(timeout);
         }
-    }, [isMyTurn]);
+    }, [isMyTurn, isMuted]);
 
     const numPlayers = players.length;
 
@@ -104,9 +104,13 @@ function Game() {
             >
                 <Box pad="small" gridArea="gameStatus" background="brand" direction="row" fill justify="between">
                     <Text basis="full" alignSelf="center" size="xxlarge">{roomId}</Text>
-                    <Box justify="center">
-                        <Text alignSelf="center" size="large">{rejoinCode}</Text>
-                        <Button color="accent-1" onClick={leaveGame}>Leave</Button>
+                    <Box direction="row" align="center">
+
+                        <Box justify="center">
+                            <Text alignSelf="center" size="large">{rejoinCode}</Text>
+                            <Button color="accent-1" onClick={leaveGame}>Leave</Button>
+                        </Box>
+                        <Box pad="small">{isMuted ? <VolumeMute onClick={() => dispatch(unmute())}/> : <Volume onClick={() => dispatch(mute())}/>}</Box>
                     </Box>
                 </Box>
                 <Grid
