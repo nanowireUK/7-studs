@@ -1,4 +1,8 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
+
+import { Howl } from 'howler';
+
+import notifyMp3 from './assets/notify.mp3';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -6,6 +10,7 @@ import {
     selectPlayers,
     leave,
     selectActionReference,
+    selectIsMyTurn
 } from './redux/slices/game';
 
 import { selectRoomId, selectRejoinCode } from './redux/slices/hub';
@@ -20,6 +25,7 @@ function Game() {
     const roomId = useSelector(selectRoomId);
     const rejoinCode = useSelector(selectRejoinCode);
     const actionReference = useSelector(selectActionReference);
+    const isMyTurn = useSelector(selectIsMyTurn);
     const dispatch = useDispatch();
 
     const mobileLayout = useContext(ResponsiveContext) === 'small';
@@ -28,8 +34,14 @@ function Game() {
         dispatch(leave());
     }
 
-    // if (inLobby) return <Lobby/>
+    useEffect(() => {
+        const sound = new Howl({
+            src: [notifyMp3],
+        });
 
+        if (isMyTurn) sound.play();
+        return () => sound.pause();
+    }, [isMyTurn]);
 
     const numPlayers = players.length;
 
