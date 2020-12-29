@@ -112,6 +112,8 @@ export const selectCommunityCard = (state) => state.game.CommunityCard;
 
 export const selectActionReference = (state) => `${state.game.RoomId}-${state.game.GameNumber}.${state.game.HandsPlayedIncludingCurrent}.${state.game.ActionNumber}`;
 
+export const selectIsMyTurn = (state) => state.game.IsMyTurn;
+
 export const PlayerActions = Object.freeze({
     START: 'Start',
     CHECK: 'Check',
