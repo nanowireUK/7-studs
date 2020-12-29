@@ -27,6 +27,8 @@ namespace SevenStuds.Models
         public Boolean HasDisconnected { get; set; } // Player has chosen to leave the game (i.e. is no longer connected and will be removed at end of hand)
         public Boolean IsSharingHandDetails { get; set; }
         public Boolean WonSomethingInCurrentHand { get; set; }
+        public ActionEnum LastActionInThisHand { get; set; }
+        public int LastActionAmount { get; set; }
         public int HandsWon { get; set; } 
         public string RejoinCode { get; set; } // e.g. 3 alphanumeric characters that enables a disconnected player to rejoin as the same person
         public string ParticipantLevelSignalRGroupName { get; set; }

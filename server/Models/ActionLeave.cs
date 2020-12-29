@@ -85,6 +85,8 @@ namespace SevenStuds.Models
             if ( p.HasBeenActiveInCurrentGame == true && p.StartedHandWithNoFunds == false && p.HasFolded == false ) {
                 // Player was still in the game in some form, so we have to treat this as if they folded
                 p.HasFolded = true;
+                G.Participants[PlayerIndex].LastActionInThisHand = ActionEnum.Fold;
+                G.Participants[PlayerIndex].LastActionAmount = 0;                
                 // Player is now bankrupt (their funds will be discarded at the end of the hand)
                 G.LeaversLogForGame.Add(new LeavingRecord(p.Name, p.ParticipantLevelSignalRGroupName, 0, true, false));
                 if ( G.IndexOfParticipantToTakeNextAction == PlayerIndex ) {

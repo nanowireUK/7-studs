@@ -22,6 +22,9 @@ namespace SevenStuds.Models
 
             G.RecordLastEvent(UserName + " checked");
 
+            G.Participants[PlayerIndex].LastActionInThisHand = this.ActionType;
+            G.Participants[PlayerIndex].LastActionAmount = 0;
+
             // Find and set next player (could be no one if all players have now checked)
             await G.SetNextPlayerToActOrHandleEndOfHand(PlayerIndex, G.LastEvent);
         }

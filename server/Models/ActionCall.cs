@@ -23,6 +23,9 @@ namespace SevenStuds.Models
             // No one can check from this point onwards (until next card is dealt)
             G._CheckIsAvailable = false;
             
+            G.Participants[PlayerIndex].LastActionInThisHand = this.ActionType;
+            G.Participants[PlayerIndex].LastActionAmount = catchupAmount;
+            
             // Find and set next player (could be no one if all players have now called)
             await G.SetNextPlayerToActOrHandleEndOfHand(PlayerIndex, G.LastEvent);
         }

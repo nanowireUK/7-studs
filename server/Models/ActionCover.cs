@@ -22,6 +22,9 @@ namespace SevenStuds.Models
             // Implement the cover (has to be done pot-by-pot, and could involve splitting a pot)
             p.HasCovered = true;
             G.MoveAmountToPotForSpecifiedPlayer(PlayerIndex, p.UncommittedChips);
+
+            G.Participants[PlayerIndex].LastActionInThisHand = this.ActionType;
+            G.Participants[PlayerIndex].LastActionAmount = p.UncommittedChips;
             
             // Find and set next player (could be no one if all players have now called or covered)
             await G.SetNextPlayerToActOrHandleEndOfHand(PlayerIndex, G.LastEvent);
