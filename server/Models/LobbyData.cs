@@ -31,12 +31,23 @@ namespace SevenStuds.Models
                         ( p.HasBeenActiveInCurrentGame ? PlayerStatusEnum.PartOfMostRecentGame : PlayerStatusEnum.QueuingForNextGame ),
                         p.UncommittedChips, 
                         false, // has not left
-                        ( p.TimeOfBankruptcy == null ? now : p.TimeOfBankruptcy )
-                        ));
+                        // If player was already bankrupt at start of hand, use that date
+                        // If they went bankrupt during the hand (by going all-in) use the date/time they went all in
+                        // (i.e. on the principle that they were the last bankrupt player to actually put all their remaining funds at risk)
+                        ( 
+                            ( p.HasBeenActiveInCurrentGame && p.UncommittedChips == 0 )
+                            ? p.AllInDateTime
+                            : (
+                                p.TimeOfBankruptcy != DateTimeOffset.MinValue 
+                                ? p.TimeOfBankruptcy 
+                                : now // catch-all for players not yet bankrupt  
+                            )
+                        )                        
+                    ));
                 }
             }
 
-            // Now add the details of the leavers
+            // Now add the details of the leavers (who may or may not also have been part of the last game)
             if ( g.LeaversLogForGame != null ) {
                 foreach ( LeavingRecord leaver in g.LeaversLogForGame ) {
                     result.Add(new LobbyDataCurrentGame(
@@ -48,7 +59,7 @@ namespace SevenStuds.Models
                         ),
                         leaver.ChipsAtEndOfGame, 
                         true, // has left
-                        leaver.LeftAt_UTC));
+                        leaver.EndOfRelevanceToGame_UTC));
                 }
             }
             
@@ -78,7 +89,7 @@ namespace SevenStuds.Models
                     if (a == 0)
                         a = y.PriorityOrderForLobbyData.CompareTo(x.PriorityOrderForLobbyData);
 
-                    // Next sort on remaining funds (will be zero in many cases though)
+                    // Next sort on remaining funds (could be zero in many cases though)
                     if (a == 0)
                         a = y.RemainingFunds.CompareTo(x.RemainingFunds);
 
@@ -86,7 +97,7 @@ namespace SevenStuds.Models
                     if (a == 0)
                         a = y.UTCTimeAsTieBreaker.CompareTo(x.UTCTimeAsTieBreaker) * y.DateComparisonModifier;
 
-                    // If both players are inseparable even on date, use their names as a random time breaker
+                    // If both players are inseparable even on date, use their names as a random time breaker (probably need to do this better)
                     if (a == 0)
                         a = x.PlayerName.CompareTo(y.PlayerName);  
 

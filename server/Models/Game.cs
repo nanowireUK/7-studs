@@ -333,6 +333,9 @@ namespace SevenStuds.Models
                 Participant p = Participants[i];
                 p.IsSharingHandDetails = false;
                 p.HasBeenActiveInCurrentGame = true;
+                p.AllInDateTime = DateTimeOffset.MinValue;
+                p.LastActionInThisHand = ActionEnum.Undefined;
+                p.LastActionAmount = 0;  
                 if ( p.UncommittedChips > 0 ) {
                     p.StartNewHandForActivePlayer(this);
                     this.Pots[0][i] = this.Ante; 
@@ -644,6 +647,10 @@ namespace SevenStuds.Models
             // and splitting the pot automatically if player comes up short of total pot so far
             int amountLeftToAdd = amt;
             this.Participants[playerIndex].UncommittedChips -= amt; // Reduce the player's pile of chips before adding them to the various pots
+            if ( this.Participants[playerIndex].UncommittedChips == 0 && amt > 0 ) {
+                // Note the time this player went all in (as it can make a difference to the player rankings at the end)
+                this.Participants[playerIndex].AllInDateTime = DateTimeOffset.Now;
+            }
             AddCommentary(amountLeftToAdd +" is to be added to the pot (or pots)");
             for ( int pot = 0; pot < Pots.Count; pot++) {
                 //if ( amountLeftToAdd > 0) {

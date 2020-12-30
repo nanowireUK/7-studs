@@ -16,6 +16,8 @@ namespace SevenStuds.Models
             this.IsGameAdministrator = false;
             this.IsSharingHandDetails = false;
             this.HasBeenActiveInCurrentGame = false;
+            this.TimeOfBankruptcy = DateTimeOffset.MinValue;
+            this.AllInDateTime = DateTimeOffset.MinValue;
         }
         [Required]
         
@@ -35,6 +37,7 @@ namespace SevenStuds.Models
         public string ParticipantLevelSignalRGroupName { get; set; }
         public Boolean HasBeenActiveInCurrentGame { get; set; }
         public DateTimeOffset TimeOfBankruptcy { get; set; }
+        public DateTimeOffset AllInDateTime{ get; set; } // note that this may not be the time they went bankrupt, i.e. they could win the hand
         private List<string> _ConnectionIds { get; set; }
                 
         [Required]
