@@ -10,22 +10,23 @@ IF object_id('tempdb..#ranks') IS NOT NULL DROP TABLE #ranks
 create table #ranks (
 	rank_code varchar(2),
 	rank_name varchar(10),
+	rank_name_plural varchar(10),
 	rank_prime int
 )
 
-insert #ranks values('2', 'Two', '2')
-insert #ranks values('3', 'Three', '3')
-insert #ranks values('4', 'Four', '5')
-insert #ranks values('5', 'Five', '7')
-insert #ranks values('6', 'Six', '11')
-insert #ranks values('7', 'Seven', '13')
-insert #ranks values('8', 'Eight', '17')
-insert #ranks values('9', 'Nine', '19')
-insert #ranks values('T', 'Ten', '23')
-insert #ranks values('J', 'Jack', '29')
-insert #ranks values('Q', 'Queen', '31')
-insert #ranks values('K', 'King', '37')
-insert #ranks values('A', 'Ace', '41')
+insert #ranks values('2', 'Two', 'Twos', '2')
+insert #ranks values('3', 'Three', 'Threes', '3')
+insert #ranks values('4', 'Four', 'Fours', '5')
+insert #ranks values('5', 'Five', 'Fives', '7')
+insert #ranks values('6', 'Six', 'Sixes', '11')
+insert #ranks values('7', 'Seven', 'Sevens', '13')
+insert #ranks values('8', 'Eight', 'Eights', '17')
+insert #ranks values('9', 'Nine', 'Nines', '19')
+insert #ranks values('T', 'Ten', 'Tens', '23')
+insert #ranks values('J', 'Jack', 'Jacks', '29')
+insert #ranks values('Q', 'Queen', 'Queens', '31')
+insert #ranks values('K', 'King', 'Kings', '37')
+insert #ranks values('A', 'Ace', 'Aces', '41')
 
 IF object_id('tempdb..#suits') IS NOT NULL DROP TABLE #suits
 
@@ -82,7 +83,7 @@ FROM (
 	SELECT DISTINCT 
 		c1.rank_prime * c2.rank_prime AS hand_signature, 
 		CASE 
-			WHEN c1.rank_prime = c2.rank_prime THEN 'Pair of ' + c1.rank_name + 's'
+			WHEN c1.rank_prime = c2.rank_prime THEN 'Pair of ' + c1.rank_name_plural
 			ELSE c1.rank_name +' High with '+c2.rank_name
 		END 
 			AS hand_name, 
@@ -116,9 +117,9 @@ FROM (
 	SELECT DISTINCT 
 		c1.rank_prime * c2.rank_prime * c3.rank_prime  AS hand_signature, 
 		CASE 
-			WHEN c1.rank_prime = c2.rank_prime AND c2.rank_prime = c3.rank_prime THEN 'Three ' + c1.rank_name + 's'
-			WHEN c1.rank_prime = c2.rank_prime THEN 'Pair of ' + c1.rank_name + 's with ' +c3.rank_name
-			WHEN c2.rank_prime = c3.rank_prime THEN 'Pair of ' + c2.rank_name + 's with ' +c1.rank_name
+			WHEN c1.rank_prime = c2.rank_prime AND c2.rank_prime = c3.rank_prime THEN 'Three ' + c1.rank_name_plural
+			WHEN c1.rank_prime = c2.rank_prime THEN 'Pair of ' + c1.rank_name_plural + ' with ' +c3.rank_name
+			WHEN c2.rank_prime = c3.rank_prime THEN 'Pair of ' + c2.rank_name_plural + ' with ' +c1.rank_name
 			ELSE c1.rank_name +' High with '+c2.rank_name+', '+c3.rank_name
 		END 
 			AS hand_name, 
@@ -144,7 +145,6 @@ ORDER BY eval_rank
 
 -- EvalHands.Add(-25911877, new EvalHand(-25911877, 323, "Ace-High Flush"));
 
-
 -------------------------------------------------------------------------------------------
 -- (4) Set up relative rankings of combinations of 4 cards (four of a kind, three of a kind, two pairs, pairs or highs only)
 
@@ -156,25 +156,38 @@ FROM (
 	SELECT DISTINCT 
 		c1.rank_prime * c2.rank_prime * c3.rank_prime * c4.rank_prime  AS hand_signature, 
 		CASE 
-			WHEN c1.rank_prime = c2.rank_prime AND c2.rank_prime = c3.rank_prime AND c3.rank_prime = c4.rank_prime THEN 'Four ' + c1.rank_name + 's'
-			WHEN c1.rank_prime = c2.rank_prime AND c2.rank_prime = c3.rank_prime THEN 'Three ' + c1.rank_name + 's'
-			WHEN c2.rank_prime = c3.rank_prime AND c3.rank_prime = c4.rank_prime THEN 'Three ' + c2.rank_name + 's'
-			WHEN c1.rank_prime = c2.rank_prime AND c3.rank_prime = c4.rank_prime THEN 'Two Pair, ' + c1.rank_name + 's over ' + c3.rank_name + 's'
-			WHEN c1.rank_prime = c2.rank_prime THEN 'Pair of ' + c1.rank_name + 's with ' + c3.rank_name + ', ' + c4.rank_name
-			WHEN c2.rank_prime = c3.rank_prime THEN 'Pair of ' + c2.rank_name + 's with ' + c1.rank_name + ', ' + c4.rank_name
-			WHEN c3.rank_prime = c4.rank_prime THEN 'Pair of ' + c3.rank_name + 's with ' + c1.rank_name + ', ' + c2.rank_name
+			WHEN c1.rank_prime = c2.rank_prime AND c2.rank_prime = c3.rank_prime AND c3.rank_prime = c4.rank_prime THEN 'Four ' + c1.rank_name_plural
+			WHEN c1.rank_prime = c2.rank_prime AND c2.rank_prime = c3.rank_prime THEN 'Three ' + c1.rank_name_plural
+			WHEN c2.rank_prime = c3.rank_prime AND c3.rank_prime = c4.rank_prime THEN 'Three ' + c2.rank_name_plural
+			WHEN c1.rank_prime = c2.rank_prime AND c3.rank_prime = c4.rank_prime THEN 'Two Pair, ' + c1.rank_name_plural + ' over ' + c3.rank_name_plural
+			WHEN c1.rank_prime = c2.rank_prime THEN 'Pair of ' + c1.rank_name_plural + ' with ' + c3.rank_name + ', ' + c4.rank_name
+			WHEN c2.rank_prime = c3.rank_prime THEN 'Pair of ' + c2.rank_name_plural + ' with ' + c1.rank_name + ', ' + c4.rank_name
+			WHEN c3.rank_prime = c4.rank_prime THEN 'Pair of ' + c3.rank_name_plural + ' with ' + c1.rank_name + ', ' + c2.rank_name
 			ELSE c1.rank_name +' High with '+c2.rank_name+', '+c3.rank_name+', '+c4.rank_name
 		END 
 			AS hand_name, 
 		CASE 
-			WHEN c1.rank_prime = c2.rank_prime AND c2.rank_prime = c3.rank_prime AND c3.rank_prime = c4.rank_prime THEN 5000000000 + ( c1.rank_prime * 1000000 ) -- 4
+			WHEN c1.rank_prime = c2.rank_prime AND c2.rank_prime = c3.rank_prime AND c3.rank_prime = c4.rank_prime THEN 5000000000 + ( c1.rank_prime * 1000000 ) -- 4 of a kind
 			WHEN c1.rank_prime = c2.rank_prime AND c2.rank_prime = c3.rank_prime THEN 4000000000 + ( c1.rank_prime * 1000000 ) -- 3
 			WHEN c2.rank_prime = c3.rank_prime AND c3.rank_prime = c4.rank_prime THEN 4000000000 + ( c2.rank_prime * 1000000 ) -- 3
 			WHEN c1.rank_prime = c2.rank_prime AND c3.rank_prime = c4.rank_prime THEN 3000000000 + ( c1.rank_prime * 1000000 ) + ( c3.rank_prime * 10000 ) -- 2 pair
 			WHEN c1.rank_prime = c2.rank_prime THEN 2000000000 + ( c1.rank_prime * 1000000 )+ ( c3.rank_prime * 10000 ) + ( c4.rank_prime * 100 ) 
 			WHEN c2.rank_prime = c3.rank_prime THEN 2000000000 + ( c2.rank_prime * 1000000 )+ ( c1.rank_prime * 10000 ) + ( c4.rank_prime * 100) 
-			WHEN c3.rank_prime = c4.rank_prime THEN 2000000000 + ( c2.rank_prime * 1000000 )+ ( c1.rank_prime * 10000 ) + ( c2.rank_prime * 100) 
-			ELSE 1000000000 + ( c1.rank_prime * 1000000 ) + ( c2.rank_prime * 10000) + ( c3.rank_prime * 100) + ( c4.rank_prime ) 
+		  --WHEN c3.rank_prime = c4.rank_prime THEN 2000000000 + ( c2.rank_prime * 1000000 )+ ( c1.rank_prime * 10000 ) + ( c2.rank_prime * 100) ---- Bug fixed 2020-12-30 (should have used c3 not c2)
+			WHEN c3.rank_prime = c4.rank_prime THEN 2000000000 + ( c3.rank_prime * 1000000 )+ ( c1.rank_prime * 10000 ) + ( c2.rank_prime * 100) 
+			ELSE 1000000000 + ( c1.rank_prime * 1000000 ) + ( c2.rank_prime * 10000) + ( c3.rank_prime * 100) + ( c4.rank_prime )
+			-- Note re bug fix: The rank for a pair was being calculated wrongly where:
+			--   (a) the visible hand being considered consists of four cards and
+			--   (b) the hand is a pair and 
+			--   (c) the paired card is less than both the other visible cards
+			-- And it would only affect play when:
+			--   (a) there is a better visible pair on the table, and 
+			--   (b) there is nothing visible that is better than a pair, and
+			--   (c) the second highest card in the problematic visible hand is greater than or equal to the cards that are paired in the better hand
+			-- Even the other cards in both hands make a difference. 
+			-- This hand from game 3 on 29/12/20 had all of it:
+			--   John: 9-9-2-4 -> 9-9-4-2
+			--   Fab:  J-3-9-3 -> J-9-3-3 (was wrongly getting higher ranking due to bug highlighted above)
 		END 
 			AS hand_value 
 	FROM #cards c1
@@ -196,7 +209,8 @@ FROM (
 	) -- consider only the combinations where the cards are in order from left to right
 ) d
 
-SELECT * FROM #combos4 ORDER BY eval_rank 
+SELECT * FROM #combos4 ORDER BY hand_value DESC -- High hand values is better hand 
+SELECT * FROM #combos4 ORDER BY eval_rank ASC -- Low rank is a better hand
 
 select 'EvalHands.Add('+LTRIM(STR(hand_signature))+', new EvalHand('+LTRIM(STR(hand_signature))	+', '+LTRIM(STR(eval_rank))	+', "'+hand_name+'"));' as new_eval_stmt
 from #combos4 
