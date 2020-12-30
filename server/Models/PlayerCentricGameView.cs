@@ -35,7 +35,7 @@ namespace SevenStuds.Models
         public List<List<int>> Pots { get; set; } // pot(s) built up in the current hand (over multiple rounds of betting)
         public List<List<string>> LastHandResult { get; set; }
         public List<PlayerCentricParticipantView> PlayerViewOfParticipants { get; set; } // ordered list of participants (order represents order around the table)
-        public Card CommunityCard { get; set; }
+        public string CommunityCard { get; set; }
         public DatabaseConnectionStatusEnum DatabaseConnectionStatus { get; set; }
         public double DatabaseRequestUnits { get; set; }
         public GameStatistics GameStatistics { get; set; } 
@@ -61,7 +61,7 @@ namespace SevenStuds.Models
             RoundNumberIfCardsJustDealt = g.RoundNumberIfCardsJustDealt;
             RoundNumber = g.RoundNumber;
             CountOfLeavers = g.CountOfLeavers;
-            CommunityCard = g.CommunityCard;
+            CommunityCard = g.CommunityCard == null ? "" : g.CommunityCard.ToString(CardToStringFormatEnum.ShortCardName);
             DatabaseConnectionStatus = ServerState.OurDB.dbStatus;
             DatabaseRequestUnits = ServerState.OurDB.consumedRUs;
             CardPositionIsVisible = g.CardPositionIsVisible;
