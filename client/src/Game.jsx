@@ -46,7 +46,9 @@ function Game() {
             src: [airhornSrc],
         });
 
-        const timeout = isMyTurn && !isMuted ? setTimeout(airhornSound.play, 20000) : -1;
+        const timeout = isMyTurn && !isMuted ? setTimeout(() => {
+            airhornSound.play();
+        }, 20000) : -1;
 
         if (isMyTurn && !isMuted) notifySound.play();
 
