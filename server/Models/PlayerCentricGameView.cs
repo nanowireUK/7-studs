@@ -33,7 +33,7 @@ namespace SevenStuds.Models
         public int CountOfLeavers { get; set; }
         public List<string> AvailableActions { get; set; } // A player-centric view of the actions available to them
         public List<List<int>> Pots { get; set; } // pot(s) built up in the current hand (over multiple rounds of betting)
-        public List<List<string>> LastHandResult { get; set; }
+        //public List<List<string>> LastHandResult { get; set; }
         public List<PlayerCentricParticipantView> PlayerViewOfParticipants { get; set; } // ordered list of participants (order represents order around the table)
         public string CommunityCard { get; set; }
         public DatabaseConnectionStatusEnum DatabaseConnectionStatus { get; set; }
@@ -67,7 +67,7 @@ namespace SevenStuds.Models
             CardPositionIsVisible = g.CardPositionIsVisible;
             LobbyData = g.LobbyData;
             GameStatistics = g.GameStatistics;
-            LastHandResult = new List<List<string>>(g.LastHandResult); // This definitely needs to be a copy
+            //LastHandResult = new List<List<string>>(g.LastHandResult); // This definitely needs to be a copy
             MostRecentHandResult = new List<List<PotResult>>(g.MostRecentHandResult); // This definitely needs to be a copy
             GameMode = g.GameMode.ToString();
             if ( isSpectatorView ) {
