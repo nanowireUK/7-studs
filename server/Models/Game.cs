@@ -651,51 +651,64 @@ namespace SevenStuds.Models
                 // Note the time this player went all in (as it can make a difference to the player rankings at the end)
                 this.Participants[playerIndex].AllInDateTime = DateTimeOffset.Now;
             }
-            AddCommentary(amountLeftToAdd +" is to be added to the pot (or pots)");
+            // if ( amountLeftToAdd > 0 ) {
+            //     AddCommentary(amountLeftToAdd +" is to be added to the pot (or pots)");
+            // }
             for ( int pot = 0; pot < Pots.Count; pot++) {
-                //if ( amountLeftToAdd > 0) {
-                    int maxContributionToThisPotByAnyPlayer = MaxChipsInSpecifiedPotForAnyPlayer(pot);
-                    AddCommentary("Max chips currently in pot " + (pot+1) + " = " + maxContributionToThisPotByAnyPlayer);
-                    int myExistingContributionToThisPot = ChipsInSpecifiedPotForSpecifiedPlayer (pot, playerIndex);
-                    if ( pot == Pots.Count - 1) {
-                        // This is the open pot
-                        if ( amountLeftToAdd >= ( maxContributionToThisPotByAnyPlayer - myExistingContributionToThisPot ) ) {
-                            // Player is calling or raising
-                            AddCommentary("Adding "+ amountLeftToAdd +" to open pot");
-                            this.Pots[pot][playerIndex] += amountLeftToAdd;
-                            amountLeftToAdd = 0;
-                        }
-                        else {
-                            // User is short of the amount required to stay in and is covering the pot
-                            AddCommentary("Adding "+ amountLeftToAdd +" to open pot (should be as a result of covering the pot)");
-                            this.Pots[pot][playerIndex] += amountLeftToAdd;
-                            amountLeftToAdd = 0;
-                            SplitPotAbovePlayersAmount(pot,  playerIndex); // This will change the pot structure but we'll break out of this loop now so not a problem
-                            break; 
-                        }                        
+                int myExistingContributionToThisPot = ChipsInSpecifiedPotForSpecifiedPlayer (pot, playerIndex);
+                AddCommentary("Player's current contribution to pot " + (pot+1) + " = " + myExistingContributionToThisPot);
+                int maxContributionToThisPotByAnyPlayer = MaxChipsInSpecifiedPotForAnyPlayer(pot);
+                AddCommentary("Highest current contribution to pot " + (pot+1) + " = " + maxContributionToThisPotByAnyPlayer);
+                if ( pot == Pots.Count - 1) {
+                    // This is the open pot
+                    if ( amountLeftToAdd >= ( maxContributionToThisPotByAnyPlayer - myExistingContributionToThisPot ) ) {
+                        // Player is calling or raising
+                        AddCommentary("Adding "+ amountLeftToAdd +" to pot " + (pot+1) + " (the open pot)");
+                        this.Pots[pot][playerIndex] += amountLeftToAdd;
+                        break; // Loop would end here anyway as there are no more pots to process, but putting this in for clarity
                     }
                     else {
-                        // We are currently filling pots that have already been superseded by the open pot
-                        int shortfallForThisPot = ( maxContributionToThisPotByAnyPlayer - myExistingContributionToThisPot );
-                        if ( shortfallForThisPot == 0 ) {
-                            AddCommentary("Player is already fully paid in to pot #" + (pot+1));
+                        // User is short of the amount required to stay in and is covering the pot
+                        if ( amountLeftToAdd > 0 ) {
+                            AddCommentary("Adding "+ amountLeftToAdd +" to cover pot " + (pot+1) + " (the open pot)");
                         }
-                        else if ( amountLeftToAdd >= shortfallForThisPot ) {
-                            // Player has at least enough to complete his commitment to this pot
-                            AddCommentary("Adding "+ shortfallForThisPot +" to complete commitment to pot #" + (pot+1));
-                            this.Pots[pot][playerIndex] += shortfallForThisPot;
-                            amountLeftToAdd -= shortfallForThisPot;
-                        }
-                        else {
-                            // Player does not have enough to complete their contribution to this pot
-                            AddCommentary("Adding "+ amountLeftToAdd +" to partially satisfy commitment to pot #" + (pot+1));
-                            this.Pots[pot][playerIndex] += amountLeftToAdd;
-                            amountLeftToAdd = 0;
-                            SplitPotAbovePlayersAmount(pot,  playerIndex); // This will change the pot structure but we'll break out of this loop now so not a problem
-                            break; 
-                        }
+                        this.Pots[pot][playerIndex] += amountLeftToAdd;
+                        SplitPotAbovePlayersAmount(pot,  playerIndex); // This will change the pot structure but we'll break out of this loop now so not a problem
+                        break; 
+                    }                        
+                }
+                else {
+                    // We are currently filling pots that have already been superseded by the open pot
+                    int shortfallForThisPot = ( maxContributionToThisPotByAnyPlayer - myExistingContributionToThisPot );
+                    if ( shortfallForThisPot == 0 ) {
+                        AddCommentary("Player is already fully paid in to pot " + (pot+1) + " (with " + myExistingContributionToThisPot + " chips)");
                     }
-                //}
+                    else if ( amountLeftToAdd >= shortfallForThisPot ) {
+                        // Player has at least enough to complete his commitment to this pot
+                        AddCommentary("Adding "+ shortfallForThisPot +" to complete commitment to pot " + (pot+1));
+                        this.Pots[pot][playerIndex] += shortfallForThisPot;
+                        amountLeftToAdd -= shortfallForThisPot;
+                        // Stop here if player has nothing left to add
+                        if ( amountLeftToAdd == 0 ) {
+                            AddCommentary("Player has nothing left to add, all relevant pots successfully covered");
+                            break;
+                        }                        
+                    }
+                    else if ( amountLeftToAdd == 0 ) {
+                        // Can only get here if someone has raised beyond your all-in amount and you now need to cover 
+                        AddCommentary("Covering pot " + (pot+1));
+                        SplitPotAbovePlayersAmount(pot,  playerIndex); // This will change the pot structure but we'll break out of this loop now so not a problem
+                        break;                         
+                    }                    
+                    else {
+                        // Player does not have enough to complete their contribution to this pot
+                        AddCommentary("Adding "+ amountLeftToAdd +" to partially satisfy commitment to pot #" + (pot+1));
+                        this.Pots[pot][playerIndex] += amountLeftToAdd;
+                        amountLeftToAdd = 0;
+                        SplitPotAbovePlayersAmount(pot,  playerIndex); // This will change the pot structure but we'll break out of this loop now so not a problem
+                        break; 
+                    }
+                }
             }
         }
 

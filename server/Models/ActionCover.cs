@@ -17,7 +17,12 @@ namespace SevenStuds.Models
             // (note that the base class has already checked the player's eligibility for this action)
             Participant p = G.Participants[PlayerIndex];
 
-            G.RecordLastEvent(UserName + " paid " + p.UncommittedChips + " to cover the pot");
+            if ( p.UncommittedChips == 0 ) {
+                G.RecordLastEvent(UserName + " had no further chips and covered the pot");
+            }
+            else {
+                G.RecordLastEvent(UserName + " paid " + p.UncommittedChips + " to cover the pot");
+            }            
 
             // Implement the cover (has to be done pot-by-pot, and could involve splitting a pot)
             p.HasCovered = true;
