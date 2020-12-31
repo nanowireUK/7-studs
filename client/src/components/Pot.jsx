@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 
 import { Box, Drop, Text } from 'grommet';
+import { User } from 'grommet-icons';
 import { selectHandCompleted, selectPots, selectLastHandResult, selectPlayers, selectCommunityCard, selectGameStatus } from '../redux/slices/game';
 import { useSelector } from 'react-redux';
 import { useState } from 'react';
@@ -13,7 +14,11 @@ function Pot ({contents, potNumber}) {
 
     return <React.Fragment>
         <Box ref={ref} pad="xxsmall" >
-            <Box width="xsmall" pad="small" round="small" border={{ color: 'white', size: '1px' }} onClick={(e) => setShowDrop(!showDrop)}>
+            <Box width="xsmall" pad="small" round="small" style={{position: 'relative'}} border={{ color: 'white', size: '1px' }} onClick={(e) => setShowDrop(!showDrop)}>
+                {potNumber ? <Box direction="row" style={{position: 'absolute', top: 0, right: 0, margin: '4px'}} gap="xxsmall">
+                    <Text size="10px">{contents.filter(a => a > 0).length}</Text>
+                    <User size="small"/>
+                </Box> : null}
                 <Text size="xlarge" textAlign="center">{contents.reduce((a, b) => a + b, 0)}</Text>
             </Box>
         </Box>
