@@ -100,7 +100,18 @@ export const selectAdminName = (state) => selectPlayers(state).find(({ isAdmin }
 
 export const selectPots = (state) => state.game.Pots;
 
-export const selectLastHandResult = (state) => state.game.LastHandResult;
+export const selectLastHandResult = (state) => (state.game.MostRecentHandResult || [])
+    .map(potResult => potResult.map(({
+        AmountWonOrLost: takeaway,
+        PlayerName: name,
+        Result: resultDescription,
+        Stake: stake,
+    }) => ({
+        name,
+        resultDescription,
+        takeaway,
+        stake
+    })));
 
 export const selectGameStatus = (state) => state.game.StatusMessage;
 

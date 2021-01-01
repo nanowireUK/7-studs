@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 
 import { Box, Drop, Text } from 'grommet';
-import { User } from 'grommet-icons';
+import { User, Trophy } from 'grommet-icons';
 import { selectHandCompleted, selectPots, selectLastHandResult, selectPlayers, selectCommunityCard, selectGameStatus } from '../redux/slices/game';
 import { useSelector } from 'react-redux';
 import { useState } from 'react';
@@ -24,12 +24,44 @@ function Pot ({contents, potNumber}) {
         </Box>
 
         {showDrop ? <Drop align={{ bottom: 'top'}} plain target={ref.current} onClickOutside={() => setShowDrop(false)} onEsc={() => setShowDrop(false)}>
-            <Box elevation="small" pad="small" background="white" round border>
-                <Text margin={{ bottom: 'small'}} size="large" weight="bold">Contributions for Pot {potNumber + 1}</Text>
+            <Box elevation="small" pad="small" background="white" round border margin="xsmall">
+                <Text margin={{ bottom: 'small'}} size="large" weight="600">Contributions for Pot {potNumber + 1}</Text>
                 {contents.map((value, index) => value > 0 ? (
                     <Box key={index} direction="row" justify="between">
-                        <Text>{players[index].name}</Text>
-                        <Text>{value}</Text>
+                        <Text color={players[index].hasFolded ? 'gray' : 'default'}>{players[index].name}</Text>
+                        <Text color={players[index].hasFolded ? 'gray' : 'default'}>{value}</Text>
+                    </Box>
+                ): null)}
+            </Box>
+        </Drop> : null}
+    </React.Fragment>
+}
+
+function PotWinnings({ contents, potNumber }) {
+    const ref = useRef(null);
+    const [showDrop, setShowDrop] = useState(false);
+
+    const winners = contents.filter(({ takeaway }) => takeaway > 0).map(({name}) => name);
+
+    return <React.Fragment>
+        <Box ref={ref} pad="xxsmall" >
+            <Box width={{min: 'xsmall'}} pad="small" round="small" gap="xsmall" style={{position: 'relative'}} border={{ color: 'white', size: '1px' }} onClick={(e) => setShowDrop(!showDrop)}>
+                <Text size="xlarge" textAlign="center">{contents.map(({ stake }) => stake).reduce((a, b) => a + b, 0)}</Text>
+                {winners.map(name => (
+                    <Box direction="row" gap="xxsmall" align="center" justify="center">
+                        <Trophy size="small"/>
+                        <Text size="small">{name}</Text>
+                    </Box>
+                ))}
+            </Box>
+        </Box>
+
+        {showDrop ? <Drop align={{ bottom: 'top'}} plain target={ref.current} onClickOutside={() => setShowDrop(false)} onEsc={() => setShowDrop(false)}>
+            <Box elevation="small" pad="small" background="white" round border margin="xsmall" gap="xxsmall">
+                <Text margin={{ bottom: 'small'}} size="large" weight="600">Result for Pot {potNumber + 1}</Text>
+                {contents.map(({ name, takeaway, stake, resultDescription }, index) => stake > 0 ? (
+                    <Box key={index} direction="row" justify="between" >
+                        <Text>{resultDescription}</Text>
                     </Box>
                 ): null)}
             </Box>
@@ -46,14 +78,12 @@ export default function PotArea () {
 
     if (handCompleted) {
         return (
-            <Box fill round={true} background="brand" direction="column" overflow="auto">
-                {lastHandResult.map((potResult, potIndex) => (
-                    <Box flex="grow" key={potIndex} pad="small">
-                        {potResult.map((resultLine, index) => (
-                            <Box flex="grow" key={index}><Text>{resultLine}</Text></Box>
-                        ))}
-                    </Box>
-                ))}
+            <Box fill pad="medium" justify="center" align="center" alignContent="center" round={true} background="brand" direction="column">
+                <Box zindex={100} justify="center" direction="row" wrap pad="small">
+                    {lastHandResult.map((potResult, potIndex) => (
+                        <PotWinnings key={potIndex} contents={potResult} potNumber={potIndex} />
+                    ))}
+                </Box>
             </Box>
         )
     }
