@@ -25,7 +25,7 @@ function Player ({ name, hasLeftRoom, remainingFunds, status, position }) {
             gap="xsmall"
         >
             <Text color={textColor}>{inMostRecentGame ? `${ordinal(position + 1)}:` : '-'}</Text>
-            <Text color={textColor} weight={isMe ? 'bold' : 'normal'}>{name}</Text>
+            <Text color={textColor} weight={isMe ? '600' : 'normal'}>{name}</Text>
             <Text color={textColor}>
                 {(() => {
                     if (inMostRecentGame) return `(${remainingFunds})`;
@@ -66,7 +66,7 @@ function Lobby () {
     const playerList = currentGameStandings.length ?
         currentGameStandings.map(({ name, ...player }, position) => (
             <Player key={name} name={name} {...player} position={position} />
-        )) : players.map(({ name }) => <Text key={name} weight={name === username ? 'bold' : 'normal'}>{name}</Text>);
+        )) : players.map(({ name }) => <Text key={name} weight={name === username ? '600' : 'normal'}>{name}</Text>);
 
     return <div style={{ height: '100vh' }}>
         <Grid
@@ -79,7 +79,7 @@ function Lobby () {
             columns={['fill']}
             rows={['xsmall', 'auto', 'xsmall']}
         >
-            <Box pad="small" gridArea="header" direction="column" 
+            <Box pad="small" gridArea="header" direction="column"
             background="brand">
                 <Box margin="small" alignSelf="end" alignContent="center" fill="vertical" justify="center">
                     <Text alignSelf="center" size="large">{rejoinCode}</Text>

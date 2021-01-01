@@ -9,5 +9,8 @@ export default {
             size: '18px',
             height: '20px',
         },
+        heading: {
+            weigth: 600
+        }
     },
 };
