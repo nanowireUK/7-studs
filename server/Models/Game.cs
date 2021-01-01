@@ -656,21 +656,21 @@ namespace SevenStuds.Models
             // }
             for ( int pot = 0; pot < Pots.Count; pot++) {
                 int myExistingContributionToThisPot = ChipsInSpecifiedPotForSpecifiedPlayer (pot, playerIndex);
-                AddCommentary("Own current contribution to pot " + (pot+1) + " = " + myExistingContributionToThisPot);
+                AddCommentary("Own current contribution to pot #" + (pot+1) + " = " + myExistingContributionToThisPot);
                 int maxContributionToThisPotByAnyPlayer = MaxChipsInSpecifiedPotForAnyPlayer(pot);
-                AddCommentary("Highest current contribution to pot " + (pot+1) + " = " + maxContributionToThisPotByAnyPlayer);
+                AddCommentary("Highest current contribution to pot #" + (pot+1) + " = " + maxContributionToThisPotByAnyPlayer);
                 if ( pot == Pots.Count - 1) {
                     // This is the open pot
                     if ( amountLeftToAdd >= ( maxContributionToThisPotByAnyPlayer - myExistingContributionToThisPot ) ) {
                         // Player is calling or raising
-                        AddCommentary("Adding "+ amountLeftToAdd +" to pot " + (pot+1) + " (the open pot)");
+                        AddCommentary("Adding "+ amountLeftToAdd +" to pot #" + (pot+1) + " (the open pot)");
                         this.Pots[pot][playerIndex] += amountLeftToAdd;
                         break; // Loop would end here anyway as there are no more pots to process, but putting this in for clarity
                     }
                     else {
                         // User is short of the amount required to stay in and is covering the pot
                         if ( amountLeftToAdd > 0 ) {
-                            AddCommentary("Adding "+ amountLeftToAdd +" to cover pot " + (pot+1) + " (the open pot)");
+                            AddCommentary("Adding "+ amountLeftToAdd +" to cover pot #" + (pot+1) + " (the open pot)");
                         }
                         this.Pots[pot][playerIndex] += amountLeftToAdd;
                         SplitPotAbovePlayersAmount(pot,  playerIndex); // This will change the pot structure but we'll break out of this loop now so not a problem
@@ -681,11 +681,11 @@ namespace SevenStuds.Models
                     // We are currently filling pots that have already been superseded by the open pot
                     int shortfallForThisPot = ( maxContributionToThisPotByAnyPlayer - myExistingContributionToThisPot );
                     if ( shortfallForThisPot == 0 ) {
-                        AddCommentary("Player is already fully paid in to pot " + (pot+1) + " (with " + myExistingContributionToThisPot + " chips)");
+                        AddCommentary("Player is already fully paid in to pot #" + (pot+1) + " (with " + myExistingContributionToThisPot + " chips)");
                     }
                     else if ( amountLeftToAdd >= shortfallForThisPot ) {
                         // Player has at least enough to complete his commitment to this pot
-                        AddCommentary("Adding "+ shortfallForThisPot +" to complete commitment to pot " + (pot+1));
+                        AddCommentary("Adding "+ shortfallForThisPot +" to complete commitment to pot #" + (pot+1));
                         this.Pots[pot][playerIndex] += shortfallForThisPot;
                         amountLeftToAdd -= shortfallForThisPot;
                         // Stop here if player has nothing left to add
@@ -696,9 +696,16 @@ namespace SevenStuds.Models
                     }
                     else if ( amountLeftToAdd == 0 ) {
                         // Can only get here if someone has raised beyond your all-in amount and you now need to cover 
-                        AddCommentary("Covering pot " + (pot+1));
-                        SplitPotAbovePlayersAmount(pot,  playerIndex); // This will change the pot structure but we'll break out of this loop now so not a problem
-                        break;                         
+                        if ( myExistingContributionToThisPot == 0) {
+                            AddCommentary("Player is not invested in this pot and has nothing left to add to it");
+                            AddCommentary("Covering was completed with the covering of pot #" + (pot+1-1));
+                            break;    
+                        }  
+                        else {
+                            AddCommentary("Covering pot #" + (pot+1));
+                            SplitPotAbovePlayersAmount(pot,  playerIndex); // This will change the pot structure but we'll break out of this loop now so not a problem
+                            break;    
+                        }                                              
                     }                    
                     else {
                         // Player does not have enough to complete their contribution to this pot
@@ -715,7 +722,7 @@ namespace SevenStuds.Models
         public void SplitPotAbovePlayersAmount(int potIndex, int playerIndex) {
             // Find out how much the given player has in the given pot, and split the pot so that higher contributions are moved to a new pot
             int potLimit = ChipsInSpecifiedPotForSpecifiedPlayer(potIndex, playerIndex);
-            AddCommentary("Splitting pot " + (potIndex+1) + " with contribution cap of " + potLimit);
+            AddCommentary("Splitting pot #" + (potIndex+1) + " with contribution cap of " + potLimit);
             Pots.Insert(potIndex+1, new List<int>());
             for ( int player = 0; player < Pots[potIndex].Count; player++) {
                 // Move any surplus amounts from old pot to new for each player
