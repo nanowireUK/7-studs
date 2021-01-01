@@ -7,14 +7,14 @@ import { useSelector } from 'react-redux';
 import { useState } from 'react';
 import PokerCard from './PokerCard';
 
-function Pot ({contents, potNumber}) {
+function Pot ({ contents, potNumber, isActivePot }) {
     const ref = useRef(null);
     const [showDrop, setShowDrop] = useState(false);
     const players = useSelector(selectPlayers);
 
     return <React.Fragment>
         <Box ref={ref} pad="xxsmall" >
-            <Box width="xsmall" pad="small" round="small" style={{position: 'relative'}} border={{ color: 'white', size: '1px' }} onClick={(e) => setShowDrop(!showDrop)}>
+            <Box width="xsmall" pad="small" round="small" style={{position: 'relative'}} border={{ color: 'white', size: isActivePot ? '3px' : '1px' }} onClick={(e) => setShowDrop(!showDrop)}>
                 {potNumber ? <Box direction="row" style={{position: 'absolute', top: 0, right: 0, margin: '4px'}} gap="xxsmall">
                     <Text size="10px">{contents.filter(a => a > 0).length}</Text>
                     <User size="small"/>
@@ -78,10 +78,10 @@ export default function PotArea () {
 
     if (handCompleted) {
         return (
-            <Box fill pad="medium" justify="center" align="center" alignContent="center" round={true} background="brand" direction="column">
-                <Box zindex={100} justify="center" direction="row" wrap pad="small">
-                    {lastHandResult.map((potResult, potIndex) => (
-                        <PotWinnings key={potIndex} contents={potResult} potNumber={potIndex} />
+            <Box fill pad="medium" justify="center" align="center" round={true} background="brand" direction="column">
+                <Box zindex={100} align="center" direction="row" wrap pad="small">
+                    {lastHandResult.map((potResult, potNumber) => (
+                        <PotWinnings key={potNumber} contents={potResult} potNumber={potNumber} />
                     ))}
                 </Box>
             </Box>
@@ -89,10 +89,10 @@ export default function PotArea () {
     }
 
     return (
-        <Box fill pad="medium" justify="center" align="center" alignContent="center" round={true} background="brand" direction="column">
+        <Box fill pad="medium" justify="center" align="center" round={true} background="brand" direction="column">
             <Box zindex={100} justify="center" direction="row" wrap pad="small">
-                {pots.map((pot, index) => (
-                    <Pot key={index} contents={pot} potNumber={index} />
+                {pots.map((pot, potNumber) => (
+                    <Pot key={potNumber} contents={pot} potNumber={potNumber} isActivePot={pots.length - 1 === potNumber} />
                 ))}
             </Box>
             {communityCard ? <Box pad="xsmall" alignSelf={pots.length > 6 ? 'end' : null} height="30%"><PokerCard face={communityCard[0]} suit={communityCard[1]} isCommunity/></Box> : null}
