@@ -44,11 +44,11 @@ namespace SevenStuds.Models
                 docType = "GameHeader",
                 docSeq = 0,
                 administrator = g.Participants[g.GetIndexOfAdministrator()].Name,
-                startTimeUtc = g.StartTime,
+                startTimeUtc = g.StartTimeUTC,
                 endTimeUtc = DateTimeOffset.MaxValue, // should be set at end of game
                 playersInOrderAtStartOfGame = players,
                 // Set values that depend on the other values
-                gameId = g.ParentRoom().RoomId + "-" + g.StartTime.ToString(),
+                gameId = g.StartTimeUTC.ToString("u") + " " + g.ParentRoom().RoomId,
                 id = "GameHeader-" + 0               
             };
 
@@ -75,7 +75,7 @@ namespace SevenStuds.Models
                 docType = "Action",
                 docSeq = gla.ActionNumber,
                 // Set values that depend on the other values
-                gameId = g.ParentRoom().RoomId + "-" + g.StartTime.ToString(),
+                gameId = g.StartTimeUTC.ToString("u") + " " + g.ParentRoom().RoomId,
                 id = "Action-" + gla.ActionNumber,  
                 action = gla      
             };
@@ -103,7 +103,7 @@ namespace SevenStuds.Models
                 docType = "Deck",
                 docSeq = g.HandsPlayedIncludingCurrent,
                 // Set values that depend on the other values
-                gameId = g.ParentRoom().RoomId + "-" + g.StartTime.ToString(),
+                gameId = g.StartTimeUTC.ToString("u") + " " + g.ParentRoom().RoomId,
                 id = "Deck-" + g.HandsPlayedIncludingCurrent,  
                 deck = g.SnapshotOfDeckForCurrentHand,  
                 //lobbyData = g.LobbyData
@@ -136,7 +136,7 @@ namespace SevenStuds.Models
                 docType = "Log",
                 docSeq = 0,
                 // Set values that depend on the other values
-                gameId = g.ParentRoom().RoomId + "-" + g.StartTime.ToString(),
+                gameId = g.StartTimeUTC.ToString("u") + " " + g.ParentRoom().RoomId,
                 id = "Log-0",  
                 log = g._GameLog      
             };

@@ -15,8 +15,8 @@ namespace SevenStuds.Models
         }
         public void UpdateStatistics(Game g) {
             timeNowUtc = DateTimeOffset.Now;
-            startTimeUtc = g.StartTime;
-            gameMinutes = Convert.ToInt32( (DateTimeOffset.Now - g.StartTime).TotalMinutes);
+            startTimeUtc = g.StartTimeUTC;
+            gameMinutes = Convert.ToInt32( (DateTimeOffset.Now - g.StartTimeUTC).TotalMinutes);
             handsPlayed = g.HandsPlayedIncludingCurrent;
         }
     }

@@ -39,7 +39,7 @@ namespace SevenStuds.Models
         public bool _CheckIsAvailable { get; set; }
         public int CountOfLeavers { get; set; }
         public Card CommunityCard { get; set; }
-        public DateTimeOffset StartTime { get; set; }
+        public DateTimeOffset StartTimeUTC { get; set; }
         public DateTimeOffset LastSuccessfulAction { get; set; }
         public GameLog _GameLog { get; set; }
         protected GameLog _ReplayContext { get; set; }
@@ -70,7 +70,7 @@ namespace SevenStuds.Models
         {
             GameMode = GameModeEnum.LobbyOpen;
             LastSuccessfulAction = DateTimeOffset.Now; // This will be updated as the game progresses but need to set a baseline here
-            StartTime = DateTimeOffset.Now; // At this point the time just represents the time the game was created
+            StartTimeUTC = DateTimeOffset.UtcNow; // At this point the time just represents the time the game was created
             SetReplayContext(replayContext);
             Participants = new List<Participant>(); // start with empty list of participants
             Spectators = new List<Spectator>(); // start with empty list of spectators
@@ -229,7 +229,7 @@ namespace SevenStuds.Models
                     }  
                 }                   
             }
-            StartTime = DateTimeOffset.Now;
+            StartTimeUTC = DateTimeOffset.UtcNow;
             StartNewGameLog(); // start a new log for this game
             await ServerState.OurDB.RecordGameStart(this); 
         }
