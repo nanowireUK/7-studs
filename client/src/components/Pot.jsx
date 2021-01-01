@@ -92,7 +92,7 @@ export default function PotArea () {
         <Box fill pad="medium" justify="center" align="center" round={true} background="brand" direction="column">
             <Box zindex={100} justify="center" direction="row" wrap pad="small">
                 {pots.map((pot, potNumber) => (
-                    <Pot key={potNumber} contents={pot} potNumber={potNumber} isActivePot={pots.length - 1 === potNumber} />
+                    <Pot key={potNumber} contents={pot} potNumber={potNumber} isActivePot={pots.length > 1 && pots.length - 1 === potNumber} />
                 ))}
             </Box>
             {communityCard ? <Box pad="xsmall" alignSelf={pots.length > 6 ? 'end' : null} height="30%"><PokerCard face={communityCard[0]} suit={communityCard[1]} isCommunity/></Box> : null}
