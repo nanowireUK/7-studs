@@ -1,5 +1,6 @@
 {
 	"notes": "original log from 2020-10-10 (second game), changed to conform to new Deck structure and rebuilt by running through Replay and retrieving the log from that",
+	"notes2": "tried replaying this on 2020-12-31 after fixing pair-comparison bug, but the fix has made it unreplayable ... keeping it for info only ",
 	"administrator": "Robert",
 	"pauseAfter": 0,
 	"playersInOrderAtStartOfGame": [

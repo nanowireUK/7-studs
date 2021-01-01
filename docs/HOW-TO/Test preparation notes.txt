@@ -40,8 +40,8 @@ To convert old-style game logs (where Deck objects inherit from Stack instead of
 		- Paste the entire game log (that you have just reconstructed above) into the Parameters field
 		- Click ReplayGameFromLog
 		- If all runs ok it will return the 'overall game state'
-		- In the Participants area, find a player name and their RejoinCode
-		- Enter these into the User and Parameters area respectively and click Rejoin This Game
+		- See the rejoinCodes section (near the top) for all players' Rejoin Codes
+		- For one or more players, rejoin the game by entering player name and rejoin code and clicking Rejoin This Game
 		- Click Get Game Log
 		- That is the cleansed game log, with correct action numbers, deck ids, etc. 
 		- Compare it with the reconstructed game log just to be sure (all differences should be obvious and explainable)

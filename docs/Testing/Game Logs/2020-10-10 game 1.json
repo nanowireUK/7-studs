@@ -1,5 +1,6 @@
 {
-	"notes": "original log from 2020-10-10 (first game), changed to conform to new Deck structure and rebuilt by running through Replay and retrieving the log from that",
+	"notes": "Original log from 2020-10-10 (first game), changed to conform to new Deck structure and rebuilt by running through Replay and retrieving the log from that",
+	"notes2": "Replayed again on 2020-12-31 after lots of games changes -> all ran ok, and PlayerSummaries now added for comparison in further replays",
 	"administrator": "Robert",
 	"pauseAfter": 0,
 	"playersInOrderAtStartOfGame": [
@@ -18,6 +19,7 @@
 			"UserName": "Robert",
 			"Parameters": null,
 			"StatusMessage": "Robert started the game (player order now randomised). Fabrice to bet",
+			"PlayerSummaries": "N[D]999(1)Ah J[]999(1)4s D[]999(1)7c F[]999(1)Ac P[]999(1)9h A[]999(1)Ks R[]999(1)Tc ",
 			"HandCommentary": []
 		},
 		{
@@ -26,6 +28,7 @@
 			"UserName": "Fabrice",
 			"Parameters": null,
 			"StatusMessage": "Fabrice checked. Paul to bet",
+			"PlayerSummaries": "N[D]999(1)Ah J[]999(1)4s D[]999(1)7c F[]999(1)Ac P[]999(1)9h A[]999(1)Ks R[]999(1)Tc ",
 			"HandCommentary": [
 				"Fabrice checked",
 				"Paul to bet"
@@ -37,6 +40,7 @@
 			"UserName": "Paul",
 			"Parameters": "2",
 			"StatusMessage": "Paul raised by 2. Adam to bet",
+			"PlayerSummaries": "N[D]999(1)Ah J[]999(1)4s D[]999(1)7c F[]999(1)Ac P[]997(3)9h A[]999(1)Ks R[]999(1)Tc ",
 			"HandCommentary": [
 				"Paul raised by 2",
 				"Adam to bet"
@@ -48,6 +52,7 @@
 			"UserName": "Adam",
 			"Parameters": null,
 			"StatusMessage": "Adam paid 2 to call. Robert to bet",
+			"PlayerSummaries": "N[D]999(1)Ah J[]999(1)4s D[]999(1)7c F[]999(1)Ac P[]997(3)9h A[]997(3)Ks R[]999(1)Tc ",
 			"HandCommentary": [
 				"Adam paid 2 to call",
 				"Robert to bet"
@@ -59,6 +64,7 @@
 			"UserName": "Robert",
 			"Parameters": null,
 			"StatusMessage": "Robert paid 2 to call. Nigel to bet",
+			"PlayerSummaries": "N[D]999(1)Ah J[]999(1)4s D[]999(1)7c F[]999(1)Ac P[]997(3)9h A[]997(3)Ks R[]997(3)Tc ",
 			"HandCommentary": [
 				"Robert paid 2 to call",
 				"Nigel to bet"
@@ -70,6 +76,7 @@
 			"UserName": "Nigel",
 			"Parameters": null,
 			"StatusMessage": "Nigel paid 2 to call. John to bet",
+			"PlayerSummaries": "N[D]997(3)Ah J[]999(1)4s D[]999(1)7c F[]999(1)Ac P[]997(3)9h A[]997(3)Ks R[]997(3)Tc ",
 			"HandCommentary": [
 				"Nigel paid 2 to call",
 				"John to bet"
@@ -81,6 +88,7 @@
 			"UserName": "John",
 			"Parameters": null,
 			"StatusMessage": "John paid 2 to call. Dan to bet",
+			"PlayerSummaries": "N[D]997(3)Ah J[]997(3)4s D[]999(1)7c F[]999(1)Ac P[]997(3)9h A[]997(3)Ks R[]997(3)Tc ",
 			"HandCommentary": [
 				"John paid 2 to call",
 				"Dan to bet"
@@ -92,6 +100,7 @@
 			"UserName": "Dan",
 			"Parameters": null,
 			"StatusMessage": "Dan paid 2 to call. Fabrice to bet",
+			"PlayerSummaries": "N[D]997(3)Ah J[]997(3)4s D[]997(3)7c F[]999(1)Ac P[]997(3)9h A[]997(3)Ks R[]997(3)Tc ",
 			"HandCommentary": [
 				"Dan paid 2 to call",
 				"Fabrice to bet"
@@ -103,6 +112,7 @@
 			"UserName": "Fabrice",
 			"Parameters": null,
 			"StatusMessage": "Fabrice paid 2 to call. Started next round, Robert to bet",
+			"PlayerSummaries": "N[D]997(3)Ah4d J[]997(3)4s6c D[]997(3)7c5d F[]997(3)Ac9d P[]997(3)9hAd A[]997(3)KsQs R[]997(3)TcTh ",
 			"HandCommentary": [
 				"Fabrice paid 2 to call",
 				"Started next round, Robert to bet"
@@ -114,6 +124,7 @@
 			"UserName": "Robert",
 			"Parameters": "15",
 			"StatusMessage": "Robert raised by 15. Nigel to bet",
+			"PlayerSummaries": "N[D]997(3)Ah4d J[]997(3)4s6c D[]997(3)7c5d F[]997(3)Ac9d P[]997(3)9hAd A[]997(3)KsQs R[]982(18)TcTh ",
 			"HandCommentary": [
 				"Robert raised by 15",
 				"Nigel to bet"
@@ -125,6 +136,7 @@
 			"UserName": "Nigel",
 			"Parameters": null,
 			"StatusMessage": "Nigel paid 15 to call. John to bet",
+			"PlayerSummaries": "N[D]982(18)Ah4d J[]997(3)4s6c D[]997(3)7c5d F[]997(3)Ac9d P[]997(3)9hAd A[]997(3)KsQs R[]982(18)TcTh ",
 			"HandCommentary": [
 				"Nigel paid 15 to call",
 				"John to bet"
@@ -136,6 +148,7 @@
 			"UserName": "John",
 			"Parameters": null,
 			"StatusMessage": "John paid 15 to call. Dan to bet",
+			"PlayerSummaries": "N[D]982(18)Ah4d J[]982(18)4s6c D[]997(3)7c5d F[]997(3)Ac9d P[]997(3)9hAd A[]997(3)KsQs R[]982(18)TcTh ",
 			"HandCommentary": [
 				"John paid 15 to call",
 				"Dan to bet"
@@ -147,6 +160,7 @@
 			"UserName": "Dan",
 			"Parameters": null,
 			"StatusMessage": "Dan paid 15 to call. Fabrice to bet",
+			"PlayerSummaries": "N[D]982(18)Ah4d J[]982(18)4s6c D[]982(18)7c5d F[]997(3)Ac9d P[]997(3)9hAd A[]997(3)KsQs R[]982(18)TcTh ",
 			"HandCommentary": [
 				"Dan paid 15 to call",
 				"Fabrice to bet"
@@ -158,6 +172,7 @@
 			"UserName": "Fabrice",
 			"Parameters": null,
 			"StatusMessage": "Fabrice paid 15 to call. Paul to bet",
+			"PlayerSummaries": "N[D]982(18)Ah4d J[]982(18)4s6c D[]982(18)7c5d F[]982(18)Ac9d P[]997(3)9hAd A[]997(3)KsQs R[]982(18)TcTh ",
 			"HandCommentary": [
 				"Fabrice paid 15 to call",
 				"Paul to bet"
@@ -169,6 +184,7 @@
 			"UserName": "Paul",
 			"Parameters": "15",
 			"StatusMessage": "Paul paid 15 to stay in and raised by 15. Adam to bet",
+			"PlayerSummaries": "N[D]982(18)Ah4d J[]982(18)4s6c D[]982(18)7c5d F[]982(18)Ac9d P[]967(33)9hAd A[]997(3)KsQs R[]982(18)TcTh ",
 			"HandCommentary": [
 				"Paul paid 15 to stay in and raised by 15",
 				"Adam to bet"
@@ -180,6 +196,7 @@
 			"UserName": "Adam",
 			"Parameters": null,
 			"StatusMessage": "Adam paid 30 to call. Robert to bet",
+			"PlayerSummaries": "N[D]982(18)Ah4d J[]982(18)4s6c D[]982(18)7c5d F[]982(18)Ac9d P[]967(33)9hAd A[]967(33)KsQs R[]982(18)TcTh ",
 			"HandCommentary": [
 				"Adam paid 30 to call",
 				"Robert to bet"
@@ -191,6 +208,7 @@
 			"UserName": "Robert",
 			"Parameters": null,
 			"StatusMessage": "Robert paid 15 to call. Nigel to bet",
+			"PlayerSummaries": "N[D]982(18)Ah4d J[]982(18)4s6c D[]982(18)7c5d F[]982(18)Ac9d P[]967(33)9hAd A[]967(33)KsQs R[]967(33)TcTh ",
 			"HandCommentary": [
 				"Robert paid 15 to call",
 				"Nigel to bet"
@@ -202,6 +220,7 @@
 			"UserName": "Nigel",
 			"Parameters": null,
 			"StatusMessage": "Nigel paid 15 to call. John to bet",
+			"PlayerSummaries": "N[D]967(33)Ah4d J[]982(18)4s6c D[]982(18)7c5d F[]982(18)Ac9d P[]967(33)9hAd A[]967(33)KsQs R[]967(33)TcTh ",
 			"HandCommentary": [
 				"Nigel paid 15 to call",
 				"John to bet"
@@ -213,6 +232,7 @@
 			"UserName": "John",
 			"Parameters": null,
 			"StatusMessage": "John paid 15 to call. Dan to bet",
+			"PlayerSummaries": "N[D]967(33)Ah4d J[]967(33)4s6c D[]982(18)7c5d F[]982(18)Ac9d P[]967(33)9hAd A[]967(33)KsQs R[]967(33)TcTh ",
 			"HandCommentary": [
 				"John paid 15 to call",
 				"Dan to bet"
@@ -224,6 +244,7 @@
 			"UserName": "Dan",
 			"Parameters": null,
 			"StatusMessage": "Dan paid 15 to call. Fabrice to bet",
+			"PlayerSummaries": "N[D]967(33)Ah4d J[]967(33)4s6c D[]967(33)7c5d F[]982(18)Ac9d P[]967(33)9hAd A[]967(33)KsQs R[]967(33)TcTh ",
 			"HandCommentary": [
 				"Dan paid 15 to call",
 				"Fabrice to bet"
@@ -235,6 +256,7 @@
 			"UserName": "Fabrice",
 			"Parameters": null,
 			"StatusMessage": "Fabrice paid 15 to call. Started next round, Robert to bet",
+			"PlayerSummaries": "N[D]967(33)Ah4d4h J[]967(33)4s6cKd D[]967(33)7c5d5h F[]967(33)Ac9d8c P[]967(33)9hAdTd A[]967(33)KsQs2d R[]967(33)TcTh8h ",
 			"HandCommentary": [
 				"Fabrice paid 15 to call",
 				"Started next round, Robert to bet"
@@ -246,6 +268,7 @@
 			"UserName": "Robert",
 			"Parameters": null,
 			"StatusMessage": "Robert checked. Nigel to bet",
+			"PlayerSummaries": "N[D]967(33)Ah4d4h J[]967(33)4s6cKd D[]967(33)7c5d5h F[]967(33)Ac9d8c P[]967(33)9hAdTd A[]967(33)KsQs2d R[]967(33)TcTh8h ",
 			"HandCommentary": [
 				"Robert checked",
 				"Nigel to bet"
@@ -257,6 +280,7 @@
 			"UserName": "Nigel",
 			"Parameters": null,
 			"StatusMessage": "Nigel checked. John to bet",
+			"PlayerSummaries": "N[D]967(33)Ah4d4h J[]967(33)4s6cKd D[]967(33)7c5d5h F[]967(33)Ac9d8c P[]967(33)9hAdTd A[]967(33)KsQs2d R[]967(33)TcTh8h ",
 			"HandCommentary": [
 				"Nigel checked",
 				"John to bet"
@@ -268,6 +292,7 @@
 			"UserName": "John",
 			"Parameters": null,
 			"StatusMessage": "John checked. Dan to bet",
+			"PlayerSummaries": "N[D]967(33)Ah4d4h J[]967(33)4s6cKd D[]967(33)7c5d5h F[]967(33)Ac9d8c P[]967(33)9hAdTd A[]967(33)KsQs2d R[]967(33)TcTh8h ",
 			"HandCommentary": [
 				"John checked",
 				"Dan to bet"
@@ -279,6 +304,7 @@
 			"UserName": "Dan",
 			"Parameters": null,
 			"StatusMessage": "Dan checked. Fabrice to bet",
+			"PlayerSummaries": "N[D]967(33)Ah4d4h J[]967(33)4s6cKd D[]967(33)7c5d5h F[]967(33)Ac9d8c P[]967(33)9hAdTd A[]967(33)KsQs2d R[]967(33)TcTh8h ",
 			"HandCommentary": [
 				"Dan checked",
 				"Fabrice to bet"
@@ -290,6 +316,7 @@
 			"UserName": "Fabrice",
 			"Parameters": null,
 			"StatusMessage": "Fabrice checked. Paul to bet",
+			"PlayerSummaries": "N[D]967(33)Ah4d4h J[]967(33)4s6cKd D[]967(33)7c5d5h F[]967(33)Ac9d8c P[]967(33)9hAdTd A[]967(33)KsQs2d R[]967(33)TcTh8h ",
 			"HandCommentary": [
 				"Fabrice checked",
 				"Paul to bet"
@@ -301,6 +328,7 @@
 			"UserName": "Paul",
 			"Parameters": null,
 			"StatusMessage": "Paul folded. Adam to bet",
+			"PlayerSummaries": "N[D]967(33)Ah4d4h J[]967(33)4s6cKd D[]967(33)7c5d5h F[]967(33)Ac9d8c P[F]967(33)9hAdTd A[]967(33)KsQs2d R[]967(33)TcTh8h ",
 			"HandCommentary": [
 				"Paul folded",
 				"Adam to bet"
@@ -312,6 +340,7 @@
 			"UserName": "Adam",
 			"Parameters": null,
 			"StatusMessage": "Adam folded. Started next round, John to bet",
+			"PlayerSummaries": "N[D]967(33)Ah4d4hJh J[]967(33)4s6cKdKh D[]967(33)7c5d5h4c F[]967(33)Ac9d8cJs P[F]967(33)9hAdTd A[F]967(33)KsQs2d R[]967(33)TcTh8hJc ",
 			"HandCommentary": [
 				"Adam folded",
 				"Started next round, John to bet"
@@ -323,6 +352,7 @@
 			"UserName": "John",
 			"Parameters": "20",
 			"StatusMessage": "John raised by 20. Dan to bet",
+			"PlayerSummaries": "N[D]967(33)Ah4d4hJh J[]947(53)4s6cKdKh D[]967(33)7c5d5h4c F[]967(33)Ac9d8cJs P[F]967(33)9hAdTd A[F]967(33)KsQs2d R[]967(33)TcTh8hJc ",
 			"HandCommentary": [
 				"John raised by 20",
 				"Dan to bet"
@@ -334,6 +364,7 @@
 			"UserName": "Dan",
 			"Parameters": null,
 			"StatusMessage": "Dan paid 20 to call. Fabrice to bet",
+			"PlayerSummaries": "N[D]967(33)Ah4d4hJh J[]947(53)4s6cKdKh D[]947(53)7c5d5h4c F[]967(33)Ac9d8cJs P[F]967(33)9hAdTd A[F]967(33)KsQs2d R[]967(33)TcTh8hJc ",
 			"HandCommentary": [
 				"Dan paid 20 to call",
 				"Fabrice to bet"
@@ -345,6 +376,7 @@
 			"UserName": "Fabrice",
 			"Parameters": null,
 			"StatusMessage": "Fabrice paid 20 to call. Robert to bet",
+			"PlayerSummaries": "N[D]967(33)Ah4d4hJh J[]947(53)4s6cKdKh D[]947(53)7c5d5h4c F[]947(53)Ac9d8cJs P[F]967(33)9hAdTd A[F]967(33)KsQs2d R[]967(33)TcTh8hJc ",
 			"HandCommentary": [
 				"Fabrice paid 20 to call",
 				"Robert to bet"
@@ -356,6 +388,7 @@
 			"UserName": "Robert",
 			"Parameters": null,
 			"StatusMessage": "Robert paid 20 to call. Nigel to bet",
+			"PlayerSummaries": "N[D]967(33)Ah4d4hJh J[]947(53)4s6cKdKh D[]947(53)7c5d5h4c F[]947(53)Ac9d8cJs P[F]967(33)9hAdTd A[F]967(33)KsQs2d R[]947(53)TcTh8hJc ",
 			"HandCommentary": [
 				"Robert paid 20 to call",
 				"Nigel to bet"
@@ -367,6 +400,7 @@
 			"UserName": "Nigel",
 			"Parameters": null,
 			"StatusMessage": "Nigel paid 20 to call. Started next round, John to bet",
+			"PlayerSummaries": "N[D]947(53)Ah4d4hJh J[]947(53)4s6cKdKh D[]947(53)7c5d5h4c F[]947(53)Ac9d8cJs P[F]967(33)9hAdTd A[F]967(33)KsQs2d R[]947(53)TcTh8hJc ",
 			"HandCommentary": [
 				"Nigel paid 20 to call",
 				"Started next round, John to bet"
@@ -378,6 +412,7 @@
 			"UserName": "John",
 			"Parameters": "10",
 			"StatusMessage": "John raised by 10. Dan to bet",
+			"PlayerSummaries": "N[D]947(53)Ah4d4hJh J[]937(63)4s6cKdKh D[]947(53)7c5d5h4c F[]947(53)Ac9d8cJs P[F]967(33)9hAdTd A[F]967(33)KsQs2d R[]947(53)TcTh8hJc ",
 			"HandCommentary": [
 				"John raised by 10",
 				"Dan to bet"
@@ -389,6 +424,7 @@
 			"UserName": "Dan",
 			"Parameters": null,
 			"StatusMessage": "Dan paid 10 to call. Fabrice to bet",
+			"PlayerSummaries": "N[D]947(53)Ah4d4hJh J[]937(63)4s6cKdKh D[]937(63)7c5d5h4c F[]947(53)Ac9d8cJs P[F]967(33)9hAdTd A[F]967(33)KsQs2d R[]947(53)TcTh8hJc ",
 			"HandCommentary": [
 				"Dan paid 10 to call",
 				"Fabrice to bet"
@@ -400,6 +436,7 @@
 			"UserName": "Fabrice",
 			"Parameters": null,
 			"StatusMessage": "Fabrice folded. Robert to bet",
+			"PlayerSummaries": "N[D]947(53)Ah4d4hJh J[]937(63)4s6cKdKh D[]937(63)7c5d5h4c F[F]947(53)Ac9d8cJs P[F]967(33)9hAdTd A[F]967(33)KsQs2d R[]947(53)TcTh8hJc ",
 			"HandCommentary": [
 				"Fabrice folded",
 				"Robert to bet"
@@ -411,6 +448,7 @@
 			"UserName": "Robert",
 			"Parameters": "50",
 			"StatusMessage": "Robert paid 10 to stay in and raised by 50. Nigel to bet",
+			"PlayerSummaries": "N[D]947(53)Ah4d4hJh J[]937(63)4s6cKdKh D[]937(63)7c5d5h4c F[F]947(53)Ac9d8cJs P[F]967(33)9hAdTd A[F]967(33)KsQs2d R[]887(113)TcTh8hJc ",
 			"HandCommentary": [
 				"Robert paid 10 to stay in and raised by 50",
 				"Nigel to bet"
@@ -422,6 +460,7 @@
 			"UserName": "Nigel",
 			"Parameters": null,
 			"StatusMessage": "Nigel folded. John to bet",
+			"PlayerSummaries": "N[FD]947(53)Ah4d4hJh J[]937(63)4s6cKdKh D[]937(63)7c5d5h4c F[F]947(53)Ac9d8cJs P[F]967(33)9hAdTd A[F]967(33)KsQs2d R[]887(113)TcTh8hJc ",
 			"HandCommentary": [
 				"Nigel folded",
 				"John to bet"
@@ -433,6 +472,7 @@
 			"UserName": "John",
 			"Parameters": null,
 			"StatusMessage": "John paid 50 to call. Dan to bet",
+			"PlayerSummaries": "N[FD]947(53)Ah4d4hJh J[]887(113)4s6cKdKh D[]937(63)7c5d5h4c F[F]947(53)Ac9d8cJs P[F]967(33)9hAdTd A[F]967(33)KsQs2d R[]887(113)TcTh8hJc ",
 			"HandCommentary": [
 				"John paid 50 to call",
 				"Dan to bet"
@@ -444,6 +484,7 @@
 			"UserName": "Dan",
 			"Parameters": null,
 			"StatusMessage": "Dan paid 50 to call. Betting completed, proceeding to hand reveal stage, Robert to reveal (or fold)",
+			"PlayerSummaries": "N[FD]947(53)Ah4d4hJh J[]887(113)4s6cKdKh D[]887(113)7c5d5h4c F[F]947(53)Ac9d8cJs P[F]967(33)9hAdTd A[F]967(33)KsQs2d R[]887(113)TcTh8hJc ",
 			"HandCommentary": [
 				"Dan paid 50 to call",
 				"Betting completed, proceeding to hand reveal stage, Robert to reveal (or fold)"
@@ -455,6 +496,7 @@
 			"UserName": "Robert",
 			"Parameters": null,
 			"StatusMessage": "Robert revealed their hand details. John to reveal (or fold)",
+			"PlayerSummaries": "N[FD]947(53)Ah4d4hJh J[]887(113)4s6cKdKh D[]887(113)7c5d5h4c F[F]947(53)Ac9d8cJs P[F]967(33)9hAdTd A[F]967(33)KsQs2d R[]887(113)TcTh8hJc ",
 			"HandCommentary": [
 				"Robert revealed their hand details",
 				"John to reveal (or fold)"
@@ -466,6 +508,7 @@
 			"UserName": "John",
 			"Parameters": null,
 			"StatusMessage": "John revealed their hand details. Dan to reveal (or fold)",
+			"PlayerSummaries": "N[FD]947(53)Ah4d4hJh J[]887(113)4s6cKdKh D[]887(113)7c5d5h4c F[F]947(53)Ac9d8cJs P[F]967(33)9hAdTd A[F]967(33)KsQs2d R[]887(113)TcTh8hJc ",
 			"HandCommentary": [
 				"John revealed their hand details",
 				"Dan to reveal (or fold)"
@@ -477,6 +520,7 @@
 			"UserName": "Dan",
 			"Parameters": null,
 			"StatusMessage": "Dan revealed their hand details. Reveal hands if desired, or administrator to start next hand (or reopen lobby)",
+			"PlayerSummaries": "N[FD]947(0)Ah4d4hJh J[]887(0)4s6cKdKh D[]887(0)7c5d5h4c F[F]947(0)Ac9d8cJs P[F]967(0)9hAdTd A[F]967(0)KsQs2d R[]1398(0)TcTh8hJc ",
 			"HandCommentary": [
 				"Dan revealed their hand details",
 				"Dan revealed their hand details, all hands revealed, hand ended",
@@ -497,6 +541,7 @@
 			"UserName": "Robert",
 			"Parameters": null,
 			"StatusMessage": "Robert started next hand. Fabrice to bet",
+			"PlayerSummaries": "N[]946(1)Ad J[D]886(1)Ts D[]886(1)9c F[]946(1)Ah P[]966(1)4h A[]966(1)Kh R[]1397(1)Qh ",
 			"HandCommentary": []
 		},
 		{
@@ -505,6 +550,7 @@
 			"UserName": "Fabrice",
 			"Parameters": null,
 			"StatusMessage": "Fabrice checked. Paul to bet",
+			"PlayerSummaries": "N[]946(1)Ad J[D]886(1)Ts D[]886(1)9c F[]946(1)Ah P[]966(1)4h A[]966(1)Kh R[]1397(1)Qh ",
 			"HandCommentary": [
 				"Fabrice checked",
 				"Paul to bet"
@@ -516,6 +562,7 @@
 			"UserName": "Paul",
 			"Parameters": "3",
 			"StatusMessage": "Paul raised by 3. Adam to bet",
+			"PlayerSummaries": "N[]946(1)Ad J[D]886(1)Ts D[]886(1)9c F[]946(1)Ah P[]963(4)4h A[]966(1)Kh R[]1397(1)Qh ",
 			"HandCommentary": [
 				"Paul raised by 3",
 				"Adam to bet"
@@ -527,6 +574,7 @@
 			"UserName": "Adam",
 			"Parameters": null,
 			"StatusMessage": "Adam paid 3 to call. Robert to bet",
+			"PlayerSummaries": "N[]946(1)Ad J[D]886(1)Ts D[]886(1)9c F[]946(1)Ah P[]963(4)4h A[]963(4)Kh R[]1397(1)Qh ",
 			"HandCommentary": [
 				"Adam paid 3 to call",
 				"Robert to bet"
@@ -538,6 +586,7 @@
 			"UserName": "Robert",
 			"Parameters": null,
 			"StatusMessage": "Robert paid 3 to call. Nigel to bet",
+			"PlayerSummaries": "N[]946(1)Ad J[D]886(1)Ts D[]886(1)9c F[]946(1)Ah P[]963(4)4h A[]963(4)Kh R[]1394(4)Qh ",
 			"HandCommentary": [
 				"Robert paid 3 to call",
 				"Nigel to bet"
@@ -549,6 +598,7 @@
 			"UserName": "Nigel",
 			"Parameters": null,
 			"StatusMessage": "Nigel paid 3 to call. John to bet",
+			"PlayerSummaries": "N[]943(4)Ad J[D]886(1)Ts D[]886(1)9c F[]946(1)Ah P[]963(4)4h A[]963(4)Kh R[]1394(4)Qh ",
 			"HandCommentary": [
 				"Nigel paid 3 to call",
 				"John to bet"
@@ -560,6 +610,7 @@
 			"UserName": "John",
 			"Parameters": "15",
 			"StatusMessage": "John paid 3 to stay in and raised by 15. Dan to bet",
+			"PlayerSummaries": "N[]943(4)Ad J[D]868(19)Ts D[]886(1)9c F[]946(1)Ah P[]963(4)4h A[]963(4)Kh R[]1394(4)Qh ",
 			"HandCommentary": [
 				"John paid 3 to stay in and raised by 15",
 				"Dan to bet"
@@ -571,6 +622,7 @@
 			"UserName": "Dan",
 			"Parameters": null,
 			"StatusMessage": "Dan paid 18 to call. Fabrice to bet",
+			"PlayerSummaries": "N[]943(4)Ad J[D]868(19)Ts D[]868(19)9c F[]946(1)Ah P[]963(4)4h A[]963(4)Kh R[]1394(4)Qh ",
 			"HandCommentary": [
 				"Dan paid 18 to call",
 				"Fabrice to bet"
@@ -582,6 +634,7 @@
 			"UserName": "Fabrice",
 			"Parameters": null,
 			"StatusMessage": "Fabrice paid 18 to call. Paul to bet",
+			"PlayerSummaries": "N[]943(4)Ad J[D]868(19)Ts D[]868(19)9c F[]928(19)Ah P[]963(4)4h A[]963(4)Kh R[]1394(4)Qh ",
 			"HandCommentary": [
 				"Fabrice paid 18 to call",
 				"Paul to bet"
@@ -593,6 +646,7 @@
 			"UserName": "Paul",
 			"Parameters": "15",
 			"StatusMessage": "Paul paid 15 to stay in and raised by 15. Adam to bet",
+			"PlayerSummaries": "N[]943(4)Ad J[D]868(19)Ts D[]868(19)9c F[]928(19)Ah P[]933(34)4h A[]963(4)Kh R[]1394(4)Qh ",
 			"HandCommentary": [
 				"Paul paid 15 to stay in and raised by 15",
 				"Adam to bet"
@@ -604,6 +658,7 @@
 			"UserName": "Adam",
 			"Parameters": null,
 			"StatusMessage": "Adam paid 30 to call. Robert to bet",
+			"PlayerSummaries": "N[]943(4)Ad J[D]868(19)Ts D[]868(19)9c F[]928(19)Ah P[]933(34)4h A[]933(34)Kh R[]1394(4)Qh ",
 			"HandCommentary": [
 				"Adam paid 30 to call",
 				"Robert to bet"
@@ -615,6 +670,7 @@
 			"UserName": "Robert",
 			"Parameters": null,
 			"StatusMessage": "Robert paid 30 to call. Nigel to bet",
+			"PlayerSummaries": "N[]943(4)Ad J[D]868(19)Ts D[]868(19)9c F[]928(19)Ah P[]933(34)4h A[]933(34)Kh R[]1364(34)Qh ",
 			"HandCommentary": [
 				"Robert paid 30 to call",
 				"Nigel to bet"
@@ -626,6 +682,7 @@
 			"UserName": "Nigel",
 			"Parameters": null,
 			"StatusMessage": "Nigel paid 30 to call. John to bet",
+			"PlayerSummaries": "N[]913(34)Ad J[D]868(19)Ts D[]868(19)9c F[]928(19)Ah P[]933(34)4h A[]933(34)Kh R[]1364(34)Qh ",
 			"HandCommentary": [
 				"Nigel paid 30 to call",
 				"John to bet"
@@ -637,6 +694,7 @@
 			"UserName": "John",
 			"Parameters": "10",
 			"StatusMessage": "John paid 15 to stay in and raised by 10. Dan to bet",
+			"PlayerSummaries": "N[]913(34)Ad J[D]843(44)Ts D[]868(19)9c F[]928(19)Ah P[]933(34)4h A[]933(34)Kh R[]1364(34)Qh ",
 			"HandCommentary": [
 				"John paid 15 to stay in and raised by 10",
 				"Dan to bet"
@@ -648,6 +706,7 @@
 			"UserName": "Dan",
 			"Parameters": null,
 			"StatusMessage": "Dan paid 25 to call. Fabrice to bet",
+			"PlayerSummaries": "N[]913(34)Ad J[D]843(44)Ts D[]843(44)9c F[]928(19)Ah P[]933(34)4h A[]933(34)Kh R[]1364(34)Qh ",
 			"HandCommentary": [
 				"Dan paid 25 to call",
 				"Fabrice to bet"
@@ -659,6 +718,7 @@
 			"UserName": "Fabrice",
 			"Parameters": null,
 			"StatusMessage": "Fabrice paid 25 to call. Paul to bet",
+			"PlayerSummaries": "N[]913(34)Ad J[D]843(44)Ts D[]843(44)9c F[]903(44)Ah P[]933(34)4h A[]933(34)Kh R[]1364(34)Qh ",
 			"HandCommentary": [
 				"Fabrice paid 25 to call",
 				"Paul to bet"
@@ -670,6 +730,7 @@
 			"UserName": "Paul",
 			"Parameters": null,
 			"StatusMessage": "Paul paid 10 to call. Adam to bet",
+			"PlayerSummaries": "N[]913(34)Ad J[D]843(44)Ts D[]843(44)9c F[]903(44)Ah P[]923(44)4h A[]933(34)Kh R[]1364(34)Qh ",
 			"HandCommentary": [
 				"Paul paid 10 to call",
 				"Adam to bet"
@@ -681,6 +742,7 @@
 			"UserName": "Adam",
 			"Parameters": null,
 			"StatusMessage": "Adam paid 10 to call. Robert to bet",
+			"PlayerSummaries": "N[]913(34)Ad J[D]843(44)Ts D[]843(44)9c F[]903(44)Ah P[]923(44)4h A[]923(44)Kh R[]1364(34)Qh ",
 			"HandCommentary": [
 				"Adam paid 10 to call",
 				"Robert to bet"
@@ -692,6 +754,7 @@
 			"UserName": "Robert",
 			"Parameters": null,
 			"StatusMessage": "Robert paid 10 to call. Nigel to bet",
+			"PlayerSummaries": "N[]913(34)Ad J[D]843(44)Ts D[]843(44)9c F[]903(44)Ah P[]923(44)4h A[]923(44)Kh R[]1354(44)Qh ",
 			"HandCommentary": [
 				"Robert paid 10 to call",
 				"Nigel to bet"
@@ -703,6 +766,7 @@
 			"UserName": "Nigel",
 			"Parameters": null,
 			"StatusMessage": "Nigel paid 10 to call. Started next round, Nigel to bet",
+			"PlayerSummaries": "N[]903(44)AdJs J[D]843(44)Ts7c D[]843(44)9c6c F[]903(44)Ah3h P[]923(44)4h5d A[]923(44)Kh8c R[]1354(44)QhKd ",
 			"HandCommentary": [
 				"Nigel paid 10 to call",
 				"Started next round, Nigel to bet"
@@ -714,6 +778,7 @@
 			"UserName": "Nigel",
 			"Parameters": null,
 			"StatusMessage": "Nigel checked. John to bet",
+			"PlayerSummaries": "N[]903(44)AdJs J[D]843(44)Ts7c D[]843(44)9c6c F[]903(44)Ah3h P[]923(44)4h5d A[]923(44)Kh8c R[]1354(44)QhKd ",
 			"HandCommentary": [
 				"Nigel checked",
 				"John to bet"
@@ -725,6 +790,7 @@
 			"UserName": "John",
 			"Parameters": "15",
 			"StatusMessage": "John raised by 15. Dan to bet",
+			"PlayerSummaries": "N[]903(44)AdJs J[D]828(59)Ts7c D[]843(44)9c6c F[]903(44)Ah3h P[]923(44)4h5d A[]923(44)Kh8c R[]1354(44)QhKd ",
 			"HandCommentary": [
 				"John raised by 15",
 				"Dan to bet"
@@ -736,6 +802,7 @@
 			"UserName": "Dan",
 			"Parameters": null,
 			"StatusMessage": "Dan paid 15 to call. Fabrice to bet",
+			"PlayerSummaries": "N[]903(44)AdJs J[D]828(59)Ts7c D[]828(59)9c6c F[]903(44)Ah3h P[]923(44)4h5d A[]923(44)Kh8c R[]1354(44)QhKd ",
 			"HandCommentary": [
 				"Dan paid 15 to call",
 				"Fabrice to bet"
@@ -747,6 +814,7 @@
 			"UserName": "Fabrice",
 			"Parameters": null,
 			"StatusMessage": "Fabrice paid 15 to call. Paul to bet",
+			"PlayerSummaries": "N[]903(44)AdJs J[D]828(59)Ts7c D[]828(59)9c6c F[]888(59)Ah3h P[]923(44)4h5d A[]923(44)Kh8c R[]1354(44)QhKd ",
 			"HandCommentary": [
 				"Fabrice paid 15 to call",
 				"Paul to bet"
@@ -758,6 +826,7 @@
 			"UserName": "Paul",
 			"Parameters": null,
 			"StatusMessage": "Paul paid 15 to call. Adam to bet",
+			"PlayerSummaries": "N[]903(44)AdJs J[D]828(59)Ts7c D[]828(59)9c6c F[]888(59)Ah3h P[]908(59)4h5d A[]923(44)Kh8c R[]1354(44)QhKd ",
 			"HandCommentary": [
 				"Paul paid 15 to call",
 				"Adam to bet"
@@ -769,6 +838,7 @@
 			"UserName": "Adam",
 			"Parameters": null,
 			"StatusMessage": "Adam paid 15 to call. Robert to bet",
+			"PlayerSummaries": "N[]903(44)AdJs J[D]828(59)Ts7c D[]828(59)9c6c F[]888(59)Ah3h P[]908(59)4h5d A[]908(59)Kh8c R[]1354(44)QhKd ",
 			"HandCommentary": [
 				"Adam paid 15 to call",
 				"Robert to bet"
@@ -780,6 +850,7 @@
 			"UserName": "Robert",
 			"Parameters": null,
 			"StatusMessage": "Robert paid 15 to call. Nigel to bet",
+			"PlayerSummaries": "N[]903(44)AdJs J[D]828(59)Ts7c D[]828(59)9c6c F[]888(59)Ah3h P[]908(59)4h5d A[]908(59)Kh8c R[]1339(59)QhKd ",
 			"HandCommentary": [
 				"Robert paid 15 to call",
 				"Nigel to bet"
@@ -791,6 +862,7 @@
 			"UserName": "Nigel",
 			"Parameters": null,
 			"StatusMessage": "Nigel paid 15 to call. Started next round, Paul to bet",
+			"PlayerSummaries": "N[]888(59)AdJs9h J[D]828(59)Ts7cJd D[]828(59)9c6cAc F[]888(59)Ah3hQd P[]908(59)4h5d5h A[]908(59)Kh8c2d R[]1339(59)QhKd9s ",
 			"HandCommentary": [
 				"Nigel paid 15 to call",
 				"Started next round, Paul to bet"
@@ -802,6 +874,7 @@
 			"UserName": "Paul",
 			"Parameters": "15",
 			"StatusMessage": "Paul raised by 15. Adam to bet",
+			"PlayerSummaries": "N[]888(59)AdJs9h J[D]828(59)Ts7cJd D[]828(59)9c6cAc F[]888(59)Ah3hQd P[]893(74)4h5d5h A[]908(59)Kh8c2d R[]1339(59)QhKd9s ",
 			"HandCommentary": [
 				"Paul raised by 15",
 				"Adam to bet"
@@ -813,6 +886,7 @@
 			"UserName": "Adam",
 			"Parameters": null,
 			"StatusMessage": "Adam folded. Robert to bet",
+			"PlayerSummaries": "N[]888(59)AdJs9h J[D]828(59)Ts7cJd D[]828(59)9c6cAc F[]888(59)Ah3hQd P[]893(74)4h5d5h A[F]908(59)Kh8c2d R[]1339(59)QhKd9s ",
 			"HandCommentary": [
 				"Adam folded",
 				"Robert to bet"
@@ -824,6 +898,7 @@
 			"UserName": "Robert",
 			"Parameters": null,
 			"StatusMessage": "Robert paid 15 to call. Nigel to bet",
+			"PlayerSummaries": "N[]888(59)AdJs9h J[D]828(59)Ts7cJd D[]828(59)9c6cAc F[]888(59)Ah3hQd P[]893(74)4h5d5h A[F]908(59)Kh8c2d R[]1324(74)QhKd9s ",
 			"HandCommentary": [
 				"Robert paid 15 to call",
 				"Nigel to bet"
@@ -835,6 +910,7 @@
 			"UserName": "Nigel",
 			"Parameters": null,
 			"StatusMessage": "Nigel paid 15 to call. John to bet",
+			"PlayerSummaries": "N[]873(74)AdJs9h J[D]828(59)Ts7cJd D[]828(59)9c6cAc F[]888(59)Ah3hQd P[]893(74)4h5d5h A[F]908(59)Kh8c2d R[]1324(74)QhKd9s ",
 			"HandCommentary": [
 				"Nigel paid 15 to call",
 				"John to bet"
@@ -846,6 +922,7 @@
 			"UserName": "John",
 			"Parameters": "20",
 			"StatusMessage": "John paid 15 to stay in and raised by 20. Dan to bet",
+			"PlayerSummaries": "N[]873(74)AdJs9h J[D]793(94)Ts7cJd D[]828(59)9c6cAc F[]888(59)Ah3hQd P[]893(74)4h5d5h A[F]908(59)Kh8c2d R[]1324(74)QhKd9s ",
 			"HandCommentary": [
 				"John paid 15 to stay in and raised by 20",
 				"Dan to bet"
@@ -857,6 +934,7 @@
 			"UserName": "Dan",
 			"Parameters": null,
 			"StatusMessage": "Dan paid 35 to call. Fabrice to bet",
+			"PlayerSummaries": "N[]873(74)AdJs9h J[D]793(94)Ts7cJd D[]793(94)9c6cAc F[]888(59)Ah3hQd P[]893(74)4h5d5h A[F]908(59)Kh8c2d R[]1324(74)QhKd9s ",
 			"HandCommentary": [
 				"Dan paid 35 to call",
 				"Fabrice to bet"
@@ -868,6 +946,7 @@
 			"UserName": "Fabrice",
 			"Parameters": null,
 			"StatusMessage": "Fabrice folded. Paul to bet",
+			"PlayerSummaries": "N[]873(74)AdJs9h J[D]793(94)Ts7cJd D[]793(94)9c6cAc F[F]888(59)Ah3hQd P[]893(74)4h5d5h A[F]908(59)Kh8c2d R[]1324(74)QhKd9s ",
 			"HandCommentary": [
 				"Fabrice folded",
 				"Paul to bet"
@@ -879,6 +958,7 @@
 			"UserName": "Paul",
 			"Parameters": null,
 			"StatusMessage": "Paul paid 20 to call. Robert to bet",
+			"PlayerSummaries": "N[]873(74)AdJs9h J[D]793(94)Ts7cJd D[]793(94)9c6cAc F[F]888(59)Ah3hQd P[]873(94)4h5d5h A[F]908(59)Kh8c2d R[]1324(74)QhKd9s ",
 			"HandCommentary": [
 				"Paul paid 20 to call",
 				"Robert to bet"
@@ -890,6 +970,7 @@
 			"UserName": "Robert",
 			"Parameters": null,
 			"StatusMessage": "Robert paid 20 to call. Nigel to bet",
+			"PlayerSummaries": "N[]873(74)AdJs9h J[D]793(94)Ts7cJd D[]793(94)9c6cAc F[F]888(59)Ah3hQd P[]873(94)4h5d5h A[F]908(59)Kh8c2d R[]1304(94)QhKd9s ",
 			"HandCommentary": [
 				"Robert paid 20 to call",
 				"Nigel to bet"
@@ -901,6 +982,7 @@
 			"UserName": "Nigel",
 			"Parameters": null,
 			"StatusMessage": "Nigel paid 20 to call. Started next round, Paul to bet",
+			"PlayerSummaries": "N[]853(94)AdJs9h5s J[D]793(94)Ts7cJd4c D[]793(94)9c6cAc2c F[F]888(59)Ah3hQd P[]873(94)4h5d5h4s A[F]908(59)Kh8c2d R[]1304(94)QhKd9sJh ",
 			"HandCommentary": [
 				"Nigel paid 20 to call",
 				"Started next round, Paul to bet"
@@ -912,6 +994,7 @@
 			"UserName": "Paul",
 			"Parameters": "40",
 			"StatusMessage": "Paul raised by 40. Robert to bet",
+			"PlayerSummaries": "N[]853(94)AdJs9h5s J[D]793(94)Ts7cJd4c D[]793(94)9c6cAc2c F[F]888(59)Ah3hQd P[]833(134)4h5d5h4s A[F]908(59)Kh8c2d R[]1304(94)QhKd9sJh ",
 			"HandCommentary": [
 				"Paul raised by 40",
 				"Robert to bet"
@@ -923,6 +1006,7 @@
 			"UserName": "Robert",
 			"Parameters": null,
 			"StatusMessage": "Robert paid 40 to call. Nigel to bet",
+			"PlayerSummaries": "N[]853(94)AdJs9h5s J[D]793(94)Ts7cJd4c D[]793(94)9c6cAc2c F[F]888(59)Ah3hQd P[]833(134)4h5d5h4s A[F]908(59)Kh8c2d R[]1264(134)QhKd9sJh ",
 			"HandCommentary": [
 				"Robert paid 40 to call",
 				"Nigel to bet"
@@ -934,6 +1018,7 @@
 			"UserName": "Nigel",
 			"Parameters": null,
 			"StatusMessage": "Nigel folded. John to bet",
+			"PlayerSummaries": "N[F]853(94)AdJs9h5s J[D]793(94)Ts7cJd4c D[]793(94)9c6cAc2c F[F]888(59)Ah3hQd P[]833(134)4h5d5h4s A[F]908(59)Kh8c2d R[]1264(134)QhKd9sJh ",
 			"HandCommentary": [
 				"Nigel folded",
 				"John to bet"
@@ -945,6 +1030,7 @@
 			"UserName": "John",
 			"Parameters": null,
 			"StatusMessage": "John paid 40 to call. Dan to bet",
+			"PlayerSummaries": "N[F]853(94)AdJs9h5s J[D]753(134)Ts7cJd4c D[]793(94)9c6cAc2c F[F]888(59)Ah3hQd P[]833(134)4h5d5h4s A[F]908(59)Kh8c2d R[]1264(134)QhKd9sJh ",
 			"HandCommentary": [
 				"John paid 40 to call",
 				"Dan to bet"
@@ -956,6 +1042,7 @@
 			"UserName": "Dan",
 			"Parameters": null,
 			"StatusMessage": "Dan paid 40 to call. Started next round, Paul to bet",
+			"PlayerSummaries": "N[F]853(94)AdJs9h5s J[D]753(134)Ts7cJd4c D[]753(134)9c6cAc2c F[F]888(59)Ah3hQd P[]833(134)4h5d5h4s A[F]908(59)Kh8c2d R[]1264(134)QhKd9sJh ",
 			"HandCommentary": [
 				"Dan paid 40 to call",
 				"Started next round, Paul to bet"
@@ -967,6 +1054,7 @@
 			"UserName": "Paul",
 			"Parameters": "20",
 			"StatusMessage": "Paul raised by 20. Robert to bet",
+			"PlayerSummaries": "N[F]853(94)AdJs9h5s J[D]753(134)Ts7cJd4c D[]753(134)9c6cAc2c F[F]888(59)Ah3hQd P[]813(154)4h5d5h4s A[F]908(59)Kh8c2d R[]1264(134)QhKd9sJh ",
 			"HandCommentary": [
 				"Paul raised by 20",
 				"Robert to bet"
@@ -978,6 +1066,7 @@
 			"UserName": "Robert",
 			"Parameters": null,
 			"StatusMessage": "Robert folded. John to bet",
+			"PlayerSummaries": "N[F]853(94)AdJs9h5s J[D]753(134)Ts7cJd4c D[]753(134)9c6cAc2c F[F]888(59)Ah3hQd P[]813(154)4h5d5h4s A[F]908(59)Kh8c2d R[F]1264(134)QhKd9sJh ",
 			"HandCommentary": [
 				"Robert folded",
 				"John to bet"
@@ -989,6 +1078,7 @@
 			"UserName": "John",
 			"Parameters": null,
 			"StatusMessage": "John paid 20 to call. Dan to bet",
+			"PlayerSummaries": "N[F]853(94)AdJs9h5s J[D]733(154)Ts7cJd4c D[]753(134)9c6cAc2c F[F]888(59)Ah3hQd P[]813(154)4h5d5h4s A[F]908(59)Kh8c2d R[F]1264(134)QhKd9sJh ",
 			"HandCommentary": [
 				"John paid 20 to call",
 				"Dan to bet"
@@ -1000,6 +1090,7 @@
 			"UserName": "Dan",
 			"Parameters": "50",
 			"StatusMessage": "Dan paid 20 to stay in and raised by 50. Paul to bet",
+			"PlayerSummaries": "N[F]853(94)AdJs9h5s J[D]733(154)Ts7cJd4c D[]683(204)9c6cAc2c F[F]888(59)Ah3hQd P[]813(154)4h5d5h4s A[F]908(59)Kh8c2d R[F]1264(134)QhKd9sJh ",
 			"HandCommentary": [
 				"Dan paid 20 to stay in and raised by 50",
 				"Paul to bet"
@@ -1011,6 +1102,7 @@
 			"UserName": "Paul",
 			"Parameters": null,
 			"StatusMessage": "Paul paid 50 to call. John to bet",
+			"PlayerSummaries": "N[F]853(94)AdJs9h5s J[D]733(154)Ts7cJd4c D[]683(204)9c6cAc2c F[F]888(59)Ah3hQd P[]763(204)4h5d5h4s A[F]908(59)Kh8c2d R[F]1264(134)QhKd9sJh ",
 			"HandCommentary": [
 				"Paul paid 50 to call",
 				"John to bet"
@@ -1022,6 +1114,7 @@
 			"UserName": "John",
 			"Parameters": null,
 			"StatusMessage": "John paid 50 to call. Betting completed, proceeding to hand reveal stage, Dan to reveal (or fold)",
+			"PlayerSummaries": "N[F]853(94)AdJs9h5s J[D]683(204)Ts7cJd4c D[]683(204)9c6cAc2c F[F]888(59)Ah3hQd P[]763(204)4h5d5h4s A[F]908(59)Kh8c2d R[F]1264(134)QhKd9sJh ",
 			"HandCommentary": [
 				"John paid 50 to call",
 				"Betting completed, proceeding to hand reveal stage, Dan to reveal (or fold)"
@@ -1033,6 +1126,7 @@
 			"UserName": "Dan",
 			"Parameters": null,
 			"StatusMessage": "Dan revealed their hand details. Paul to reveal (or fold)",
+			"PlayerSummaries": "N[F]853(94)AdJs9h5s J[D]683(204)Ts7cJd4c D[]683(204)9c6cAc2c F[F]888(59)Ah3hQd P[]763(204)4h5d5h4s A[F]908(59)Kh8c2d R[F]1264(134)QhKd9sJh ",
 			"HandCommentary": [
 				"Dan revealed their hand details",
 				"Paul to reveal (or fold)"
@@ -1044,6 +1138,7 @@
 			"UserName": "Paul",
 			"Parameters": null,
 			"StatusMessage": "Paul revealed their hand details. John to reveal (or fold)",
+			"PlayerSummaries": "N[F]853(94)AdJs9h5s J[D]683(204)Ts7cJd4c D[]683(204)9c6cAc2c F[F]888(59)Ah3hQd P[]763(204)4h5d5h4s A[F]908(59)Kh8c2d R[F]1264(134)QhKd9sJh ",
 			"HandCommentary": [
 				"Paul revealed their hand details",
 				"John to reveal (or fold)"
@@ -1055,6 +1150,7 @@
 			"UserName": "John",
 			"Parameters": null,
 			"StatusMessage": "John revealed their hand details. Reveal hands if desired, or administrator to start next hand (or reopen lobby)",
+			"PlayerSummaries": "N[F]853(0)AdJs9h5s J[D]683(0)Ts7cJd4c D[]683(0)9c6cAc2c F[F]888(0)Ah3hQd P[]1721(0)4h5d5h4s A[F]908(0)Kh8c2d R[F]1264(0)QhKd9sJh ",
 			"HandCommentary": [
 				"John revealed their hand details",
 				"John revealed their hand details, all hands revealed, hand ended",
@@ -1075,6 +1171,7 @@
 			"UserName": "Robert",
 			"Parameters": null,
 			"StatusMessage": "Robert revealed their hand details. Reveal hands if desired, or administrator to start next hand (or reopen lobby)",
+			"PlayerSummaries": "N[F]853(0)AdJs9h5s J[D]683(0)Ts7cJd4c D[]683(0)9c6cAc2c F[F]888(0)Ah3hQd P[]1721(0)4h5d5h4s A[F]908(0)Kh8c2d R[F]1264(0)QhKd9sJh ",
 			"HandCommentary": [
 				"Robert revealed their hand details"
 			]
@@ -1085,6 +1182,7 @@
 			"UserName": "Robert",
 			"Parameters": null,
 			"StatusMessage": "Robert reopened the game lobby. Await players leaving/joining, or continue the game, or start a new one",
+			"PlayerSummaries": "N[F]853(0)AdJs9h5s J[D]683(0)Ts7cJd4c D[]683(0)9c6cAc2c F[F]888(0)Ah3hQd P[]1721(0)4h5d5h4s A[F]908(0)Kh8c2d R[F]1264(0)QhKd9sJh ",
 			"HandCommentary": [
 				"Robert reopened the game lobby"
 			]
@@ -1095,6 +1193,7 @@
 			"UserName": "Robert",
 			"Parameters": null,
 			"StatusMessage": "Robert started next hand. Fabrice to bet",
+			"PlayerSummaries": "N[]852(1)9s J[]682(1)4s D[D]682(1)Tc F[]887(1)As P[]1720(1)Th A[]907(1)Qs R[]1263(1)4c ",
 			"HandCommentary": []
 		},
 		{
@@ -1103,6 +1202,7 @@
 			"UserName": "Fabrice",
 			"Parameters": null,
 			"StatusMessage": "Fabrice checked. Paul to bet",
+			"PlayerSummaries": "N[]852(1)9s J[]682(1)4s D[D]682(1)Tc F[]887(1)As P[]1720(1)Th A[]907(1)Qs R[]1263(1)4c ",
 			"HandCommentary": [
 				"Fabrice checked",
 				"Paul to bet"
@@ -1114,6 +1214,7 @@
 			"UserName": "Paul",
 			"Parameters": "5",
 			"StatusMessage": "Paul raised by 5. Adam to bet",
+			"PlayerSummaries": "N[]852(1)9s J[]682(1)4s D[D]682(1)Tc F[]887(1)As P[]1715(6)Th A[]907(1)Qs R[]1263(1)4c ",
 			"HandCommentary": [
 				"Paul raised by 5",
 				"Adam to bet"
@@ -1125,6 +1226,7 @@
 			"UserName": "Adam",
 			"Parameters": null,
 			"StatusMessage": "Adam paid 5 to call. Robert to bet",
+			"PlayerSummaries": "N[]852(1)9s J[]682(1)4s D[D]682(1)Tc F[]887(1)As P[]1715(6)Th A[]902(6)Qs R[]1263(1)4c ",
 			"HandCommentary": [
 				"Adam paid 5 to call",
 				"Robert to bet"
@@ -1136,6 +1238,7 @@
 			"UserName": "Robert",
 			"Parameters": null,
 			"StatusMessage": "Robert paid 5 to call. Nigel to bet",
+			"PlayerSummaries": "N[]852(1)9s J[]682(1)4s D[D]682(1)Tc F[]887(1)As P[]1715(6)Th A[]902(6)Qs R[]1258(6)4c ",
 			"HandCommentary": [
 				"Robert paid 5 to call",
 				"Nigel to bet"
@@ -1147,6 +1250,7 @@
 			"UserName": "Nigel",
 			"Parameters": null,
 			"StatusMessage": "Nigel paid 5 to call. John to bet",
+			"PlayerSummaries": "N[]847(6)9s J[]682(1)4s D[D]682(1)Tc F[]887(1)As P[]1715(6)Th A[]902(6)Qs R[]1258(6)4c ",
 			"HandCommentary": [
 				"Nigel paid 5 to call",
 				"John to bet"
@@ -1158,6 +1262,7 @@
 			"UserName": "John",
 			"Parameters": "10",
 			"StatusMessage": "John paid 5 to stay in and raised by 10. Dan to bet",
+			"PlayerSummaries": "N[]847(6)9s J[]667(16)4s D[D]682(1)Tc F[]887(1)As P[]1715(6)Th A[]902(6)Qs R[]1258(6)4c ",
 			"HandCommentary": [
 				"John paid 5 to stay in and raised by 10",
 				"Dan to bet"
@@ -1169,6 +1274,7 @@
 			"UserName": "Dan",
 			"Parameters": null,
 			"StatusMessage": "Dan paid 15 to call. Fabrice to bet",
+			"PlayerSummaries": "N[]847(6)9s J[]667(16)4s D[D]667(16)Tc F[]887(1)As P[]1715(6)Th A[]902(6)Qs R[]1258(6)4c ",
 			"HandCommentary": [
 				"Dan paid 15 to call",
 				"Fabrice to bet"
@@ -1180,6 +1286,7 @@
 			"UserName": "Fabrice",
 			"Parameters": null,
 			"StatusMessage": "Fabrice paid 15 to call. Paul to bet",
+			"PlayerSummaries": "N[]847(6)9s J[]667(16)4s D[D]667(16)Tc F[]872(16)As P[]1715(6)Th A[]902(6)Qs R[]1258(6)4c ",
 			"HandCommentary": [
 				"Fabrice paid 15 to call",
 				"Paul to bet"
@@ -1191,6 +1298,7 @@
 			"UserName": "Paul",
 			"Parameters": null,
 			"StatusMessage": "Paul paid 10 to call. Adam to bet",
+			"PlayerSummaries": "N[]847(6)9s J[]667(16)4s D[D]667(16)Tc F[]872(16)As P[]1705(16)Th A[]902(6)Qs R[]1258(6)4c ",
 			"HandCommentary": [
 				"Paul paid 10 to call",
 				"Adam to bet"
@@ -1202,6 +1310,7 @@
 			"UserName": "Adam",
 			"Parameters": null,
 			"StatusMessage": "Adam paid 10 to call. Robert to bet",
+			"PlayerSummaries": "N[]847(6)9s J[]667(16)4s D[D]667(16)Tc F[]872(16)As P[]1705(16)Th A[]892(16)Qs R[]1258(6)4c ",
 			"HandCommentary": [
 				"Adam paid 10 to call",
 				"Robert to bet"
@@ -1213,6 +1322,7 @@
 			"UserName": "Robert",
 			"Parameters": null,
 			"StatusMessage": "Robert folded. Nigel to bet",
+			"PlayerSummaries": "N[]847(6)9s J[]667(16)4s D[D]667(16)Tc F[]872(16)As P[]1705(16)Th A[]892(16)Qs R[F]1258(6)4c ",
 			"HandCommentary": [
 				"Robert folded",
 				"Nigel to bet"
@@ -1224,6 +1334,7 @@
 			"UserName": "Nigel",
 			"Parameters": null,
 			"StatusMessage": "Nigel paid 10 to call. Started next round, Adam to bet",
+			"PlayerSummaries": "N[]837(16)9s3c J[]667(16)4s3s D[D]667(16)TcAh F[]872(16)AsTd P[]1705(16)ThJd A[]892(16)QsQh R[F]1258(6)4c ",
 			"HandCommentary": [
 				"Nigel paid 10 to call",
 				"Started next round, Adam to bet"
@@ -1235,6 +1346,7 @@
 			"UserName": "Adam",
 			"Parameters": "15",
 			"StatusMessage": "Adam raised by 15. Nigel to bet",
+			"PlayerSummaries": "N[]837(16)9s3c J[]667(16)4s3s D[D]667(16)TcAh F[]872(16)AsTd P[]1705(16)ThJd A[]877(31)QsQh R[F]1258(6)4c ",
 			"HandCommentary": [
 				"Adam raised by 15",
 				"Nigel to bet"
@@ -1246,6 +1358,7 @@
 			"UserName": "Nigel",
 			"Parameters": "5",
 			"StatusMessage": "Nigel paid 15 to stay in and raised by 5. John to bet",
+			"PlayerSummaries": "N[]817(36)9s3c J[]667(16)4s3s D[D]667(16)TcAh F[]872(16)AsTd P[]1705(16)ThJd A[]877(31)QsQh R[F]1258(6)4c ",
 			"HandCommentary": [
 				"Nigel paid 15 to stay in and raised by 5",
 				"John to bet"
@@ -1257,6 +1370,7 @@
 			"UserName": "John",
 			"Parameters": null,
 			"StatusMessage": "John paid 20 to call. Dan to bet",
+			"PlayerSummaries": "N[]817(36)9s3c J[]647(36)4s3s D[D]667(16)TcAh F[]872(16)AsTd P[]1705(16)ThJd A[]877(31)QsQh R[F]1258(6)4c ",
 			"HandCommentary": [
 				"John paid 20 to call",
 				"Dan to bet"
@@ -1268,6 +1382,7 @@
 			"UserName": "Dan",
 			"Parameters": null,
 			"StatusMessage": "Dan paid 20 to call. Fabrice to bet",
+			"PlayerSummaries": "N[]817(36)9s3c J[]647(36)4s3s D[D]647(36)TcAh F[]872(16)AsTd P[]1705(16)ThJd A[]877(31)QsQh R[F]1258(6)4c ",
 			"HandCommentary": [
 				"Dan paid 20 to call",
 				"Fabrice to bet"
@@ -1279,6 +1394,7 @@
 			"UserName": "Fabrice",
 			"Parameters": null,
 			"StatusMessage": "Fabrice paid 20 to call. Paul to bet",
+			"PlayerSummaries": "N[]817(36)9s3c J[]647(36)4s3s D[D]647(36)TcAh F[]852(36)AsTd P[]1705(16)ThJd A[]877(31)QsQh R[F]1258(6)4c ",
 			"HandCommentary": [
 				"Fabrice paid 20 to call",
 				"Paul to bet"
@@ -1290,6 +1406,7 @@
 			"UserName": "Paul",
 			"Parameters": null,
 			"StatusMessage": "Paul folded. Adam to bet",
+			"PlayerSummaries": "N[]817(36)9s3c J[]647(36)4s3s D[D]647(36)TcAh F[]852(36)AsTd P[F]1705(16)ThJd A[]877(31)QsQh R[F]1258(6)4c ",
 			"HandCommentary": [
 				"Paul folded",
 				"Adam to bet"
@@ -1301,6 +1418,7 @@
 			"UserName": "Adam",
 			"Parameters": null,
 			"StatusMessage": "Adam paid 5 to call. Started next round, Adam to bet",
+			"PlayerSummaries": "N[]817(36)9s3c3h J[]647(36)4s3sKh D[D]647(36)TcAhKc F[]852(36)AsTd2c P[F]1705(16)ThJd A[]872(36)QsQh3d R[F]1258(6)4c ",
 			"HandCommentary": [
 				"Adam paid 5 to call",
 				"Started next round, Adam to bet"
@@ -1312,6 +1430,7 @@
 			"UserName": "Adam",
 			"Parameters": "72",
 			"StatusMessage": "Adam raised by 72. Nigel to bet",
+			"PlayerSummaries": "N[]817(36)9s3c3h J[]647(36)4s3sKh D[D]647(36)TcAhKc F[]852(36)AsTd2c P[F]1705(16)ThJd A[]800(108)QsQh3d R[F]1258(6)4c ",
 			"HandCommentary": [
 				"Adam raised by 72",
 				"Nigel to bet"
@@ -1323,6 +1442,7 @@
 			"UserName": "Nigel",
 			"Parameters": null,
 			"StatusMessage": "Nigel paid 72 to call. John to bet",
+			"PlayerSummaries": "N[]745(108)9s3c3h J[]647(36)4s3sKh D[D]647(36)TcAhKc F[]852(36)AsTd2c P[F]1705(16)ThJd A[]800(108)QsQh3d R[F]1258(6)4c ",
 			"HandCommentary": [
 				"Nigel paid 72 to call",
 				"John to bet"
@@ -1334,6 +1454,7 @@
 			"UserName": "John",
 			"Parameters": null,
 			"StatusMessage": "John folded. Dan to bet",
+			"PlayerSummaries": "N[]745(108)9s3c3h J[F]647(36)4s3sKh D[D]647(36)TcAhKc F[]852(36)AsTd2c P[F]1705(16)ThJd A[]800(108)QsQh3d R[F]1258(6)4c ",
 			"HandCommentary": [
 				"John folded",
 				"Dan to bet"
@@ -1345,6 +1466,7 @@
 			"UserName": "Dan",
 			"Parameters": "20",
 			"StatusMessage": "Dan paid 72 to stay in and raised by 20. Fabrice to bet",
+			"PlayerSummaries": "N[]745(108)9s3c3h J[F]647(36)4s3sKh D[D]555(128)TcAhKc F[]852(36)AsTd2c P[F]1705(16)ThJd A[]800(108)QsQh3d R[F]1258(6)4c ",
 			"HandCommentary": [
 				"Dan paid 72 to stay in and raised by 20",
 				"Fabrice to bet"
@@ -1356,6 +1478,7 @@
 			"UserName": "Fabrice",
 			"Parameters": null,
 			"StatusMessage": "Fabrice folded. Adam to bet",
+			"PlayerSummaries": "N[]745(108)9s3c3h J[F]647(36)4s3sKh D[D]555(128)TcAhKc F[F]852(36)AsTd2c P[F]1705(16)ThJd A[]800(108)QsQh3d R[F]1258(6)4c ",
 			"HandCommentary": [
 				"Fabrice folded",
 				"Adam to bet"
@@ -1367,6 +1490,7 @@
 			"UserName": "Adam",
 			"Parameters": null,
 			"StatusMessage": "Adam paid 20 to call. Nigel to bet",
+			"PlayerSummaries": "N[]745(108)9s3c3h J[F]647(36)4s3sKh D[D]555(128)TcAhKc F[F]852(36)AsTd2c P[F]1705(16)ThJd A[]780(128)QsQh3d R[F]1258(6)4c ",
 			"HandCommentary": [
 				"Adam paid 20 to call",
 				"Nigel to bet"
@@ -1378,6 +1502,7 @@
 			"UserName": "Nigel",
 			"Parameters": null,
 			"StatusMessage": "Nigel paid 20 to call. Started next round, Adam to bet",
+			"PlayerSummaries": "N[]725(128)9s3c3h7h J[F]647(36)4s3sKh D[D]555(128)TcAhKc6h F[F]852(36)AsTd2c P[F]1705(16)ThJd A[]780(128)QsQh3d8s R[F]1258(6)4c ",
 			"HandCommentary": [
 				"Nigel paid 20 to call",
 				"Started next round, Adam to bet"
@@ -1389,6 +1514,7 @@
 			"UserName": "Adam",
 			"Parameters": null,
 			"StatusMessage": "Adam checked. Nigel to bet",
+			"PlayerSummaries": "N[]725(128)9s3c3h7h J[F]647(36)4s3sKh D[D]555(128)TcAhKc6h F[F]852(36)AsTd2c P[F]1705(16)ThJd A[]780(128)QsQh3d8s R[F]1258(6)4c ",
 			"HandCommentary": [
 				"Adam checked",
 				"Nigel to bet"
@@ -1400,6 +1526,7 @@
 			"UserName": "Nigel",
 			"Parameters": "20",
 			"StatusMessage": "Nigel raised by 20. Dan to bet",
+			"PlayerSummaries": "N[]705(148)9s3c3h7h J[F]647(36)4s3sKh D[D]555(128)TcAhKc6h F[F]852(36)AsTd2c P[F]1705(16)ThJd A[]780(128)QsQh3d8s R[F]1258(6)4c ",
 			"HandCommentary": [
 				"Nigel raised by 20",
 				"Dan to bet"
@@ -1411,6 +1538,7 @@
 			"UserName": "Dan",
 			"Parameters": null,
 			"StatusMessage": "Dan paid 20 to call. Adam to bet",
+			"PlayerSummaries": "N[]705(148)9s3c3h7h J[F]647(36)4s3sKh D[D]535(148)TcAhKc6h F[F]852(36)AsTd2c P[F]1705(16)ThJd A[]780(128)QsQh3d8s R[F]1258(6)4c ",
 			"HandCommentary": [
 				"Dan paid 20 to call",
 				"Adam to bet"
@@ -1422,6 +1550,7 @@
 			"UserName": "Adam",
 			"Parameters": null,
 			"StatusMessage": "Adam paid 20 to call. Started next round, Adam to bet",
+			"PlayerSummaries": "N[]705(148)9s3c3h7h J[F]647(36)4s3sKh D[D]535(148)TcAhKc6h F[F]852(36)AsTd2c P[F]1705(16)ThJd A[]760(148)QsQh3d8s R[F]1258(6)4c ",
 			"HandCommentary": [
 				"Adam paid 20 to call",
 				"Started next round, Adam to bet"
@@ -1433,6 +1562,7 @@
 			"UserName": "Adam",
 			"Parameters": null,
 			"StatusMessage": "Adam checked. Nigel to bet",
+			"PlayerSummaries": "N[]705(148)9s3c3h7h J[F]647(36)4s3sKh D[D]535(148)TcAhKc6h F[F]852(36)AsTd2c P[F]1705(16)ThJd A[]760(148)QsQh3d8s R[F]1258(6)4c ",
 			"HandCommentary": [
 				"Adam checked",
 				"Nigel to bet"
@@ -1444,6 +1574,7 @@
 			"UserName": "Nigel",
 			"Parameters": "10",
 			"StatusMessage": "Nigel raised by 10. Dan to bet",
+			"PlayerSummaries": "N[]695(158)9s3c3h7h J[F]647(36)4s3sKh D[D]535(148)TcAhKc6h F[F]852(36)AsTd2c P[F]1705(16)ThJd A[]760(148)QsQh3d8s R[F]1258(6)4c ",
 			"HandCommentary": [
 				"Nigel raised by 10",
 				"Dan to bet"
@@ -1455,6 +1586,7 @@
 			"UserName": "Dan",
 			"Parameters": null,
 			"StatusMessage": "Dan paid 10 to call. Adam to bet",
+			"PlayerSummaries": "N[]695(158)9s3c3h7h J[F]647(36)4s3sKh D[D]525(158)TcAhKc6h F[F]852(36)AsTd2c P[F]1705(16)ThJd A[]760(148)QsQh3d8s R[F]1258(6)4c ",
 			"HandCommentary": [
 				"Dan paid 10 to call",
 				"Adam to bet"
@@ -1466,6 +1598,7 @@
 			"UserName": "Adam",
 			"Parameters": null,
 			"StatusMessage": "Adam paid 10 to call. Betting completed, proceeding to hand reveal stage, Nigel to reveal (or fold)",
+			"PlayerSummaries": "N[]695(158)9s3c3h7h J[F]647(36)4s3sKh D[D]525(158)TcAhKc6h F[F]852(36)AsTd2c P[F]1705(16)ThJd A[]750(158)QsQh3d8s R[F]1258(6)4c ",
 			"HandCommentary": [
 				"Adam paid 10 to call",
 				"Betting completed, proceeding to hand reveal stage, Nigel to reveal (or fold)"
@@ -1477,6 +1610,7 @@
 			"UserName": "Nigel",
 			"Parameters": null,
 			"StatusMessage": "Nigel revealed their hand details. Dan to reveal (or fold)",
+			"PlayerSummaries": "N[]695(158)9s3c3h7h J[F]647(36)4s3sKh D[D]525(158)TcAhKc6h F[F]852(36)AsTd2c P[F]1705(16)ThJd A[]750(158)QsQh3d8s R[F]1258(6)4c ",
 			"HandCommentary": [
 				"Nigel revealed their hand details",
 				"Dan to reveal (or fold)"
@@ -1488,6 +1622,7 @@
 			"UserName": "Dan",
 			"Parameters": null,
 			"StatusMessage": "Dan revealed their hand details. Adam to reveal (or fold)",
+			"PlayerSummaries": "N[]695(158)9s3c3h7h J[F]647(36)4s3sKh D[D]525(158)TcAhKc6h F[F]852(36)AsTd2c P[F]1705(16)ThJd A[]750(158)QsQh3d8s R[F]1258(6)4c ",
 			"HandCommentary": [
 				"Dan revealed their hand details",
 				"Adam to reveal (or fold)"
@@ -1499,6 +1634,7 @@
 			"UserName": "Adam",
 			"Parameters": null,
 			"StatusMessage": "Adam folded. Reveal hands if desired, or administrator to start next hand (or reopen lobby)",
+			"PlayerSummaries": "N[]695(0)9s3c3h7h J[F]647(0)4s3sKh D[D]1093(0)TcAhKc6h F[F]852(0)AsTd2c P[F]1705(0)ThJd A[F]750(0)QsQh3d8s R[F]1258(0)4c ",
 			"HandCommentary": [
 				"Adam folded",
 				"Adam folded, all hands revealed, hand ended",
@@ -1519,6 +1655,7 @@
 			"UserName": "Robert",
 			"Parameters": null,
 			"StatusMessage": "Robert started next hand. Paul to bet",
+			"PlayerSummaries": "N[]694(1)4s J[]646(1)7h D[]1092(1)9d F[D]851(1)2d P[]1704(1)Qc A[]749(1)9c R[]1257(1)5c ",
 			"HandCommentary": []
 		},
 		{
@@ -1527,6 +1664,7 @@
 			"UserName": "Paul",
 			"Parameters": "10",
 			"StatusMessage": "Paul raised by 10. Adam to bet",
+			"PlayerSummaries": "N[]694(1)4s J[]646(1)7h D[]1092(1)9d F[D]851(1)2d P[]1694(11)Qc A[]749(1)9c R[]1257(1)5c ",
 			"HandCommentary": [
 				"Paul raised by 10",
 				"Adam to bet"
@@ -1538,6 +1676,7 @@
 			"UserName": "Adam",
 			"Parameters": null,
 			"StatusMessage": "Adam paid 10 to call. Robert to bet",
+			"PlayerSummaries": "N[]694(1)4s J[]646(1)7h D[]1092(1)9d F[D]851(1)2d P[]1694(11)Qc A[]739(11)9c R[]1257(1)5c ",
 			"HandCommentary": [
 				"Adam paid 10 to call",
 				"Robert to bet"
@@ -1549,6 +1688,7 @@
 			"UserName": "Robert",
 			"Parameters": "5",
 			"StatusMessage": "Robert paid 10 to stay in and raised by 5. Nigel to bet",
+			"PlayerSummaries": "N[]694(1)4s J[]646(1)7h D[]1092(1)9d F[D]851(1)2d P[]1694(11)Qc A[]739(11)9c R[]1242(16)5c ",
 			"HandCommentary": [
 				"Robert paid 10 to stay in and raised by 5",
 				"Nigel to bet"
@@ -1560,6 +1700,7 @@
 			"UserName": "Nigel",
 			"Parameters": null,
 			"StatusMessage": "Nigel paid 15 to call. John to bet",
+			"PlayerSummaries": "N[]679(16)4s J[]646(1)7h D[]1092(1)9d F[D]851(1)2d P[]1694(11)Qc A[]739(11)9c R[]1242(16)5c ",
 			"HandCommentary": [
 				"Nigel paid 15 to call",
 				"John to bet"
@@ -1571,6 +1712,7 @@
 			"UserName": "John",
 			"Parameters": "10",
 			"StatusMessage": "John paid 15 to stay in and raised by 10. Dan to bet",
+			"PlayerSummaries": "N[]679(16)4s J[]621(26)7h D[]1092(1)9d F[D]851(1)2d P[]1694(11)Qc A[]739(11)9c R[]1242(16)5c ",
 			"HandCommentary": [
 				"John paid 15 to stay in and raised by 10",
 				"Dan to bet"
@@ -1582,6 +1724,7 @@
 			"UserName": "Dan",
 			"Parameters": null,
 			"StatusMessage": "Dan paid 25 to call. Fabrice to bet",
+			"PlayerSummaries": "N[]679(16)4s J[]621(26)7h D[]1067(26)9d F[D]851(1)2d P[]1694(11)Qc A[]739(11)9c R[]1242(16)5c ",
 			"HandCommentary": [
 				"Dan paid 25 to call",
 				"Fabrice to bet"
@@ -1593,6 +1736,7 @@
 			"UserName": "Fabrice",
 			"Parameters": null,
 			"StatusMessage": "Fabrice paid 25 to call. Paul to bet",
+			"PlayerSummaries": "N[]679(16)4s J[]621(26)7h D[]1067(26)9d F[D]826(26)2d P[]1694(11)Qc A[]739(11)9c R[]1242(16)5c ",
 			"HandCommentary": [
 				"Fabrice paid 25 to call",
 				"Paul to bet"
@@ -1604,6 +1748,7 @@
 			"UserName": "Paul",
 			"Parameters": null,
 			"StatusMessage": "Paul paid 15 to call. Adam to bet",
+			"PlayerSummaries": "N[]679(16)4s J[]621(26)7h D[]1067(26)9d F[D]826(26)2d P[]1679(26)Qc A[]739(11)9c R[]1242(16)5c ",
 			"HandCommentary": [
 				"Paul paid 15 to call",
 				"Adam to bet"
@@ -1615,6 +1760,7 @@
 			"UserName": "Adam",
 			"Parameters": null,
 			"StatusMessage": "Adam paid 15 to call. Robert to bet",
+			"PlayerSummaries": "N[]679(16)4s J[]621(26)7h D[]1067(26)9d F[D]826(26)2d P[]1679(26)Qc A[]724(26)9c R[]1242(16)5c ",
 			"HandCommentary": [
 				"Adam paid 15 to call",
 				"Robert to bet"
@@ -1626,6 +1772,7 @@
 			"UserName": "Robert",
 			"Parameters": null,
 			"StatusMessage": "Robert paid 10 to call. Nigel to bet",
+			"PlayerSummaries": "N[]679(16)4s J[]621(26)7h D[]1067(26)9d F[D]826(26)2d P[]1679(26)Qc A[]724(26)9c R[]1232(26)5c ",
 			"HandCommentary": [
 				"Robert paid 10 to call",
 				"Nigel to bet"
@@ -1637,6 +1784,7 @@
 			"UserName": "Nigel",
 			"Parameters": null,
 			"StatusMessage": "Nigel paid 10 to call. Started next round, Paul to bet",
+			"PlayerSummaries": "N[]669(26)4s8h J[]621(26)7h6h D[]1067(26)9dKh F[D]826(26)2d7c P[]1679(26)QcKd A[]724(26)9cTd R[]1232(26)5c4h ",
 			"HandCommentary": [
 				"Nigel paid 10 to call",
 				"Started next round, Paul to bet"
@@ -1648,6 +1796,7 @@
 			"UserName": "Paul",
 			"Parameters": "20",
 			"StatusMessage": "Paul raised by 20. Adam to bet",
+			"PlayerSummaries": "N[]669(26)4s8h J[]621(26)7h6h D[]1067(26)9dKh F[D]826(26)2d7c P[]1659(46)QcKd A[]724(26)9cTd R[]1232(26)5c4h ",
 			"HandCommentary": [
 				"Paul raised by 20",
 				"Adam to bet"
@@ -1659,6 +1808,7 @@
 			"UserName": "Adam",
 			"Parameters": null,
 			"StatusMessage": "Adam paid 20 to call. Robert to bet",
+			"PlayerSummaries": "N[]669(26)4s8h J[]621(26)7h6h D[]1067(26)9dKh F[D]826(26)2d7c P[]1659(46)QcKd A[]704(46)9cTd R[]1232(26)5c4h ",
 			"HandCommentary": [
 				"Adam paid 20 to call",
 				"Robert to bet"
@@ -1670,6 +1820,7 @@
 			"UserName": "Robert",
 			"Parameters": null,
 			"StatusMessage": "Robert paid 20 to call. Nigel to bet",
+			"PlayerSummaries": "N[]669(26)4s8h J[]621(26)7h6h D[]1067(26)9dKh F[D]826(26)2d7c P[]1659(46)QcKd A[]704(46)9cTd R[]1212(46)5c4h ",
 			"HandCommentary": [
 				"Robert paid 20 to call",
 				"Nigel to bet"
@@ -1681,6 +1832,7 @@
 			"UserName": "Nigel",
 			"Parameters": null,
 			"StatusMessage": "Nigel paid 20 to call. John to bet",
+			"PlayerSummaries": "N[]649(46)4s8h J[]621(26)7h6h D[]1067(26)9dKh F[D]826(26)2d7c P[]1659(46)QcKd A[]704(46)9cTd R[]1212(46)5c4h ",
 			"HandCommentary": [
 				"Nigel paid 20 to call",
 				"John to bet"
@@ -1692,6 +1844,7 @@
 			"UserName": "John",
 			"Parameters": null,
 			"StatusMessage": "John paid 20 to call. Dan to bet",
+			"PlayerSummaries": "N[]649(46)4s8h J[]601(46)7h6h D[]1067(26)9dKh F[D]826(26)2d7c P[]1659(46)QcKd A[]704(46)9cTd R[]1212(46)5c4h ",
 			"HandCommentary": [
 				"John paid 20 to call",
 				"Dan to bet"
@@ -1703,6 +1856,7 @@
 			"UserName": "Dan",
 			"Parameters": null,
 			"StatusMessage": "Dan paid 20 to call. Fabrice to bet",
+			"PlayerSummaries": "N[]649(46)4s8h J[]601(46)7h6h D[]1047(46)9dKh F[D]826(26)2d7c P[]1659(46)QcKd A[]704(46)9cTd R[]1212(46)5c4h ",
 			"HandCommentary": [
 				"Dan paid 20 to call",
 				"Fabrice to bet"
@@ -1714,6 +1868,7 @@
 			"UserName": "Fabrice",
 			"Parameters": null,
 			"StatusMessage": "Fabrice paid 20 to call. Started next round, Paul to bet",
+			"PlayerSummaries": "N[]649(46)4s8h6c J[]601(46)7h6h5s D[]1047(46)9dKh6d F[D]806(46)2d7c6s P[]1659(46)QcKdJh A[]704(46)9cTdJd R[]1212(46)5c4h3h ",
 			"HandCommentary": [
 				"Fabrice paid 20 to call",
 				"Started next round, Paul to bet"
@@ -1725,6 +1880,7 @@
 			"UserName": "Paul",
 			"Parameters": "10",
 			"StatusMessage": "Paul raised by 10. Adam to bet",
+			"PlayerSummaries": "N[]649(46)4s8h6c J[]601(46)7h6h5s D[]1047(46)9dKh6d F[D]806(46)2d7c6s P[]1649(56)QcKdJh A[]704(46)9cTdJd R[]1212(46)5c4h3h ",
 			"HandCommentary": [
 				"Paul raised by 10",
 				"Adam to bet"
@@ -1736,6 +1892,7 @@
 			"UserName": "Adam",
 			"Parameters": null,
 			"StatusMessage": "Adam folded. Robert to bet",
+			"PlayerSummaries": "N[]649(46)4s8h6c J[]601(46)7h6h5s D[]1047(46)9dKh6d F[D]806(46)2d7c6s P[]1649(56)QcKdJh A[F]704(46)9cTdJd R[]1212(46)5c4h3h ",
 			"HandCommentary": [
 				"Adam folded",
 				"Robert to bet"
@@ -1747,6 +1904,7 @@
 			"UserName": "Robert",
 			"Parameters": null,
 			"StatusMessage": "Robert paid 10 to call. Nigel to bet",
+			"PlayerSummaries": "N[]649(46)4s8h6c J[]601(46)7h6h5s D[]1047(46)9dKh6d F[D]806(46)2d7c6s P[]1649(56)QcKdJh A[F]704(46)9cTdJd R[]1202(56)5c4h3h ",
 			"HandCommentary": [
 				"Robert paid 10 to call",
 				"Nigel to bet"
@@ -1758,6 +1916,7 @@
 			"UserName": "Nigel",
 			"Parameters": null,
 			"StatusMessage": "Nigel paid 10 to call. John to bet",
+			"PlayerSummaries": "N[]639(56)4s8h6c J[]601(46)7h6h5s D[]1047(46)9dKh6d F[D]806(46)2d7c6s P[]1649(56)QcKdJh A[F]704(46)9cTdJd R[]1202(56)5c4h3h ",
 			"HandCommentary": [
 				"Nigel paid 10 to call",
 				"John to bet"
@@ -1769,6 +1928,7 @@
 			"UserName": "John",
 			"Parameters": null,
 			"StatusMessage": "John paid 10 to call. Dan to bet",
+			"PlayerSummaries": "N[]639(56)4s8h6c J[]591(56)7h6h5s D[]1047(46)9dKh6d F[D]806(46)2d7c6s P[]1649(56)QcKdJh A[F]704(46)9cTdJd R[]1202(56)5c4h3h ",
 			"HandCommentary": [
 				"John paid 10 to call",
 				"Dan to bet"
@@ -1780,6 +1940,7 @@
 			"UserName": "Dan",
 			"Parameters": null,
 			"StatusMessage": "Dan paid 10 to call. Fabrice to bet",
+			"PlayerSummaries": "N[]639(56)4s8h6c J[]591(56)7h6h5s D[]1037(56)9dKh6d F[D]806(46)2d7c6s P[]1649(56)QcKdJh A[F]704(46)9cTdJd R[]1202(56)5c4h3h ",
 			"HandCommentary": [
 				"Dan paid 10 to call",
 				"Fabrice to bet"
@@ -1791,6 +1952,7 @@
 			"UserName": "Fabrice",
 			"Parameters": null,
 			"StatusMessage": "Fabrice folded. Started next round, Robert to bet",
+			"PlayerSummaries": "N[]639(56)4s8h6cKs J[]591(56)7h6h5s9h D[]1037(56)9dKh6d2s F[FD]806(46)2d7c6s P[]1649(56)QcKdJh7d A[F]704(46)9cTdJd R[]1202(56)5c4h3hAc ",
 			"HandCommentary": [
 				"Fabrice folded",
 				"Started next round, Robert to bet"
@@ -1802,6 +1964,7 @@
 			"UserName": "Robert",
 			"Parameters": "25",
 			"StatusMessage": "Robert raised by 25. Nigel to bet",
+			"PlayerSummaries": "N[]639(56)4s8h6cKs J[]591(56)7h6h5s9h D[]1037(56)9dKh6d2s F[FD]806(46)2d7c6s P[]1649(56)QcKdJh7d A[F]704(46)9cTdJd R[]1177(81)5c4h3hAc ",
 			"HandCommentary": [
 				"Robert raised by 25",
 				"Nigel to bet"
@@ -1813,6 +1976,7 @@
 			"UserName": "Nigel",
 			"Parameters": null,
 			"StatusMessage": "Nigel folded. John to bet",
+			"PlayerSummaries": "N[F]639(56)4s8h6cKs J[]591(56)7h6h5s9h D[]1037(56)9dKh6d2s F[FD]806(46)2d7c6s P[]1649(56)QcKdJh7d A[F]704(46)9cTdJd R[]1177(81)5c4h3hAc ",
 			"HandCommentary": [
 				"Nigel folded",
 				"John to bet"
@@ -1824,6 +1988,7 @@
 			"UserName": "John",
 			"Parameters": "25",
 			"StatusMessage": "John paid 25 to stay in and raised by 25. Dan to bet",
+			"PlayerSummaries": "N[F]639(56)4s8h6cKs J[]541(106)7h6h5s9h D[]1037(56)9dKh6d2s F[FD]806(46)2d7c6s P[]1649(56)QcKdJh7d A[F]704(46)9cTdJd R[]1177(81)5c4h3hAc ",
 			"HandCommentary": [
 				"John paid 25 to stay in and raised by 25",
 				"Dan to bet"
@@ -1835,6 +2000,7 @@
 			"UserName": "Dan",
 			"Parameters": null,
 			"StatusMessage": "Dan paid 50 to call. Paul to bet",
+			"PlayerSummaries": "N[F]639(56)4s8h6cKs J[]541(106)7h6h5s9h D[]987(106)9dKh6d2s F[FD]806(46)2d7c6s P[]1649(56)QcKdJh7d A[F]704(46)9cTdJd R[]1177(81)5c4h3hAc ",
 			"HandCommentary": [
 				"Dan paid 50 to call",
 				"Paul to bet"
@@ -1846,6 +2012,7 @@
 			"UserName": "Paul",
 			"Parameters": null,
 			"StatusMessage": "Paul paid 50 to call. Robert to bet",
+			"PlayerSummaries": "N[F]639(56)4s8h6cKs J[]541(106)7h6h5s9h D[]987(106)9dKh6d2s F[FD]806(46)2d7c6s P[]1599(106)QcKdJh7d A[F]704(46)9cTdJd R[]1177(81)5c4h3hAc ",
 			"HandCommentary": [
 				"Paul paid 50 to call",
 				"Robert to bet"
@@ -1857,6 +2024,7 @@
 			"UserName": "Robert",
 			"Parameters": null,
 			"StatusMessage": "Robert paid 25 to call. Started next round, Robert to bet",
+			"PlayerSummaries": "N[F]639(56)4s8h6cKs J[]541(106)7h6h5s9h D[]987(106)9dKh6d2s F[FD]806(46)2d7c6s P[]1599(106)QcKdJh7d A[F]704(46)9cTdJd R[]1152(106)5c4h3hAc ",
 			"HandCommentary": [
 				"Robert paid 25 to call",
 				"Started next round, Robert to bet"
@@ -1868,6 +2036,7 @@
 			"UserName": "Robert",
 			"Parameters": "75",
 			"StatusMessage": "Robert raised by 75. John to bet",
+			"PlayerSummaries": "N[F]639(56)4s8h6cKs J[]541(106)7h6h5s9h D[]987(106)9dKh6d2s F[FD]806(46)2d7c6s P[]1599(106)QcKdJh7d A[F]704(46)9cTdJd R[]1077(181)5c4h3hAc ",
 			"HandCommentary": [
 				"Robert raised by 75",
 				"John to bet"
@@ -1879,6 +2048,7 @@
 			"UserName": "John",
 			"Parameters": "100",
 			"StatusMessage": "John paid 75 to stay in and raised by 100. Dan to bet",
+			"PlayerSummaries": "N[F]639(56)4s8h6cKs J[]366(281)7h6h5s9h D[]987(106)9dKh6d2s F[FD]806(46)2d7c6s P[]1599(106)QcKdJh7d A[F]704(46)9cTdJd R[]1077(181)5c4h3hAc ",
 			"HandCommentary": [
 				"John paid 75 to stay in and raised by 100",
 				"Dan to bet"
@@ -1890,6 +2060,7 @@
 			"UserName": "Dan",
 			"Parameters": null,
 			"StatusMessage": "Dan folded. Paul to bet",
+			"PlayerSummaries": "N[F]639(56)4s8h6cKs J[]366(281)7h6h5s9h D[F]987(106)9dKh6d2s F[FD]806(46)2d7c6s P[]1599(106)QcKdJh7d A[F]704(46)9cTdJd R[]1077(181)5c4h3hAc ",
 			"HandCommentary": [
 				"Dan folded",
 				"Paul to bet"
@@ -1901,6 +2072,7 @@
 			"UserName": "Paul",
 			"Parameters": null,
 			"StatusMessage": "Paul paid 175 to call. Robert to bet",
+			"PlayerSummaries": "N[F]639(56)4s8h6cKs J[]366(281)7h6h5s9h D[F]987(106)9dKh6d2s F[FD]806(46)2d7c6s P[]1424(281)QcKdJh7d A[F]704(46)9cTdJd R[]1077(181)5c4h3hAc ",
 			"HandCommentary": [
 				"Paul paid 175 to call",
 				"Robert to bet"
@@ -1912,6 +2084,7 @@
 			"UserName": "Robert",
 			"Parameters": "50",
 			"StatusMessage": "Robert paid 100 to stay in and raised by 50. John to bet",
+			"PlayerSummaries": "N[F]639(56)4s8h6cKs J[]366(281)7h6h5s9h D[F]987(106)9dKh6d2s F[FD]806(46)2d7c6s P[]1424(281)QcKdJh7d A[F]704(46)9cTdJd R[]927(331)5c4h3hAc ",
 			"HandCommentary": [
 				"Robert paid 100 to stay in and raised by 50",
 				"John to bet"
@@ -1923,6 +2096,7 @@
 			"UserName": "John",
 			"Parameters": null,
 			"StatusMessage": "John paid 50 to call. Paul to bet",
+			"PlayerSummaries": "N[F]639(56)4s8h6cKs J[]316(331)7h6h5s9h D[F]987(106)9dKh6d2s F[FD]806(46)2d7c6s P[]1424(281)QcKdJh7d A[F]704(46)9cTdJd R[]927(331)5c4h3hAc ",
 			"HandCommentary": [
 				"John paid 50 to call",
 				"Paul to bet"
@@ -1934,6 +2108,7 @@
 			"UserName": "Paul",
 			"Parameters": null,
 			"StatusMessage": "Paul paid 50 to call. Betting completed, proceeding to hand reveal stage, Robert to reveal (or fold)",
+			"PlayerSummaries": "N[F]639(56)4s8h6cKs J[]316(331)7h6h5s9h D[F]987(106)9dKh6d2s F[FD]806(46)2d7c6s P[]1374(331)QcKdJh7d A[F]704(46)9cTdJd R[]927(331)5c4h3hAc ",
 			"HandCommentary": [
 				"Paul paid 50 to call",
 				"Betting completed, proceeding to hand reveal stage, Robert to reveal (or fold)"
@@ -1945,6 +2120,7 @@
 			"UserName": "Robert",
 			"Parameters": null,
 			"StatusMessage": "Robert revealed their hand details. John to reveal (or fold)",
+			"PlayerSummaries": "N[F]639(56)4s8h6cKs J[]316(331)7h6h5s9h D[F]987(106)9dKh6d2s F[FD]806(46)2d7c6s P[]1374(331)QcKdJh7d A[F]704(46)9cTdJd R[]927(331)5c4h3hAc ",
 			"HandCommentary": [
 				"Robert revealed their hand details",
 				"John to reveal (or fold)"
@@ -1956,6 +2132,7 @@
 			"UserName": "John",
 			"Parameters": null,
 			"StatusMessage": "John revealed their hand details. Paul to reveal (or fold)",
+			"PlayerSummaries": "N[F]639(56)4s8h6cKs J[]316(331)7h6h5s9h D[F]987(106)9dKh6d2s F[FD]806(46)2d7c6s P[]1374(331)QcKdJh7d A[F]704(46)9cTdJd R[]927(331)5c4h3hAc ",
 			"HandCommentary": [
 				"John revealed their hand details",
 				"Paul to reveal (or fold)"
@@ -1967,6 +2144,7 @@
 			"UserName": "Paul",
 			"Parameters": null,
 			"StatusMessage": "Paul revealed their hand details. Reveal hands if desired, or administrator to start next hand (or reopen lobby)",
+			"PlayerSummaries": "N[F]639(0)4s8h6cKs J[]316(0)7h6h5s9h D[F]987(0)9dKh6d2s F[FD]806(0)2d7c6s P[]1374(0)QcKdJh7d A[F]704(0)9cTdJd R[]2174(0)5c4h3hAc ",
 			"HandCommentary": [
 				"Paul revealed their hand details",
 				"Paul revealed their hand details, all hands revealed, hand ended",
@@ -1987,6 +2165,7 @@
 			"UserName": "Dan",
 			"Parameters": null,
 			"StatusMessage": "Dan revealed their hand details. Reveal hands if desired, or administrator to start next hand (or reopen lobby)",
+			"PlayerSummaries": "N[F]639(0)4s8h6cKs J[]316(0)7h6h5s9h D[F]987(0)9dKh6d2s F[FD]806(0)2d7c6s P[]1374(0)QcKdJh7d A[F]704(0)9cTdJd R[]2174(0)5c4h3hAc ",
 			"HandCommentary": [
 				"Dan revealed their hand details"
 			]
@@ -1997,6 +2176,7 @@
 			"UserName": "Robert",
 			"Parameters": null,
 			"StatusMessage": "Robert started next hand. Adam to bet",
+			"PlayerSummaries": "N[]638(1)9d J[]315(1)3c D[]986(1)4s F[]805(1)Th P[D]1373(1)8s A[]703(1)Jd R[]2173(1)7c ",
 			"HandCommentary": []
 		},
 		{
@@ -2005,6 +2185,7 @@
 			"UserName": "Adam",
 			"Parameters": null,
 			"StatusMessage": "Adam checked. Robert to bet",
+			"PlayerSummaries": "N[]638(1)9d J[]315(1)3c D[]986(1)4s F[]805(1)Th P[D]1373(1)8s A[]703(1)Jd R[]2173(1)7c ",
 			"HandCommentary": [
 				"Adam checked",
 				"Robert to bet"
@@ -2016,6 +2197,7 @@
 			"UserName": "Robert",
 			"Parameters": null,
 			"StatusMessage": "Robert checked. Nigel to bet",
+			"PlayerSummaries": "N[]638(1)9d J[]315(1)3c D[]986(1)4s F[]805(1)Th P[D]1373(1)8s A[]703(1)Jd R[]2173(1)7c ",
 			"HandCommentary": [
 				"Robert checked",
 				"Nigel to bet"
@@ -2027,6 +2209,7 @@
 			"UserName": "Nigel",
 			"Parameters": null,
 			"StatusMessage": "Nigel checked. John to bet",
+			"PlayerSummaries": "N[]638(1)9d J[]315(1)3c D[]986(1)4s F[]805(1)Th P[D]1373(1)8s A[]703(1)Jd R[]2173(1)7c ",
 			"HandCommentary": [
 				"Nigel checked",
 				"John to bet"
@@ -2038,6 +2221,7 @@
 			"UserName": "John",
 			"Parameters": null,
 			"StatusMessage": "John checked. Dan to bet",
+			"PlayerSummaries": "N[]638(1)9d J[]315(1)3c D[]986(1)4s F[]805(1)Th P[D]1373(1)8s A[]703(1)Jd R[]2173(1)7c ",
 			"HandCommentary": [
 				"John checked",
 				"Dan to bet"
@@ -2049,6 +2233,7 @@
 			"UserName": "Dan",
 			"Parameters": null,
 			"StatusMessage": "Dan checked. Fabrice to bet",
+			"PlayerSummaries": "N[]638(1)9d J[]315(1)3c D[]986(1)4s F[]805(1)Th P[D]1373(1)8s A[]703(1)Jd R[]2173(1)7c ",
 			"HandCommentary": [
 				"Dan checked",
 				"Fabrice to bet"
@@ -2060,6 +2245,7 @@
 			"UserName": "Fabrice",
 			"Parameters": null,
 			"StatusMessage": "Fabrice checked. Paul to bet",
+			"PlayerSummaries": "N[]638(1)9d J[]315(1)3c D[]986(1)4s F[]805(1)Th P[D]1373(1)8s A[]703(1)Jd R[]2173(1)7c ",
 			"HandCommentary": [
 				"Fabrice checked",
 				"Paul to bet"
@@ -2071,6 +2257,7 @@
 			"UserName": "Paul",
 			"Parameters": "10",
 			"StatusMessage": "Paul raised by 10. Adam to bet",
+			"PlayerSummaries": "N[]638(1)9d J[]315(1)3c D[]986(1)4s F[]805(1)Th P[D]1363(11)8s A[]703(1)Jd R[]2173(1)7c ",
 			"HandCommentary": [
 				"Paul raised by 10",
 				"Adam to bet"
@@ -2082,6 +2269,7 @@
 			"UserName": "Adam",
 			"Parameters": null,
 			"StatusMessage": "Adam folded. Robert to bet",
+			"PlayerSummaries": "N[]638(1)9d J[]315(1)3c D[]986(1)4s F[]805(1)Th P[D]1363(11)8s A[F]703(1)Jd R[]2173(1)7c ",
 			"HandCommentary": [
 				"Adam folded",
 				"Robert to bet"
@@ -2093,6 +2281,7 @@
 			"UserName": "Robert",
 			"Parameters": null,
 			"StatusMessage": "Robert paid 10 to call. Nigel to bet",
+			"PlayerSummaries": "N[]638(1)9d J[]315(1)3c D[]986(1)4s F[]805(1)Th P[D]1363(11)8s A[F]703(1)Jd R[]2163(11)7c ",
 			"HandCommentary": [
 				"Robert paid 10 to call",
 				"Nigel to bet"
@@ -2104,6 +2293,7 @@
 			"UserName": "Nigel",
 			"Parameters": null,
 			"StatusMessage": "Nigel paid 10 to call. John to bet",
+			"PlayerSummaries": "N[]628(11)9d J[]315(1)3c D[]986(1)4s F[]805(1)Th P[D]1363(11)8s A[F]703(1)Jd R[]2163(11)7c ",
 			"HandCommentary": [
 				"Nigel paid 10 to call",
 				"John to bet"
@@ -2115,6 +2305,7 @@
 			"UserName": "John",
 			"Parameters": null,
 			"StatusMessage": "John paid 10 to call. Dan to bet",
+			"PlayerSummaries": "N[]628(11)9d J[]305(11)3c D[]986(1)4s F[]805(1)Th P[D]1363(11)8s A[F]703(1)Jd R[]2163(11)7c ",
 			"HandCommentary": [
 				"John paid 10 to call",
 				"Dan to bet"
@@ -2126,6 +2317,7 @@
 			"UserName": "Dan",
 			"Parameters": null,
 			"StatusMessage": "Dan paid 10 to call. Fabrice to bet",
+			"PlayerSummaries": "N[]628(11)9d J[]305(11)3c D[]976(11)4s F[]805(1)Th P[D]1363(11)8s A[F]703(1)Jd R[]2163(11)7c ",
 			"HandCommentary": [
 				"Dan paid 10 to call",
 				"Fabrice to bet"
@@ -2137,6 +2329,7 @@
 			"UserName": "Fabrice",
 			"Parameters": null,
 			"StatusMessage": "Fabrice paid 10 to call. Started next round, Nigel to bet",
+			"PlayerSummaries": "N[]628(11)9dAs J[]305(11)3cJc D[]976(11)4s7s F[]795(11)ThJs P[D]1363(11)8s3d A[F]703(1)Jd R[]2163(11)7c8c ",
 			"HandCommentary": [
 				"Fabrice paid 10 to call",
 				"Started next round, Nigel to bet"
@@ -2148,6 +2341,7 @@
 			"UserName": "Nigel",
 			"Parameters": null,
 			"StatusMessage": "Nigel checked. John to bet",
+			"PlayerSummaries": "N[]628(11)9dAs J[]305(11)3cJc D[]976(11)4s7s F[]795(11)ThJs P[D]1363(11)8s3d A[F]703(1)Jd R[]2163(11)7c8c ",
 			"HandCommentary": [
 				"Nigel checked",
 				"John to bet"
@@ -2159,6 +2353,7 @@
 			"UserName": "John",
 			"Parameters": null,
 			"StatusMessage": "John checked. Dan to bet",
+			"PlayerSummaries": "N[]628(11)9dAs J[]305(11)3cJc D[]976(11)4s7s F[]795(11)ThJs P[D]1363(11)8s3d A[F]703(1)Jd R[]2163(11)7c8c ",
 			"HandCommentary": [
 				"John checked",
 				"Dan to bet"
@@ -2170,6 +2365,7 @@
 			"UserName": "Dan",
 			"Parameters": null,
 			"StatusMessage": "Dan checked. Fabrice to bet",
+			"PlayerSummaries": "N[]628(11)9dAs J[]305(11)3cJc D[]976(11)4s7s F[]795(11)ThJs P[D]1363(11)8s3d A[F]703(1)Jd R[]2163(11)7c8c ",
 			"HandCommentary": [
 				"Dan checked",
 				"Fabrice to bet"
@@ -2181,6 +2377,7 @@
 			"UserName": "Fabrice",
 			"Parameters": null,
 			"StatusMessage": "Fabrice checked. Paul to bet",
+			"PlayerSummaries": "N[]628(11)9dAs J[]305(11)3cJc D[]976(11)4s7s F[]795(11)ThJs P[D]1363(11)8s3d A[F]703(1)Jd R[]2163(11)7c8c ",
 			"HandCommentary": [
 				"Fabrice checked",
 				"Paul to bet"
@@ -2192,6 +2389,7 @@
 			"UserName": "Paul",
 			"Parameters": null,
 			"StatusMessage": "Paul checked. Robert to bet",
+			"PlayerSummaries": "N[]628(11)9dAs J[]305(11)3cJc D[]976(11)4s7s F[]795(11)ThJs P[D]1363(11)8s3d A[F]703(1)Jd R[]2163(11)7c8c ",
 			"HandCommentary": [
 				"Paul checked",
 				"Robert to bet"
@@ -2203,6 +2401,7 @@
 			"UserName": "Robert",
 			"Parameters": null,
 			"StatusMessage": "Robert checked. Started next round, Robert to bet",
+			"PlayerSummaries": "N[]628(11)9dAs3h J[]305(11)3cJc7h D[]976(11)4s7s5h F[]795(11)ThJs6d P[D]1363(11)8s3dKd A[F]703(1)Jd R[]2163(11)7c8c7d ",
 			"HandCommentary": [
 				"Robert checked",
 				"Started next round, Robert to bet"
@@ -2214,6 +2413,7 @@
 			"UserName": "Robert",
 			"Parameters": "10",
 			"StatusMessage": "Robert raised by 10. Nigel to bet",
+			"PlayerSummaries": "N[]628(11)9dAs3h J[]305(11)3cJc7h D[]976(11)4s7s5h F[]795(11)ThJs6d P[D]1363(11)8s3dKd A[F]703(1)Jd R[]2153(21)7c8c7d ",
 			"HandCommentary": [
 				"Robert raised by 10",
 				"Nigel to bet"
@@ -2225,6 +2425,7 @@
 			"UserName": "Nigel",
 			"Parameters": null,
 			"StatusMessage": "Nigel paid 10 to call. John to bet",
+			"PlayerSummaries": "N[]618(21)9dAs3h J[]305(11)3cJc7h D[]976(11)4s7s5h F[]795(11)ThJs6d P[D]1363(11)8s3dKd A[F]703(1)Jd R[]2153(21)7c8c7d ",
 			"HandCommentary": [
 				"Nigel paid 10 to call",
 				"John to bet"
@@ -2236,6 +2437,7 @@
 			"UserName": "John",
 			"Parameters": null,
 			"StatusMessage": "John paid 10 to call. Dan to bet",
+			"PlayerSummaries": "N[]618(21)9dAs3h J[]295(21)3cJc7h D[]976(11)4s7s5h F[]795(11)ThJs6d P[D]1363(11)8s3dKd A[F]703(1)Jd R[]2153(21)7c8c7d ",
 			"HandCommentary": [
 				"John paid 10 to call",
 				"Dan to bet"
@@ -2247,6 +2449,7 @@
 			"UserName": "Dan",
 			"Parameters": null,
 			"StatusMessage": "Dan paid 10 to call. Fabrice to bet",
+			"PlayerSummaries": "N[]618(21)9dAs3h J[]295(21)3cJc7h D[]966(21)4s7s5h F[]795(11)ThJs6d P[D]1363(11)8s3dKd A[F]703(1)Jd R[]2153(21)7c8c7d ",
 			"HandCommentary": [
 				"Dan paid 10 to call",
 				"Fabrice to bet"
@@ -2258,6 +2461,7 @@
 			"UserName": "Fabrice",
 			"Parameters": null,
 			"StatusMessage": "Fabrice paid 10 to call. Paul to bet",
+			"PlayerSummaries": "N[]618(21)9dAs3h J[]295(21)3cJc7h D[]966(21)4s7s5h F[]785(21)ThJs6d P[D]1363(11)8s3dKd A[F]703(1)Jd R[]2153(21)7c8c7d ",
 			"HandCommentary": [
 				"Fabrice paid 10 to call",
 				"Paul to bet"
@@ -2269,6 +2473,7 @@
 			"UserName": "Paul",
 			"Parameters": null,
 			"StatusMessage": "Paul folded. Started next round, Robert to bet",
+			"PlayerSummaries": "N[]618(21)9dAs3hQh J[]295(21)3cJc7hKh D[]966(21)4s7s5h6h F[]785(21)ThJs6d4h P[FD]1363(11)8s3dKd A[F]703(1)Jd R[]2153(21)7c8c7d2d ",
 			"HandCommentary": [
 				"Paul folded",
 				"Started next round, Robert to bet"
@@ -2280,6 +2485,7 @@
 			"UserName": "Robert",
 			"Parameters": "20",
 			"StatusMessage": "Robert raised by 20. Nigel to bet",
+			"PlayerSummaries": "N[]618(21)9dAs3hQh J[]295(21)3cJc7hKh D[]966(21)4s7s5h6h F[]785(21)ThJs6d4h P[FD]1363(11)8s3dKd A[F]703(1)Jd R[]2133(41)7c8c7d2d ",
 			"HandCommentary": [
 				"Robert raised by 20",
 				"Nigel to bet"
@@ -2291,6 +2497,7 @@
 			"UserName": "Nigel",
 			"Parameters": null,
 			"StatusMessage": "Nigel paid 20 to call. John to bet",
+			"PlayerSummaries": "N[]598(41)9dAs3hQh J[]295(21)3cJc7hKh D[]966(21)4s7s5h6h F[]785(21)ThJs6d4h P[FD]1363(11)8s3dKd A[F]703(1)Jd R[]2133(41)7c8c7d2d ",
 			"HandCommentary": [
 				"Nigel paid 20 to call",
 				"John to bet"
@@ -2302,6 +2509,7 @@
 			"UserName": "John",
 			"Parameters": null,
 			"StatusMessage": "John folded. Dan to bet",
+			"PlayerSummaries": "N[]598(41)9dAs3hQh J[F]295(21)3cJc7hKh D[]966(21)4s7s5h6h F[]785(21)ThJs6d4h P[FD]1363(11)8s3dKd A[F]703(1)Jd R[]2133(41)7c8c7d2d ",
 			"HandCommentary": [
 				"John folded",
 				"Dan to bet"
@@ -2313,6 +2521,7 @@
 			"UserName": "Dan",
 			"Parameters": null,
 			"StatusMessage": "Dan paid 20 to call. Fabrice to bet",
+			"PlayerSummaries": "N[]598(41)9dAs3hQh J[F]295(21)3cJc7hKh D[]946(41)4s7s5h6h F[]785(21)ThJs6d4h P[FD]1363(11)8s3dKd A[F]703(1)Jd R[]2133(41)7c8c7d2d ",
 			"HandCommentary": [
 				"Dan paid 20 to call",
 				"Fabrice to bet"
@@ -2324,6 +2533,7 @@
 			"UserName": "Fabrice",
 			"Parameters": null,
 			"StatusMessage": "Fabrice folded. Started next round, Robert to bet",
+			"PlayerSummaries": "N[]598(41)9dAs3hQh J[F]295(21)3cJc7hKh D[]946(41)4s7s5h6h F[F]785(21)ThJs6d4h P[FD]1363(11)8s3dKd A[F]703(1)Jd R[]2133(41)7c8c7d2d ",
 			"HandCommentary": [
 				"Fabrice folded",
 				"Started next round, Robert to bet"
@@ -2335,6 +2545,7 @@
 			"UserName": "Robert",
 			"Parameters": "40",
 			"StatusMessage": "Robert raised by 40. Nigel to bet",
+			"PlayerSummaries": "N[]598(41)9dAs3hQh J[F]295(21)3cJc7hKh D[]946(41)4s7s5h6h F[F]785(21)ThJs6d4h P[FD]1363(11)8s3dKd A[F]703(1)Jd R[]2093(81)7c8c7d2d ",
 			"HandCommentary": [
 				"Robert raised by 40",
 				"Nigel to bet"
@@ -2346,6 +2557,7 @@
 			"UserName": "Nigel",
 			"Parameters": null,
 			"StatusMessage": "Nigel folded. Dan to bet",
+			"PlayerSummaries": "N[F]598(41)9dAs3hQh J[F]295(21)3cJc7hKh D[]946(41)4s7s5h6h F[F]785(21)ThJs6d4h P[FD]1363(11)8s3dKd A[F]703(1)Jd R[]2093(81)7c8c7d2d ",
 			"HandCommentary": [
 				"Nigel folded",
 				"Dan to bet"
@@ -2357,6 +2569,7 @@
 			"UserName": "Dan",
 			"Parameters": "30",
 			"StatusMessage": "Dan paid 40 to stay in and raised by 30. Robert to bet",
+			"PlayerSummaries": "N[F]598(41)9dAs3hQh J[F]295(21)3cJc7hKh D[]876(111)4s7s5h6h F[F]785(21)ThJs6d4h P[FD]1363(11)8s3dKd A[F]703(1)Jd R[]2093(81)7c8c7d2d ",
 			"HandCommentary": [
 				"Dan paid 40 to stay in and raised by 30",
 				"Robert to bet"
@@ -2368,6 +2581,7 @@
 			"UserName": "Robert",
 			"Parameters": null,
 			"StatusMessage": "Robert paid 30 to call. Betting completed, proceeding to hand reveal stage, Dan to reveal (or fold)",
+			"PlayerSummaries": "N[F]598(41)9dAs3hQh J[F]295(21)3cJc7hKh D[]876(111)4s7s5h6h F[F]785(21)ThJs6d4h P[FD]1363(11)8s3dKd A[F]703(1)Jd R[]2063(111)7c8c7d2d ",
 			"HandCommentary": [
 				"Robert paid 30 to call",
 				"Betting completed, proceeding to hand reveal stage, Dan to reveal (or fold)"
@@ -2379,6 +2593,7 @@
 			"UserName": "Dan",
 			"Parameters": null,
 			"StatusMessage": "Dan revealed their hand details. Robert to reveal (or fold)",
+			"PlayerSummaries": "N[F]598(41)9dAs3hQh J[F]295(21)3cJc7hKh D[]876(111)4s7s5h6h F[F]785(21)ThJs6d4h P[FD]1363(11)8s3dKd A[F]703(1)Jd R[]2063(111)7c8c7d2d ",
 			"HandCommentary": [
 				"Dan revealed their hand details",
 				"Robert to reveal (or fold)"
@@ -2390,6 +2605,7 @@
 			"UserName": "Robert",
 			"Parameters": null,
 			"StatusMessage": "Robert folded. Reveal hands if desired, or administrator to start next hand (or reopen lobby)",
+			"PlayerSummaries": "N[F]598(0)9dAs3hQh J[F]295(0)3cJc7hKh D[]1193(0)4s7s5h6h F[F]785(0)ThJs6d4h P[FD]1363(0)8s3dKd A[F]703(0)Jd R[F]2063(0)7c8c7d2d ",
 			"HandCommentary": [
 				"Robert folded",
 				"Robert folded, only one player left in, hand ended",
@@ -2410,6 +2626,7 @@
 			"UserName": "Robert",
 			"Parameters": null,
 			"StatusMessage": "Robert revealed their hand details. Reveal hands if desired, or administrator to start next hand (or reopen lobby)",
+			"PlayerSummaries": "N[F]598(0)9dAs3hQh J[F]295(0)3cJc7hKh D[]1193(0)4s7s5h6h F[F]785(0)ThJs6d4h P[FD]1363(0)8s3dKd A[F]703(0)Jd R[F]2063(0)7c8c7d2d ",
 			"HandCommentary": [
 				"Robert revealed their hand details"
 			]
@@ -2420,6 +2637,7 @@
 			"UserName": "Robert",
 			"Parameters": null,
 			"StatusMessage": "Robert started next hand. Fabrice to bet",
+			"PlayerSummaries": "N[]597(1)Tc J[]294(1)2h D[]1192(1)Qc F[]784(1)As P[]1362(1)Th A[D]702(1)8s R[]2062(1)Kd ",
 			"HandCommentary": []
 		},
 		{
@@ -2428,6 +2646,7 @@
 			"UserName": "Fabrice",
 			"Parameters": "50",
 			"StatusMessage": "Fabrice raised by 50. Paul to bet",
+			"PlayerSummaries": "N[]597(1)Tc J[]294(1)2h D[]1192(1)Qc F[]734(51)As P[]1362(1)Th A[D]702(1)8s R[]2062(1)Kd ",
 			"HandCommentary": [
 				"Fabrice raised by 50",
 				"Paul to bet"
@@ -2439,6 +2658,7 @@
 			"UserName": "Paul",
 			"Parameters": null,
 			"StatusMessage": "Paul paid 50 to call. Adam to bet",
+			"PlayerSummaries": "N[]597(1)Tc J[]294(1)2h D[]1192(1)Qc F[]734(51)As P[]1312(51)Th A[D]702(1)8s R[]2062(1)Kd ",
 			"HandCommentary": [
 				"Paul paid 50 to call",
 				"Adam to bet"
@@ -2450,6 +2670,7 @@
 			"UserName": "Adam",
 			"Parameters": null,
 			"StatusMessage": "Adam paid 50 to call. Robert to bet",
+			"PlayerSummaries": "N[]597(1)Tc J[]294(1)2h D[]1192(1)Qc F[]734(51)As P[]1312(51)Th A[D]652(51)8s R[]2062(1)Kd ",
 			"HandCommentary": [
 				"Adam paid 50 to call",
 				"Robert to bet"
@@ -2461,6 +2682,7 @@
 			"UserName": "Robert",
 			"Parameters": null,
 			"StatusMessage": "Robert paid 50 to call. Nigel to bet",
+			"PlayerSummaries": "N[]597(1)Tc J[]294(1)2h D[]1192(1)Qc F[]734(51)As P[]1312(51)Th A[D]652(51)8s R[]2012(51)Kd ",
 			"HandCommentary": [
 				"Robert paid 50 to call",
 				"Nigel to bet"
@@ -2472,6 +2694,7 @@
 			"UserName": "Nigel",
 			"Parameters": null,
 			"StatusMessage": "Nigel paid 50 to call. John to bet",
+			"PlayerSummaries": "N[]547(51)Tc J[]294(1)2h D[]1192(1)Qc F[]734(51)As P[]1312(51)Th A[D]652(51)8s R[]2012(51)Kd ",
 			"HandCommentary": [
 				"Nigel paid 50 to call",
 				"John to bet"
@@ -2483,6 +2706,7 @@
 			"UserName": "John",
 			"Parameters": null,
 			"StatusMessage": "John paid 50 to call. Dan to bet",
+			"PlayerSummaries": "N[]547(51)Tc J[]244(51)2h D[]1192(1)Qc F[]734(51)As P[]1312(51)Th A[D]652(51)8s R[]2012(51)Kd ",
 			"HandCommentary": [
 				"John paid 50 to call",
 				"Dan to bet"
@@ -2494,6 +2718,7 @@
 			"UserName": "Dan",
 			"Parameters": null,
 			"StatusMessage": "Dan paid 50 to call. Started next round, Fabrice to bet",
+			"PlayerSummaries": "N[]547(51)TcKs J[]244(51)2h3c D[]1142(51)QcJc F[]734(51)As6c P[]1312(51)Th3h A[D]652(51)8s5c R[]2012(51)Kd9d ",
 			"HandCommentary": [
 				"Dan paid 50 to call",
 				"Started next round, Fabrice to bet"
@@ -2505,6 +2730,7 @@
 			"UserName": "Fabrice",
 			"Parameters": null,
 			"StatusMessage": "Fabrice checked. Paul to bet",
+			"PlayerSummaries": "N[]547(51)TcKs J[]244(51)2h3c D[]1142(51)QcJc F[]734(51)As6c P[]1312(51)Th3h A[D]652(51)8s5c R[]2012(51)Kd9d ",
 			"HandCommentary": [
 				"Fabrice checked",
 				"Paul to bet"
@@ -2516,6 +2742,7 @@
 			"UserName": "Paul",
 			"Parameters": null,
 			"StatusMessage": "Paul folded. Adam to bet",
+			"PlayerSummaries": "N[]547(51)TcKs J[]244(51)2h3c D[]1142(51)QcJc F[]734(51)As6c P[F]1312(51)Th3h A[D]652(51)8s5c R[]2012(51)Kd9d ",
 			"HandCommentary": [
 				"Paul folded",
 				"Adam to bet"
@@ -2527,6 +2754,7 @@
 			"UserName": "Adam",
 			"Parameters": null,
 			"StatusMessage": "Adam checked. Robert to bet",
+			"PlayerSummaries": "N[]547(51)TcKs J[]244(51)2h3c D[]1142(51)QcJc F[]734(51)As6c P[F]1312(51)Th3h A[D]652(51)8s5c R[]2012(51)Kd9d ",
 			"HandCommentary": [
 				"Adam checked",
 				"Robert to bet"
@@ -2538,6 +2766,7 @@
 			"UserName": "Robert",
 			"Parameters": null,
 			"StatusMessage": "Robert checked. Nigel to bet",
+			"PlayerSummaries": "N[]547(51)TcKs J[]244(51)2h3c D[]1142(51)QcJc F[]734(51)As6c P[F]1312(51)Th3h A[D]652(51)8s5c R[]2012(51)Kd9d ",
 			"HandCommentary": [
 				"Robert checked",
 				"Nigel to bet"
@@ -2549,6 +2778,7 @@
 			"UserName": "Nigel",
 			"Parameters": null,
 			"StatusMessage": "Nigel checked. John to bet",
+			"PlayerSummaries": "N[]547(51)TcKs J[]244(51)2h3c D[]1142(51)QcJc F[]734(51)As6c P[F]1312(51)Th3h A[D]652(51)8s5c R[]2012(51)Kd9d ",
 			"HandCommentary": [
 				"Nigel checked",
 				"John to bet"
@@ -2560,6 +2790,7 @@
 			"UserName": "John",
 			"Parameters": null,
 			"StatusMessage": "John checked. Dan to bet",
+			"PlayerSummaries": "N[]547(51)TcKs J[]244(51)2h3c D[]1142(51)QcJc F[]734(51)As6c P[F]1312(51)Th3h A[D]652(51)8s5c R[]2012(51)Kd9d ",
 			"HandCommentary": [
 				"John checked",
 				"Dan to bet"
@@ -2571,6 +2802,7 @@
 			"UserName": "Dan",
 			"Parameters": null,
 			"StatusMessage": "Dan checked. Started next round, Fabrice to bet",
+			"PlayerSummaries": "N[]547(51)TcKs2d J[]244(51)2h3c8h D[]1142(51)QcJc7h F[]734(51)As6cTs P[F]1312(51)Th3h A[D]652(51)8s5cJh R[]2012(51)Kd9d3d ",
 			"HandCommentary": [
 				"Dan checked",
 				"Started next round, Fabrice to bet"
@@ -2582,6 +2814,7 @@
 			"UserName": "Fabrice",
 			"Parameters": null,
 			"StatusMessage": "Fabrice checked. Adam to bet",
+			"PlayerSummaries": "N[]547(51)TcKs2d J[]244(51)2h3c8h D[]1142(51)QcJc7h F[]734(51)As6cTs P[F]1312(51)Th3h A[D]652(51)8s5cJh R[]2012(51)Kd9d3d ",
 			"HandCommentary": [
 				"Fabrice checked",
 				"Adam to bet"
@@ -2593,6 +2826,7 @@
 			"UserName": "Adam",
 			"Parameters": null,
 			"StatusMessage": "Adam checked. Robert to bet",
+			"PlayerSummaries": "N[]547(51)TcKs2d J[]244(51)2h3c8h D[]1142(51)QcJc7h F[]734(51)As6cTs P[F]1312(51)Th3h A[D]652(51)8s5cJh R[]2012(51)Kd9d3d ",
 			"HandCommentary": [
 				"Adam checked",
 				"Robert to bet"
@@ -2604,6 +2838,7 @@
 			"UserName": "Robert",
 			"Parameters": "20",
 			"StatusMessage": "Robert raised by 20. Nigel to bet",
+			"PlayerSummaries": "N[]547(51)TcKs2d J[]244(51)2h3c8h D[]1142(51)QcJc7h F[]734(51)As6cTs P[F]1312(51)Th3h A[D]652(51)8s5cJh R[]1992(71)Kd9d3d ",
 			"HandCommentary": [
 				"Robert raised by 20",
 				"Nigel to bet"
@@ -2615,6 +2850,7 @@
 			"UserName": "Nigel",
 			"Parameters": null,
 			"StatusMessage": "Nigel paid 20 to call. John to bet",
+			"PlayerSummaries": "N[]527(71)TcKs2d J[]244(51)2h3c8h D[]1142(51)QcJc7h F[]734(51)As6cTs P[F]1312(51)Th3h A[D]652(51)8s5cJh R[]1992(71)Kd9d3d ",
 			"HandCommentary": [
 				"Nigel paid 20 to call",
 				"John to bet"
@@ -2626,6 +2862,7 @@
 			"UserName": "John",
 			"Parameters": null,
 			"StatusMessage": "John paid 20 to call. Dan to bet",
+			"PlayerSummaries": "N[]527(71)TcKs2d J[]224(71)2h3c8h D[]1142(51)QcJc7h F[]734(51)As6cTs P[F]1312(51)Th3h A[D]652(51)8s5cJh R[]1992(71)Kd9d3d ",
 			"HandCommentary": [
 				"John paid 20 to call",
 				"Dan to bet"
@@ -2637,6 +2874,7 @@
 			"UserName": "Dan",
 			"Parameters": null,
 			"StatusMessage": "Dan paid 20 to call. Fabrice to bet",
+			"PlayerSummaries": "N[]527(71)TcKs2d J[]224(71)2h3c8h D[]1122(71)QcJc7h F[]734(51)As6cTs P[F]1312(51)Th3h A[D]652(51)8s5cJh R[]1992(71)Kd9d3d ",
 			"HandCommentary": [
 				"Dan paid 20 to call",
 				"Fabrice to bet"
@@ -2648,6 +2886,7 @@
 			"UserName": "Fabrice",
 			"Parameters": null,
 			"StatusMessage": "Fabrice paid 20 to call. Adam to bet",
+			"PlayerSummaries": "N[]527(71)TcKs2d J[]224(71)2h3c8h D[]1122(71)QcJc7h F[]714(71)As6cTs P[F]1312(51)Th3h A[D]652(51)8s5cJh R[]1992(71)Kd9d3d ",
 			"HandCommentary": [
 				"Fabrice paid 20 to call",
 				"Adam to bet"
@@ -2659,6 +2898,7 @@
 			"UserName": "Adam",
 			"Parameters": null,
 			"StatusMessage": "Adam folded. Started next round, Robert to bet",
+			"PlayerSummaries": "N[]527(71)TcKs2dJs J[]224(71)2h3c8hQs D[]1122(71)QcJc7h8d F[]714(71)As6cTs2s P[F]1312(51)Th3h A[FD]652(51)8s5cJh R[]1992(71)Kd9d3d9c ",
 			"HandCommentary": [
 				"Adam folded",
 				"Started next round, Robert to bet"
@@ -2670,6 +2910,7 @@
 			"UserName": "Robert",
 			"Parameters": "30",
 			"StatusMessage": "Robert raised by 30. Nigel to bet",
+			"PlayerSummaries": "N[]527(71)TcKs2dJs J[]224(71)2h3c8hQs D[]1122(71)QcJc7h8d F[]714(71)As6cTs2s P[F]1312(51)Th3h A[FD]652(51)8s5cJh R[]1962(101)Kd9d3d9c ",
 			"HandCommentary": [
 				"Robert raised by 30",
 				"Nigel to bet"
@@ -2681,6 +2922,7 @@
 			"UserName": "Nigel",
 			"Parameters": null,
 			"StatusMessage": "Nigel paid 30 to call. John to bet",
+			"PlayerSummaries": "N[]497(101)TcKs2dJs J[]224(71)2h3c8hQs D[]1122(71)QcJc7h8d F[]714(71)As6cTs2s P[F]1312(51)Th3h A[FD]652(51)8s5cJh R[]1962(101)Kd9d3d9c ",
 			"HandCommentary": [
 				"Nigel paid 30 to call",
 				"John to bet"
@@ -2692,6 +2934,7 @@
 			"UserName": "John",
 			"Parameters": null,
 			"StatusMessage": "John paid 30 to call. Dan to bet",
+			"PlayerSummaries": "N[]497(101)TcKs2dJs J[]194(101)2h3c8hQs D[]1122(71)QcJc7h8d F[]714(71)As6cTs2s P[F]1312(51)Th3h A[FD]652(51)8s5cJh R[]1962(101)Kd9d3d9c ",
 			"HandCommentary": [
 				"John paid 30 to call",
 				"Dan to bet"
@@ -2703,6 +2946,7 @@
 			"UserName": "Dan",
 			"Parameters": null,
 			"StatusMessage": "Dan paid 30 to call. Fabrice to bet",
+			"PlayerSummaries": "N[]497(101)TcKs2dJs J[]194(101)2h3c8hQs D[]1092(101)QcJc7h8d F[]714(71)As6cTs2s P[F]1312(51)Th3h A[FD]652(51)8s5cJh R[]1962(101)Kd9d3d9c ",
 			"HandCommentary": [
 				"Dan paid 30 to call",
 				"Fabrice to bet"
@@ -2714,6 +2958,7 @@
 			"UserName": "Fabrice",
 			"Parameters": null,
 			"StatusMessage": "Fabrice paid 30 to call. Started next round, Robert to bet",
+			"PlayerSummaries": "N[]497(101)TcKs2dJs J[]194(101)2h3c8hQs D[]1092(101)QcJc7h8d F[]684(101)As6cTs2s P[F]1312(51)Th3h A[FD]652(51)8s5cJh R[]1962(101)Kd9d3d9c ",
 			"HandCommentary": [
 				"Fabrice paid 30 to call",
 				"Started next round, Robert to bet"
@@ -2725,6 +2970,7 @@
 			"UserName": "Robert",
 			"Parameters": "100",
 			"StatusMessage": "Robert raised by 100. Nigel to bet",
+			"PlayerSummaries": "N[]497(101)TcKs2dJs J[]194(101)2h3c8hQs D[]1092(101)QcJc7h8d F[]684(101)As6cTs2s P[F]1312(51)Th3h A[FD]652(51)8s5cJh R[]1862(201)Kd9d3d9c ",
 			"HandCommentary": [
 				"Robert raised by 100",
 				"Nigel to bet"
@@ -2736,6 +2982,7 @@
 			"UserName": "Nigel",
 			"Parameters": null,
 			"StatusMessage": "Nigel folded. John to bet",
+			"PlayerSummaries": "N[F]497(101)TcKs2dJs J[]194(101)2h3c8hQs D[]1092(101)QcJc7h8d F[]684(101)As6cTs2s P[F]1312(51)Th3h A[FD]652(51)8s5cJh R[]1862(201)Kd9d3d9c ",
 			"HandCommentary": [
 				"Nigel folded",
 				"John to bet"
@@ -2747,6 +2994,7 @@
 			"UserName": "John",
 			"Parameters": null,
 			"StatusMessage": "John folded. Dan to bet",
+			"PlayerSummaries": "N[F]497(101)TcKs2dJs J[F]194(101)2h3c8hQs D[]1092(101)QcJc7h8d F[]684(101)As6cTs2s P[F]1312(51)Th3h A[FD]652(51)8s5cJh R[]1862(201)Kd9d3d9c ",
 			"HandCommentary": [
 				"John folded",
 				"Dan to bet"
@@ -2758,6 +3006,7 @@
 			"UserName": "Dan",
 			"Parameters": "992",
 			"StatusMessage": "Dan paid 100 to stay in and raised by 992. Fabrice to bet",
+			"PlayerSummaries": "N[F]497(101)TcKs2dJs J[F]194(101)2h3c8hQs D[]0(1193)QcJc7h8d F[]684(101)As6cTs2s P[F]1312(51)Th3h A[FD]652(51)8s5cJh R[]1862(201)Kd9d3d9c ",
 			"HandCommentary": [
 				"Dan paid 100 to stay in and raised by 992",
 				"Fabrice to bet"
@@ -2769,6 +3018,7 @@
 			"UserName": "Fabrice",
 			"Parameters": null,
 			"StatusMessage": "Fabrice folded. Robert to bet",
+			"PlayerSummaries": "N[F]497(101)TcKs2dJs J[F]194(101)2h3c8hQs D[]0(1193)QcJc7h8d F[F]684(101)As6cTs2s P[F]1312(51)Th3h A[FD]652(51)8s5cJh R[]1862(201)Kd9d3d9c ",
 			"HandCommentary": [
 				"Fabrice folded",
 				"Robert to bet"
@@ -2780,6 +3030,7 @@
 			"UserName": "Robert",
 			"Parameters": null,
 			"StatusMessage": "Robert paid 992 to call. Betting completed, proceeding to hand reveal stage, Dan to reveal (or fold)",
+			"PlayerSummaries": "N[F]497(101)TcKs2dJs J[F]194(101)2h3c8hQs D[]0(1193)QcJc7h8d F[F]684(101)As6cTs2s P[F]1312(51)Th3h A[FD]652(51)8s5cJh R[]870(1193)Kd9d3d9c ",
 			"HandCommentary": [
 				"Robert paid 992 to call",
 				"Betting completed, proceeding to hand reveal stage, Dan to reveal (or fold)"
@@ -2791,6 +3042,7 @@
 			"UserName": "Dan",
 			"Parameters": null,
 			"StatusMessage": "Dan revealed their hand details. Robert to reveal (or fold)",
+			"PlayerSummaries": "N[F]497(101)TcKs2dJs J[F]194(101)2h3c8hQs D[]0(1193)QcJc7h8d F[F]684(101)As6cTs2s P[F]1312(51)Th3h A[FD]652(51)8s5cJh R[]870(1193)Kd9d3d9c ",
 			"HandCommentary": [
 				"Dan revealed their hand details",
 				"Robert to reveal (or fold)"
@@ -2802,6 +3054,7 @@
 			"UserName": "Robert",
 			"Parameters": null,
 			"StatusMessage": "Robert revealed their hand details. Reveal hands if desired, or administrator to start next hand (or reopen lobby)",
+			"PlayerSummaries": "N[F]497(0)TcKs2dJs J[F]194(0)2h3c8hQs D[]0(0)QcJc7h8d F[F]684(0)As6cTs2s P[F]1312(0)Th3h A[FD]652(0)8s5cJh R[]3661(0)Kd9d3d9c ",
 			"HandCommentary": [
 				"Robert revealed their hand details",
 				"Robert revealed their hand details, all hands revealed, hand ended",
@@ -2822,6 +3075,7 @@
 			"UserName": "Robert",
 			"Parameters": null,
 			"StatusMessage": "Robert started next hand. Fabrice to bet",
+			"PlayerSummaries": "N[]496(1)Tc J[]193(1)5c D[O]0(0) F[]683(1)Jh P[]1311(1)4c A[]651(1)4d R[D]3660(1)7c ",
 			"HandCommentary": []
 		},
 		{
@@ -2830,6 +3084,7 @@
 			"UserName": "Fabrice",
 			"Parameters": null,
 			"StatusMessage": "Fabrice checked. Paul to bet",
+			"PlayerSummaries": "N[]496(1)Tc J[]193(1)5c D[O]0(0) F[]683(1)Jh P[]1311(1)4c A[]651(1)4d R[D]3660(1)7c ",
 			"HandCommentary": [
 				"Fabrice checked",
 				"Paul to bet"
@@ -2841,6 +3096,7 @@
 			"UserName": "Paul",
 			"Parameters": "10",
 			"StatusMessage": "Paul raised by 10. Adam to bet",
+			"PlayerSummaries": "N[]496(1)Tc J[]193(1)5c D[O]0(0) F[]683(1)Jh P[]1301(11)4c A[]651(1)4d R[D]3660(1)7c ",
 			"HandCommentary": [
 				"Paul raised by 10",
 				"Adam to bet"
@@ -2852,6 +3108,7 @@
 			"UserName": "Adam",
 			"Parameters": null,
 			"StatusMessage": "Adam paid 10 to call. Robert to bet",
+			"PlayerSummaries": "N[]496(1)Tc J[]193(1)5c D[O]0(0) F[]683(1)Jh P[]1301(11)4c A[]641(11)4d R[D]3660(1)7c ",
 			"HandCommentary": [
 				"Adam paid 10 to call",
 				"Robert to bet"
@@ -2863,6 +3120,7 @@
 			"UserName": "Robert",
 			"Parameters": null,
 			"StatusMessage": "Robert paid 10 to call. Nigel to bet",
+			"PlayerSummaries": "N[]496(1)Tc J[]193(1)5c D[O]0(0) F[]683(1)Jh P[]1301(11)4c A[]641(11)4d R[D]3650(11)7c ",
 			"HandCommentary": [
 				"Robert paid 10 to call",
 				"Nigel to bet"
@@ -2874,6 +3132,7 @@
 			"UserName": "Nigel",
 			"Parameters": null,
 			"StatusMessage": "Nigel paid 10 to call. John to bet",
+			"PlayerSummaries": "N[]486(11)Tc J[]193(1)5c D[O]0(0) F[]683(1)Jh P[]1301(11)4c A[]641(11)4d R[D]3650(11)7c ",
 			"HandCommentary": [
 				"Nigel paid 10 to call",
 				"John to bet"
@@ -2885,6 +3144,7 @@
 			"UserName": "John",
 			"Parameters": null,
 			"StatusMessage": "John paid 10 to call. Fabrice to bet",
+			"PlayerSummaries": "N[]486(11)Tc J[]183(11)5c D[O]0(0) F[]683(1)Jh P[]1301(11)4c A[]641(11)4d R[D]3650(11)7c ",
 			"HandCommentary": [
 				"John paid 10 to call",
 				"Fabrice to bet"
@@ -2896,6 +3156,7 @@
 			"UserName": "Fabrice",
 			"Parameters": null,
 			"StatusMessage": "Fabrice paid 10 to call. Started next round, Nigel to bet",
+			"PlayerSummaries": "N[]486(11)TcKd J[]183(11)5c9d D[O]0(0) F[]673(11)Jh2c P[]1301(11)4c7s A[]641(11)4dJc R[D]3650(11)7c6d ",
 			"HandCommentary": [
 				"Fabrice paid 10 to call",
 				"Started next round, Nigel to bet"
@@ -2907,6 +3168,7 @@
 			"UserName": "Nigel",
 			"Parameters": null,
 			"StatusMessage": "Nigel checked. John to bet",
+			"PlayerSummaries": "N[]486(11)TcKd J[]183(11)5c9d D[O]0(0) F[]673(11)Jh2c P[]1301(11)4c7s A[]641(11)4dJc R[D]3650(11)7c6d ",
 			"HandCommentary": [
 				"Nigel checked",
 				"John to bet"
@@ -2918,6 +3180,7 @@
 			"UserName": "John",
 			"Parameters": "20",
 			"StatusMessage": "John raised by 20. Fabrice to bet",
+			"PlayerSummaries": "N[]486(11)TcKd J[]163(31)5c9d D[O]0(0) F[]673(11)Jh2c P[]1301(11)4c7s A[]641(11)4dJc R[D]3650(11)7c6d ",
 			"HandCommentary": [
 				"John raised by 20",
 				"Fabrice to bet"
@@ -2929,6 +3192,7 @@
 			"UserName": "Fabrice",
 			"Parameters": null,
 			"StatusMessage": "Fabrice paid 20 to call. Paul to bet",
+			"PlayerSummaries": "N[]486(11)TcKd J[]163(31)5c9d D[O]0(0) F[]653(31)Jh2c P[]1301(11)4c7s A[]641(11)4dJc R[D]3650(11)7c6d ",
 			"HandCommentary": [
 				"Fabrice paid 20 to call",
 				"Paul to bet"
@@ -2940,6 +3204,7 @@
 			"UserName": "Paul",
 			"Parameters": null,
 			"StatusMessage": "Paul paid 20 to call. Adam to bet",
+			"PlayerSummaries": "N[]486(11)TcKd J[]163(31)5c9d D[O]0(0) F[]653(31)Jh2c P[]1281(31)4c7s A[]641(11)4dJc R[D]3650(11)7c6d ",
 			"HandCommentary": [
 				"Paul paid 20 to call",
 				"Adam to bet"
@@ -2951,6 +3216,7 @@
 			"UserName": "Adam",
 			"Parameters": null,
 			"StatusMessage": "Adam paid 20 to call. Robert to bet",
+			"PlayerSummaries": "N[]486(11)TcKd J[]163(31)5c9d D[O]0(0) F[]653(31)Jh2c P[]1281(31)4c7s A[]621(31)4dJc R[D]3650(11)7c6d ",
 			"HandCommentary": [
 				"Adam paid 20 to call",
 				"Robert to bet"
@@ -2962,6 +3228,7 @@
 			"UserName": "Robert",
 			"Parameters": null,
 			"StatusMessage": "Robert paid 20 to call. Nigel to bet",
+			"PlayerSummaries": "N[]486(11)TcKd J[]163(31)5c9d D[O]0(0) F[]653(31)Jh2c P[]1281(31)4c7s A[]621(31)4dJc R[D]3630(31)7c6d ",
 			"HandCommentary": [
 				"Robert paid 20 to call",
 				"Nigel to bet"
@@ -2973,6 +3240,7 @@
 			"UserName": "Nigel",
 			"Parameters": "40",
 			"StatusMessage": "Nigel paid 20 to stay in and raised by 40. John to bet",
+			"PlayerSummaries": "N[]426(71)TcKd J[]163(31)5c9d D[O]0(0) F[]653(31)Jh2c P[]1281(31)4c7s A[]621(31)4dJc R[D]3630(31)7c6d ",
 			"HandCommentary": [
 				"Nigel paid 20 to stay in and raised by 40",
 				"John to bet"
@@ -2984,6 +3252,7 @@
 			"UserName": "John",
 			"Parameters": "123",
 			"StatusMessage": "John paid 40 to stay in and raised by 123. Fabrice to bet",
+			"PlayerSummaries": "N[]426(71)TcKd J[]0(194)5c9d D[O]0(0) F[]653(31)Jh2c P[]1281(31)4c7s A[]621(31)4dJc R[D]3630(31)7c6d ",
 			"HandCommentary": [
 				"John paid 40 to stay in and raised by 123",
 				"Fabrice to bet"
@@ -2995,6 +3264,7 @@
 			"UserName": "Fabrice",
 			"Parameters": null,
 			"StatusMessage": "Fabrice folded. Paul to bet",
+			"PlayerSummaries": "N[]426(71)TcKd J[]0(194)5c9d D[O]0(0) F[F]653(31)Jh2c P[]1281(31)4c7s A[]621(31)4dJc R[D]3630(31)7c6d ",
 			"HandCommentary": [
 				"Fabrice folded",
 				"Paul to bet"
@@ -3006,6 +3276,7 @@
 			"UserName": "Paul",
 			"Parameters": null,
 			"StatusMessage": "Paul folded. Adam to bet",
+			"PlayerSummaries": "N[]426(71)TcKd J[]0(194)5c9d D[O]0(0) F[F]653(31)Jh2c P[F]1281(31)4c7s A[]621(31)4dJc R[D]3630(31)7c6d ",
 			"HandCommentary": [
 				"Paul folded",
 				"Adam to bet"
@@ -3017,6 +3288,7 @@
 			"UserName": "Adam",
 			"Parameters": null,
 			"StatusMessage": "Adam folded. Robert to bet",
+			"PlayerSummaries": "N[]426(71)TcKd J[]0(194)5c9d D[O]0(0) F[F]653(31)Jh2c P[F]1281(31)4c7s A[F]621(31)4dJc R[D]3630(31)7c6d ",
 			"HandCommentary": [
 				"Adam folded",
 				"Robert to bet"
@@ -3028,6 +3300,7 @@
 			"UserName": "Robert",
 			"Parameters": null,
 			"StatusMessage": "Robert folded. Nigel to bet",
+			"PlayerSummaries": "N[]426(71)TcKd J[]0(194)5c9d D[O]0(0) F[F]653(31)Jh2c P[F]1281(31)4c7s A[F]621(31)4dJc R[FD]3630(31)7c6d ",
 			"HandCommentary": [
 				"Robert folded",
 				"Nigel to bet"
@@ -3039,6 +3312,7 @@
 			"UserName": "Nigel",
 			"Parameters": null,
 			"StatusMessage": "Nigel paid 123 to call. Started next round, Nigel to bet",
+			"PlayerSummaries": "N[]303(194)TcKdQs J[]0(194)5c9d3h D[O]0(0) F[F]653(31)Jh2c P[F]1281(31)4c7s A[F]621(31)4dJc R[FD]3630(31)7c6d ",
 			"HandCommentary": [
 				"Nigel paid 123 to call",
 				"Started next round, Nigel to bet"
@@ -3050,6 +3324,7 @@
 			"UserName": "Nigel",
 			"Parameters": null,
 			"StatusMessage": "Nigel checked. John to bet",
+			"PlayerSummaries": "N[]303(194)TcKdQs J[]0(194)5c9d3h D[O]0(0) F[F]653(31)Jh2c P[F]1281(31)4c7s A[F]621(31)4dJc R[FD]3630(31)7c6d ",
 			"HandCommentary": [
 				"Nigel checked",
 				"John to bet"
@@ -3061,6 +3336,7 @@
 			"UserName": "John",
 			"Parameters": null,
 			"StatusMessage": "John checked. Started next round, Nigel to bet",
+			"PlayerSummaries": "N[]303(194)TcKdQs2h J[]0(194)5c9d3h8s D[O]0(0) F[F]653(31)Jh2c P[F]1281(31)4c7s A[F]621(31)4dJc R[FD]3630(31)7c6d ",
 			"HandCommentary": [
 				"John checked",
 				"Started next round, Nigel to bet"
@@ -3072,6 +3348,7 @@
 			"UserName": "Nigel",
 			"Parameters": null,
 			"StatusMessage": "Nigel checked. John to bet",
+			"PlayerSummaries": "N[]303(194)TcKdQs2h J[]0(194)5c9d3h8s D[O]0(0) F[F]653(31)Jh2c P[F]1281(31)4c7s A[F]621(31)4dJc R[FD]3630(31)7c6d ",
 			"HandCommentary": [
 				"Nigel checked",
 				"John to bet"
@@ -3083,6 +3360,7 @@
 			"UserName": "John",
 			"Parameters": null,
 			"StatusMessage": "John checked. Started next round, Nigel to bet",
+			"PlayerSummaries": "N[]303(194)TcKdQs2h J[]0(194)5c9d3h8s D[O]0(0) F[F]653(31)Jh2c P[F]1281(31)4c7s A[F]621(31)4dJc R[FD]3630(31)7c6d ",
 			"HandCommentary": [
 				"John checked",
 				"Started next round, Nigel to bet"
@@ -3094,6 +3372,7 @@
 			"UserName": "Nigel",
 			"Parameters": null,
 			"StatusMessage": "Nigel checked. John to bet",
+			"PlayerSummaries": "N[]303(194)TcKdQs2h J[]0(194)5c9d3h8s D[O]0(0) F[F]653(31)Jh2c P[F]1281(31)4c7s A[F]621(31)4dJc R[FD]3630(31)7c6d ",
 			"HandCommentary": [
 				"Nigel checked",
 				"John to bet"
@@ -3105,6 +3384,7 @@
 			"UserName": "John",
 			"Parameters": null,
 			"StatusMessage": "John checked. Betting completed, proceeding to hand reveal stage, Nigel to reveal (or fold)",
+			"PlayerSummaries": "N[]303(194)TcKdQs2h J[]0(194)5c9d3h8s D[O]0(0) F[F]653(31)Jh2c P[F]1281(31)4c7s A[F]621(31)4dJc R[FD]3630(31)7c6d ",
 			"HandCommentary": [
 				"John checked",
 				"Betting completed, proceeding to hand reveal stage, Nigel to reveal (or fold)"
@@ -3116,6 +3396,7 @@
 			"UserName": "Nigel",
 			"Parameters": null,
 			"StatusMessage": "Nigel revealed their hand details. John to reveal (or fold)",
+			"PlayerSummaries": "N[]303(194)TcKdQs2h J[]0(194)5c9d3h8s D[O]0(0) F[F]653(31)Jh2c P[F]1281(31)4c7s A[F]621(31)4dJc R[FD]3630(31)7c6d ",
 			"HandCommentary": [
 				"Nigel revealed their hand details",
 				"John to reveal (or fold)"
@@ -3127,6 +3408,7 @@
 			"UserName": "John",
 			"Parameters": null,
 			"StatusMessage": "John revealed their hand details. Reveal hands if desired, or administrator to start next hand (or reopen lobby)",
+			"PlayerSummaries": "N[]303(0)TcKdQs2h J[]512(0)5c9d3h8s D[O]0(0) F[F]653(0)Jh2c P[F]1281(0)4c7s A[F]621(0)4dJc R[FD]3630(0)7c6d ",
 			"HandCommentary": [
 				"John revealed their hand details",
 				"John revealed their hand details, all hands revealed, hand ended",
@@ -3147,6 +3429,7 @@
 			"UserName": "Robert",
 			"Parameters": null,
 			"StatusMessage": "Robert revealed their hand details. Reveal hands if desired, or administrator to start next hand (or reopen lobby)",
+			"PlayerSummaries": "N[]303(0)TcKdQs2h J[]512(0)5c9d3h8s D[O]0(0) F[F]653(0)Jh2c P[F]1281(0)4c7s A[F]621(0)4dJc R[FD]3630(0)7c6d ",
 			"HandCommentary": [
 				"Robert revealed their hand details"
 			]
@@ -3157,6 +3440,7 @@
 			"UserName": "Robert",
 			"Parameters": null,
 			"StatusMessage": "Robert reopened the game lobby. Await players leaving/joining, or continue the game, or start a new one",
+			"PlayerSummaries": "N[]303(0)TcKdQs2h J[]512(0)5c9d3h8s D[O]0(0) F[F]653(0)Jh2c P[F]1281(0)4c7s A[F]621(0)4dJc R[FD]3630(0)7c6d ",
 			"HandCommentary": [
 				"Robert reopened the game lobby"
 			]
@@ -3164,7 +3448,7 @@
 	],
 	"decks": [
 		{
-			"DeckId": "1.1",
+			"DeckNumber": 1,
 			"Cards": [
 				{
 					"CardValue": 2,
@@ -3377,7 +3661,7 @@
 			]
 		},
 		{
-			"DeckId": "1.2",
+			"DeckNumber": 2,
 			"Cards": [
 				{
 					"CardValue": 2,
@@ -3590,7 +3874,7 @@
 			]
 		},
 		{
-			"DeckId": "1.3",
+			"DeckNumber": 3,
 			"Cards": [
 				{
 					"CardValue": 2,
@@ -3803,7 +4087,7 @@
 			]
 		},
 		{
-			"DeckId": "1.4",
+			"DeckNumber": 4,
 			"Cards": [
 				{
 					"CardValue": 31,
@@ -4016,7 +4300,7 @@
 			]
 		},
 		{
-			"DeckId": "1.5",
+			"DeckNumber": 5,
 			"Cards": [
 				{
 					"CardValue": 19,
@@ -4229,7 +4513,7 @@
 			]
 		},
 		{
-			"DeckId": "1.6",
+			"DeckNumber": 6,
 			"Cards": [
 				{
 					"CardValue": 23,
@@ -4442,7 +4726,7 @@
 			]
 		},
 		{
-			"DeckId": "1.7",
+			"DeckNumber": 7,
 			"Cards": [
 				{
 					"CardValue": 2,

@@ -1,0 +1,1849 @@
+{
+    "notes": "prior to introducing fixes, this game had two different scenarios that resulted in a pot being split at 0 (leaving two empty pots)",
+    "roomId": "7Studs Main Event",
+    "administrator": "Robert",
+    "pauseAfter": 0,
+    "indexOfLastReplayedAction": -1,
+    "startTimeUtc": "2021-01-01T12:49:13.1737648+00:00",
+    "endTimeUtc": "2021-01-01T12:49:13.8765858+00:00",
+    "playersInOrderAtStartOfGame": [
+      "Dan",
+      "Robert",
+      "Phil",
+      "Chris",
+      "Josh",
+      "John",
+      "Harry",
+      "Ben"
+    ],
+    "actions": [
+      {
+        "ActionNumber": 1,
+        "ActionType": 4,
+        "UserName": "Robert",
+        "Parameters": null,
+        "StatusMessage": "Robert started the game (player order now randomised). John to bet",
+        "PlayerSummaries": "D[D]999(1)As R[]999(1)Jd P[]999(1)8d C[]999(1)Td J[]999(1)9s J[]999(1)Ad H[]999(1)6d B[]999(1)9c ",
+        "HandCommentary": []
+      },
+      {
+        "ActionNumber": 2,
+        "ActionType": 12,
+        "UserName": "John",
+        "Parameters": "50",
+        "StatusMessage": "John raised by 50. Harry to bet",
+        "PlayerSummaries": "D[D]999(1)As R[]999(1)Jd P[]999(1)8d C[]999(1)Td J[]999(1)9s J[]949(51)Ad H[]999(1)6d B[]999(1)9c ",
+        "HandCommentary": [
+          "John raised by 50",
+          "Harry to bet"
+        ]
+      },
+      {
+        "ActionNumber": 3,
+        "ActionType": 11,
+        "UserName": "Harry",
+        "Parameters": null,
+        "StatusMessage": "Harry paid 50 to call. Ben to bet",
+        "PlayerSummaries": "D[D]999(1)As R[]999(1)Jd P[]999(1)8d C[]999(1)Td J[]999(1)9s J[]949(51)Ad H[]949(51)6d B[]999(1)9c ",
+        "HandCommentary": [
+          "Harry paid 50 to call",
+          "Ben to bet"
+        ]
+      },
+      {
+        "ActionNumber": 4,
+        "ActionType": 11,
+        "UserName": "Ben",
+        "Parameters": null,
+        "StatusMessage": "Ben paid 50 to call. Dan to bet",
+        "PlayerSummaries": "D[D]999(1)As R[]999(1)Jd P[]999(1)8d C[]999(1)Td J[]999(1)9s J[]949(51)Ad H[]949(51)6d B[]949(51)9c ",
+        "HandCommentary": [
+          "Ben paid 50 to call",
+          "Dan to bet"
+        ]
+      },
+      {
+        "ActionNumber": 5,
+        "ActionType": 11,
+        "UserName": "Dan",
+        "Parameters": null,
+        "StatusMessage": "Dan paid 50 to call. Robert to bet",
+        "PlayerSummaries": "D[D]949(51)As R[]999(1)Jd P[]999(1)8d C[]999(1)Td J[]999(1)9s J[]949(51)Ad H[]949(51)6d B[]949(51)9c ",
+        "HandCommentary": [
+          "Dan paid 50 to call",
+          "Robert to bet"
+        ]
+      },
+      {
+        "ActionNumber": 6,
+        "ActionType": 11,
+        "UserName": "Robert",
+        "Parameters": null,
+        "StatusMessage": "Robert paid 50 to call. Phil to bet",
+        "PlayerSummaries": "D[D]949(51)As R[]949(51)Jd P[]999(1)8d C[]999(1)Td J[]999(1)9s J[]949(51)Ad H[]949(51)6d B[]949(51)9c ",
+        "HandCommentary": [
+          "Robert paid 50 to call",
+          "Phil to bet"
+        ]
+      },
+      {
+        "ActionNumber": 7,
+        "ActionType": 11,
+        "UserName": "Phil",
+        "Parameters": null,
+        "StatusMessage": "Phil paid 50 to call. Chris to bet",
+        "PlayerSummaries": "D[D]949(51)As R[]949(51)Jd P[]949(51)8d C[]999(1)Td J[]999(1)9s J[]949(51)Ad H[]949(51)6d B[]949(51)9c ",
+        "HandCommentary": [
+          "Phil paid 50 to call",
+          "Chris to bet"
+        ]
+      },
+      {
+        "ActionNumber": 8,
+        "ActionType": 11,
+        "UserName": "Chris",
+        "Parameters": null,
+        "StatusMessage": "Chris paid 50 to call. Josh to bet",
+        "PlayerSummaries": "D[D]949(51)As R[]949(51)Jd P[]949(51)8d C[]949(51)Td J[]999(1)9s J[]949(51)Ad H[]949(51)6d B[]949(51)9c ",
+        "HandCommentary": [
+          "Chris paid 50 to call",
+          "Josh to bet"
+        ]
+      },
+      {
+        "ActionNumber": 9,
+        "ActionType": 11,
+        "UserName": "Josh",
+        "Parameters": null,
+        "StatusMessage": "Josh paid 50 to call. Started next round, John to bet",
+        "PlayerSummaries": "D[D]949(51)As4d R[]949(51)Jd5h P[]949(51)8d7s C[]949(51)TdKh J[]949(51)9s7d J[]949(51)AdKc H[]949(51)6d9h B[]949(51)9c5s ",
+        "HandCommentary": [
+          "Josh paid 50 to call",
+          "Started next round, John to bet"
+        ]
+      },
+      {
+        "ActionNumber": 10,
+        "ActionType": 14,
+        "UserName": "John",
+        "Parameters": null,
+        "StatusMessage": "John folded. Harry to bet",
+        "PlayerSummaries": "D[D]949(51)As4d R[]949(51)Jd5h P[]949(51)8d7s C[]949(51)TdKh J[]949(51)9s7d J[F]949(51)AdKc H[]949(51)6d9h B[]949(51)9c5s ",
+        "HandCommentary": [
+          "John folded",
+          "Harry to bet"
+        ]
+      },
+      {
+        "ActionNumber": 11,
+        "ActionType": 14,
+        "UserName": "Harry",
+        "Parameters": null,
+        "StatusMessage": "Harry folded. Ben to bet",
+        "PlayerSummaries": "D[D]949(51)As4d R[]949(51)Jd5h P[]949(51)8d7s C[]949(51)TdKh J[]949(51)9s7d J[F]949(51)AdKc H[F]949(51)6d9h B[]949(51)9c5s ",
+        "HandCommentary": [
+          "Harry folded",
+          "Ben to bet"
+        ]
+      },
+      {
+        "ActionNumber": 12,
+        "ActionType": 14,
+        "UserName": "Ben",
+        "Parameters": null,
+        "StatusMessage": "Ben folded. Dan to bet",
+        "PlayerSummaries": "D[D]949(51)As4d R[]949(51)Jd5h P[]949(51)8d7s C[]949(51)TdKh J[]949(51)9s7d J[F]949(51)AdKc H[F]949(51)6d9h B[F]949(51)9c5s ",
+        "HandCommentary": [
+          "Ben folded",
+          "Dan to bet"
+        ]
+      },
+      {
+        "ActionNumber": 13,
+        "ActionType": 14,
+        "UserName": "Dan",
+        "Parameters": null,
+        "StatusMessage": "Dan folded. Robert to bet",
+        "PlayerSummaries": "D[FD]949(51)As4d R[]949(51)Jd5h P[]949(51)8d7s C[]949(51)TdKh J[]949(51)9s7d J[F]949(51)AdKc H[F]949(51)6d9h B[F]949(51)9c5s ",
+        "HandCommentary": [
+          "Dan folded",
+          "Robert to bet"
+        ]
+      },
+      {
+        "ActionNumber": 14,
+        "ActionType": 14,
+        "UserName": "Robert",
+        "Parameters": null,
+        "StatusMessage": "Robert folded. Phil to bet",
+        "PlayerSummaries": "D[FD]949(51)As4d R[F]949(51)Jd5h P[]949(51)8d7s C[]949(51)TdKh J[]949(51)9s7d J[F]949(51)AdKc H[F]949(51)6d9h B[F]949(51)9c5s ",
+        "HandCommentary": [
+          "Robert folded",
+          "Phil to bet"
+        ]
+      },
+      {
+        "ActionNumber": 15,
+        "ActionType": 14,
+        "UserName": "Phil",
+        "Parameters": null,
+        "StatusMessage": "Phil folded. Chris to bet",
+        "PlayerSummaries": "D[FD]949(51)As4d R[F]949(51)Jd5h P[F]949(51)8d7s C[]949(51)TdKh J[]949(51)9s7d J[F]949(51)AdKc H[F]949(51)6d9h B[F]949(51)9c5s ",
+        "HandCommentary": [
+          "Phil folded",
+          "Chris to bet"
+        ]
+      },
+      {
+        "ActionNumber": 16,
+        "ActionType": 14,
+        "UserName": "Chris",
+        "Parameters": null,
+        "StatusMessage": "Chris folded. Reveal hands if desired, or administrator to start next hand (or reopen lobby)",
+        "PlayerSummaries": "D[FD]949(0)As4d R[F]949(0)Jd5h P[F]949(0)8d7s C[F]949(0)TdKh J[]1357(0)9s7d J[F]949(0)AdKc H[F]949(0)6d9h B[F]949(0)9c5s ",
+        "HandCommentary": [
+          "Chris folded",
+          "Chris folded, only one player left in, hand ended",
+          "Pot 0: Josh won 357 as everyone else folded",
+          "Pot 0: Dan lost 51 after folding",
+          "Pot 0: Robert lost 51 after folding",
+          "Pot 0: Phil lost 51 after folding",
+          "Pot 0: Chris lost 51 after folding",
+          "Pot 0: John lost 51 after folding",
+          "Pot 0: Harry lost 51 after folding",
+          "Pot 0: Ben lost 51 after folding",
+          "Waiting for administrator to start next hand.",
+          "Reveal hands if desired, or administrator to start next hand (or reopen lobby)"
+        ]
+      },
+      {
+        "ActionNumber": 17,
+        "ActionType": 5,
+        "UserName": "Robert",
+        "Parameters": null,
+        "StatusMessage": "Robert started next hand. Harry to bet",
+        "PlayerSummaries": "D[]948(1)Th R[D]948(1)4c P[]948(1)4s C[]948(1)4h J[]1356(1)7d J[]948(1)7s H[]948(1)As B[]948(1)Js ",
+        "HandCommentary": []
+      },
+      {
+        "ActionNumber": 18,
+        "ActionType": 12,
+        "UserName": "Harry",
+        "Parameters": "40",
+        "StatusMessage": "Harry raised by 40. Ben to bet",
+        "PlayerSummaries": "D[]948(1)Th R[D]948(1)4c P[]948(1)4s C[]948(1)4h J[]1356(1)7d J[]948(1)7s H[]908(41)As B[]948(1)Js ",
+        "HandCommentary": [
+          "Harry raised by 40",
+          "Ben to bet"
+        ]
+      },
+      {
+        "ActionNumber": 19,
+        "ActionType": 11,
+        "UserName": "Ben",
+        "Parameters": null,
+        "StatusMessage": "Ben paid 40 to call. Dan to bet",
+        "PlayerSummaries": "D[]948(1)Th R[D]948(1)4c P[]948(1)4s C[]948(1)4h J[]1356(1)7d J[]948(1)7s H[]908(41)As B[]908(41)Js ",
+        "HandCommentary": [
+          "Ben paid 40 to call",
+          "Dan to bet"
+        ]
+      },
+      {
+        "ActionNumber": 20,
+        "ActionType": 11,
+        "UserName": "Dan",
+        "Parameters": null,
+        "StatusMessage": "Dan paid 40 to call. Robert to bet",
+        "PlayerSummaries": "D[]908(41)Th R[D]948(1)4c P[]948(1)4s C[]948(1)4h J[]1356(1)7d J[]948(1)7s H[]908(41)As B[]908(41)Js ",
+        "HandCommentary": [
+          "Dan paid 40 to call",
+          "Robert to bet"
+        ]
+      },
+      {
+        "ActionNumber": 21,
+        "ActionType": 11,
+        "UserName": "Robert",
+        "Parameters": null,
+        "StatusMessage": "Robert paid 40 to call. Phil to bet",
+        "PlayerSummaries": "D[]908(41)Th R[D]908(41)4c P[]948(1)4s C[]948(1)4h J[]1356(1)7d J[]948(1)7s H[]908(41)As B[]908(41)Js ",
+        "HandCommentary": [
+          "Robert paid 40 to call",
+          "Phil to bet"
+        ]
+      },
+      {
+        "ActionNumber": 22,
+        "ActionType": 11,
+        "UserName": "Phil",
+        "Parameters": null,
+        "StatusMessage": "Phil paid 40 to call. Chris to bet",
+        "PlayerSummaries": "D[]908(41)Th R[D]908(41)4c P[]908(41)4s C[]948(1)4h J[]1356(1)7d J[]948(1)7s H[]908(41)As B[]908(41)Js ",
+        "HandCommentary": [
+          "Phil paid 40 to call",
+          "Chris to bet"
+        ]
+      },
+      {
+        "ActionNumber": 23,
+        "ActionType": 11,
+        "UserName": "Chris",
+        "Parameters": null,
+        "StatusMessage": "Chris paid 40 to call. Josh to bet",
+        "PlayerSummaries": "D[]908(41)Th R[D]908(41)4c P[]908(41)4s C[]908(41)4h J[]1356(1)7d J[]948(1)7s H[]908(41)As B[]908(41)Js ",
+        "HandCommentary": [
+          "Chris paid 40 to call",
+          "Josh to bet"
+        ]
+      },
+      {
+        "ActionNumber": 24,
+        "ActionType": 11,
+        "UserName": "Josh",
+        "Parameters": null,
+        "StatusMessage": "Josh paid 40 to call. John to bet",
+        "PlayerSummaries": "D[]908(41)Th R[D]908(41)4c P[]908(41)4s C[]908(41)4h J[]1316(41)7d J[]948(1)7s H[]908(41)As B[]908(41)Js ",
+        "HandCommentary": [
+          "Josh paid 40 to call",
+          "John to bet"
+        ]
+      },
+      {
+        "ActionNumber": 25,
+        "ActionType": 11,
+        "UserName": "John",
+        "Parameters": null,
+        "StatusMessage": "John paid 40 to call. Started next round, Harry to bet",
+        "PlayerSummaries": "D[]908(41)Th6h R[D]908(41)4cQs P[]908(41)4s6c C[]908(41)4h3d J[]1316(41)7dJd J[]908(41)7s9h H[]908(41)AsQc B[]908(41)JsTs ",
+        "HandCommentary": [
+          "John paid 40 to call",
+          "Started next round, Harry to bet"
+        ]
+      },
+      {
+        "ActionNumber": 26,
+        "ActionType": 14,
+        "UserName": "Harry",
+        "Parameters": null,
+        "StatusMessage": "Harry folded. Ben to bet",
+        "PlayerSummaries": "D[]908(41)Th6h R[D]908(41)4cQs P[]908(41)4s6c C[]908(41)4h3d J[]1316(41)7dJd J[]908(41)7s9h H[F]908(41)AsQc B[]908(41)JsTs ",
+        "HandCommentary": [
+          "Harry folded",
+          "Ben to bet"
+        ]
+      },
+      {
+        "ActionNumber": 27,
+        "ActionType": 14,
+        "UserName": "Ben",
+        "Parameters": null,
+        "StatusMessage": "Ben folded. Dan to bet",
+        "PlayerSummaries": "D[]908(41)Th6h R[D]908(41)4cQs P[]908(41)4s6c C[]908(41)4h3d J[]1316(41)7dJd J[]908(41)7s9h H[F]908(41)AsQc B[F]908(41)JsTs ",
+        "HandCommentary": [
+          "Ben folded",
+          "Dan to bet"
+        ]
+      },
+      {
+        "ActionNumber": 28,
+        "ActionType": 14,
+        "UserName": "Dan",
+        "Parameters": null,
+        "StatusMessage": "Dan folded. Robert to bet",
+        "PlayerSummaries": "D[F]908(41)Th6h R[D]908(41)4cQs P[]908(41)4s6c C[]908(41)4h3d J[]1316(41)7dJd J[]908(41)7s9h H[F]908(41)AsQc B[F]908(41)JsTs ",
+        "HandCommentary": [
+          "Dan folded",
+          "Robert to bet"
+        ]
+      },
+      {
+        "ActionNumber": 29,
+        "ActionType": 14,
+        "UserName": "Robert",
+        "Parameters": null,
+        "StatusMessage": "Robert folded. Phil to bet",
+        "PlayerSummaries": "D[F]908(41)Th6h R[FD]908(41)4cQs P[]908(41)4s6c C[]908(41)4h3d J[]1316(41)7dJd J[]908(41)7s9h H[F]908(41)AsQc B[F]908(41)JsTs ",
+        "HandCommentary": [
+          "Robert folded",
+          "Phil to bet"
+        ]
+      },
+      {
+        "ActionNumber": 30,
+        "ActionType": 14,
+        "UserName": "Phil",
+        "Parameters": null,
+        "StatusMessage": "Phil folded. Chris to bet",
+        "PlayerSummaries": "D[F]908(41)Th6h R[FD]908(41)4cQs P[F]908(41)4s6c C[]908(41)4h3d J[]1316(41)7dJd J[]908(41)7s9h H[F]908(41)AsQc B[F]908(41)JsTs ",
+        "HandCommentary": [
+          "Phil folded",
+          "Chris to bet"
+        ]
+      },
+      {
+        "ActionNumber": 31,
+        "ActionType": 14,
+        "UserName": "Chris",
+        "Parameters": null,
+        "StatusMessage": "Chris folded. Josh to bet",
+        "PlayerSummaries": "D[F]908(41)Th6h R[FD]908(41)4cQs P[F]908(41)4s6c C[F]908(41)4h3d J[]1316(41)7dJd J[]908(41)7s9h H[F]908(41)AsQc B[F]908(41)JsTs ",
+        "HandCommentary": [
+          "Chris folded",
+          "Josh to bet"
+        ]
+      },
+      {
+        "ActionNumber": 32,
+        "ActionType": 14,
+        "UserName": "Josh",
+        "Parameters": null,
+        "StatusMessage": "Josh folded. Reveal hands if desired, or administrator to start next hand (or reopen lobby)",
+        "PlayerSummaries": "D[F]908(0)Th6h R[FD]908(0)4cQs P[F]908(0)4s6c C[F]908(0)4h3d J[F]1316(0)7dJd J[]1236(0)7s9h H[F]908(0)AsQc B[F]908(0)JsTs ",
+        "HandCommentary": [
+          "Josh folded",
+          "Josh folded, only one player left in, hand ended",
+          "Pot 0: John won 287 as everyone else folded",
+          "Pot 0: Dan lost 41 after folding",
+          "Pot 0: Robert lost 41 after folding",
+          "Pot 0: Phil lost 41 after folding",
+          "Pot 0: Chris lost 41 after folding",
+          "Pot 0: Josh lost 41 after folding",
+          "Pot 0: Harry lost 41 after folding",
+          "Pot 0: Ben lost 41 after folding",
+          "Waiting for administrator to start next hand.",
+          "Reveal hands if desired, or administrator to start next hand (or reopen lobby)"
+        ]
+      },
+      {
+        "ActionNumber": 33,
+        "ActionType": 5,
+        "UserName": "Robert",
+        "Parameters": null,
+        "StatusMessage": "Robert started next hand. Phil to bet",
+        "PlayerSummaries": "D[]907(1)Qc R[]907(1)3h P[D]907(1)Ad C[]907(1)9d J[]1315(1)8h J[]1235(1)Jd H[]907(1)5s B[]907(1)3s ",
+        "HandCommentary": []
+      },
+      {
+        "ActionNumber": 34,
+        "ActionType": 12,
+        "UserName": "Phil",
+        "Parameters": "35",
+        "StatusMessage": "Phil raised by 35. Chris to bet",
+        "PlayerSummaries": "D[]907(1)Qc R[]907(1)3h P[D]872(36)Ad C[]907(1)9d J[]1315(1)8h J[]1235(1)Jd H[]907(1)5s B[]907(1)3s ",
+        "HandCommentary": [
+          "Phil raised by 35",
+          "Chris to bet"
+        ]
+      },
+      {
+        "ActionNumber": 35,
+        "ActionType": 11,
+        "UserName": "Chris",
+        "Parameters": null,
+        "StatusMessage": "Chris paid 35 to call. Josh to bet",
+        "PlayerSummaries": "D[]907(1)Qc R[]907(1)3h P[D]872(36)Ad C[]872(36)9d J[]1315(1)8h J[]1235(1)Jd H[]907(1)5s B[]907(1)3s ",
+        "HandCommentary": [
+          "Chris paid 35 to call",
+          "Josh to bet"
+        ]
+      },
+      {
+        "ActionNumber": 36,
+        "ActionType": 11,
+        "UserName": "Josh",
+        "Parameters": null,
+        "StatusMessage": "Josh paid 35 to call. John to bet",
+        "PlayerSummaries": "D[]907(1)Qc R[]907(1)3h P[D]872(36)Ad C[]872(36)9d J[]1280(36)8h J[]1235(1)Jd H[]907(1)5s B[]907(1)3s ",
+        "HandCommentary": [
+          "Josh paid 35 to call",
+          "John to bet"
+        ]
+      },
+      {
+        "ActionNumber": 37,
+        "ActionType": 11,
+        "UserName": "John",
+        "Parameters": null,
+        "StatusMessage": "John paid 35 to call. Harry to bet",
+        "PlayerSummaries": "D[]907(1)Qc R[]907(1)3h P[D]872(36)Ad C[]872(36)9d J[]1280(36)8h J[]1200(36)Jd H[]907(1)5s B[]907(1)3s ",
+        "HandCommentary": [
+          "John paid 35 to call",
+          "Harry to bet"
+        ]
+      },
+      {
+        "ActionNumber": 38,
+        "ActionType": 11,
+        "UserName": "Harry",
+        "Parameters": null,
+        "StatusMessage": "Harry paid 35 to call. Ben to bet",
+        "PlayerSummaries": "D[]907(1)Qc R[]907(1)3h P[D]872(36)Ad C[]872(36)9d J[]1280(36)8h J[]1200(36)Jd H[]872(36)5s B[]907(1)3s ",
+        "HandCommentary": [
+          "Harry paid 35 to call",
+          "Ben to bet"
+        ]
+      },
+      {
+        "ActionNumber": 39,
+        "ActionType": 11,
+        "UserName": "Ben",
+        "Parameters": null,
+        "StatusMessage": "Ben paid 35 to call. Dan to bet",
+        "PlayerSummaries": "D[]907(1)Qc R[]907(1)3h P[D]872(36)Ad C[]872(36)9d J[]1280(36)8h J[]1200(36)Jd H[]872(36)5s B[]872(36)3s ",
+        "HandCommentary": [
+          "Ben paid 35 to call",
+          "Dan to bet"
+        ]
+      },
+      {
+        "ActionNumber": 40,
+        "ActionType": 11,
+        "UserName": "Dan",
+        "Parameters": null,
+        "StatusMessage": "Dan paid 35 to call. Robert to bet",
+        "PlayerSummaries": "D[]872(36)Qc R[]907(1)3h P[D]872(36)Ad C[]872(36)9d J[]1280(36)8h J[]1200(36)Jd H[]872(36)5s B[]872(36)3s ",
+        "HandCommentary": [
+          "Dan paid 35 to call",
+          "Robert to bet"
+        ]
+      },
+      {
+        "ActionNumber": 41,
+        "ActionType": 11,
+        "UserName": "Robert",
+        "Parameters": null,
+        "StatusMessage": "Robert paid 35 to call. Started next round, Dan to bet",
+        "PlayerSummaries": "D[]872(36)QcQd R[]872(36)3hTd P[D]872(36)AdTh C[]872(36)9d2c J[]1280(36)8hAh J[]1200(36)Jd6s H[]872(36)5sQs B[]872(36)3sTs ",
+        "HandCommentary": [
+          "Robert paid 35 to call",
+          "Started next round, Dan to bet"
+        ]
+      },
+      {
+        "ActionNumber": 42,
+        "ActionType": 14,
+        "UserName": "Dan",
+        "Parameters": null,
+        "StatusMessage": "Dan folded. Robert to bet",
+        "PlayerSummaries": "D[F]872(36)QcQd R[]872(36)3hTd P[D]872(36)AdTh C[]872(36)9d2c J[]1280(36)8hAh J[]1200(36)Jd6s H[]872(36)5sQs B[]872(36)3sTs ",
+        "HandCommentary": [
+          "Dan folded",
+          "Robert to bet"
+        ]
+      },
+      {
+        "ActionNumber": 43,
+        "ActionType": 14,
+        "UserName": "Robert",
+        "Parameters": null,
+        "StatusMessage": "Robert folded. Phil to bet",
+        "PlayerSummaries": "D[F]872(36)QcQd R[F]872(36)3hTd P[D]872(36)AdTh C[]872(36)9d2c J[]1280(36)8hAh J[]1200(36)Jd6s H[]872(36)5sQs B[]872(36)3sTs ",
+        "HandCommentary": [
+          "Robert folded",
+          "Phil to bet"
+        ]
+      },
+      {
+        "ActionNumber": 44,
+        "ActionType": 14,
+        "UserName": "Phil",
+        "Parameters": null,
+        "StatusMessage": "Phil folded. Chris to bet",
+        "PlayerSummaries": "D[F]872(36)QcQd R[F]872(36)3hTd P[FD]872(36)AdTh C[]872(36)9d2c J[]1280(36)8hAh J[]1200(36)Jd6s H[]872(36)5sQs B[]872(36)3sTs ",
+        "HandCommentary": [
+          "Phil folded",
+          "Chris to bet"
+        ]
+      },
+      {
+        "ActionNumber": 45,
+        "ActionType": 14,
+        "UserName": "Chris",
+        "Parameters": null,
+        "StatusMessage": "Chris folded. Josh to bet",
+        "PlayerSummaries": "D[F]872(36)QcQd R[F]872(36)3hTd P[FD]872(36)AdTh C[F]872(36)9d2c J[]1280(36)8hAh J[]1200(36)Jd6s H[]872(36)5sQs B[]872(36)3sTs ",
+        "HandCommentary": [
+          "Chris folded",
+          "Josh to bet"
+        ]
+      },
+      {
+        "ActionNumber": 46,
+        "ActionType": 14,
+        "UserName": "Josh",
+        "Parameters": null,
+        "StatusMessage": "Josh folded. John to bet",
+        "PlayerSummaries": "D[F]872(36)QcQd R[F]872(36)3hTd P[FD]872(36)AdTh C[F]872(36)9d2c J[F]1280(36)8hAh J[]1200(36)Jd6s H[]872(36)5sQs B[]872(36)3sTs ",
+        "HandCommentary": [
+          "Josh folded",
+          "John to bet"
+        ]
+      },
+      {
+        "ActionNumber": 47,
+        "ActionType": 14,
+        "UserName": "John",
+        "Parameters": null,
+        "StatusMessage": "John folded. Harry to bet",
+        "PlayerSummaries": "D[F]872(36)QcQd R[F]872(36)3hTd P[FD]872(36)AdTh C[F]872(36)9d2c J[F]1280(36)8hAh J[F]1200(36)Jd6s H[]872(36)5sQs B[]872(36)3sTs ",
+        "HandCommentary": [
+          "John folded",
+          "Harry to bet"
+        ]
+      },
+      {
+        "ActionNumber": 48,
+        "ActionType": 10,
+        "UserName": "Harry",
+        "Parameters": null,
+        "StatusMessage": "Harry checked. Ben to bet",
+        "PlayerSummaries": "D[F]872(36)QcQd R[F]872(36)3hTd P[FD]872(36)AdTh C[F]872(36)9d2c J[F]1280(36)8hAh J[F]1200(36)Jd6s H[]872(36)5sQs B[]872(36)3sTs ",
+        "HandCommentary": [
+          "Harry checked",
+          "Ben to bet"
+        ]
+      },
+      {
+        "ActionNumber": 49,
+        "ActionType": 14,
+        "UserName": "Ben",
+        "Parameters": null,
+        "StatusMessage": "Ben folded. Reveal hands if desired, or administrator to start next hand (or reopen lobby)",
+        "PlayerSummaries": "D[F]872(0)QcQd R[F]872(0)3hTd P[FD]872(0)AdTh C[F]872(0)9d2c J[F]1280(0)8hAh J[F]1200(0)Jd6s H[]1160(0)5sQs B[F]872(0)3sTs ",
+        "HandCommentary": [
+          "Ben folded",
+          "Ben folded, only one player left in, hand ended",
+          "Pot 0: Harry won 252 as everyone else folded",
+          "Pot 0: Dan lost 36 after folding",
+          "Pot 0: Robert lost 36 after folding",
+          "Pot 0: Phil lost 36 after folding",
+          "Pot 0: Chris lost 36 after folding",
+          "Pot 0: Josh lost 36 after folding",
+          "Pot 0: John lost 36 after folding",
+          "Pot 0: Ben lost 36 after folding",
+          "Waiting for administrator to start next hand.",
+          "Reveal hands if desired, or administrator to start next hand (or reopen lobby)"
+        ]
+      },
+      {
+        "ActionNumber": 50,
+        "ActionType": 0,
+        "UserName": "Robert",
+        "Parameters": null,
+        "StatusMessage": "Robert reopened the game lobby. Await players leaving/joining, or continue the game, or start a new one",
+        "PlayerSummaries": "D[F]872(0)QcQd R[F]872(0)3hTd P[FD]872(0)AdTh C[F]872(0)9d2c J[F]1280(0)8hAh J[F]1200(0)Jd6s H[]1160(0)5sQs B[F]872(0)3sTs ",
+        "HandCommentary": [
+          "Robert reopened the game lobby"
+        ]
+      },
+      {
+        "ActionNumber": 51,
+        "ActionType": 5,
+        "UserName": "Robert",
+        "Parameters": null,
+        "StatusMessage": "Robert started next hand. Phil to bet",
+        "PlayerSummaries": "D[]871(1)4h R[]871(1)9c P[]871(1)Js C[D]871(1)8h J[]1279(1)9h J[]1199(1)5h H[]1159(1)3s B[]871(1)2s ",
+        "HandCommentary": []
+      },
+      {
+        "ActionNumber": 52,
+        "ActionType": 10,
+        "UserName": "Phil",
+        "Parameters": null,
+        "StatusMessage": "Phil checked. Chris to bet",
+        "PlayerSummaries": "D[]871(1)4h R[]871(1)9c P[]871(1)Js C[D]871(1)8h J[]1279(1)9h J[]1199(1)5h H[]1159(1)3s B[]871(1)2s ",
+        "HandCommentary": [
+          "Phil checked",
+          "Chris to bet"
+        ]
+      },
+      {
+        "ActionNumber": 53,
+        "ActionType": 12,
+        "UserName": "Chris",
+        "Parameters": "871",
+        "StatusMessage": "Chris raised by 871. Josh to bet",
+        "PlayerSummaries": "D[]871(1)4h R[]871(1)9c P[]871(1)Js C[D]0(872)8h J[]1279(1)9h J[]1199(1)5h H[]1159(1)3s B[]871(1)2s ",
+        "HandCommentary": [
+          "Chris raised by 871",
+          "Josh to bet"
+        ]
+      },
+      {
+        "ActionNumber": 54,
+        "ActionType": 12,
+        "UserName": "Josh",
+        "Parameters": "300",
+        "StatusMessage": "Josh paid 871 to stay in and raised by 300. John to bet",
+        "PlayerSummaries": "D[]871(1)4h R[]871(1)9c P[]871(1)Js C[D]0(872)8h J[]108(1172)9h J[]1199(1)5h H[]1159(1)3s B[]871(1)2s ",
+        "HandCommentary": [
+          "Josh paid 871 to stay in and raised by 300",
+          "John to bet"
+        ]
+      },
+      {
+        "ActionNumber": 55,
+        "ActionType": 11,
+        "UserName": "John",
+        "Parameters": null,
+        "StatusMessage": "John paid 1171 to call. Harry to bet",
+        "PlayerSummaries": "D[]871(1)4h R[]871(1)9c P[]871(1)Js C[D]0(872)8h J[]108(1172)9h J[]28(1172)5h H[]1159(1)3s B[]871(1)2s ",
+        "HandCommentary": [
+          "John paid 1171 to call",
+          "Harry to bet"
+        ]
+      },
+      {
+        "ActionNumber": 56,
+        "ActionType": 13,
+        "UserName": "Harry",
+        "Parameters": null,
+        "StatusMessage": "Harry paid 1159 to cover the pot. Ben to bet",
+        "PlayerSummaries": "D[]871(1,0)4h R[]871(1,0)9c P[]871(1,0)Js C[D]0(872,0)8h J[]108(1160,12)9h J[]28(1160,12)5h H[C]0(1160,0)3s B[]871(1,0)2s ",
+        "HandCommentary": [
+          "Harry paid 1159 to cover the pot",
+          "Own current contribution to pot #1 = 1",
+          "Highest current contribution to pot #1 = 1172",
+          "Adding 1159 to cover pot #1 (the open pot)",
+          "Splitting pot #1 with contribution cap of 1160",
+          "Ben to bet"
+        ]
+      },
+      {
+        "ActionNumber": 57,
+        "ActionType": 13,
+        "UserName": "Ben",
+        "Parameters": null,
+        "StatusMessage": "Ben paid 871 to cover the pot. Dan to bet",
+        "PlayerSummaries": "D[]871(1,0,0)4h R[]871(1,0,0)9c P[]871(1,0,0)Js C[D]0(872,0,0)8h J[]108(872,288,12)9h J[]28(872,288,12)5h H[C]0(872,288,0)3s B[C]0(872,0,0)2s ",
+        "HandCommentary": [
+          "Ben paid 871 to cover the pot",
+          "Own current contribution to pot #1 = 1",
+          "Highest current contribution to pot #1 = 1160",
+          "Adding 871 to partially satisfy commitment to pot #1",
+          "Splitting pot #1 with contribution cap of 872",
+          "Dan to bet"
+        ]
+      },
+      {
+        "ActionNumber": 58,
+        "ActionType": 13,
+        "UserName": "Dan",
+        "Parameters": null,
+        "StatusMessage": "Dan paid 871 to cover the pot. Robert to bet",
+        "PlayerSummaries": "D[C]0(872,0,0)4h R[]871(1,0,0)9c P[]871(1,0,0)Js C[D]0(872,0,0)8h J[]108(872,288,12)9h J[]28(872,288,12)5h H[C]0(872,288,0)3s B[C]0(872,0,0)2s ",
+        "HandCommentary": [
+          "Dan paid 871 to cover the pot",
+          "Own current contribution to pot #1 = 1",
+          "Highest current contribution to pot #1 = 872",
+          "Adding 871 to complete commitment to pot #1",
+          "Player has nothing left to add, all relevant pots successfully covered",
+          "Robert to bet"
+        ]
+      },
+      {
+        "ActionNumber": 59,
+        "ActionType": 14,
+        "UserName": "Robert",
+        "Parameters": null,
+        "StatusMessage": "Robert folded. Phil to bet",
+        "PlayerSummaries": "D[C]0(872,0,0)4h R[F]871(1,0,0)9c P[]871(1,0,0)Js C[D]0(872,0,0)8h J[]108(872,288,12)9h J[]28(872,288,12)5h H[C]0(872,288,0)3s B[C]0(872,0,0)2s ",
+        "HandCommentary": [
+          "Robert folded",
+          "Phil to bet"
+        ]
+      },
+      {
+        "ActionNumber": 60,
+        "ActionType": 14,
+        "UserName": "Phil",
+        "Parameters": null,
+        "StatusMessage": "Phil folded. Chris to bet",
+        "PlayerSummaries": "D[C]0(872,0,0)4h R[F]871(1,0,0)9c P[F]871(1,0,0)Js C[D]0(872,0,0)8h J[]108(872,288,12)9h J[]28(872,288,12)5h H[C]0(872,288,0)3s B[C]0(872,0,0)2s ",
+        "HandCommentary": [
+          "Phil folded",
+          "Chris to bet"
+        ]
+      },
+      {
+        "ActionNumber": 61,
+        "ActionType": 13,
+        "UserName": "Chris",
+        "Parameters": null,
+        "StatusMessage": "Chris had no further chips and covered the pot. Started next round, Josh to bet",
+        "PlayerSummaries": "D[C]0(872,0,0)4h2h R[F]871(1,0,0)9c P[F]871(1,0,0)Js C[CD]0(872,0,0)8h7s J[]108(872,288,12)9hQd J[]28(872,288,12)5hJd H[C]0(872,288,0)3s3h B[C]0(872,0,0)2sKc ",
+        "HandCommentary": [
+          "Chris had no further chips and covered the pot",
+          "Own current contribution to pot #1 = 872",
+          "Highest current contribution to pot #1 = 872",
+          "Player is already fully paid in to pot #1 (with 872 chips)",
+          "Own current contribution to pot #2 = 0",
+          "Highest current contribution to pot #2 = 288",
+          "Player is not invested in this pot and has nothing left to add to it",
+          "Covering was completed with the covering of pot #1",
+          "Started next round, Josh to bet"
+        ]
+      },
+      {
+        "ActionNumber": 62,
+        "ActionType": 10,
+        "UserName": "Josh",
+        "Parameters": null,
+        "StatusMessage": "Josh checked. John to bet",
+        "PlayerSummaries": "D[C]0(872,0,0)4h2h R[F]871(1,0,0)9c P[F]871(1,0,0)Js C[CD]0(872,0,0)8h7s J[]108(872,288,12)9hQd J[]28(872,288,12)5hJd H[C]0(872,288,0)3s3h B[C]0(872,0,0)2sKc ",
+        "HandCommentary": [
+          "Josh checked",
+          "John to bet"
+        ]
+      },
+      {
+        "ActionNumber": 63,
+        "ActionType": 10,
+        "UserName": "John",
+        "Parameters": null,
+        "StatusMessage": "John checked. Started next round, Josh to bet",
+        "PlayerSummaries": "D[C]0(872,0,0)4h2hAs R[F]871(1,0,0)9c P[F]871(1,0,0)Js C[CD]0(872,0,0)8h7sAd J[]108(872,288,12)9hQd5c J[]28(872,288,12)5hJd9d H[C]0(872,288,0)3s3h8d B[C]0(872,0,0)2sKcKh ",
+        "HandCommentary": [
+          "John checked",
+          "Started next round, Josh to bet"
+        ]
+      },
+      {
+        "ActionNumber": 64,
+        "ActionType": 10,
+        "UserName": "Josh",
+        "Parameters": null,
+        "StatusMessage": "Josh checked. John to bet",
+        "PlayerSummaries": "D[C]0(872,0,0)4h2hAs R[F]871(1,0,0)9c P[F]871(1,0,0)Js C[CD]0(872,0,0)8h7sAd J[]108(872,288,12)9hQd5c J[]28(872,288,12)5hJd9d H[C]0(872,288,0)3s3h8d B[C]0(872,0,0)2sKcKh ",
+        "HandCommentary": [
+          "Josh checked",
+          "John to bet"
+        ]
+      },
+      {
+        "ActionNumber": 65,
+        "ActionType": 10,
+        "UserName": "John",
+        "Parameters": null,
+        "StatusMessage": "John checked. Started next round, Josh to bet",
+        "PlayerSummaries": "D[C]0(872,0,0)4h2hAs4c R[F]871(1,0,0)9c P[F]871(1,0,0)Js C[CD]0(872,0,0)8h7sAdKs J[]108(872,288,12)9hQd5cTs J[]28(872,288,12)5hJd9d7d H[C]0(872,288,0)3s3h8d4s B[C]0(872,0,0)2sKcKhAh ",
+        "HandCommentary": [
+          "John checked",
+          "Started next round, Josh to bet"
+        ]
+      },
+      {
+        "ActionNumber": 66,
+        "ActionType": 10,
+        "UserName": "Josh",
+        "Parameters": null,
+        "StatusMessage": "Josh checked. John to bet",
+        "PlayerSummaries": "D[C]0(872,0,0)4h2hAs4c R[F]871(1,0,0)9c P[F]871(1,0,0)Js C[CD]0(872,0,0)8h7sAdKs J[]108(872,288,12)9hQd5cTs J[]28(872,288,12)5hJd9d7d H[C]0(872,288,0)3s3h8d4s B[C]0(872,0,0)2sKcKhAh ",
+        "HandCommentary": [
+          "Josh checked",
+          "John to bet"
+        ]
+      },
+      {
+        "ActionNumber": 67,
+        "ActionType": 10,
+        "UserName": "John",
+        "Parameters": null,
+        "StatusMessage": "John checked. Started next round, Josh to bet",
+        "PlayerSummaries": "D[C]0(872,0,0)4h2hAs4c R[F]871(1,0,0)9c P[F]871(1,0,0)Js C[CD]0(872,0,0)8h7sAdKs J[]108(872,288,12)9hQd5cTs J[]28(872,288,12)5hJd9d7d H[C]0(872,288,0)3s3h8d4s B[C]0(872,0,0)2sKcKhAh ",
+        "HandCommentary": [
+          "John checked",
+          "Started next round, Josh to bet"
+        ]
+      },
+      {
+        "ActionNumber": 68,
+        "ActionType": 10,
+        "UserName": "Josh",
+        "Parameters": null,
+        "StatusMessage": "Josh checked. John to bet",
+        "PlayerSummaries": "D[C]0(872,0,0)4h2hAs4c R[F]871(1,0,0)9c P[F]871(1,0,0)Js C[CD]0(872,0,0)8h7sAdKs J[]108(872,288,12)9hQd5cTs J[]28(872,288,12)5hJd9d7d H[C]0(872,288,0)3s3h8d4s B[C]0(872,0,0)2sKcKhAh ",
+        "HandCommentary": [
+          "Josh checked",
+          "John to bet"
+        ]
+      },
+      {
+        "ActionNumber": 69,
+        "ActionType": 10,
+        "UserName": "John",
+        "Parameters": null,
+        "StatusMessage": "John checked. Betting completed, proceeding to hand reveal stage, Josh to reveal (or fold)",
+        "PlayerSummaries": "D[C]0(872,0,0)4h2hAs4c R[F]871(1,0,0)9c P[F]871(1,0,0)Js C[CD]0(872,0,0)8h7sAdKs J[]108(872,288,12)9hQd5cTs J[]28(872,288,12)5hJd9d7d H[C]0(872,288,0)3s3h8d4s B[C]0(872,0,0)2sKcKhAh ",
+        "HandCommentary": [
+          "John checked",
+          "Betting completed, proceeding to hand reveal stage, Josh to reveal (or fold)"
+        ]
+      },
+      {
+        "ActionNumber": 70,
+        "ActionType": 6,
+        "UserName": "Josh",
+        "Parameters": null,
+        "StatusMessage": "Josh revealed their hand details. John to reveal (or fold)",
+        "PlayerSummaries": "D[C]0(872,0,0)4h2hAs4c R[F]871(1,0,0)9c P[F]871(1,0,0)Js C[CD]0(872,0,0)8h7sAdKs J[]108(872,288,12)9hQd5cTs J[]28(872,288,12)5hJd9d7d H[C]0(872,288,0)3s3h8d4s B[C]0(872,0,0)2sKcKhAh ",
+        "HandCommentary": [
+          "Josh revealed their hand details",
+          "John to reveal (or fold)"
+        ]
+      },
+      {
+        "ActionNumber": 71,
+        "ActionType": 6,
+        "UserName": "John",
+        "Parameters": null,
+        "StatusMessage": "John revealed their hand details. Harry to reveal (or fold)",
+        "PlayerSummaries": "D[C]0(872,0,0)4h2hAs4c R[F]871(1,0,0)9c P[F]871(1,0,0)Js C[CD]0(872,0,0)8h7sAdKs J[]108(872,288,12)9hQd5cTs J[]28(872,288,12)5hJd9d7d H[C]0(872,288,0)3s3h8d4s B[C]0(872,0,0)2sKcKhAh ",
+        "HandCommentary": [
+          "John revealed their hand details",
+          "Harry to reveal (or fold)"
+        ]
+      },
+      {
+        "ActionNumber": 72,
+        "ActionType": 6,
+        "UserName": "Harry",
+        "Parameters": null,
+        "StatusMessage": "Harry revealed their hand details. Ben to reveal (or fold)",
+        "PlayerSummaries": "D[C]0(872,0,0)4h2hAs4c R[F]871(1,0,0)9c P[F]871(1,0,0)Js C[CD]0(872,0,0)8h7sAdKs J[]108(872,288,12)9hQd5cTs J[]28(872,288,12)5hJd9d7d H[C]0(872,288,0)3s3h8d4s B[C]0(872,0,0)2sKcKhAh ",
+        "HandCommentary": [
+          "Harry revealed their hand details",
+          "Ben to reveal (or fold)"
+        ]
+      },
+      {
+        "ActionNumber": 73,
+        "ActionType": 6,
+        "UserName": "Ben",
+        "Parameters": null,
+        "StatusMessage": "Ben revealed their hand details. Dan to reveal (or fold)",
+        "PlayerSummaries": "D[C]0(872,0,0)4h2hAs4c R[F]871(1,0,0)9c P[F]871(1,0,0)Js C[CD]0(872,0,0)8h7sAdKs J[]108(872,288,12)9hQd5cTs J[]28(872,288,12)5hJd9d7d H[C]0(872,288,0)3s3h8d4s B[C]0(872,0,0)2sKcKhAh ",
+        "HandCommentary": [
+          "Ben revealed their hand details",
+          "Dan to reveal (or fold)"
+        ]
+      },
+      {
+        "ActionNumber": 74,
+        "ActionType": 6,
+        "UserName": "Dan",
+        "Parameters": null,
+        "StatusMessage": "Dan revealed their hand details. Chris to reveal (or fold)",
+        "PlayerSummaries": "D[C]0(872,0,0)4h2hAs4c R[F]871(1,0,0)9c P[F]871(1,0,0)Js C[CD]0(872,0,0)8h7sAdKs J[]108(872,288,12)9hQd5cTs J[]28(872,288,12)5hJd9d7d H[C]0(872,288,0)3s3h8d4s B[C]0(872,0,0)2sKcKhAh ",
+        "HandCommentary": [
+          "Dan revealed their hand details",
+          "Chris to reveal (or fold)"
+        ]
+      },
+      {
+        "ActionNumber": 75,
+        "ActionType": 6,
+        "UserName": "Chris",
+        "Parameters": null,
+        "StatusMessage": "Chris revealed their hand details. Reveal hands if desired, or administrator to start next hand (or reopen lobby)",
+        "PlayerSummaries": "D[C]0(0)4h2hAs4c R[F]871(0)9c P[F]871(0)Js C[CD]0(0)8h7sAdKs J[]108(0)9hQd5cTs J[]6150(0)5hJd9d7d H[C]0(0)3s3h8d4s B[C]0(0)2sKcKhAh ",
+        "HandCommentary": [
+          "Chris revealed their hand details",
+          "Chris revealed their hand details, all hands revealed, hand ended",
+          "Pot 0: John won 4362 with Nine-High Straight",
+          "Pot 0: Dan lost 872 with Tens and Fours",
+          "Pot 0: Robert lost 1 after folding",
+          "Pot 0: Phil lost 1 after folding",
+          "Pot 0: Chris lost 872 with Pair of Eights",
+          "Pot 0: Josh lost 872 with Queens and Nines",
+          "Pot 0: Harry lost 872 with Pair of Threes",
+          "Pot 0: Ben lost 872 with Pair of Kings",
+          "Pot 1: John won 576 with Nine-High Straight",
+          "Pot 1: Dan had nothing in this pot",
+          "Pot 1: Robert had nothing in this pot",
+          "Pot 1: Phil had nothing in this pot",
+          "Pot 1: Chris had nothing in this pot",
+          "Pot 1: Josh lost 288 with Queens and Nines",
+          "Pot 1: Harry lost 288 with Pair of Threes",
+          "Pot 1: Ben had nothing in this pot",
+          "Pot 2: John won 12 with Nine-High Straight",
+          "Pot 2: Dan had nothing in this pot",
+          "Pot 2: Robert had nothing in this pot",
+          "Pot 2: Phil had nothing in this pot",
+          "Pot 2: Chris had nothing in this pot",
+          "Pot 2: Josh lost 12 with Queens and Nines",
+          "Pot 2: Harry had nothing in this pot",
+          "Pot 2: Ben had nothing in this pot",
+          "Waiting for administrator to start next hand.",
+          "Reveal hands if desired, or administrator to start next hand (or reopen lobby)"
+        ]
+      },
+      {
+        "ActionNumber": 76,
+        "ActionType": 0,
+        "UserName": "Robert",
+        "Parameters": null,
+        "StatusMessage": "Robert reopened the game lobby. Await players leaving/joining, or continue the game, or start a new one",
+        "PlayerSummaries": "D[C]0(0)4h2hAs4c R[F]871(0)9c P[F]871(0)Js C[CD]0(0)8h7sAdKs J[]108(0)9hQd5cTs J[]6150(0)5hJd9d7d H[C]0(0)3s3h8d4s B[C]0(0)2sKcKhAh ",
+        "HandCommentary": [
+          "Robert reopened the game lobby"
+        ]
+      }
+    ],
+    "decks": [
+      {
+        "DeckNumber": 1,
+        "Cards": [
+          {
+            "CardValue": 17,
+            "CardSuit": 1
+          },
+          {
+            "CardValue": 7,
+            "CardSuit": 2
+          },
+          {
+            "CardValue": 17,
+            "CardSuit": 2
+          },
+          {
+            "CardValue": 2,
+            "CardSuit": 1
+          },
+          {
+            "CardValue": 13,
+            "CardSuit": 2
+          },
+          {
+            "CardValue": 31,
+            "CardSuit": 2
+          },
+          {
+            "CardValue": 3,
+            "CardSuit": 2
+          },
+          {
+            "CardValue": 11,
+            "CardSuit": 2
+          },
+          {
+            "CardValue": 17,
+            "CardSuit": 0
+          },
+          {
+            "CardValue": 3,
+            "CardSuit": 0
+          },
+          {
+            "CardValue": 2,
+            "CardSuit": 3
+          },
+          {
+            "CardValue": 37,
+            "CardSuit": 3
+          },
+          {
+            "CardValue": 11,
+            "CardSuit": 0
+          },
+          {
+            "CardValue": 19,
+            "CardSuit": 3
+          },
+          {
+            "CardValue": 31,
+            "CardSuit": 0
+          },
+          {
+            "CardValue": 23,
+            "CardSuit": 2
+          },
+          {
+            "CardValue": 41,
+            "CardSuit": 1
+          },
+          {
+            "CardValue": 3,
+            "CardSuit": 1
+          },
+          {
+            "CardValue": 31,
+            "CardSuit": 1
+          },
+          {
+            "CardValue": 11,
+            "CardSuit": 1
+          },
+          {
+            "CardValue": 7,
+            "CardSuit": 0
+          },
+          {
+            "CardValue": 19,
+            "CardSuit": 1
+          },
+          {
+            "CardValue": 37,
+            "CardSuit": 2
+          },
+          {
+            "CardValue": 13,
+            "CardSuit": 3
+          },
+          {
+            "CardValue": 37,
+            "CardSuit": 1
+          },
+          {
+            "CardValue": 13,
+            "CardSuit": 0
+          },
+          {
+            "CardValue": 7,
+            "CardSuit": 1
+          },
+          {
+            "CardValue": 5,
+            "CardSuit": 3
+          },
+          {
+            "CardValue": 19,
+            "CardSuit": 2
+          },
+          {
+            "CardValue": 5,
+            "CardSuit": 2
+          },
+          {
+            "CardValue": 31,
+            "CardSuit": 3
+          },
+          {
+            "CardValue": 11,
+            "CardSuit": 3
+          },
+          {
+            "CardValue": 5,
+            "CardSuit": 0
+          },
+          {
+            "CardValue": 37,
+            "CardSuit": 0
+          },
+          {
+            "CardValue": 41,
+            "CardSuit": 3
+          },
+          {
+            "CardValue": 23,
+            "CardSuit": 1
+          },
+          {
+            "CardValue": 29,
+            "CardSuit": 2
+          },
+          {
+            "CardValue": 19,
+            "CardSuit": 0
+          },
+          {
+            "CardValue": 29,
+            "CardSuit": 0
+          },
+          {
+            "CardValue": 3,
+            "CardSuit": 3
+          },
+          {
+            "CardValue": 23,
+            "CardSuit": 3
+          },
+          {
+            "CardValue": 23,
+            "CardSuit": 0
+          },
+          {
+            "CardValue": 2,
+            "CardSuit": 2
+          },
+          {
+            "CardValue": 17,
+            "CardSuit": 3
+          },
+          {
+            "CardValue": 29,
+            "CardSuit": 1
+          },
+          {
+            "CardValue": 2,
+            "CardSuit": 0
+          },
+          {
+            "CardValue": 29,
+            "CardSuit": 3
+          },
+          {
+            "CardValue": 5,
+            "CardSuit": 1
+          },
+          {
+            "CardValue": 41,
+            "CardSuit": 2
+          },
+          {
+            "CardValue": 41,
+            "CardSuit": 0
+          },
+          {
+            "CardValue": 7,
+            "CardSuit": 3
+          },
+          {
+            "CardValue": 13,
+            "CardSuit": 1
+          }
+        ]
+      },
+      {
+        "DeckNumber": 2,
+        "Cards": [
+          {
+            "CardValue": 19,
+            "CardSuit": 2
+          },
+          {
+            "CardValue": 41,
+            "CardSuit": 3
+          },
+          {
+            "CardValue": 7,
+            "CardSuit": 0
+          },
+          {
+            "CardValue": 37,
+            "CardSuit": 3
+          },
+          {
+            "CardValue": 23,
+            "CardSuit": 3
+          },
+          {
+            "CardValue": 2,
+            "CardSuit": 3
+          },
+          {
+            "CardValue": 41,
+            "CardSuit": 2
+          },
+          {
+            "CardValue": 31,
+            "CardSuit": 1
+          },
+          {
+            "CardValue": 7,
+            "CardSuit": 1
+          },
+          {
+            "CardValue": 7,
+            "CardSuit": 3
+          },
+          {
+            "CardValue": 3,
+            "CardSuit": 0
+          },
+          {
+            "CardValue": 7,
+            "CardSuit": 2
+          },
+          {
+            "CardValue": 17,
+            "CardSuit": 0
+          },
+          {
+            "CardValue": 17,
+            "CardSuit": 3
+          },
+          {
+            "CardValue": 11,
+            "CardSuit": 3
+          },
+          {
+            "CardValue": 37,
+            "CardSuit": 2
+          },
+          {
+            "CardValue": 19,
+            "CardSuit": 3
+          },
+          {
+            "CardValue": 13,
+            "CardSuit": 2
+          },
+          {
+            "CardValue": 2,
+            "CardSuit": 0
+          },
+          {
+            "CardValue": 17,
+            "CardSuit": 1
+          },
+          {
+            "CardValue": 23,
+            "CardSuit": 0
+          },
+          {
+            "CardValue": 31,
+            "CardSuit": 2
+          },
+          {
+            "CardValue": 19,
+            "CardSuit": 1
+          },
+          {
+            "CardValue": 29,
+            "CardSuit": 3
+          },
+          {
+            "CardValue": 3,
+            "CardSuit": 3
+          },
+          {
+            "CardValue": 11,
+            "CardSuit": 2
+          },
+          {
+            "CardValue": 31,
+            "CardSuit": 0
+          },
+          {
+            "CardValue": 11,
+            "CardSuit": 1
+          },
+          {
+            "CardValue": 29,
+            "CardSuit": 0
+          },
+          {
+            "CardValue": 31,
+            "CardSuit": 3
+          },
+          {
+            "CardValue": 19,
+            "CardSuit": 0
+          },
+          {
+            "CardValue": 41,
+            "CardSuit": 0
+          },
+          {
+            "CardValue": 23,
+            "CardSuit": 2
+          },
+          {
+            "CardValue": 37,
+            "CardSuit": 1
+          },
+          {
+            "CardValue": 13,
+            "CardSuit": 0
+          },
+          {
+            "CardValue": 11,
+            "CardSuit": 0
+          },
+          {
+            "CardValue": 2,
+            "CardSuit": 1
+          },
+          {
+            "CardValue": 13,
+            "CardSuit": 3
+          },
+          {
+            "CardValue": 41,
+            "CardSuit": 1
+          },
+          {
+            "CardValue": 17,
+            "CardSuit": 2
+          },
+          {
+            "CardValue": 5,
+            "CardSuit": 1
+          },
+          {
+            "CardValue": 3,
+            "CardSuit": 2
+          },
+          {
+            "CardValue": 13,
+            "CardSuit": 1
+          },
+          {
+            "CardValue": 5,
+            "CardSuit": 0
+          },
+          {
+            "CardValue": 37,
+            "CardSuit": 0
+          },
+          {
+            "CardValue": 5,
+            "CardSuit": 3
+          },
+          {
+            "CardValue": 5,
+            "CardSuit": 2
+          },
+          {
+            "CardValue": 2,
+            "CardSuit": 2
+          },
+          {
+            "CardValue": 3,
+            "CardSuit": 1
+          },
+          {
+            "CardValue": 23,
+            "CardSuit": 1
+          },
+          {
+            "CardValue": 29,
+            "CardSuit": 1
+          },
+          {
+            "CardValue": 29,
+            "CardSuit": 2
+          }
+        ]
+      },
+      {
+        "DeckNumber": 3,
+        "Cards": [
+          {
+            "CardValue": 7,
+            "CardSuit": 1
+          },
+          {
+            "CardValue": 2,
+            "CardSuit": 1
+          },
+          {
+            "CardValue": 41,
+            "CardSuit": 0
+          },
+          {
+            "CardValue": 11,
+            "CardSuit": 3
+          },
+          {
+            "CardValue": 7,
+            "CardSuit": 2
+          },
+          {
+            "CardValue": 13,
+            "CardSuit": 0
+          },
+          {
+            "CardValue": 17,
+            "CardSuit": 0
+          },
+          {
+            "CardValue": 29,
+            "CardSuit": 0
+          },
+          {
+            "CardValue": 19,
+            "CardSuit": 2
+          },
+          {
+            "CardValue": 29,
+            "CardSuit": 1
+          },
+          {
+            "CardValue": 13,
+            "CardSuit": 1
+          },
+          {
+            "CardValue": 37,
+            "CardSuit": 1
+          },
+          {
+            "CardValue": 2,
+            "CardSuit": 3
+          },
+          {
+            "CardValue": 13,
+            "CardSuit": 3
+          },
+          {
+            "CardValue": 5,
+            "CardSuit": 3
+          },
+          {
+            "CardValue": 11,
+            "CardSuit": 2
+          },
+          {
+            "CardValue": 3,
+            "CardSuit": 3
+          },
+          {
+            "CardValue": 41,
+            "CardSuit": 2
+          },
+          {
+            "CardValue": 17,
+            "CardSuit": 2
+          },
+          {
+            "CardValue": 37,
+            "CardSuit": 3
+          },
+          {
+            "CardValue": 23,
+            "CardSuit": 0
+          },
+          {
+            "CardValue": 31,
+            "CardSuit": 0
+          },
+          {
+            "CardValue": 11,
+            "CardSuit": 0
+          },
+          {
+            "CardValue": 41,
+            "CardSuit": 1
+          },
+          {
+            "CardValue": 2,
+            "CardSuit": 2
+          },
+          {
+            "CardValue": 23,
+            "CardSuit": 1
+          },
+          {
+            "CardValue": 23,
+            "CardSuit": 3
+          },
+          {
+            "CardValue": 31,
+            "CardSuit": 3
+          },
+          {
+            "CardValue": 3,
+            "CardSuit": 0
+          },
+          {
+            "CardValue": 3,
+            "CardSuit": 2
+          },
+          {
+            "CardValue": 37,
+            "CardSuit": 0
+          },
+          {
+            "CardValue": 7,
+            "CardSuit": 0
+          },
+          {
+            "CardValue": 13,
+            "CardSuit": 2
+          },
+          {
+            "CardValue": 11,
+            "CardSuit": 1
+          },
+          {
+            "CardValue": 29,
+            "CardSuit": 3
+          },
+          {
+            "CardValue": 23,
+            "CardSuit": 2
+          },
+          {
+            "CardValue": 5,
+            "CardSuit": 1
+          },
+          {
+            "CardValue": 17,
+            "CardSuit": 1
+          },
+          {
+            "CardValue": 29,
+            "CardSuit": 2
+          },
+          {
+            "CardValue": 2,
+            "CardSuit": 0
+          },
+          {
+            "CardValue": 19,
+            "CardSuit": 3
+          },
+          {
+            "CardValue": 19,
+            "CardSuit": 1
+          },
+          {
+            "CardValue": 19,
+            "CardSuit": 0
+          },
+          {
+            "CardValue": 41,
+            "CardSuit": 3
+          },
+          {
+            "CardValue": 31,
+            "CardSuit": 1
+          },
+          {
+            "CardValue": 17,
+            "CardSuit": 3
+          },
+          {
+            "CardValue": 3,
+            "CardSuit": 1
+          },
+          {
+            "CardValue": 5,
+            "CardSuit": 2
+          },
+          {
+            "CardValue": 5,
+            "CardSuit": 0
+          },
+          {
+            "CardValue": 31,
+            "CardSuit": 2
+          },
+          {
+            "CardValue": 7,
+            "CardSuit": 3
+          },
+          {
+            "CardValue": 37,
+            "CardSuit": 2
+          }
+        ]
+      },
+      {
+        "DeckNumber": 4,
+        "Cards": [
+          {
+            "CardValue": 2,
+            "CardSuit": 3
+          },
+          {
+            "CardValue": 5,
+            "CardSuit": 3
+          },
+          {
+            "CardValue": 11,
+            "CardSuit": 2
+          },
+          {
+            "CardValue": 29,
+            "CardSuit": 2
+          },
+          {
+            "CardValue": 7,
+            "CardSuit": 0
+          },
+          {
+            "CardValue": 37,
+            "CardSuit": 3
+          },
+          {
+            "CardValue": 13,
+            "CardSuit": 1
+          },
+          {
+            "CardValue": 19,
+            "CardSuit": 0
+          },
+          {
+            "CardValue": 3,
+            "CardSuit": 3
+          },
+          {
+            "CardValue": 29,
+            "CardSuit": 1
+          },
+          {
+            "CardValue": 41,
+            "CardSuit": 1
+          },
+          {
+            "CardValue": 5,
+            "CardSuit": 0
+          },
+          {
+            "CardValue": 13,
+            "CardSuit": 3
+          },
+          {
+            "CardValue": 23,
+            "CardSuit": 0
+          },
+          {
+            "CardValue": 37,
+            "CardSuit": 0
+          },
+          {
+            "CardValue": 5,
+            "CardSuit": 2
+          },
+          {
+            "CardValue": 37,
+            "CardSuit": 1
+          },
+          {
+            "CardValue": 17,
+            "CardSuit": 3
+          },
+          {
+            "CardValue": 19,
+            "CardSuit": 3
+          },
+          {
+            "CardValue": 7,
+            "CardSuit": 2
+          },
+          {
+            "CardValue": 41,
+            "CardSuit": 3
+          },
+          {
+            "CardValue": 41,
+            "CardSuit": 0
+          },
+          {
+            "CardValue": 37,
+            "CardSuit": 2
+          },
+          {
+            "CardValue": 3,
+            "CardSuit": 1
+          },
+          {
+            "CardValue": 29,
+            "CardSuit": 3
+          },
+          {
+            "CardValue": 31,
+            "CardSuit": 3
+          },
+          {
+            "CardValue": 13,
+            "CardSuit": 0
+          },
+          {
+            "CardValue": 2,
+            "CardSuit": 1
+          },
+          {
+            "CardValue": 2,
+            "CardSuit": 0
+          },
+          {
+            "CardValue": 31,
+            "CardSuit": 1
+          },
+          {
+            "CardValue": 11,
+            "CardSuit": 1
+          },
+          {
+            "CardValue": 3,
+            "CardSuit": 0
+          },
+          {
+            "CardValue": 41,
+            "CardSuit": 2
+          },
+          {
+            "CardValue": 23,
+            "CardSuit": 1
+          },
+          {
+            "CardValue": 7,
+            "CardSuit": 1
+          },
+          {
+            "CardValue": 11,
+            "CardSuit": 3
+          },
+          {
+            "CardValue": 17,
+            "CardSuit": 0
+          },
+          {
+            "CardValue": 19,
+            "CardSuit": 1
+          },
+          {
+            "CardValue": 31,
+            "CardSuit": 2
+          },
+          {
+            "CardValue": 7,
+            "CardSuit": 3
+          },
+          {
+            "CardValue": 17,
+            "CardSuit": 1
+          },
+          {
+            "CardValue": 31,
+            "CardSuit": 0
+          },
+          {
+            "CardValue": 17,
+            "CardSuit": 2
+          },
+          {
+            "CardValue": 29,
+            "CardSuit": 0
+          },
+          {
+            "CardValue": 11,
+            "CardSuit": 0
+          },
+          {
+            "CardValue": 2,
+            "CardSuit": 2
+          },
+          {
+            "CardValue": 19,
+            "CardSuit": 2
+          },
+          {
+            "CardValue": 3,
+            "CardSuit": 2
+          },
+          {
+            "CardValue": 13,
+            "CardSuit": 2
+          },
+          {
+            "CardValue": 5,
+            "CardSuit": 1
+          },
+          {
+            "CardValue": 23,
+            "CardSuit": 3
+          },
+          {
+            "CardValue": 23,
+            "CardSuit": 2
+          }
+        ]
+      }
+    ]
+  }
+  
