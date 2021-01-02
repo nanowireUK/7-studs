@@ -12,7 +12,7 @@ namespace SevenStuds.Models
     {
         [Required]
         // Fixed game properties
-        private Room Room;
+        public Room Room;
         public int GameNumber { get; set; }
         public int HandsPlayedIncludingCurrent { get; set; } // 0 = game not yet started
         public int ActionNumber { get; set; }
@@ -49,8 +49,7 @@ namespace SevenStuds.Models
         public List<List<int>> Pots { get; set; } // pot(s) built up in the current hand (over multiple rounds of betting)
         public List<Participant> Participants { get; set; } // ordered list of participants (order represents order around the table)
         public List<Spectator> Spectators { get; set; } // ordered list of spectators (no representation around the table)
-        private Dictionary<ActionEnum, ActionAvailability> _ActionAvailability { get; set; } // Can't be public as JSON serialiser can't handle it
-        public List<ActionAvailability> ActionAvailabilityList { get; set; } // This list contains references to the same objects as in the Dictionary       
+        public ActionAvailabilityMap Permissions { get; set; }
         public List<Boolean> CardPositionIsVisible { get; } = new List<Boolean>{false, false, true, true, true, true, false};
         public LobbyData LobbyData { get; set; }
         public GameStatistics GameStatistics { get; set; }
@@ -85,8 +84,7 @@ namespace SevenStuds.Models
 
             _ConnectionToParticipantMap = new Dictionary<string, Participant>(); 
             _ConnectionToSpectatorMap = new Dictionary<string, Spectator>(); 
-            _ActionAvailability = new Dictionary<ActionEnum, ActionAvailability>();
-            ActionAvailabilityList = new List<ActionAvailability>();
+            Permissions = new ActionAvailabilityMap();
             HandsPlayedIncludingCurrent = 0;
             LeaversLogForGame = new List<LeavingRecord>();
             CountOfLeavers = 0;
@@ -353,24 +351,6 @@ namespace SevenStuds.Models
             RoundNumberIfCardsJustDealt = _CardsDealtIncludingCurrent; // Will be cleared as soon as next action comes in
             RoundNumber = _CardsDealtIncludingCurrent; // Kept for entire round
         }
-
-        public void SetActionAvailability(ActionEnum ac, AvailabilityEnum av) 
-        {
-            ActionAvailability aa;
-            if ( _ActionAvailability.TryGetValue(ac, out aa) )
-            {
-                aa.Availability = av;
-            }
-            else 
-            {
-                aa = new ActionAvailability(ac, av);
-                _ActionAvailability.Add(ac, aa); // Note we are adding the ActionAvailability object as the value
-                ActionAvailabilityList.Add(aa); // Also add it to the list that is in included in the JSON export 
-
-            }
-        } 
-
-
         public void SetActionAvailabilityBasedOnCurrentPlayer() 
         {
             // This should be called at the end of any action
@@ -378,43 +358,43 @@ namespace SevenStuds.Models
             // First make all commands unavailable
             foreach (ActionEnum e in Enum.GetValues(typeof(ActionEnum)))
             {
-                SetActionAvailability(e, AvailabilityEnum.NotAvailable); // All commands initially unavailable
+                Permissions.SetAvailability(e, AvailabilityEnum.NotAvailable); // All commands initially unavailable
             }
 
             // Set any commands that are always available
-            SetActionAvailability(ActionEnum.Rejoin, AvailabilityEnum.AnyRegisteredPlayer); // Open up REJOIN to anyone who previously joined
-            SetActionAvailability(ActionEnum.Leave, AvailabilityEnum.AnyRegisteredPlayer); // Open up LEAVE to anyone who has joined
-            SetActionAvailability(ActionEnum.AdHocQuery, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who previously joined
-            SetActionAvailability(ActionEnum.Spectate, AvailabilityEnum.AnyUnregisteredPlayer); // Open up SPECTATE at any time to anyone who has not yet joined
+            Permissions.SetAvailability(ActionEnum.Rejoin, AvailabilityEnum.AnyRegisteredPlayer); // Open up REJOIN to anyone who previously joined
+            Permissions.SetAvailability(ActionEnum.Leave, AvailabilityEnum.AnyRegisteredPlayer); // Open up LEAVE to anyone who has joined
+            Permissions.SetAvailability(ActionEnum.AdHocQuery, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who previously joined
+            Permissions.SetAvailability(ActionEnum.Spectate, AvailabilityEnum.AnyUnregisteredPlayer); // Open up SPECTATE at any time to anyone who has not yet joined
 
 
             // Set any commands that are only available when we are not on the public server (i.e. test features)
             if ( ! ServerState.IsRunningOnPublicServer() ) {
-                SetActionAvailability(ActionEnum.GetState, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who previously joined
-                SetActionAvailability(ActionEnum.GetLog, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who previously joined
-                SetActionAvailability(ActionEnum.Replay, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who previously joined  
-                SetActionAvailability(ActionEnum.GetMyState, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who previously joined
+                Permissions.SetAvailability(ActionEnum.GetState, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who previously joined
+                Permissions.SetAvailability(ActionEnum.GetLog, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who previously joined
+                Permissions.SetAvailability(ActionEnum.Replay, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who previously joined  
+                Permissions.SetAvailability(ActionEnum.GetMyState, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who previously joined
             }
                       
             // Set different actions based on current game mode
             if ( GameMode == GameModeEnum.LobbyOpen ) {
-                SetActionAvailability(ActionEnum.Join, AvailabilityEnum.AnyUnregisteredPlayer); // Open up JOIN to anyone who has not yet joined (including spectators)
-                SetActionAvailability(ActionEnum.Spectate, AvailabilityEnum.AnyUnregisteredPlayer); // Open up SPECTATE to anyone who has not yet joined
-                SetActionAvailability(ActionEnum.Open, AvailabilityEnum.NotAvailable); // OPEN is no longer possible as lobby is already open
-                SetActionAvailability(ActionEnum.Start, ( this.Participants.Count >= 2 ) ? AvailabilityEnum.AdministratorOnly : AvailabilityEnum.NotAvailable ); 
-                SetActionAvailability(ActionEnum.Continue, 
+                Permissions.SetAvailability(ActionEnum.Join, AvailabilityEnum.AnyUnregisteredPlayer); // Open up JOIN to anyone who has not yet joined (including spectators)
+                Permissions.SetAvailability(ActionEnum.Spectate, AvailabilityEnum.AnyUnregisteredPlayer); // Open up SPECTATE to anyone who has not yet joined
+                Permissions.SetAvailability(ActionEnum.Open, AvailabilityEnum.NotAvailable); // OPEN is no longer possible as lobby is already open
+                Permissions.SetAvailability(ActionEnum.Start, ( this.Participants.Count >= 2 ) ? AvailabilityEnum.AdministratorOnly : AvailabilityEnum.NotAvailable ); 
+                Permissions.SetAvailability(ActionEnum.Continue, 
                     ( this.Participants.Count >= 2 && this.HandsPlayedIncludingCurrent > 0 ) ? AvailabilityEnum.AdministratorOnly : AvailabilityEnum.NotAvailable ); 
             }
             else if ( GameMode == GameModeEnum.HandsBeingRevealed ) {
                 // Player can only fold or reveal in this phase
-                SetActionAvailability(ActionEnum.Fold, AvailabilityEnum.ActivePlayerOnly); 
-                SetActionAvailability(ActionEnum.Reveal, AvailabilityEnum.ActivePlayerOnly); 
+                Permissions.SetAvailability(ActionEnum.Fold, AvailabilityEnum.ActivePlayerOnly); 
+                Permissions.SetAvailability(ActionEnum.Reveal, AvailabilityEnum.ActivePlayerOnly); 
 
             }
             else if ( GameMode == GameModeEnum.HandCompleted ) {
-                SetActionAvailability(ActionEnum.Open, AvailabilityEnum.AdministratorOnly); // Admin can choose to reopen lobby at this point
-                SetActionAvailability(ActionEnum.Reveal, AvailabilityEnum.AnyUnrevealedRegisteredPlayer); // Players may voluntarily reveal their hands at the end of a hand
-                SetActionAvailability(ActionEnum.Continue, AvailabilityEnum.AdministratorOnly); // Admin can choose to continue with the next hand
+                Permissions.SetAvailability(ActionEnum.Open, AvailabilityEnum.AdministratorOnly); // Admin can choose to reopen lobby at this point
+                Permissions.SetAvailability(ActionEnum.Reveal, AvailabilityEnum.AnyUnrevealedRegisteredPlayer); // Players may voluntarily reveal their hands at the end of a hand
+                Permissions.SetAvailability(ActionEnum.Continue, AvailabilityEnum.AdministratorOnly); // Admin can choose to continue with the next hand
 
             }
             else if ( GameMode == GameModeEnum.HandInProgress ) {
@@ -422,11 +402,11 @@ namespace SevenStuds.Models
                 Participant p = this.Participants[playerIndex];
                 // Decide whether the player can fold at this stage
                 // (actually always available as player becomes inactive on folding and so will never be current player)
-                SetActionAvailability(ActionEnum.Fold, AvailabilityEnum.ActivePlayerOnly); 
+                Permissions.SetAvailability(ActionEnum.Fold, AvailabilityEnum.ActivePlayerOnly); 
 
                 // Decide whether the player can check at this stage
                 // (possible until someone does something other than checking)
-                SetActionAvailability(
+                Permissions.SetAvailability(
                     ActionEnum.Check, 
                     _CheckIsAvailable ? AvailabilityEnum.ActivePlayerOnly: AvailabilityEnum.NotAvailable
                 );                 
@@ -437,38 +417,40 @@ namespace SevenStuds.Models
                 MaxRaiseForParticipantToTakeNextAction = MaxRaiseInContextOfOtherPlayersFunds(playerIndex, catchupAmount);
 
                 // To raise they need more than the matching amount and at least one person has to be able to call or cover following the raise
-                SetActionAvailability(
+                Permissions.SetAvailability(
                     ActionEnum.Raise, 
                     MaxRaiseForParticipantToTakeNextAction > 0 ? AvailabilityEnum.ActivePlayerOnly: AvailabilityEnum.NotAvailable);                
                 // To call the matching amount needs to be more than zero and they need at least the matching amount
-                SetActionAvailability(
+                Permissions.SetAvailability(
                     ActionEnum.Call, 
                     ( catchupAmount > 0 & p.UncommittedChips >= catchupAmount ) ? AvailabilityEnum.ActivePlayerOnly: AvailabilityEnum.NotAvailable); 
                 // To cover they need less than the matching amount
-                SetActionAvailability(
+                Permissions.SetAvailability(
                     ActionEnum.Cover, 
                     p.UncommittedChips < catchupAmount ? AvailabilityEnum.ActivePlayerOnly: AvailabilityEnum.NotAvailable); 
             }
         }
         public bool ActionIsAvailableToPlayer(ActionEnum actionType, int playerIndex) {
             // Check whether specified player is entitled to take this action at this stage (only valid during a started game)
-            ActionAvailability aa = this._ActionAvailability.GetValueOrDefault(actionType);
-            if ( aa.Availability == AvailabilityEnum.NotAvailable ) {
+            // First determine what the availability is for a given action
+            AvailabilityEnum availabilityForRequestedAction = Permissions.GetAvailability(actionType);
+
+            if ( availabilityForRequestedAction == AvailabilityEnum.NotAvailable ) {
                 return false;
             }
-            else if ( aa.Availability == AvailabilityEnum.AnyUnregisteredPlayer & playerIndex == -1 ) { 
+            else if ( availabilityForRequestedAction == AvailabilityEnum.AnyUnregisteredPlayer & playerIndex == -1 ) { 
                 return true;
             }               
-            else if ( aa.Availability == AvailabilityEnum.AnyRegisteredPlayer & playerIndex != -1 ) {
+            else if ( availabilityForRequestedAction == AvailabilityEnum.AnyRegisteredPlayer & playerIndex != -1 ) {
                 return true;
             }
-            else if ( aa.Availability == AvailabilityEnum.AdministratorOnly & playerIndex != -1 & this.Participants[playerIndex].IsGameAdministrator ) {
+            else if ( availabilityForRequestedAction == AvailabilityEnum.AdministratorOnly & playerIndex != -1 & this.Participants[playerIndex].IsGameAdministrator ) {
                 return true;
             }
-            else if ( aa.Availability == AvailabilityEnum.ActivePlayerOnly & playerIndex != -1 & playerIndex == IndexOfParticipantToTakeNextAction ) { 
+            else if ( availabilityForRequestedAction == AvailabilityEnum.ActivePlayerOnly & playerIndex != -1 & playerIndex == IndexOfParticipantToTakeNextAction ) { 
                 return true;
             }
-            else if ( aa.Availability == AvailabilityEnum.AnyUnrevealedRegisteredPlayer & playerIndex != -1 & ! Participants[playerIndex].IsSharingHandDetails ) { 
+            else if ( availabilityForRequestedAction == AvailabilityEnum.AnyUnrevealedRegisteredPlayer & playerIndex != -1 & ! Participants[playerIndex].IsSharingHandDetails ) { 
                 return true;
             }
             return false;

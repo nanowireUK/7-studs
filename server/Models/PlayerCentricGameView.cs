@@ -125,7 +125,7 @@ namespace SevenStuds.Models
                 AvailableActions.Add(ActionEnum.Leave.ToString());
             }
             else {
-                foreach ( ActionAvailability aa in g.ActionAvailabilityList )
+                foreach ( ActionAvailability aa in g.Permissions.map )
                 {
                     if ( aa.Availability == AvailabilityEnum.AnyRegisteredPlayer
                         || ( aa.Availability == AvailabilityEnum.ActivePlayerOnly & IsMyTurn )
