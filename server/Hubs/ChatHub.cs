@@ -23,6 +23,7 @@ namespace SevenStuds.Hubs
         public async Task UserClickedRaise(string roomId, string user, string leavers, string raiseAmount) { await UserClickedActionButton(ActionEnum.Raise, roomId,  user, leavers,  raiseAmount); }
         public async Task UserClickedCover(string roomId, string user, string leavers) { await UserClickedActionButton(ActionEnum.Cover, roomId,  user, leavers,  ""); }
         public async Task UserClickedFold(string roomId, string user, string leavers) { await UserClickedActionButton(ActionEnum.Fold, roomId,  user, leavers,  ""); }
+        public async Task UserClickedBlind(string roomId, string user, string leavers) { await UserClickedActionButton(ActionEnum.Blind, roomId,  user, leavers,  ""); }
         public async Task UserClickedGetState(string roomId, string user, string leavers) { await UserClickedActionButton(ActionEnum.GetState, roomId,  user, leavers,  ""); }
         public async Task UserClickedGetLog(string roomId, string user, string leavers) { await UserClickedActionButton(ActionEnum.GetLog, roomId,  user, leavers,  ""); }
         public async Task UserClickedReplay(string roomId, string user, string leavers, string gameLog) { await UserClickedActionButton(ActionEnum.Replay, roomId,  user, leavers,  gameLog); }

@@ -18,6 +18,8 @@ namespace SevenStuds.Models
             this.HasBeenActiveInCurrentGame = false;
             this.TimeOfBankruptcy = DateTimeOffset.MinValue;
             this.AllInDateTime = DateTimeOffset.MinValue;
+            this.IntendsToPlayBlindInNextHand = false; 
+            this.IsPlayingBlindInCurrentHand = false; 
         }
         [Required]
         
@@ -29,6 +31,8 @@ namespace SevenStuds.Models
         public Boolean HasDisconnected { get; set; } // Player has chosen to leave the game (i.e. is no longer connected and will be removed at end of hand)
         public Boolean IsSharingHandDetails { get; set; }
         public Boolean WonSomethingInCurrentHand { get; set; }
+        public Boolean IsPlayingBlindInCurrentHand { get; set; }
+        public Boolean IntendsToPlayBlindInNextHand { get; set; }
         public ActionEnum LastActionInThisHand { get; set; }
         public int LastActionAmount { get; set; }
         public int RoundNumberOfLastAction { get; set; }
@@ -80,6 +84,8 @@ namespace SevenStuds.Models
             this.HasFolded = false;
             this.HasCovered = false;
             this.StartedHandWithNoFunds = false;
+            this.IsPlayingBlindInCurrentHand = this.IntendsToPlayBlindInNextHand; // intent was noted via action in lobby or during last hand             
+            this.IntendsToPlayBlindInNextHand = false; // clear the intent for the current hand
             this.Hand = new List<Card>();
             this.Hand.Add(g.DealCard()); // 1st random card
             this.Hand.Add(g.DealCard()); // 2nd random card

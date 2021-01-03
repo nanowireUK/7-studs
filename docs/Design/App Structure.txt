@@ -12,13 +12,13 @@ index.cshtml - client-side HTML (in \server\pages)
 
 Creating a new Action 'XXX':
 
-\Server\Pages\Index.cshtml -> add a button to trigger the action
-\Server\wwwroot\Index.cshtml -> add an EventListener (copy other ones)
-\Server\Models\Enums.cs -> add an action XXX to ActionEnum
-\Server\Hubs\ChatHub.cs -> UserClickedXXX
-\Server\Models\ActionFactory.cs -> add a line to create a new ActionXxx object
-\Server\Models\ActionXXX.cs -> copy an existing command to create the new action
-\Server\Models\Game.cs -> will almost certainly need loads of changes for any new command, especially:
+\server\Models\Enums.cs -> add an action XXX to ActionEnum
+\server\Pages\Index.cshtml -> add a button to trigger the action
+\server\wwwroot\chat.js -> add an EventListener (copy other ones)
+\server\Hubs\ChatHub.cs -> UserClickedXXX
+\server\Models\ActionFactory.cs -> add a line to create a new ActionXxx object
+\server\Models\ActionXXX.cs -> copy an existing command to create the new action
+\server\Models\Game.cs -> will almost certainly need loads of changes for any new command, especially:
 	- SetActionAvailabilityBasedOnCurrentPlayer
 
 

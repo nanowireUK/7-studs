@@ -363,13 +363,15 @@ namespace SevenStuds.Models
             }
 
             // Set any commands that are always available
+            // To registered players
             Permissions.SetAvailability(ActionEnum.Rejoin, AvailabilityEnum.AnyRegisteredPlayer); // Open up REJOIN to anyone who previously joined
             Permissions.SetAvailability(ActionEnum.Leave, AvailabilityEnum.AnyRegisteredPlayer); // Open up LEAVE to anyone who has joined
+            Permissions.SetAvailability(ActionEnum.Blind, AvailabilityEnum.AnyRegisteredPlayer); // Allow any registered player to toggle their intent to play blind
             Permissions.SetAvailability(ActionEnum.AdHocQuery, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who previously joined
+            // To not-yet-registered players
             Permissions.SetAvailability(ActionEnum.Spectate, AvailabilityEnum.AnyUnregisteredPlayer); // Open up SPECTATE at any time to anyone who has not yet joined
 
-
-            // Set any commands that are only available when we are not on the public server (i.e. test features)
+            // Add any additional commands that are only available when we are not on the public server (i.e. test features)
             if ( ! ServerState.IsRunningOnPublicServer() ) {
                 Permissions.SetAvailability(ActionEnum.GetState, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who previously joined
                 Permissions.SetAvailability(ActionEnum.GetLog, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who previously joined
@@ -377,7 +379,7 @@ namespace SevenStuds.Models
                 Permissions.SetAvailability(ActionEnum.GetMyState, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who previously joined
             }
                       
-            // Set different actions based on current game mode
+            // Add any additional commands based on current game mode
             if ( GameMode == GameModeEnum.LobbyOpen ) {
                 Permissions.SetAvailability(ActionEnum.Join, AvailabilityEnum.AnyUnregisteredPlayer); // Open up JOIN to anyone who has not yet joined (including spectators)
                 Permissions.SetAvailability(ActionEnum.Spectate, AvailabilityEnum.AnyUnregisteredPlayer); // Open up SPECTATE to anyone who has not yet joined
@@ -429,6 +431,10 @@ namespace SevenStuds.Models
                 Permissions.SetAvailability(
                     ActionEnum.Cover, 
                     p.UncommittedChips < catchupAmount ? AvailabilityEnum.ActivePlayerOnly: AvailabilityEnum.NotAvailable); 
+                // To reveal, they need to have been playing blind up to this point
+                Permissions.SetAvailability(
+                    ActionEnum.Reveal, 
+                    p.IsPlayingBlindInCurrentHand ? AvailabilityEnum.ActivePlayerOnly: AvailabilityEnum.NotAvailable);                     
             }
         }
         public bool ActionIsAvailableToPlayer(ActionEnum actionType, int playerIndex) {
@@ -500,6 +506,7 @@ namespace SevenStuds.Models
             // Note: the dealer could be out too.
             //int ZbiLeftOfDealer = (this.IndexOfParticipantDealingThisHand + 1) % Participants.Count;
             int ZbiOfFirstToBet = -1;
+            int HandRankOfFirstToBet = Int32.MaxValue;
             for (int i = 0; i < Participants.Count; i++) 
             {
                 int ZbiOfNextPlayerToInspect = (this.IndexOfParticipantDealingThisHand + 1 + i) % Participants.Count; // starts one to left of dealer
@@ -507,15 +514,23 @@ namespace SevenStuds.Models
                     Participants[ZbiOfNextPlayerToInspect].HasFolded == false // i.e. player has not folded out of this hand
                     && Participants[ZbiOfNextPlayerToInspect].HasCovered == false // i.e. player has not covered the pot 
                     && Participants[ZbiOfNextPlayerToInspect].StartedHandWithNoFunds == false // i.e. player was in the hand to start off with
-                    //&& this.ChipsInAllPotsForSpecifiedPlayer(ZbiOfNextPlayerToInspect) > 0 // i.e. player was in the hand to start off with
                     && 
                     ( // players hand is the first to be checked or is better than any checked so far
-                        ZbiOfFirstToBet == -1
-                        || Participants[ZbiOfNextPlayerToInspect]._VisibleHandRank < Participants[ZbiOfFirstToBet]._VisibleHandRank
+                        ( 
+                            Participants[ZbiOfNextPlayerToInspect].IsPlayingBlindInCurrentHand 
+                            ? Int32.MaxValue
+                            : Participants[ZbiOfNextPlayerToInspect]._VisibleHandRank 
+                        )
+                        < HandRankOfFirstToBet
                     )
                 )
                 {
                     ZbiOfFirstToBet = ZbiOfNextPlayerToInspect; // This player is still in and has a better hand 
+                    HandRankOfFirstToBet = ( 
+                        Participants[ZbiOfFirstToBet].IsPlayingBlindInCurrentHand 
+                        ? Int32.MaxValue
+                        : Participants[ZbiOfFirstToBet]._VisibleHandRank
+                    );
                 }
             }
             return ZbiOfFirstToBet;

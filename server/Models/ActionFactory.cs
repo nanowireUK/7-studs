@@ -48,6 +48,8 @@ namespace SevenStuds.Models
                     return new ActionCover(connectionId, actionType, roomId, user, leavers);   
                 case ActionEnum.Fold:  
                     return new ActionFold(connectionId, actionType, roomId, user, leavers);   
+                case ActionEnum.Blind:  
+                    return new ActionBlind(connectionId, actionType, roomId, user, leavers);                       
                 case ActionEnum.GetState:  
                     return new ActionGetState(connectionId, actionType, roomId, user, leavers);   
                 case ActionEnum.GetMyState:  

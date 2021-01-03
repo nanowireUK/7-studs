@@ -235,6 +235,16 @@ document.getElementById("actionFold").addEventListener("click", function (event)
     event.preventDefault();
 });
 
+// --------------- BLIND (toggle intention to play blind next hand)
+
+document.getElementById("actionBlind").addEventListener("click", function (event) {
+    var roomId = getRoomId();
+    var user = getUser();
+    var leaverCount = getLeaverCount();
+    connection.invoke("UserClickedBlind", roomId, user, leaverCount).catch(logError);
+    event.preventDefault();
+});
+
 // --------------- Get Game State (test feature)
 
 document.getElementById("actionGetState").addEventListener("click", function (event) {

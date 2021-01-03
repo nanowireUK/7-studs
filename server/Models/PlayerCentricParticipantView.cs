@@ -24,6 +24,8 @@ namespace SevenStuds.Models
         public Boolean HasCovered { get; set; }
         public Boolean IsOutOfThisGame { get; set; }
         public Boolean HasDisconnected { get; set; }
+        public Boolean IsPlayingBlindInCurrentHand { get; set; }
+        public Boolean IntendsToPlayBlindInNextHand { get; set; }
         public ActionEnum LastActionInThisHand { get; set; }
         public int LastActionAmount { get; set; }
         public int RoundNumberOfLastAction { get; set; }
@@ -53,8 +55,11 @@ namespace SevenStuds.Models
             LastActionInThisHand = observedPlayer.LastActionInThisHand;
             LastActionAmount = observedPlayer.LastActionAmount;  
             RoundNumberOfLastAction = observedPlayer.RoundNumberOfLastAction;  
+            IsPlayingBlindInCurrentHand = observedPlayer.IsPlayingBlindInCurrentHand;
+            IntendsToPlayBlindInNextHand = observedPlayer.IntendsToPlayBlindInNextHand;
 
             // Add a list of this player's cards, substituting with '?' if the player receiving this data is not allowed to see this card
+            // (which can include the player themselves if they are playing blind)
             Cards = new List<string>();
             for ( int i = 0; i < observedPlayer.Hand.Count; i++ ) {
                 if ( ( observedPlayer.Name != viewingPlayer.Name || isSpectatorView == true ) 
@@ -63,6 +68,11 @@ namespace SevenStuds.Models
                     ) {
                     // This is a view of a different player's cards and this card is currently face down and they have not consented to reveal them (at hand end)
                     Cards.Add("?");
+                }
+                else if ( observedPlayer.IsPlayingBlindInCurrentHand == true ) {
+                    // The player is playing blind so no-one (including themselves) is allowed to see their card
+                    Cards.Add("?");
+                    VisibleHandDescription = "Blind"; 
                 }
                 else{
                     Cards.Add(observedPlayer.Hand[i].ToString(CardToStringFormatEnum.ShortCardName));

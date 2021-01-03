@@ -22,9 +22,9 @@ namespace SevenStuds.Models
     public enum GameModeEnum
     {
         LobbyOpen = 0,
-        HandInProgress = 1,
-        HandsBeingRevealed = 2,
-        HandCompleted = 3
+        HandInProgress = 1, // betting is still in progress
+        HandsBeingRevealed = 2, // final betting is completed, players are in turn either revealing their hands or folding
+        HandCompleted = 3 // the hand result is establishied, players are able to reveal hands if desired (for fun or effect)
     }    
     /// <summary>
     /// ActionEnum: Enumeration values are used to communicate actions between client and server
@@ -38,8 +38,10 @@ namespace SevenStuds.Models
         Leave = 3,
         Start = 4, // Starts the first or subsequent hand for an open or started game
         Continue = 5,
-        Reveal = 6, // only allowed between hands (i.e. game is started and a hand has just completed)
+        Reveal = 6, // only allowed between hands (i.e. game is started and a hand has just completed) or if player is playing blind
         Spectate = 7,
+        Blind = 8, // Allows player to register or deregister intent to play blind in the NEXT hand
+
         // Hand-level actions, available only to one player at any one time
         Check = 10,
         Call = 11,
