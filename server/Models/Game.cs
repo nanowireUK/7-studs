@@ -10,9 +10,8 @@ namespace SevenStuds.Models
 {
     public class Game
     {
-        [Required]
         // Fixed game properties
-        public Room Room;
+        public string RoomId;
         public int GameNumber { get; set; }
         public int HandsPlayedIncludingCurrent { get; set; } // 0 = game not yet started
         public int ActionNumber { get; set; }
@@ -41,11 +40,9 @@ namespace SevenStuds.Models
         public Card CommunityCard { get; set; }
         public DateTimeOffset StartTimeUTC { get; set; }
         public DateTimeOffset LastSuccessfulAction { get; set; }
-        public GameLog _GameLog { get; set; }
-        protected GameLog _ReplayContext { get; set; }
+        protected GameLog _GameLog { get; set; } // not to be exported with the game state
+        protected GameLog _ReplayContext { get; set; } // not to be exported with the game state
         public List<LeavingRecord> LeaversLogForGame { get; set; }
-        private Dictionary<string, Participant> _ConnectionToParticipantMap { get; set; } 
-        private Dictionary<string, Spectator> _ConnectionToSpectatorMap { get; set; } 
         public List<List<int>> Pots { get; set; } // pot(s) built up in the current hand (over multiple rounds of betting)
         public List<Participant> Participants { get; set; } // ordered list of participants (order represents order around the table)
         public List<Spectator> Spectators { get; set; } // ordered list of spectators (no representation around the table)
@@ -53,16 +50,15 @@ namespace SevenStuds.Models
         public List<Boolean> CardPositionIsVisible { get; } = new List<Boolean>{false, false, true, true, true, true, false};
         public LobbyData LobbyData { get; set; }
         public GameStatistics GameStatistics { get; set; }
-        private Deck CardPack { get; set; } // Starts as a full shuffled deck but is depleted as cards are dealt from it
-        public Deck SnapshotOfDeckForCurrentHand { get; set; } // Captures the full shuffled deck as at the start of the hand
-        public Game(Room roomRef, int gameNumber) {
-            this.Room = roomRef;
+        public Deck CardPack { get; set; } // Starts as a full shuffled deck but is depleted as cards are dealt from it
+        public Game(string roomId, int gameNumber) {
+            this.RoomId = roomId;
             this.GameNumber = gameNumber;
             this.InitialiseGame(null);
         }
 
         public Room ParentRoom() {
-            return this.Room;
+            return (Room) ServerState.RoomList[this.RoomId.ToLower()];
         }
 
         public void InitialiseGame(GameLog replayContext)
@@ -82,8 +78,6 @@ namespace SevenStuds.Models
             MostRecentHandResult = new List<List<PotResult>>();
             GameStatistics = new GameStatistics(this); // initialise the game stats
 
-            _ConnectionToParticipantMap = new Dictionary<string, Participant>(); 
-            _ConnectionToSpectatorMap = new Dictionary<string, Spectator>(); 
             Permissions = new ActionAvailabilityMap();
             HandsPlayedIncludingCurrent = 0;
             LeaversLogForGame = new List<LeavingRecord>();
@@ -95,7 +89,7 @@ namespace SevenStuds.Models
         public void StartNewGameLog() {
             // Initialise the game log, which will be added to as game actions take place
             this._GameLog = new GameLog(); 
-            this._GameLog.roomId = this.ParentRoom().RoomId;
+            this._GameLog.roomId = this.RoomId;
             // Log player order
             this._GameLog.playersInOrderAtStartOfGame = new List<string>();
             foreach ( Participant p in this.Participants ) {
@@ -120,23 +114,23 @@ namespace SevenStuds.Models
         }
 
         public void ClearConnectionMappings() {
-            _ConnectionToParticipantMap.Clear(); // Clear out the tester's current connection (and any other connections currently associated with the game)
-            _ConnectionToSpectatorMap.Clear(); // Clear out the tester's current connection (and any other connections currently associated with the game)
+            ServerState.GameConnections._ConnectionToParticipantMap.Clear(); // Clear out the tester's current connection (and any other connections currently associated with the game)
+            ServerState.GameConnections._ConnectionToSpectatorMap.Clear(); // Clear out the tester's current connection (and any other connections currently associated with the game)
         }
 
         public void LinkConnectionToParticipant(string connectionId, Participant p) 
         {
-            _ConnectionToParticipantMap.Add(connectionId, p);
+            ServerState.GameConnections._ConnectionToParticipantMap.Add(connectionId, p);
         }
         public void LinkConnectionToSpectator(string connectionId, Spectator p) 
         {
-            _ConnectionToSpectatorMap.Add(connectionId, p);
+            ServerState.GameConnections._ConnectionToSpectatorMap.Add(connectionId, p);
         }
 
         public Participant GetParticipantFromConnection(string connectionId) 
         {
             Participant p;
-            if ( _ConnectionToParticipantMap.TryGetValue(connectionId, out p) )
+            if ( ServerState.GameConnections._ConnectionToParticipantMap.TryGetValue(connectionId, out p) )
             {
                 return p;
             }
@@ -149,7 +143,7 @@ namespace SevenStuds.Models
         public Spectator GetSpectatorFromConnection(string connectionId) 
         {
             Spectator p;
-            if ( _ConnectionToSpectatorMap.TryGetValue(connectionId, out p) )
+            if ( ServerState.GameConnections._ConnectionToSpectatorMap.TryGetValue(connectionId, out p) )
             {
                 return p;
             }
@@ -282,7 +276,7 @@ namespace SevenStuds.Models
             // }
         }
 
-        public void StartNextHand()
+        public async Task StartNextHand()
         {
             // First remove any player(s) that disconnected during the last hand
             RemoveDisconnectedPlayersFromGameState(); // Shouldn't really be necessary here ... happens mainly on Join, Continue or Open
@@ -316,7 +310,13 @@ namespace SevenStuds.Models
                 CardPack = this._ReplayContext.decks[HandsPlayedIncludingCurrent - 1].Clone(newDeckNo);
             }
 
-            this.TakeSnapshotOfNewDeck();
+            //this.TakeSnapshotOfNewDeck();
+            Deck newDeck = this.CardPack.Clone();
+            this._GameLog.LogNewDeck(newDeck);
+
+            var dbTasks = new List<Task>();
+            dbTasks.Add(ServerState.OurDB.RecordDeck(this, newDeck));
+
             this.ClearHandDataBetweenHands();
             this.GameStatistics.UpdateStatistics(this);
 
@@ -350,6 +350,7 @@ namespace SevenStuds.Models
             _CardsDealtIncludingCurrent = MaxCardsDealtSoFar();
             RoundNumberIfCardsJustDealt = _CardsDealtIncludingCurrent; // Will be cleared as soon as next action comes in
             RoundNumber = _CardsDealtIncludingCurrent; // Kept for entire round
+            await Task.WhenAll(dbTasks); // Wait until any DB tasks have completed
         }
         public void SetActionAvailabilityBasedOnCurrentPlayer() 
         {
@@ -811,7 +812,7 @@ namespace SevenStuds.Models
             // Start with oldest pot and work forwards. 
             // Only players who have contributed to a pot and have not folded are to be considered
             AddCommentary(Trigger);
-            await _GameLog.LogEndOfHand(this, this.SnapshotOfDeckForCurrentHand);
+            await _GameLog.LogEndOfHand(this);
 
             ClearResultDetails();
 
@@ -989,9 +990,9 @@ namespace SevenStuds.Models
         public void UpdateGameStatistics() {
             this.GameStatistics.UpdateStatistics(this);
         }
-        public void TakeSnapshotOfNewDeck(){
-            this.SnapshotOfDeckForCurrentHand = this.CardPack.Clone();
-        } 
+        // public void TakeSnapshotOfNewDeck(){
+        //     this.SnapshotOfDeckForCurrentHand = this.CardPack.Clone();
+        // } 
 
         public async Task LogActionWithResults(Action a) {
             this.ActionNumber++;

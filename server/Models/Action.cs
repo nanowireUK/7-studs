@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.SignalR;
-using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SevenStuds.Models
@@ -144,6 +144,8 @@ namespace SevenStuds.Models
             // (noting that NextAction may not have changed as a result of the current action)
             G.StatusMessage = G.LastEvent + ". " + G.NextAction; 
 
+            var dbTasks = new List<Task>();
+
             if ( this.ActionType != ActionEnum.Replay 
                 & this.ActionType != ActionEnum.Rejoin
                 & this.ActionType != ActionEnum.GetLog
@@ -156,6 +158,10 @@ namespace SevenStuds.Models
             G.SetActionAvailabilityBasedOnCurrentPlayer();
 
             G.GameStatistics.UpdateStatistics(G); // Record game times etc.
+
+            dbTasks.Add(ServerState.OurDB.UpsertGameState(G));
+
+            await Task.WhenAll(dbTasks); // Wait until all of the DB tasks completed
             return R;
         }        
         public abstract Task ProcessAction();

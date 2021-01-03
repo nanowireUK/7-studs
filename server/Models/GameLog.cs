@@ -25,16 +25,18 @@ namespace SevenStuds.Models
             this.pauseAfter = 0; 
             this.indexOfLastReplayedAction = -1; // means that next one will be 0
         }
+        public void LogNewDeck (Deck newDeck) {
+            this.decks.Add(newDeck);
+        }
 
-        public async Task LogEndOfHand(Game g, Deck deckUsedForHandJustEnded) {
+        public async Task LogEndOfHand(Game g) {
             // We'll only know for sure that this is the end of the overall game if someone starts a new one instead of continuing with this one
             this.endTimeUtc = DateTimeOffset.Now;
-            this.decks.Add(deckUsedForHandJustEnded);
             // Log the deck and the complete game log to the DB
-            var dbTasks = new List<Task>();
-            dbTasks.Add(ServerState.OurDB.RecordDeck(g));
-            dbTasks.Add(ServerState.OurDB.UpsertGameLog(g));
-            await Task.WhenAll(dbTasks); // Wait until all of the DB tasks completed
+            // var dbTasks = new List<Task>();
+            // dbTasks.Add(ServerState.OurDB.UpsertGameLog(g));
+            // await Task.WhenAll(dbTasks); // Wait until all of the DB tasks completed
+            await Task.FromResult(0); // Just to work around compiler warning "This async method lacks 'await' operators and will run synchronously"
         }
         public string AsJson()
         {

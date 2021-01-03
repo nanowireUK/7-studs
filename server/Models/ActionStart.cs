@@ -38,7 +38,7 @@ namespace SevenStuds.Models
             }
             G.RecordLastEvent(this.UserName + " started the game (player order now randomised)");
             await G.StartNewGame(); // Initialise the game
-            G.StartNextHand(); 
+            await G.StartNextHand(); 
             G.NextAction = G.Participants[G.IndexOfParticipantToTakeNextAction].Name + " to bet"; 
             G.GameMode = GameModeEnum.HandInProgress;
         }

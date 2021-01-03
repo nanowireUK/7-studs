@@ -9,6 +9,7 @@ namespace SevenStuds.Models
         public DateTimeOffset startTimeUtc { get; set; } 
         public int gameMinutes { get; set; } 
         public int handsPlayed { get; set; } 
+        public GameStatistics() {} // Parameterless constructor for use by JSON serlialiser/deserialiser
         public GameStatistics(Game g)
         {      
             this.UpdateStatistics(g); // initial population of values

@@ -16,7 +16,7 @@ namespace SevenStuds.Models
         {
             // Start the next hand in an existing game (note that the base class has already checked the player's eligibility for this action)
             G.RecordLastEvent(this.UserName + " started next hand");
-            G.StartNextHand(); 
+            await G.StartNextHand(); 
             G.NextAction = G.Participants[G.IndexOfParticipantToTakeNextAction].Name + " to bet"; 
             G.GameMode = GameModeEnum.HandInProgress;
 

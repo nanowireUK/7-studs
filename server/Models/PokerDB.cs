@@ -1,6 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using System.Configuration;
 using System.Collections.Generic;
 using System.Net;
 using Microsoft.Azure.Cosmos;
@@ -40,7 +39,7 @@ namespace SevenStuds.Models
 
             DocOfTypeGameHeader gameHeader = new DocOfTypeGameHeader
             {
-                roomId = g.ParentRoom().RoomId,
+                roomId = g.RoomId,
                 docType = "GameHeader",
                 docSeq = 0,
                 administrator = g.Participants[g.GetIndexOfAdministrator()].Name,
@@ -48,7 +47,7 @@ namespace SevenStuds.Models
                 endTimeUtc = DateTimeOffset.MaxValue, // should be set at end of game
                 playersInOrderAtStartOfGame = players,
                 // Set values that depend on the other values
-                gameId = g.StartTimeUTC.ToString("u") + " " + g.ParentRoom().RoomId,
+                gameId = g.StartTimeUTC.ToString("u") + " " + g.RoomId,
                 id = "GameHeader-" + 0               
             };
 
@@ -71,11 +70,11 @@ namespace SevenStuds.Models
 
             DocOfTypeGameLogAction gameLogAction = new DocOfTypeGameLogAction
             {
-                roomId = g.ParentRoom().RoomId,
+                roomId = g.RoomId,
                 docType = "Action",
                 docSeq = gla.ActionNumber,
                 // Set values that depend on the other values
-                gameId = g.StartTimeUTC.ToString("u") + " " + g.ParentRoom().RoomId,
+                gameId = g.StartTimeUTC.ToString("u") + " " + g.RoomId,
                 id = "Action-" + gla.ActionNumber,  
                 action = gla      
             };
@@ -89,23 +88,23 @@ namespace SevenStuds.Models
             this.consumedRUs += createResponse.RequestCharge; // Add this to our total
         }
 
-        public async Task RecordDeck(Game g)
+        public async Task RecordDeck(Game g, Deck d)
         {
             // -------------------------------------------------------------------------------------------
-            // Store the deck used for the last hand, along with the provisional game results
+            // Store the deck being used for the current hand
 
             bool dbExists = await this.DatabaseConnectionHasBeenEstablished();
             if ( dbExists == false ) { return; }
 
             DocOfTypeDeck details = new DocOfTypeDeck
             {
-                roomId = g.ParentRoom().RoomId,
+                roomId = g.RoomId,
                 docType = "Deck",
                 docSeq = g.HandsPlayedIncludingCurrent,
                 // Set values that depend on the other values
-                gameId = g.StartTimeUTC.ToString("u") + " " + g.ParentRoom().RoomId,
+                gameId = g.StartTimeUTC.ToString("u") + " " + g.RoomId,
                 id = "Deck-" + g.HandsPlayedIncludingCurrent,  
-                deck = g.SnapshotOfDeckForCurrentHand,  
+                deck = d,  
                 //lobbyData = g.LobbyData
             };
 
@@ -122,33 +121,60 @@ namespace SevenStuds.Models
             this.consumedRUs += createResponse.RequestCharge; // Add this to our total
 
         }  
-        public async Task UpsertGameLog(Game g)
+        public async Task UpsertGameState(Game g)
         {
             // -------------------------------------------------------------------------------------------
-            // Store the complete game log for the current game (overwriting any previous log for this game, as it is provisionaly stored at the end of each hand)
+            // Store the complete game state for the current game (overwriting any previous state for this game)
 
             bool dbExists = await this.DatabaseConnectionHasBeenEstablished();
             if ( dbExists == false ) { return; }
 
-            DocOfTypeGameLog gameLog = new DocOfTypeGameLog
+            DocOfTypeGameState gameState = new DocOfTypeGameState
             {
-                roomId = g.ParentRoom().RoomId,
-                docType = "Log",
+                roomId = g.RoomId,
+                docType = "GameState",
                 docSeq = 0,
                 // Set values that depend on the other values
-                gameId = g.StartTimeUTC.ToString("u") + " " + g.ParentRoom().RoomId,
-                id = "Log-0",  
-                log = g._GameLog      
+                gameId = g.StartTimeUTC.ToString("u") + " " + g.RoomId,
+                id = "GameState-0",  
+                gameState = g
             };
 
-            ItemResponse<DocOfTypeGameLog> createResponse = await this.ourGamesContainer.UpsertItemAsync<DocOfTypeGameLog>(
-                gameLog, 
-                new PartitionKey(gameLog.gameId));
+            ItemResponse<DocOfTypeGameState> createResponse = await this.ourGamesContainer.UpsertItemAsync<DocOfTypeGameState>(
+                gameState, 
+                new PartitionKey(gameState.gameId));
 
             // Note that after upserting the item, we can access the body of the item with the Resource property off the ItemResponse. We can also access the RequestCharge property to see the amount of RUs consumed on this request.
-            Console.WriteLine("Upserted GameLogAction item in database with id: {0} Operation consumed {1} RUs.\n", createResponse.Resource.id, createResponse.RequestCharge);
+            Console.WriteLine("Upserted GameState item in database with id: {0} Operation consumed {1} RUs.\n", createResponse.Resource.id, createResponse.RequestCharge);
             this.consumedRUs += createResponse.RequestCharge; // Add this to our total
-        }        
+        }    
+        // public async Task UpsertGameLog(Game g)
+        // {
+        //     // -------------------------------------------------------------------------------------------
+        //     // Store the complete game log for the current game (overwriting any previous log for this game, as it is provisionaly stored at the end of each hand)
+
+        //     bool dbExists = await this.DatabaseConnectionHasBeenEstablished();
+        //     if ( dbExists == false ) { return; }
+
+        //     DocOfTypeGameLog gameLog = new DocOfTypeGameLog
+        //     {
+        //         roomId = g.RoomId,
+        //         docType = "Log",
+        //         docSeq = 0,
+        //         // Set values that depend on the other values
+        //         gameId = g.StartTimeUTC.ToString("u") + " " + g.RoomId,
+        //         id = "Log-0",  
+        //         log = g._GameLog      
+        //     };
+
+        //     ItemResponse<DocOfTypeGameLog> createResponse = await this.ourGamesContainer.UpsertItemAsync<DocOfTypeGameLog>(
+        //         gameLog, 
+        //         new PartitionKey(gameLog.gameId));
+
+        //     // Note that after upserting the item, we can access the body of the item with the Resource property off the ItemResponse. We can also access the RequestCharge property to see the amount of RUs consumed on this request.
+        //     Console.WriteLine("Upserted GameLogAction item in database with id: {0} Operation consumed {1} RUs.\n", createResponse.Resource.id, createResponse.RequestCharge);
+        //     this.consumedRUs += createResponse.RequestCharge; // Add this to our total
+        // }        
         public async Task<bool> DatabaseConnectionHasBeenEstablished() {
             if ( dbStatus == DatabaseConnectionStatusEnum.ConnectionNotAttempted ) {
                 try

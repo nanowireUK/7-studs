@@ -8,6 +8,7 @@ namespace SevenStuds.Models
     {
         // Used to present the current status of each player who has been involved in a room in the last game or as someone waiting in the lobby
         public List<LobbyDataCurrentGame> CurrentGameStandings { get; set; } // Will show players and their results in an appropriate order
+        public LobbyData() {} // Parameterless constructor for use by JSON serlialiser/deserialiser
         public LobbyData(Game g) {
             CurrentGameStandings = SortedListOfParticipants(g);
         }

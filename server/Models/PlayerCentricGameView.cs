@@ -57,7 +57,7 @@ namespace SevenStuds.Models
             StatusMessage = g.StatusMessage;
             InitialChipQuantity = g.InitialChipQuantity;
             Ante = g.Ante;
-            RoomId = g.ParentRoom().RoomId;
+            RoomId = g.RoomId;
             RoundNumberIfCardsJustDealt = g.RoundNumberIfCardsJustDealt;
             RoundNumber = g.RoundNumber;
             CountOfLeavers = g.CountOfLeavers;
