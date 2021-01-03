@@ -26,6 +26,8 @@ namespace SevenStuds.Models
         public Boolean IsMyTurn { get; set; }
         public Boolean IAmDealer { get; set; }
         public Boolean IAmAdministrator { get; set; }
+        public Boolean IIntendToPlayBlindInNextHand { get; set; }
+        public Boolean IAmPlayingBlindInCurrentHand { get; set; }
         public int InitialChipQuantity { get; set; }
         public int Ante { get; set; }
         public int RoundNumberIfCardsJustDealt { get; set; } // So that client know it can animate the deal
@@ -39,10 +41,10 @@ namespace SevenStuds.Models
         public List<PlayerCentricParticipantView> PlayerViewOfParticipants { get; set; } // ordered list of participants (order represents order around the table)
         public string CommunityCard { get; set; }
 
-        public GameStatistics GameStatistics { get; set; } 
+        public GameStatistics GameStatistics { get; set; }
         public LobbyData LobbyData { get; set; }
         public List<Boolean> CardPositionIsVisible { get; set; }
-        public List<List<PotResult>> MostRecentHandResult { get; set; }         
+        public List<List<PotResult>> MostRecentHandResult { get; set; }
         public PlayerCentricGameView(Game g, int requestedPlayerIndex, int spectatorIndex) {
             // Build up this player's view of the game
             // (note that if player index = -1 it means we're building a view for a spectator and the dealer will be the first player shown)
@@ -74,7 +76,7 @@ namespace SevenStuds.Models
             if ( isSpectatorView ) {
                 // Show neutral values
                 MyHandSummary = "";
-                MyHandDescription = "";                    
+                MyHandDescription = "";
                 MyRejoinCode = g.Spectators[spectatorIndex].RejoinCode;
                 MyCallAmount = 0;
                 MyMaxRaise = 0;
@@ -85,13 +87,15 @@ namespace SevenStuds.Models
             else {
                 // Show values from active player's perspective
                 MyHandSummary = g.Participants[playerIndex]._HandSummary;
-                MyHandDescription = g.Participants[playerIndex]._FullHandDescription;                    
+                MyHandDescription = g.Participants[playerIndex]._FullHandDescription;
                 MyRejoinCode = g.Participants[playerIndex].RejoinCode;
                 MyCallAmount = g.IndexOfParticipantToTakeNextAction == playerIndex ? g.CallAmountForParticipantToTakeNextAction : 0;
                 MyMaxRaise = g.IndexOfParticipantToTakeNextAction == playerIndex ? g.MaxRaiseForParticipantToTakeNextAction : 0;
                 IsMyTurn = ( playerIndex == g.IndexOfParticipantToTakeNextAction );
                 IAmDealer = ( playerIndex == g.IndexOfParticipantDealingThisHand ) ;
-                IAmAdministrator = ( g.GetIndexOfAdministrator() == playerIndex ); 
+                IAmAdministrator = ( g.GetIndexOfAdministrator() == playerIndex );
+                IIntendToPlayBlindInNextHand = ( g.Participants[playerIndex].IntendsToPlayBlindInNextHand );
+                IAmPlayingBlindInCurrentHand = ( g.Participants[playerIndex].IsPlayingBlindInCurrentHand );
             }
             // Reproduce the pots (the pots themselves stay in the same order, but the current player's contributions becomes the first slot in the inner array)
             if ( g.Pots == null ) {
@@ -101,14 +105,14 @@ namespace SevenStuds.Models
                 this.Pots = new List<List<int>>();
                 for ( int pot = 0; pot < g.Pots.Count; pot++ ) {
                     // Add a pot to reflect a pot from the main game
-                    this.Pots.Add(new List<int>()); 
+                    this.Pots.Add(new List<int>());
                     // Add pot contributions, starting with this player and going clockwise
                     for ( int slot = 0; slot < g.Participants.Count; slot++ ) {
                         int sourceSlot =  ( slot + playerIndex ) % g.Participants.Count; // puts current player in slot 0 with rest following clockwise
-                        this.Pots[pot].Add(g.Pots[pot][sourceSlot]); 
+                        this.Pots[pot].Add(g.Pots[pot][sourceSlot]);
                     }
-                }  
-            }              
+                }
+            }
             // Add a list of participants, with data relevant to this player
             PlayerViewOfParticipants = new List<PlayerCentricParticipantView>();
             for ( int i = 0; i < g.Participants.Count; i++ ) {
@@ -143,11 +147,11 @@ namespace SevenStuds.Models
             var options = new JsonSerializerOptions
             {
                 WriteIndented = true,
-                
+
             };
             options.Converters.Add(new JsonStringEnumConverter(null /*JsonNamingPolicy.CamelCase*/));
             string jsonString = JsonSerializer.Serialize(this, options);
             return jsonString;
-        }  
+        }
     }
 }
