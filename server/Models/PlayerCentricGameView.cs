@@ -31,13 +31,14 @@ namespace SevenStuds.Models
         public int RoundNumberIfCardsJustDealt { get; set; } // So that client know it can animate the deal
         public int RoundNumber { get; set; }
         public int CountOfLeavers { get; set; }
+        public DatabaseConnectionStatusEnum DatabaseConnectionStatus { get; set; }
+        public double DatabaseRequestUnits { get; set; }
         public List<string> AvailableActions { get; set; } // A player-centric view of the actions available to them
         public List<List<int>> Pots { get; set; } // pot(s) built up in the current hand (over multiple rounds of betting)
         //public List<List<string>> LastHandResult { get; set; }
         public List<PlayerCentricParticipantView> PlayerViewOfParticipants { get; set; } // ordered list of participants (order represents order around the table)
         public string CommunityCard { get; set; }
-        public DatabaseConnectionStatusEnum DatabaseConnectionStatus { get; set; }
-        public double DatabaseRequestUnits { get; set; }
+
         public GameStatistics GameStatistics { get; set; } 
         public LobbyData LobbyData { get; set; }
         public List<Boolean> CardPositionIsVisible { get; set; }
@@ -61,9 +62,9 @@ namespace SevenStuds.Models
             RoundNumberIfCardsJustDealt = g.RoundNumberIfCardsJustDealt;
             RoundNumber = g.RoundNumber;
             CountOfLeavers = g.CountOfLeavers;
-            CommunityCard = g.CommunityCard == null ? "" : g.CommunityCard.ToString(CardToStringFormatEnum.ShortCardName);
             DatabaseConnectionStatus = ServerState.OurDB.dbStatus;
             DatabaseRequestUnits = ServerState.OurDB.consumedRUs;
+            CommunityCard = g.CommunityCard == null ? "" : g.CommunityCard.ToString(CardToStringFormatEnum.ShortCardName);
             CardPositionIsVisible = g.CardPositionIsVisible;
             LobbyData = g.LobbyData;
             GameStatistics = g.GameStatistics;
@@ -125,7 +126,7 @@ namespace SevenStuds.Models
                 AvailableActions.Add(ActionEnum.Leave.ToString());
             }
             else {
-                foreach ( ActionAvailability aa in g.Permissions.map )
+                foreach ( ActionAvailability aa in g.Permissions.MapOfActionsToAvailabilities )
                 {
                     if ( aa.Availability == AvailabilityEnum.AnyRegisteredPlayer
                         || ( aa.Availability == AvailabilityEnum.ActivePlayerOnly & IsMyTurn )
