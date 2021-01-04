@@ -106,19 +106,7 @@ namespace SevenStuds.Models
                 ServerState.DummyCard, ServerState.RankingTable);
             this._FullHandDescription = /*_PokerHand.ToString(HandToStringFormatEnum.ShortCardsHeld) + ": " + */ _PokerHand.ToString(HandToStringFormatEnum.HandDescription);
             this._FullHandRank = _PokerHand.Rank;  
-            this._HandSummary = "";
-            this._VisibleHandSummary = "";
-            for ( int ci = 0; ci < this.Hand.Count; ci++ ) {
-                Card c = this.Hand[ci];
-                string cardCode = c.ToString(CardToStringFormatEnum.ShortCardName);
-                this._HandSummary += cardCode + " ";
-                if ( g.CardPositionIsVisible[ci] == true ) {
-                    this._VisibleHandSummary += cardCode + ( ci+1 < this.Hand.Count ? " " : "");
-                }
-            }
-            if ( this.IsPlayingBlindInCurrentHand ) {
-                this._HandSummary = ""; // Clear the hand summary (not sure it is used anywhere anyway)
-            }
+            RebuildHandSummaries(g);
         }
 
         public void StartNewHandForBankruptPlayer(Game g) {
@@ -239,20 +227,23 @@ namespace SevenStuds.Models
                 }                
                 this._FullHandDescription = /*_PokerHand.ToString(HandToStringFormatEnum.ShortCardsHeld) + ": " + */ _PokerHand.ToString(HandToStringFormatEnum.HandDescription);
                 this._FullHandRank = _PokerHand.Rank;
-                this._HandSummary = "";
-                this._VisibleHandSummary = "";
-                for ( int ci = 0; ci < this.Hand.Count; ci++ ) {
-                    Card c = this.Hand[ci];
-                    string cardCode = c.ToString(CardToStringFormatEnum.ShortCardName);
-                    this._HandSummary += cardCode + " ";
-                    if ( g.CardPositionIsVisible[ci] == true ) {
-                        this._VisibleHandSummary += cardCode + ( ci+1 < this.Hand.Count ? " " : "");
-                    }
-                }
-                if ( this.IsPlayingBlindInCurrentHand ) {
-                    this._HandSummary = ""; // Clear the hand summary (not sure it is used anywhere anyway)
+                RebuildHandSummaries(g);
+            }
+        }  
+        public void RebuildHandSummaries(Game g) {
+            this._HandSummary = "";
+            this._VisibleHandSummary = "";
+            for ( int ci = 0; ci < this.Hand.Count; ci++ ) {
+                Card c = this.Hand[ci];
+                string cardCode = c.ToString(CardToStringFormatEnum.ShortCardName);
+                this._HandSummary += cardCode + " ";
+                if ( g.CardPositionIsVisible[ci] == true ) {
+                    this._VisibleHandSummary += cardCode + ( ci+1 < this.Hand.Count ? " " : "");
                 }
             }
-        }              
+            if ( this.IsPlayingBlindInCurrentHand ) {
+                this._HandSummary = ""; // Clear the hand summary (not sure it is used in the client anyway)
+            }
+        }            
     }
 }

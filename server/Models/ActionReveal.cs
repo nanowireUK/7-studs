@@ -21,6 +21,7 @@ namespace SevenStuds.Models
                 // Note that there is no change to the internal view of the player's visible hand (any blind cards are only blanked out in the player view)
                 G.RecordLastEvent(this.UserName + " revealed their blind cards");
                 G.Participants[this.PlayerIndex].IsPlayingBlindInCurrentHand = false; // Player is no longer playing blind
+                G.Participants[this.PlayerIndex].RebuildHandSummaries(G);
             }
             else {
                 // Record the fact that this player has revealed their full hand
