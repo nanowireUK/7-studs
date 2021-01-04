@@ -66,12 +66,11 @@ namespace SevenStuds.Models
                     && g.CardPositionIsVisible[i] == false 
                     && observedPlayer.IsSharingHandDetails == false
                     ) {
-                    // This is a view of a different player's cards and this card is currently face down and they have not consented to reveal them (at hand end)
+                    // This is a view of a different player's cards and this card is currently face-down and they have not consented to reveal them (at hand end)
                     Cards.Add("?");
                 }
-                else if ( observedPlayer.IsPlayingBlindInCurrentHand == true && g.CardPositionIsVisible[i] == false ) {
-                    // The player is playing blind so flag this up and no-one (including themselves) is allowed to see their face-down cards
-                    VisibleHandDescription = "Blind"; 
+                else if ( observedPlayer.Name == viewingPlayer.Name && observedPlayer.IsPlayingBlindInCurrentHand == true && g.CardPositionIsVisible[i] == false ) {
+                    // If this is the current player's view of their own cards and they are playing blind, do not allow them to see their own face-down cards
                     Cards.Add("?");
                 }
                 else{

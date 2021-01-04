@@ -14,11 +14,11 @@ namespace SevenStuds.Models
         public override async Task ProcessAction()
         {
             // Note that reveal can be called in a number of circumstances, which can happen in this order in the game:
-            // (1) The player was playing blind and has now decided to reveal those cards that would normally be visible to everyone)
+            // (1) The player was playing blind and has now decided to reveal those cards that would normally be visible to everyone
             // (2) The hand result is still being decided as players either reveal or fold their hands in turn (this could include a player who is still blind)
             // (3) The hand result has been decided and players are revealing their hand if they want to (for fun or effect)
             if ( G.Participants[this.PlayerIndex].IsPlayingBlindInCurrentHand == true && G.GameMode == GameModeEnum.HandInProgress ) {
-                // Note that there is no change to the internal view of the player's visible hand (any blind cards are blanked out in the player view)
+                // Note that there is no change to the internal view of the player's visible hand (any blind cards are only blanked out in the player view)
                 G.RecordLastEvent(this.UserName + " revealed their blind cards");
                 G.Participants[this.PlayerIndex].IsPlayingBlindInCurrentHand = false; // Player is no longer playing blind
             }

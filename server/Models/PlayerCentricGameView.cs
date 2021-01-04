@@ -74,7 +74,7 @@ namespace SevenStuds.Models
             MostRecentHandResult = new List<List<PotResult>>(g.MostRecentHandResult); // This definitely needs to be a copy
             GameMode = g.GameMode.ToString();
             if ( isSpectatorView ) {
-                // Show neutral values
+                // For spectators, always show neutral values
                 MyHandSummary = "";
                 MyHandDescription = "";
                 MyRejoinCode = g.Spectators[spectatorIndex].RejoinCode;
@@ -87,7 +87,7 @@ namespace SevenStuds.Models
             else {
                 // Show values from active player's perspective
                 Participant p = g.Participants[playerIndex];
-                MyHandSummary = p.IsPlayingBlindInCurrentHand ? "Blind" : p._HandSummary;
+                MyHandSummary = p._HandSummary;
                 MyHandDescription = p.IsPlayingBlindInCurrentHand ? "Blind" : p._FullHandDescription;
                 MyRejoinCode = p.RejoinCode;
                 MyCallAmount = g.IndexOfParticipantToTakeNextAction == playerIndex ? g.CallAmountForParticipantToTakeNextAction : 0;

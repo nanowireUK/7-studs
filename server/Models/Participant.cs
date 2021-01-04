@@ -116,6 +116,9 @@ namespace SevenStuds.Models
                     this._VisibleHandSummary += cardCode + ( ci+1 < this.Hand.Count ? " " : "");
                 }
             }
+            if ( this.IsPlayingBlindInCurrentHand ) {
+                this._HandSummary = ""; // Clear the hand summary (not sure it is used anywhere anyway)
+            }
         }
 
         public void StartNewHandForBankruptPlayer(Game g) {
@@ -245,6 +248,9 @@ namespace SevenStuds.Models
                     if ( g.CardPositionIsVisible[ci] == true ) {
                         this._VisibleHandSummary += cardCode + ( ci+1 < this.Hand.Count ? " " : "");
                     }
+                }
+                if ( this.IsPlayingBlindInCurrentHand ) {
+                    this._HandSummary = ""; // Clear the hand summary (not sure it is used anywhere anyway)
                 }
             }
         }              
