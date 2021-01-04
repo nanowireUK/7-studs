@@ -504,6 +504,7 @@ namespace SevenStuds.Models
             // Assumption: a player is still in if they have money in the pot and have not folded.
             // Assumption: someone else other than the dealer must still be in otherwise the hand has ended. 
             // Note: the dealer could be out too.
+            // Note: lower hand ranking values are better. A blind hand is treated as having a very high ranking (i.e. of no actual value)
             //int ZbiLeftOfDealer = (this.IndexOfParticipantDealingThisHand + 1) % Participants.Count;
             int ZbiOfFirstToBet = -1;
             int HandRankOfFirstToBet = Int32.MaxValue;
@@ -518,7 +519,7 @@ namespace SevenStuds.Models
                     ( // players hand is the first to be checked or is better than any checked so far
                         ( 
                             Participants[ZbiOfNextPlayerToInspect].IsPlayingBlindInCurrentHand 
-                            ? Int32.MaxValue
+                            ? Int32.MaxValue - 1
                             : Participants[ZbiOfNextPlayerToInspect]._VisibleHandRank 
                         )
                         < HandRankOfFirstToBet
@@ -528,10 +529,14 @@ namespace SevenStuds.Models
                     ZbiOfFirstToBet = ZbiOfNextPlayerToInspect; // This player is still in and has a better hand 
                     HandRankOfFirstToBet = ( 
                         Participants[ZbiOfFirstToBet].IsPlayingBlindInCurrentHand 
-                        ? Int32.MaxValue
+                        ? Int32.MaxValue - 1
                         : Participants[ZbiOfFirstToBet]._VisibleHandRank
                     );
                 }
+            }
+            if ( HandRankOfFirstToBet == Int32.MaxValue) {
+                // If this is the case, there is no one left in with a valid reason to bet. Not sure it can happen, but allowed for anyway.
+                return -1;
             }
             return ZbiOfFirstToBet;
         } 

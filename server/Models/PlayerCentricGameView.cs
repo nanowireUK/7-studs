@@ -86,16 +86,17 @@ namespace SevenStuds.Models
             }
             else {
                 // Show values from active player's perspective
-                MyHandSummary = g.Participants[playerIndex]._HandSummary;
-                MyHandDescription = g.Participants[playerIndex]._FullHandDescription;
-                MyRejoinCode = g.Participants[playerIndex].RejoinCode;
+                Participant p = g.Participants[playerIndex];
+                MyHandSummary = p.IsPlayingBlindInCurrentHand ? "Blind" : p._HandSummary;
+                MyHandDescription = p.IsPlayingBlindInCurrentHand ? "Blind" : p._FullHandDescription;
+                MyRejoinCode = p.RejoinCode;
                 MyCallAmount = g.IndexOfParticipantToTakeNextAction == playerIndex ? g.CallAmountForParticipantToTakeNextAction : 0;
                 MyMaxRaise = g.IndexOfParticipantToTakeNextAction == playerIndex ? g.MaxRaiseForParticipantToTakeNextAction : 0;
                 IsMyTurn = ( playerIndex == g.IndexOfParticipantToTakeNextAction );
                 IAmDealer = ( playerIndex == g.IndexOfParticipantDealingThisHand ) ;
                 IAmAdministrator = ( g.GetIndexOfAdministrator() == playerIndex );
-                IIntendToPlayBlindInNextHand = ( g.Participants[playerIndex].IntendsToPlayBlindInNextHand );
-                IAmPlayingBlindInCurrentHand = ( g.Participants[playerIndex].IsPlayingBlindInCurrentHand );
+                IIntendToPlayBlindInNextHand = ( p.IntendsToPlayBlindInNextHand );
+                IAmPlayingBlindInCurrentHand = ( p.IsPlayingBlindInCurrentHand );
             }
             // Reproduce the pots (the pots themselves stay in the same order, but the current player's contributions becomes the first slot in the inner array)
             if ( g.Pots == null ) {
