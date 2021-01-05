@@ -366,7 +366,7 @@ namespace SevenStuds.Models
             // To registered players
             Permissions.SetAvailability(ActionEnum.Rejoin, AvailabilityEnum.AnyRegisteredPlayer); // Open up REJOIN to anyone who previously joined
             Permissions.SetAvailability(ActionEnum.Leave, AvailabilityEnum.AnyRegisteredPlayer); // Open up LEAVE to anyone who has joined
-            Permissions.SetAvailability(ActionEnum.Blind, AvailabilityEnum.AnyRegisteredPlayer); // Allow any registered player to toggle their intent to play blind
+            Permissions.SetAvailability(ActionEnum.BlindIntent, AvailabilityEnum.AnyRegisteredPlayer); // Allow any registered player to toggle their intent to play blind
             Permissions.SetAvailability(ActionEnum.AdHocQuery, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who previously joined
             // To not-yet-registered players
             Permissions.SetAvailability(ActionEnum.Spectate, AvailabilityEnum.AnyUnregisteredPlayer); // Open up SPECTATE at any time to anyone who has not yet joined
@@ -431,9 +431,9 @@ namespace SevenStuds.Models
                 Permissions.SetAvailability(
                     ActionEnum.Cover, 
                     p.UncommittedChips < catchupAmount ? AvailabilityEnum.ActivePlayerOnly: AvailabilityEnum.NotAvailable); 
-                // To reveal, they need to have been playing blind up to this point
+                // To reveal their blind cards to themselves, they need to have been playing blind up to this point
                 Permissions.SetAvailability(
-                    ActionEnum.Reveal, 
+                    ActionEnum.BlindReveal, 
                     p.IsPlayingBlindInCurrentHand ? AvailabilityEnum.ActivePlayerOnly: AvailabilityEnum.NotAvailable);                     
             }
         }

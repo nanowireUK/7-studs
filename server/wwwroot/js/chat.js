@@ -235,13 +235,23 @@ document.getElementById("actionFold").addEventListener("click", function (event)
     event.preventDefault();
 });
 
-// --------------- BLIND (toggle intention to play blind next hand)
+// --------------- BLIND INTENT (toggle intention to play blind next hand)
 
-document.getElementById("actionBlind").addEventListener("click", function (event) {
+document.getElementById("actionBlindIntent").addEventListener("click", function (event) {
     var roomId = getRoomId();
     var user = getUser();
     var leaverCount = getLeaverCount();
-    connection.invoke("UserClickedBlind", roomId, user, leaverCount).catch(logError);
+    connection.invoke("UserClickedBlindIntent", roomId, user, leaverCount).catch(logError);
+    event.preventDefault();
+});
+
+// --------------- BLIND REVEAL (open up your blind hind)
+
+document.getElementById("actionBlindReveal").addEventListener("click", function (event) {
+    var roomId = getRoomId();
+    var user = getUser();
+    var leaverCount = getLeaverCount();
+    connection.invoke("UserClickedBlindReveal", roomId, user, leaverCount).catch(logError);
     event.preventDefault();
 });
 

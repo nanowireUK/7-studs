@@ -40,8 +40,8 @@ namespace SevenStuds.Models
         Continue = 5,
         Reveal = 6, // only allowed between hands (i.e. game is started and a hand has just completed) or if player is playing blind
         Spectate = 7,
-        Blind = 8, // Allows player to register or deregister intent to play blind in the NEXT hand
-
+        BlindIntent = 8, // Allows player to register or deregister their intent to play blind in the NEXT hand
+        BlindReveal = 9, // Allows a player who is playing blind to reveal their face-down cards to themselves and so no longer be playing blind
         // Hand-level actions, available only to one player at any one time
         Check = 10,
         Call = 11,

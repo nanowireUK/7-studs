@@ -6,9 +6,9 @@ namespace SevenStuds.Models
     /// The 'ActionBlind' Class  
     /// Allow a player to toggle their intent to play blind in the NEXT hand (does not directly affect any ongoing hand)
     /// </summary>  
-    public class ActionBlind : Action
+    public class ActionBlindIntent : Action
     {  
-        public ActionBlind(string connectionId, ActionEnum actionType, string roomId, string user, string leavers) 
+        public ActionBlindIntent(string connectionId, ActionEnum actionType, string roomId, string user, string leavers) 
             : base(connectionId, actionType, roomId, user, leavers)
         {
         }
