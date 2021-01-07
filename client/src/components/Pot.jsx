@@ -48,7 +48,7 @@ function PotWinnings({ contents, potNumber }) {
             <Box width={{min: 'xsmall'}} pad="small" round="small" gap="xsmall" style={{position: 'relative'}} border={{ color: 'white', size: '1px' }} onClick={(e) => setShowDrop(!showDrop)}>
                 <Text size="xlarge" textAlign="center">{contents.map(({ stake }) => stake).reduce((a, b) => a + b, 0)}</Text>
                 {winners.map(name => (
-                    <Box direction="row" gap="xxsmall" align="center" justify="center">
+                    <Box key={name} direction="row" gap="xxsmall" align="center" justify="center">
                         <Trophy size="small"/>
                         <Text size="small">{name}</Text>
                     </Box>
