@@ -1,8 +1,9 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectPlayers, selectCanDoAction, start, proceed, leave, PlayerActions, selectCurrentGameStandings, selectIsAdmin, selectAdminName } from './redux/slices/game';
+import { selectPlayers, selectCanDoAction, start, proceed, leave, PlayerActions, selectCurrentGameStandings, selectIsAdmin, selectAdminName, selectIntendsToPlayBlind, goBlind } from './redux/slices/game';
 import { selectUsername, selectRoomId, selectRejoinCode } from './redux/slices/hub';
-import { Text, Box, Button, Heading, Grid } from 'grommet';
+import { Text, Box, Button, Heading, Grid, Tip } from 'grommet';
+import { FormView, Hide } from 'grommet-icons';
 
 function ordinal(i) {
     const j = i % 10, k = i % 100;
@@ -25,7 +26,7 @@ function Player ({ name, hasLeftRoom, remainingFunds, status, position }) {
             gap="xsmall"
         >
             <Text color={textColor}>{inMostRecentGame ? `${ordinal(position + 1)}:` : '-'}</Text>
-            <Text color={textColor} weight={isMe ? '600' : 'normal'}>{name}</Text>
+            <Text color={textColor} weight={isMe ? 600 : 'normal'}>{name}</Text>
             <Text color={textColor}>
                 {(() => {
                     if (inMostRecentGame) return `(${remainingFunds})`;
@@ -34,6 +35,19 @@ function Player ({ name, hasLeftRoom, remainingFunds, status, position }) {
                 })()}
             </Text>
         </Box>
+}
+
+function ToggleBlind () {
+    const dispatch = useDispatch();
+    const canToggleBlind = useSelector(selectCanDoAction(PlayerActions.BLIND_INTENT));
+    const intendsToPlayBlind = useSelector(selectIntendsToPlayBlind);
+
+    const clickToggleBlind = () => dispatch(goBlind());
+
+    if (!canToggleBlind) return null;
+
+    if (intendsToPlayBlind) return <Tip key="1" content="Don't play blind in next hand"><Box><Hide size="35px" onClick={clickToggleBlind} /></Box></Tip>
+    return <Tip key="2" content="Play blind in next hand"><Box><FormView size="35px" onClick={clickToggleBlind} /></Box></Tip>
 }
 
 function Lobby () {
@@ -66,7 +80,7 @@ function Lobby () {
     const playerList = currentGameStandings.length ?
         currentGameStandings.map(({ name, ...player }, position) => (
             <Player key={name} name={name} {...player} position={position} />
-        )) : players.map(({ name }) => <Text key={name} weight={name === username ? '600' : 'normal'}>{name}</Text>);
+        )) : players.map(({ name }) => <Text key={name} weight={name === username ? 600 : 'normal'}>{name}</Text>);
 
     return <div style={{ height: '100vh' }}>
         <Grid
@@ -106,12 +120,16 @@ function Lobby () {
                     <Box pad="medium">
                         {playerList}
                     </Box>
-                    <Box direction="row" gap="xsmall" justify="end">
-                        {!isAdmin && <Text>Waiting for {adminName} to start a game</Text>}
-                        {canStart && <Button margin="xxsmall" primary label="Start new game"
-                            onClick={startGame} />}
-                        {canContinue && <Button margin="xxsmall" primary label="Continue game"
-                            onClick={continueGame} />}
+                    <Box direction="row" justify="between">
+                        <ToggleBlind/>
+
+                        <Box direction="row" gap="xsmall" justify="end">
+                            {!isAdmin && <Text>Waiting for {adminName} to start a game</Text>}
+                            {canStart && <Button margin="xxsmall" primary label="Start new game"
+                                onClick={startGame} />}
+                            {canContinue && <Button margin="xxsmall" primary label="Continue game"
+                                onClick={continueGame} />}
+                        </Box>
                     </Box>
                 </Box>
             </Box>

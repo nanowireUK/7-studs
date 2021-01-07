@@ -24,6 +24,8 @@ export const cover = () => sendServerActionWithLeaverCount('UserClickedCover');
 export const call = () => sendServerActionWithLeaverCount('UserClickedCall');
 export const fold = () => sendServerActionWithLeaverCount('UserClickedFold');
 export const reveal = () => sendServerActionWithLeaverCount('UserClickedReveal');
+export const goBlind = () => sendServerActionWithLeaverCount('UserClickedBlindIntent');
+export const revealBlind = () => sendServerActionWithLeaverCount('UserClickedBlindReveal');
 
 export const selectGame = (state) => state.game;
 
@@ -56,6 +58,12 @@ export const selectHandCompleted = (state) =>
 export const selectIsAdmin = (state) =>
     state.game !== null && state.game.IAmAdministrator;
 
+export const selectIntendsToPlayBlind = (state) =>
+    state.game !== null && state.game.IIntendToPlayBlindInNextHand;
+
+export const selectPlayingBlind = (state) =>
+    state.game !== null && state.game.IAmPlayingBlindInCurrentHand;
+
 export const selectPlayers = (state) =>
            (state.game !== null ? state.game.PlayerViewOfParticipants : []).map(
                (
@@ -75,7 +83,8 @@ export const selectPlayers = (state) =>
                        HandsWon: handsWon,
                        LastActionInThisHand: lastActionInHand,
                        LastActionAmount: lastActionAmount,
-                       RoundNumberOfLastAction: roundNumberOfLastAction
+                       RoundNumberOfLastAction: roundNumberOfLastAction,
+                       IsPlayingBlindInCurrentHand: isPlayingBlind,
                     },
                ) => ({
                    name,
@@ -93,6 +102,7 @@ export const selectPlayers = (state) =>
                    handsWon,
                    lastActionInHand: roundNumberOfLastAction === state.game.RoundNumber ? lastActionInHand : '',
                    lastActionAmount: roundNumberOfLastAction === state.game.RoundNumber ? lastActionAmount : 0,
+                   isPlayingBlind
                })
            );
 
@@ -138,14 +148,16 @@ export const PlayerActions = Object.freeze({
     RAISE: 'Raise',
     FOLD: 'Fold',
     REVEAL: 'Reveal',
-    CONINUE: 'Continue'
+    CONINUE: 'Continue',
+    BLIND_INTENT: 'BlindIntent',
+    BLIND_REVEAL: 'BlindReveal',
 });
 
 export const GameModes = Object.freeze({
     LOBBY_OPEN: 'LobbyOpen',
     HAND_IN_PROGRESS: 'HandInProgress',
     HANDS_BEING_REVEALED: 'HandsBeingRevealed',
-    HAND_COMPLETED: 'HandCompleted'
+    HAND_COMPLETED: 'HandCompleted',
 });
 
 export default gameSlice.reducer;

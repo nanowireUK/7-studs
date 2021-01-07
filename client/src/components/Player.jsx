@@ -1,10 +1,10 @@
 import React, { useRef, useState, useMemo } from 'react';
-import { Box, Stack, Text } from 'grommet';
-import { Trophy } from 'grommet-icons';
+import { Box, Button, Stack, Text, Tip } from 'grommet';
+import { Hide, Trophy } from 'grommet-icons';
 
 import {ReactComponent as Chip} from '../assets/images/poker-chip.svg';
-import { selectHandCompleted, selectMyHandDescription, selectPots, PlayerActions } from '../redux/slices/game';
-import { useSelector } from 'react-redux';
+import { selectHandCompleted, selectMyHandDescription, selectPots, PlayerActions, revealBlind, selectCanDoAction } from '../redux/slices/game';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { useContainerDimensions } from '../utils/hooks';
 
@@ -19,32 +19,41 @@ function generateLastPlayerAction(lastAction = '', lastActionAmount = 0, chips =
     else return lastAction.toUpperCase();
 }
 
-function CardRow ({ cards, invisibleToOthers = false, name, showRowName }) {
+function CardRow ({ cards, invisibleToOthers = false, name, showRowName, playingBlind }) {
     const ref = useRef(null);
     const dimensions = useContainerDimensions(ref);
+    const canRevealCards = useSelector(selectCanDoAction(PlayerActions.BLIND_REVEAL));
+    const dispatch = useDispatch();
+
+    const viewBlindCards = () => {
+        if (canRevealCards) dispatch(revealBlind());
+    }
 
     return (
-        <Box margin="xsmall" fill="vertical" border={{ style: "dashed"}} pad="xsmall" round="xsmall" direction="row" justify="between" height={{ min: '50px' }}>
-            <Box ref={ref} direction="row" gap="xsmall" fill="vertical">
-                {cards.map((card, index) => {
-                    const [value, suit] = [...card];
+        <Stack margin="xsmall" fill="vertical">
+            <Box fill="vertical" border={{ style: "dashed"}} pad="xsmall" round="xsmall" direction="row" justify="between" height={{ min: '50px' }}>
+                <Box ref={ref} direction="row" gap="xsmall" fill="vertical">
+                    {cards.map((card, index) => {
+                        const [value, suit] = [...card];
 
-                    return <PokerCard
-                        key={index}
-                        index={index}
-                        face={value}
-                        suit={suit}
-                        availableDimensions={dimensions}
-                        invisibleToOthers={invisibleToOthers}
-                    />
-                })}
+                        return <PokerCard
+                            key={index}
+                            index={index}
+                            face={value}
+                            suit={suit}
+                            availableDimensions={dimensions}
+                            invisibleToOthers={invisibleToOthers}
+                        />
+                    })}
+                </Box>
+                {showRowName ? <Box fill="vertical" justify="start" direction="row"><Text alignSelf="center" textAlign="center" color="gray" size="xsmall" style={{ position: 'relative', left: '15px', transform: 'rotate(90deg)'}}>{name}</Text></Box> : null}
             </Box>
-            {showRowName ? <Box fill="vertical" justify="start" direction="row"><Text alignSelf="center" textAlign="center" color="gray" size="xsmall" style={{ position: 'relative', left: '15px', transform: 'rotate(90deg)'}}>{name}</Text></Box> : null}
-        </Box>
+            {playingBlind ? <Box fill="vertical" background={{ color: "white", opacity: "0.95"}} justify="center"><Box direction="row" justify="center"><Button disabled={!canRevealCards} onClick={viewBlindCards} label="View your cards" /></Box></Box> : null}
+        </Stack>
     )
 }
 
-function Player ({ name, chips, cards, isDealer, isAdmin, isCurrentPlayer, isMe, handDescription = '', hasFolded, isOutOfThisGame, isSharingHandDetails, gainOrLossInLastHand, position, handsWon, lastActionInHand, lastActionAmount }) {
+function Player ({ name, chips, cards, isDealer, isCurrentPlayer, isMe, handDescription = '', hasFolded, isOutOfThisGame, isSharingHandDetails, gainOrLossInLastHand, position, handsWon, lastActionInHand, lastActionAmount, isPlayingBlind }) {
     const handCompleted = useSelector(selectHandCompleted);
     const [showMyHandDescription, setShowMyHandDescription] = useState(false);
     const [showPotContribution, setShowPotContribution] = useState(false);
@@ -72,9 +81,12 @@ function Player ({ name, chips, cards, isDealer, isAdmin, isCurrentPlayer, isMe,
                                 <Trophy size="small" color={isMe ? 'brand' : null}/>
                             </Box>) : null}
                         </Box>
-                        <Box direction="row" align="center" onMouseOver={() => setShowPotContribution(true)} onMouseOut={() => setShowPotContribution(false)}>
-                            <Box width="140px" align="end"><Text size="xlarge">{showPotContribution ? `${potContribution} in pot` : chips}</Text></Box>
-                            <Box height="30px" width="xxsmall"><Chip fill={isDealer ? theme.global.colors["accent-1"] : 'black'}/></Box>
+                        <Box direction="row" align="center" >
+                            <Box direction="row" onMouseOver={() => setShowPotContribution(true)} onMouseOut={() => setShowPotContribution(false)}>
+                                <Box width="140px" align="end"><Text size="xlarge">{showPotContribution ? `${potContribution} in pot` : chips}</Text></Box>
+                                <Box height="30px" width="xxsmall"><Chip fill={isDealer ? theme.global.colors["accent-1"] : 'black'}/></Box>
+                            </Box>
+                            {isPlayingBlind ? <Tip key="1" content="Playing Blind"><Box><Hide size="35px"/></Box></Tip> : null}
                         </Box>
                     </Box>
                     <Box flex="grow" direction="row" justify="between">
@@ -92,8 +104,7 @@ function Player ({ name, chips, cards, isDealer, isAdmin, isCurrentPlayer, isMe,
                         {handCompleted ?
                             <Text color={gainOrLossInLastHand > 0 ? 'status-ok' : 'status-error'} margin={{ right: "small"}}>{gainOrLossInLastHand}</Text> : <Text color="gray" margin={{ right: "small"}}>{generateLastPlayerAction(lastActionInHand, lastActionAmount, chips)}</Text>}
                     </Box>
-
-                    <CardRow name="HAND" showRowName={isMe} invisibleToOthers={isMe && !isSharingHandDetails} cards={[...cards.slice(0, 2), ...cards.slice(6, 7)]} />
+                    <CardRow name="HAND" showRowName={isMe} invisibleToOthers={isMe && !isSharingHandDetails} playingBlind={isMe && isPlayingBlind} cards={[...cards.slice(0, 2), ...cards.slice(6, 7)]} />
                     <CardRow name="TABLE" showRowName={isMe} cards={cards.slice(2, 6)} />
                 </Box>
 

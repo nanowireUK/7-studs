@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect} from 'react';
 
-import { Box, Button, Keyboard, ResponsiveContext } from 'grommet';
+import { Box, Button, Keyboard, ResponsiveContext, Tip } from 'grommet';
 import { useSelector, useDispatch } from 'react-redux';
 
 import RaiseSlider from './components/RaiseSlider';
@@ -9,8 +9,10 @@ import {
     selectCanDoAction, selectIsAdmin,
     selectHandInProgress, selectHandCompleted, selectHandsBeingRevealed,
     selectAnte, selectMaxRaise, selectCallAmount,
-    PlayerActions, raise, proceed, check, fold, cover, call, reveal, open
+    PlayerActions, raise, proceed, check, fold, cover, call, reveal, open, selectIntendsToPlayBlind, goBlind
 } from './redux/slices/game';
+
+import { FormView, Hide } from 'grommet-icons';
 
 function useSizeContext() {
     return useContext(ResponsiveContext) === 'small';
@@ -87,6 +89,19 @@ function RevealHand () {
     return <Button primary label="Reveal Hand [S]" onClick={clickReveal} disabled={!canReveal} />
 }
 
+function ToggleBlind () {
+    const dispatch = useDispatch();
+    const canToggleBlind = useSelector(selectCanDoAction(PlayerActions.BLIND_INTENT));
+    const intendsToPlayBlind = useSelector(selectIntendsToPlayBlind);
+
+    const clickToggleBlind = () => dispatch(goBlind());
+
+    if (!canToggleBlind) return null;
+
+    if (intendsToPlayBlind) return <Tip key="1" content="Don't play blind in next hand"><Box><Hide size="35px" onClick={clickToggleBlind} /></Box></Tip>
+    return <Tip key="2" content="Play blind in next hand"><Box><FormView size="35px" onClick={clickToggleBlind} /></Box></Tip>
+}
+
 function Continue () {
     const dispatch = useDispatch();
     const clickContinue = () => dispatch(proceed());
@@ -101,7 +116,6 @@ function OpenLobby () {
     return <Button secondary label="Open Lobby" onClick={clickOpenLobby} />
 }
 
-
 function GameActions ({ isRaising, setIsRaising, raiseAmount, setRaiseAmount, submitRaise, endRaising }) {
     const handInProgress = useSelector(selectHandInProgress);
     const handsBeingRevealed = useSelector(selectHandsBeingRevealed);
@@ -111,14 +125,12 @@ function GameActions ({ isRaising, setIsRaising, raiseAmount, setRaiseAmount, su
     const maxRaise = useSelector(selectMaxRaise);
     const callAmount = useSelector(selectCallAmount);
 
-    useEffect(() => {
-
-    })
-
     if (handCompleted) {
          return (
             <Box direction="row" gap="xsmall">
                 <RevealHand />
+                <ToggleBlind />
+                {isAdmin ? <Box border/> : null}
                 {isAdmin ? <Continue /> : null}
                 {isAdmin ? <OpenLobby /> : null}
             </Box>
