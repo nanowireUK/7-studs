@@ -104,7 +104,7 @@ function Lobby () {
                 pad="small"
                 justify="center"
                 direction="column"
-                width="500px"
+                width="800px"
                 gap="small"
                 margin="auto"
                 gridArea="lobby"
@@ -116,7 +116,7 @@ function Lobby () {
                     pad="small"
                     round="small"
                 >
-                    <Heading margin="small">7 Studs - {roomId}</Heading>
+                    <Heading margin="small">Social Poker - {roomId}</Heading>
                     <Box pad="medium">
                         {playerList}
                     </Box>
