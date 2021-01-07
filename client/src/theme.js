@@ -9,8 +9,13 @@ export default {
             size: '18px',
             height: '20px',
         },
-        heading: {
-            weigth: 600
-        }
     },
+    heading: {
+        weigth: 600
+    },
+    tip: {
+        content: {
+            background: '#eee',
+        }
+    }
 };
