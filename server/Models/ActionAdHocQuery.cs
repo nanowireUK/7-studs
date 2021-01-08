@@ -8,8 +8,8 @@ namespace SevenStuds.Models
     /// </summary>  
     public class ActionAdHocQuery : Action
     {  
-        public ActionAdHocQuery(string connectionId, ActionEnum actionType, string roomId, string user, string leavers, string queryType) 
-            : base( connectionId, actionType, roomId, user, leavers, queryType)
+        public ActionAdHocQuery(string connectionId, ActionEnum actionType, Game ourGame, string user, string leavers, string queryType) 
+            : base( connectionId, actionType, ourGame, user, leavers, queryType)
         {
         }
         //public string QueryType;

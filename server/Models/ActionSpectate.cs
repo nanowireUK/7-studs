@@ -9,8 +9,8 @@ namespace SevenStuds.Models
     /// </summary>  
     public class ActionSpectate : Action
     {  
-        public ActionSpectate(string connectionId, ActionEnum actionType, string roomId, string user, string leavers) 
-            : base(connectionId, actionType, roomId, user, "-1")
+        public ActionSpectate(string connectionId, ActionEnum actionType, Game ourGame, string user, string leavers) 
+            : base(connectionId, actionType, ourGame, user, "-1")
         {
         }
         public override async Task ProcessAction()

@@ -16,15 +16,15 @@ namespace SevenStuds.Models
             // from the individual fields in the JSON structure
         }
 
-        protected Action ( string connectionId, ActionEnum actionType, string roomId, string user, string leavers )
+        protected Action ( string connectionId, ActionEnum actionType, Game ourGame, string user, string leavers )
         {
-            this.Initialise(connectionId, actionType, roomId, user, leavers, null);
+            this.Initialise(connectionId, actionType, ourGame, user, leavers, null);
         }
-        protected Action ( string connectionId, ActionEnum actionType, string roomId, string user, string leavers, string parameters )
+        protected Action ( string connectionId, ActionEnum actionType, Game ourGame, string user, string leavers, string parameters )
         {
-            this.Initialise(connectionId, actionType, roomId, user, leavers, parameters);
+            this.Initialise(connectionId, actionType, ourGame, user, leavers, parameters);
         }
-        protected void Initialise ( string connectionId, ActionEnum actionType, string roomId, string user, string leavers, string parameters )
+        protected void Initialise ( string connectionId, ActionEnum actionType, Game ourGame, string user, string leavers, string parameters )
         {
             // Do any initialisation that is common to all user actions.
 
@@ -34,13 +34,7 @@ namespace SevenStuds.Models
 
             // The ProcessAction() method can use the same technique as long as the game state has not changed.
 
-            // Ensure room name is not blank
-            if ( roomId == "" ) {
-                throw new HubException("You tried to "+actionType.ToString().ToLower()+" but you did not specify a room name"); // client catches this as part of action method, i.e. no call to separate client method required
-            }
-
-            R = ServerState.FindOrCreateRoom(roomId); // Find our room or create a new one if required
-            G = R.ActiveGame;
+            G = ourGame;
             ActionType = actionType;
             UserName = user;
             Parameters = parameters;
@@ -136,7 +130,7 @@ namespace SevenStuds.Models
         public ActionResponseTypeEnum ResponseType { get; set; }
         public ActionResponseAudienceEnum ResponseAudience { get; set; }
         public string SignalRGroupNameForAdditionalNotifications { get; set; } // a bit of a botch to allow for a player who is leaving
-        public virtual async Task<Room> ProcessActionAndReturnRoomReference()
+        public virtual async Task<Game> ProcessActionAndReturnGameReference()
         {
             await this.ProcessAction(); // Use the subclass to implement the specifics of the action
 
@@ -162,7 +156,7 @@ namespace SevenStuds.Models
             dbTasks.Add(ServerState.OurDB.UpsertGameState(G));
 
             await Task.WhenAll(dbTasks); // Wait until all of the DB tasks completed
-            return R;
+            return G;
         }        
         public abstract Task ProcessAction();
     }     

@@ -7,8 +7,8 @@ namespace SevenStuds.Models
     /// </summary>  
     public class ActionCover : Action
     {  
-        public ActionCover(string connectionId, ActionEnum actionType, string roomId, string user, string leavers) 
-            : base(connectionId, actionType, roomId, user, leavers)
+        public ActionCover(string connectionId, ActionEnum actionType, Game ourGame, string user, string leavers) 
+            : base(connectionId, actionType, ourGame, user, leavers)
         {
         }
         public override async Task ProcessAction()

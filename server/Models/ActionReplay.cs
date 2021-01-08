@@ -9,8 +9,8 @@ namespace SevenStuds.Models
     /// </summary>  
     public class ActionReplay : Action
     {  
-        public ActionReplay(string connectionId, ActionEnum actionType, string roomId, string user, string leavers, string logAsJson) 
-            : base(connectionId, actionType, roomId, user, leavers, logAsJson)
+        public ActionReplay(string connectionId, ActionEnum actionType, Game ourGame, string user, string leavers, string logAsJson) 
+            : base(connectionId, actionType, ourGame, user, leavers, logAsJson)
         {
         }
         public override async Task ProcessAction()
@@ -131,7 +131,7 @@ namespace SevenStuds.Models
         private async Task<bool> ReplayAction(GameLogAction gla) {
             bool resultsAreConsistent = true;
             ActionEnum actionType = gla.ActionType;
-            Action a = ActionFactory.NewAction(
+            Action a = await ActionFactory.NewAction(
                 "", // Note that the lack of a connection id is also an indicator to the ActionFactory that the command is running in Replay mode
                 gla.ActionType, 
                 R.RoomId, 
@@ -143,7 +143,7 @@ namespace SevenStuds.Models
                 "Replaying action "  + gla.ActionNumber + ": "
                 + gla.ActionType.ToString().ToLower() + " by " + gla.UserName);
 
-            await a.ProcessActionAndReturnRoomReference(); 
+            await a.ProcessActionAndReturnGameReference(); 
 
             System.Diagnostics.Debug.WriteLine("  StatusMessage: " + G.StatusMessage);
 

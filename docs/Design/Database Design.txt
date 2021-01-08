@@ -4,7 +4,7 @@ Database structure etc.
 Azure Cosmos DB Emulator: https://localhost:8081/_explorer/index.html
 - Database name: SocialPokerClub (throughput 400 ... or not specified for Serverless live DB)
 - Container: Games
-  - Partition Key: /gameId (made up of roomId + startTimeUtc with '-' separator) (note: cannot contain special characters)
+  - Partition Key: /docGameId (made up of docRoomId + startTimeUtc with '-' separator) (note: cannot contain special characters)
   - No specific Unique Key but system automatically includes an 'id' field which is the unique document id within the container
     - /id (the application will build this from docType + docSeq with no spaces and in following combinations):
       - GameState-<0>
@@ -51,7 +51,7 @@ Make sure to click SAVE after updating the indexing policy with the following:
     "automatic": true,
     "includedPaths": [
         {
-            "path": "/roomId/?"
+            "path": "/docRoomId/?"
         },
         {
             "path": "/docType/?"
@@ -60,7 +60,7 @@ Make sure to click SAVE after updating the indexing policy with the following:
             "path": "/docSeq/?"
         },
         {
-            "path": "/docDate/?"
+            "path": "/docDateUtc/?"
         }
 
     ],

@@ -11,7 +11,8 @@ namespace SevenStuds.Models
     public class Game
     {
         // Fixed game properties
-        public string RoomId;
+        public string RoomId { get; set; }
+        public string GameId { get; set; }
         public int GameNumber { get; set; }
         public int HandsPlayedIncludingCurrent { get; set; } // 0 = game not yet started
         public int ActionNumber { get; set; }
@@ -39,22 +40,28 @@ namespace SevenStuds.Models
         public Card CommunityCard { get; set; }
         public DateTimeOffset StartTimeUTC { get; set; }
         public DateTimeOffset LastSuccessfulAction { get; set; }
-        protected GameLog _GameLog { get; set; } // not to be exported with the game state
+        //protected GameLog _GameLog { get; set; } // not to be exported with the game state
         protected GameLog _ReplayContext { get; set; } // not to be exported with the game state
         public List<LeavingRecord> LeaversLogForGame { get; set; }
         public List<List<int>> Pots { get; set; } // pot(s) built up in the current hand (over multiple rounds of betting)
         public List<Participant> Participants { get; set; } // ordered list of participants (order represents order around the table)
         public List<Spectator> Spectators { get; set; } // ordered list of spectators (no representation around the table)
         public ActionAvailabilityMap Permissions { get; set; }
-        public List<Boolean> CardPositionIsVisible { get; } = new List<Boolean>{false, false, true, true, true, true, false};
+        public List<Boolean> CardPositionIsVisible { get; set; } 
         public LobbyData LobbyData { get; set; }
         public GameStatistics GameStatistics { get; set; }
         public Deck CardPack { get; set; } // Starts as a full shuffled deck but is depleted as cards are dealt from it
+        public Game() {
+            // Be aware that this parameterless constructor is called both on saving to and reloading from the database
+            // This is why I moved 'InitialiseGame' out of the main constructor
+            int a = 3;
+            a++;
+        }
         public Game(string roomId, int gameNumber) {
             this.RoomId = roomId;
             this.GameNumber = gameNumber;
-            this.InitialiseGame(null);
         }
+
 
         public Room ParentRoom() {
             return (Room) ServerState.RoomList[this.RoomId.ToLower()];
@@ -65,6 +72,7 @@ namespace SevenStuds.Models
             GameMode = GameModeEnum.LobbyOpen;
             LastSuccessfulAction = DateTimeOffset.Now; // This will be updated as the game progresses but need to set a baseline here
             StartTimeUTC = DateTimeOffset.UtcNow; // At this point the time just represents the time the game was created
+            ResetGameId(StartTimeUTC);
             SetReplayContext(replayContext);
             Participants = new List<Participant>(); // start with empty list of participants
             Spectators = new List<Spectator>(); // start with empty list of spectators
@@ -82,23 +90,28 @@ namespace SevenStuds.Models
             LeaversLogForGame = new List<LeavingRecord>();
             CountOfLeavers = 0;
             ActionNumber = 0;
+            CardPositionIsVisible = new List<Boolean>{false, false, true, true, true, true, false};
             SetActionAvailabilityBasedOnCurrentPlayer(); // Ensures the initial section of available actions is set
-            StartNewGameLog(); // This sets up a dummy log that will just capture joins ahead of any actual games
+            //StartNewGameLog(); // This sets up a dummy log that will just capture joins ahead of any actual games
         }
-        public void StartNewGameLog() {
-            // Initialise the game log, which will be added to as game actions take place
-            this._GameLog = new GameLog(); 
-            this._GameLog.roomId = this.RoomId;
-            // Log player order
-            this._GameLog.playersInOrderAtStartOfGame = new List<string>();
-            foreach ( Participant p in this.Participants ) {
-                this._GameLog.playersInOrderAtStartOfGame.Add(p.Name);
-                //System.Diagnostics.Debug.WriteLine("Logging player "+p.Name);
-                if ( p.IsGameAdministrator ) {
-                    this._GameLog.administrator = p.Name; 
-                }
-            }
-            this.ParentRoom().GameLogs.Add(this._GameLog); // Add the game log to the history of game logs for the room
+        // public void StartNewGameLog() {
+        //     // Initialise the game log, which will be added to as game actions take place
+        //     this._GameLog = new GameLog(); 
+        //     this._GameLog.roomId = this.RoomId;
+        //     // Log player order
+        //     this._GameLog.playersInOrderAtStartOfGame = new List<string>();
+        //     foreach ( Participant p in this.Participants ) {
+        //         this._GameLog.playersInOrderAtStartOfGame.Add(p.Name);
+        //         //System.Diagnostics.Debug.WriteLine("Logging player "+p.Name);
+        //         if ( p.IsGameAdministrator ) {
+        //             this._GameLog.administrator = p.Name; 
+        //         }
+        //     }
+        //     this.ParentRoom().GameLogs.Add(this._GameLog); // Add the game log to the history of game logs for the room
+        // }
+        public void ResetGameId(DateTimeOffset startTime) {
+            this.GameId = startTime.ToString("u") + " " + this.RoomId;
+            this.ParentRoom().ActiveGameId = this.GameId;
         }
         public void SetReplayContext(GameLog replayContext)
         {
@@ -114,6 +127,8 @@ namespace SevenStuds.Models
         public async Task StartNewGame()
         {
             GameNumber++;
+            StartTimeUTC = DateTimeOffset.UtcNow;
+            ResetGameId(StartTimeUTC);
             HandsPlayedIncludingCurrent = 0;
             ActionNumber = 0;
             CountOfLeavers = 0;
@@ -179,8 +194,7 @@ namespace SevenStuds.Models
                     }  
                 }                   
             }
-            StartTimeUTC = DateTimeOffset.UtcNow;
-            StartNewGameLog(); // start a new log for this game
+            //StartNewGameLog(); // start a new log for this game
             await ServerState.OurDB.RecordGameStart(this); 
         }
 
@@ -270,7 +284,7 @@ namespace SevenStuds.Models
 
             //this.TakeSnapshotOfNewDeck();
             Deck newDeck = this.CardPack.Clone();
-            this._GameLog.LogNewDeck(newDeck);
+            //this._GameLog.LogNewDeck(newDeck);
 
             var dbTasks = new List<Task>();
             dbTasks.Add(ServerState.OurDB.RecordDeck(this, newDeck));
@@ -790,7 +804,8 @@ namespace SevenStuds.Models
             // Start with oldest pot and work forwards. 
             // Only players who have contributed to a pot and have not folded are to be considered
             AddCommentary(Trigger);
-            await _GameLog.LogEndOfHand(this);
+            //await _GameLog.LogEndOfHand(this);
+            await Task.FromResult(0); // Just to work around compiler warning "This async method lacks 'await' operators and will run synchronously"
 
             ClearResultDetails();
 
@@ -960,7 +975,7 @@ namespace SevenStuds.Models
                 WriteIndented = true,
                 
             };
-            options.Converters.Add(new JsonStringEnumConverter(null /*JsonNamingPolicy.CamelCase*/));
+            //options.Converters.Add(new JsonStringEnumConverter(null /*JsonNamingPolicy.CamelCase*/));
             string jsonString = JsonSerializer.Serialize(this, options);
             return jsonString;
         }  
@@ -981,7 +996,7 @@ namespace SevenStuds.Models
                 this.PlayerSummaries(),
                 this.HandCommentary
                 );
-            this._GameLog.actions.Add(gla);
+            //this._GameLog.actions.Add(gla);
             this.LastSuccessfulAction = DateTimeOffset.Now; 
             // Log the action to the DB
             await ServerState.OurDB.RecordGameLogAction(this, gla);
@@ -1019,9 +1034,9 @@ namespace SevenStuds.Models
             r += ")";
             return r;
         }
-        public string GameLogAsJson() {
-            return this._GameLog.AsJson();
-        }
+        // public string GameLogAsJson() {
+        //     return this._GameLog.AsJson();
+        // }
         public int MinutesSinceLastAction() {
             return Convert.ToInt32( (DateTimeOffset.Now - this.LastSuccessfulAction).TotalMinutes);
         }

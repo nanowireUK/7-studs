@@ -7,8 +7,8 @@ namespace SevenStuds.Models
     /// </summary>  
     public class ActionGetState : Action
     {  
-        public ActionGetState(string connectionId, ActionEnum actionType, string roomId, string user, string leavers) 
-            : base(connectionId, actionType, roomId, user, leavers)
+        public ActionGetState(string connectionId, ActionEnum actionType, Game ourGame, string user, string leavers) 
+            : base(connectionId, actionType, ourGame, user, leavers)
         {
         }
         public override async Task ProcessAction()

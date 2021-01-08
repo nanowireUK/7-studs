@@ -8,8 +8,8 @@ namespace SevenStuds.Models
     /// </summary>  
     public class ActionStart : Action
     {  
-        public ActionStart(string connectionId, ActionEnum actionType, string roomId, string user, string leavers) 
-            : base(connectionId, actionType, roomId, user, leavers)
+        public ActionStart(string connectionId, ActionEnum actionType, Game ourGame, string user, string leavers) 
+            : base(connectionId, actionType, ourGame, user, leavers)
         {
         }
 

@@ -53,16 +53,16 @@ namespace SevenStuds.Models
 
                         }
                         break;    
-                    case "list-logs":
-                        // Return the game logs from all games completed since the server last restarted
-                        foreach (DictionaryEntry pair in ServerState.RoomList )
-                        {
-                            Room r = (Room) pair.Value;
-                            foreach ( GameLog gl in r.GameLogs) {
-                                queryResults.Add(gl.AsJson());
-                            }
-                        }
-                        break;  
+                    // case "list-logs":
+                    //     // Return the game logs from all games completed since the server last restarted
+                    //     foreach (DictionaryEntry pair in ServerState.RoomList )
+                    //     {
+                    //         Room r = (Room) pair.Value;
+                    //         foreach ( GameLog gl in r.GameLogs) {
+                    //             queryResults.Add(gl.AsJson());
+                    //         }
+                    //     }
+                    //     break;  
                     default:  
                         throw new SystemException("Query type " + queryType + " not implemented");
                 }  

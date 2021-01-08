@@ -3,6 +3,7 @@ using System.Collections;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SevenStuds.Models
 {
@@ -24,44 +25,55 @@ namespace SevenStuds.Models
         public static Boolean RoomExists(string roomId) {
             return RoomList.ContainsKey(roomId.ToLower());
         }
-        public static Room FindOrCreateRoom(string RoomId) {
+        public static async Task<Room> FindOrCreateRoom(string RoomId) {
             string roomIdToUse = RoomId; 
             string lowercaseId = RoomId.ToLower();
+            await Task.FromResult(0); // Just to work around compiler warning "This async method lacks 'await' operators and will run synchronously"
             if ( RoomList.ContainsKey(lowercaseId) ) {
                 Room r =  (Room) RoomList[lowercaseId];
-                roomIdToUse = r.RoomId; // Get the room id as originally supplied by whoever created the room
-                if ( r.ActiveGame != null ) {
-                    if ( r.ActiveGame.MinutesSinceLastAction() <= 120 ) {
-                        return r;
-                    }
-                    else {
-                        // Archive the current version of the room so that we can start again from scratch
-                        r.RoomId += "-finished-"+r.ActiveGame.LastSuccessfulAction.ToString("yyyy-MM-dd.HHmm");
-                        RoomList.Add(r.RoomId, r); 
-                        // Remove the link with the old name (we'll add the new version of the room below)
-                        RoomList.Remove(lowercaseId);  
-                    }
+                return r;
+            }
+            else {
+                Room newRoom = new Room(roomIdToUse); // Keep original name (respecting upper/lowercase)
+                RoomList.Add(lowercaseId, newRoom);
+                return newRoom;
+            }
+        }
+        public static async Task<Game> LoadOrRecoverOrCreateGame(Room r) {
+            if ( OurDB.dbStatus == DatabaseConnectionStatusEnum.ConnectionFailed ) {
+                // We are working without a DB so will use the 'cached' game (if there is one) or create a new one
+                // (this is more or less how it worked before stateless operation was implemented)
+                if ( r.ActiveGame == null ) {
+                    r.ActiveGame = new Game(r.RoomId, 0);
+                    r.ActiveGame.InitialiseGame(null);
                 }
+                return r.ActiveGame;
             }
-            Room newRoom = new Room(roomIdToUse); // Keep original name (respecting upper/lowercase)
-            RoomList.Add(lowercaseId, newRoom);
-
-            // Note that other archived rooms may be using up memory ... clear them out after seven days
-            foreach ( string id in RoomList.Keys )
-            {
-                Room r = (Room) RoomList[id];
-                if ( r.ActiveGame != null && r.ActiveGame.MinutesSinceLastAction() > ( 7 * 24 * 60) ) {
-                    RoomList.Remove(id);
+            // Otherwise we are working in more-or-less-stateless mode
+            Game g;
+            if ( r.ActiveGameId != null) {
+                // This is the normal situation where we are just reloading the game state that was saved at the end of the previous action
+                g = await OurDB.LoadGameState(r.ActiveGameId);
+                //
+                // Need to catch failure here and start a new game (can happen if initial action failed to save a game state)
+                //
+                return g;
+            }
+            else {
+                // Either this is a new room that has not yet had a game created for it, or the server has been restarted and all state has been lost
+                //
+                // TO DO: Add a bit that searches the database for the most recent game that was active for this room and reloads it
+                // WHERE c.id = "GameState-0" ORDER BY c.docDateUtc DESC
+                g = await OurDB.LoadMostRecentGameState(r.RoomId);
+                if ( g == null ) { 
+                    // No previous games recorded for this room, so just create a new game
+                    Console.WriteLine("No recent historical games found for room '{0}'. Creating new game.\n", r.RoomId);
+                    g = new Game(r.RoomId, 0);
+                    g.InitialiseGame(null);
                 }
+                r.ActiveGameId = g.GameId;
+                return g;
             }
-
-            // If there is no active game against this room, create an 'empty', unstarted game
-            if ( newRoom.ActiveGame == null){
-                newRoom.ActiveGame = new Game(newRoom.RoomId, 0);
-            }
-
-            // Finally return the room we've just found or created
-            return newRoom;
         }
 
         public static string StringArrayAsJson(List<string> l)

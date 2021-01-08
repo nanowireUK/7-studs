@@ -9,8 +9,8 @@ namespace SevenStuds.Models
     /// </summary>  
     public class ActionLeave : Action
     {  
-        public ActionLeave(string connectionId, ActionEnum actionType, string roomId, string user, string leavers) 
-            : base(connectionId, actionType, roomId, user, leavers)
+        public ActionLeave(string connectionId, ActionEnum actionType, Game ourGame, string user, string leavers) 
+            : base(connectionId, actionType, ourGame, user, leavers)
         {
         }
 

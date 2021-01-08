@@ -39,21 +39,20 @@ namespace SevenStuds.Models
 
             DocOfTypeGameHeader gameHeader = new DocOfTypeGameHeader
             {
-                roomId = g.RoomId,
+                docGameId = g.GameId,
+                docRoomId = g.RoomId,
                 docType = "GameHeader",
                 docSeq = 0,
                 administrator = g.Participants[g.GetIndexOfAdministrator()].Name,
                 startTimeUtc = g.StartTimeUTC,
                 endTimeUtc = DateTimeOffset.MaxValue, // should be set at end of game
                 playersInOrderAtStartOfGame = players,
-                // Set values that depend on the other values
-                gameId = g.StartTimeUTC.ToString("u") + " " + g.RoomId,
                 id = "GameHeader-" + 0               
             };
 
             ItemResponse<DocOfTypeGameHeader> createResponse = await this.ourGamesContainer.CreateItemAsync<DocOfTypeGameHeader>(
                 gameHeader, 
-                new PartitionKey(gameHeader.gameId));
+                new PartitionKey(gameHeader.docGameId));
 
             // Note that after creating the item, we can access the body of the item with the Resource property off the ItemResponse. We can also access the RequestCharge property to see the amount of RUs consumed on this request.
             Console.WriteLine("Created GameHeader in database with id: {0} Operation consumed {1} RUs.\n", createResponse.Resource.id, createResponse.RequestCharge);
@@ -70,18 +69,18 @@ namespace SevenStuds.Models
 
             DocOfTypeGameLogAction gameLogAction = new DocOfTypeGameLogAction
             {
-                roomId = g.RoomId,
+                docGameId = g.GameId,
+                docRoomId = g.RoomId,
                 docType = "Action",
                 docSeq = gla.ActionNumber,
                 // Set values that depend on the other values
-                gameId = g.StartTimeUTC.ToString("u") + " " + g.RoomId,
                 id = "Action-" + gla.ActionNumber,  
                 action = gla      
             };
 
             ItemResponse<DocOfTypeGameLogAction> createResponse = await this.ourGamesContainer.CreateItemAsync<DocOfTypeGameLogAction>(
                 gameLogAction, 
-                new PartitionKey(gameLogAction.gameId));
+                new PartitionKey(gameLogAction.docGameId));
 
             // Note that after creating the item, we can access the body of the item with the Resource property off the ItemResponse. We can also access the RequestCharge property to see the amount of RUs consumed on this request.
             Console.WriteLine("Created GameLogAction item in database with id: {0} Operation consumed {1} RUs.\n", createResponse.Resource.id, createResponse.RequestCharge);
@@ -98,11 +97,11 @@ namespace SevenStuds.Models
 
             DocOfTypeDeck details = new DocOfTypeDeck
             {
-                roomId = g.RoomId,
+                docGameId = g.GameId,
+                docRoomId = g.RoomId,
                 docType = "Deck",
                 docSeq = g.HandsPlayedIncludingCurrent,
                 // Set values that depend on the other values
-                gameId = g.StartTimeUTC.ToString("u") + " " + g.RoomId,
                 id = "Deck-" + g.HandsPlayedIncludingCurrent,  
                 deck = d,  
                 //lobbyData = g.LobbyData
@@ -115,7 +114,7 @@ namespace SevenStuds.Models
             // Create an item in the container representing the game header. Note we provide the value of the partition key for this item
             ItemResponse<DocOfTypeDeck> createResponse = await this.ourGamesContainer.CreateItemAsync<DocOfTypeDeck>(
                 details, 
-                new PartitionKey(details.gameId));
+                new PartitionKey(details.docGameId));
             // Note that after creating the item, we can access the body of the item with the Resource property off the ItemResponse. We can also access the RequestCharge property to see the amount of RUs consumed on this request.
             Console.WriteLine("Created GameLogAction item in database with id: {0} Operation consumed {1} RUs.\n", createResponse.Resource.id, createResponse.RequestCharge);
             this.consumedRUs += createResponse.RequestCharge; // Add this to our total
@@ -131,18 +130,18 @@ namespace SevenStuds.Models
 
             DocOfTypeGameState gameState = new DocOfTypeGameState
             {
-                roomId = g.RoomId,
+                docGameId = g.GameId,
+                docRoomId = g.RoomId,
                 docType = "GameState",
                 docSeq = 0,
                 // Set values that depend on the other values
-                gameId = g.StartTimeUTC.ToString("u") + " " + g.RoomId,
                 id = "GameState-0",  
                 gameState = g
             };
 
             ItemResponse<DocOfTypeGameState> createResponse = await this.ourGamesContainer.UpsertItemAsync<DocOfTypeGameState>(
                 gameState, 
-                new PartitionKey(gameState.gameId));
+                new PartitionKey(gameState.docGameId));
 
             // Note that after upserting the item, we can access the body of the item with the Resource property off the ItemResponse. We can also access the RequestCharge property to see the amount of RUs consumed on this request.
             Console.WriteLine("Upserted GameState item in database with id: {0} Operation consumed {1} RUs.\n", createResponse.Resource.id, createResponse.RequestCharge);
@@ -161,17 +160,48 @@ namespace SevenStuds.Models
             {
                 // Read the item. We can access the body of the item with the Resource property off the ItemResponse. 
                 // We can also access the RequestCharge property to see the amount of RUs consumed on this request.
-                ItemResponse<DocOfTypeGameState> gameResponse = await this.ourGamesContainer.ReadItemAsync<DocOfTypeGameState>("GameState-0", new PartitionKey(gameId));
-                Console.WriteLine("Game state for game with id '{0}' successfully loaded. Operation consumed {1} RUs.\n", gameResponse.Resource.id);
-                this.consumedRUs += gameResponse.RequestCharge; // Add this to our total
-                return gameResponse.Resource.gameState;
+                ItemResponse<DocOfTypeGameState> dbResponse = await this.ourGamesContainer.ReadItemAsync<DocOfTypeGameState>("GameState-0", new PartitionKey(gameId));
+                Console.WriteLine("Game state for game with id '{0}' successfully loaded. Operation consumed {1} RUs.\n", dbResponse.Resource.id, dbResponse.RequestCharge);
+                this.consumedRUs += dbResponse.RequestCharge; // Add this to our total
+                Game returnedGame = dbResponse.Resource.gameState;
+                //string gameAsJson = returnedGame.AsJson();  // for inspection when debugging
+                return returnedGame;
             }
             catch(CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
             {
                 Console.WriteLine("Game state for game with id '{0}' not found.\n", gameId);
                 return null;
             }            
-        }    
+        }  
+
+        public async Task<Game> LoadMostRecentGameState(string roomId)
+        {
+            bool dbExists = await this.DatabaseConnectionHasBeenEstablished();
+            if ( dbExists == false ) { return null; }
+
+            var sqlQueryText = "SELECT TOP 1 * FROM c WHERE c.id = 'GameState-0' AND c.docRoomId = '"+roomId+"' ORDER BY c.docDateUtc DESC"; ////// change top TOP 1?
+            Console.WriteLine("Running query: {0}\n", sqlQueryText);
+
+            QueryDefinition queryDefinition = new QueryDefinition(sqlQueryText);
+            FeedIterator<DocOfTypeGameState> queryResultSetIterator = this.ourGamesContainer.GetItemQueryIterator<DocOfTypeGameState>(queryDefinition);
+
+            List<DocOfTypeGameState> games = new List<DocOfTypeGameState>();
+
+            while (queryResultSetIterator.HasMoreResults)
+            {
+                FeedResponse<DocOfTypeGameState> currentResultSet = await queryResultSetIterator.ReadNextAsync();
+                Console.WriteLine("Next game state loaded. Operation consumed {0} RUs.\n", currentResultSet.RequestCharge);
+                this.consumedRUs += currentResultSet.RequestCharge; // Add this to our total
+                foreach (DocOfTypeGameState returnedDoc in currentResultSet)
+                {
+                    //string gameAsJson = returnedGame.AsJson();  // for inspection when debugging
+                    Console.WriteLine("Most recent game has id '{0}'.\n", returnedDoc.docGameId);
+                    return returnedDoc.gameState; // Only need the first one, but left loop in as sample code
+                }
+            }
+            Console.WriteLine("No recent historical games found for room '{0}'.\n", roomId);
+            return null;
+        }          
         // public async Task UpsertGameLog(Game g)
         // {
         //     // -------------------------------------------------------------------------------------------
@@ -243,7 +273,7 @@ namespace SevenStuds.Models
                     ourDatabase = DBresp.Database;
 
                     // Get a link to the Games container  (creating it first if necessary)
-                    ContainerResponse Cresp = await ourDatabase.CreateContainerIfNotExistsAsync(gamesContainerId, "/gameId", 400);
+                    ContainerResponse Cresp = await ourDatabase.CreateContainerIfNotExistsAsync(gamesContainerId, "/docGameId", 400);
                     if ( Cresp.StatusCode == HttpStatusCode.OK )
                     {
                         Console.WriteLine("Container '{0}' already exists\n", Cresp.Container.Id);
@@ -254,7 +284,7 @@ namespace SevenStuds.Models
                     }
                     ourGamesContainer = Cresp.Container;       
         
-                    dbStatus = DatabaseConnectionStatusEnum.ConnectionEstablised;
+                    dbStatus = DatabaseConnectionStatusEnum.ConnectionEstablished;
                 }
                 catch(Exception ex) 
                 {
@@ -263,7 +293,7 @@ namespace SevenStuds.Models
                     dbStatus = DatabaseConnectionStatusEnum.ConnectionFailed;
                 }
             }
-            return dbStatus == DatabaseConnectionStatusEnum.ConnectionEstablised;
+            return dbStatus == DatabaseConnectionStatusEnum.ConnectionEstablished;
         }                      
     }
 }

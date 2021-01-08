@@ -125,7 +125,7 @@ namespace SevenStuds.Models
     {
         ConnectionNotAttempted = 0,
         ConnectionFailed = 1,
-        ConnectionEstablised = 2
+        ConnectionEstablished = 2
     }
    
     /// <summary>

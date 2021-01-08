@@ -36,9 +36,8 @@ namespace SevenStuds.Hubs
 
         private async Task UserClickedActionButton(ActionEnum actionType, string roomId, string user, string leavers, string parameters)
         {
-            Action a = ActionFactory.NewAction(Context.ConnectionId, actionType, roomId, user, leavers, parameters);
-            Room r = await a.ProcessActionAndReturnRoomReference();
-            Game g = r.ActiveGame;
+            Action a = await ActionFactory.NewAction(Context.ConnectionId, actionType, roomId, user, leavers, parameters);
+            Game g = await a.ProcessActionAndReturnGameReference();
 
             // New connections may have been linked to players, so link those connections to the relevant player groups in SignalR
             foreach ( Participant p in g.Participants ) {
@@ -78,17 +77,17 @@ namespace SevenStuds.Hubs
                 case ActionResponseTypeEnum.ConfirmToPlayerLeavingAndUpdateRemainingPlayers:
                     // Result will be generated separately for each remaining player with the deleted player being notified separately
                     break;
-                case ActionResponseTypeEnum.GameLog:
-                    resultAsJson = g.GameLogAsJson();
-                    targetMethod = "ReceiveGameLog";
-                    break;
+                // case ActionResponseTypeEnum.GameLog:
+                //     resultAsJson = g.GameLogAsJson();
+                //     targetMethod = "ReceiveGameLog";
+                //     break;
                 case ActionResponseTypeEnum.OverallGameState:
                     AddRejoinCodes(g);
                     resultAsJson = g.AsJson();
                     targetMethod = "ReceiveOverallGameState";
                     break;
                 case ActionResponseTypeEnum.AdHocServerQuery:
-                    resultAsJson = string.Join("", r.AdHocQueryResult());
+                    resultAsJson = string.Join("", g.ParentRoom().AdHocQueryResult());
                     targetMethod = "ReceiveAdHocServerData";
                     break;
                 default:

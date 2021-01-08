@@ -8,8 +8,8 @@ namespace SevenStuds.Models
     /// </summary>  
     public class ActionRaise : Action
     {  
-        public ActionRaise(string connectionId, ActionEnum actionType, string roomId, string user, string leavers, string raiseAmount) 
-            : base( connectionId, actionType, roomId, user, leavers, raiseAmount)
+        public ActionRaise(string connectionId, ActionEnum actionType, Game ourGame, string user, string leavers, string raiseAmount) 
+            : base( connectionId, actionType, ourGame, user, leavers, raiseAmount)
         {
         }
         public override async Task ProcessAction()
