@@ -1,3 +1,4 @@
+using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -10,6 +11,10 @@ namespace SevenStuds.Models
         public string roomId { get; set; }
         public string docType { get; set; }
         public int docSeq { get; set; }
+        public DateTimeOffset docDateUtc { get; set; }
+        public DatabaseGameItem () {
+            docDateUtc = DateTimeOffset.UtcNow;
+        }
  
         public override string ToString()
         {

@@ -19,7 +19,7 @@ namespace SevenStuds.Models
         private CosmosClient cosmosClient; // The Cosmos client instance
         private Database ourDatabase; // The database we will create
         private Container ourGamesContainer; // The container we will create.
-        private string databaseId = "SevenStuds"; // The name of our database
+        private string databaseId = "SocialPokerClub"; // The name of our database
         private string gamesContainerId = "Games"; // The name of our container within the database
         public PokerDB() {
             // Establishes a poker DB object that we will initialise later via methods that will be called in an asynchronous context

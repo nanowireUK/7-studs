@@ -8,7 +8,6 @@ namespace SevenStuds.Models
     public class DocOfTypeDeck : DatabaseGameItem
     {
         public Deck deck { get; set; }
-        //public LobbyData lobbyData { get; set; } ////////////////////////////// not convinced this is available at this point
  
         public override string ToString()
         {

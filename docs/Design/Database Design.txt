@@ -2,20 +2,22 @@ Database structure etc.
 
 
 Azure Cosmos DB Emulator: https://localhost:8081/_explorer/index.html
-- Database name: SevenStuds (throughput 400 ... or not specified for Serverless live DB)
+- Database name: SocialPokerClub (throughput 400 ... or not specified for Serverless live DB)
 - Container: Games
   - Partition Key: /gameId (made up of roomId + startTimeUtc with '-' separator) (note: cannot contain special characters)
   - No specific Unique Key but system automatically includes an 'id' field which is the unique document id within the container
-    - /id (made up of docType + docSeq with no spaces and in following combinations):
+    - /id (the application will build this from docType + docSeq with no spaces and in following combinations):
+      - GameState-<0>
       - Gameheader-<0>
-      - Action-<n>             ... n = sequential action number for current game (i.e. across multiple hands)
-      - Deck-<n>   ... n = sequential hand number for current game (i.e. across multiple hands)
+      - Action-<n>       ... n = sequential action number for current game (i.e. across multiple hands)
+      - Deck-<n>         ... n = sequential hand number for current game (i.e. across multiple hands)
+  - All documents should also have /docDateUtc as this needs to be indexed
   - Use Settings to change the indexing policy
 
 - Document id can be specified or a guid will be generated
 - Item ID + the partition key are unique 
 - Compressing the JSON reduced e.g. 156k down to 107k
-- GameId = e.g. Poker1212-<startdatetime>?
+- GameId = e.g. <startdatetime>-Poker1212
 
 - https://docs.microsoft.com/en-us/azure/cosmos-db/index-overview#from-trees-to-property-paths
   - Range indexes can be used on scalar values (string or number)
@@ -42,6 +44,8 @@ A custom indexing policy can specify property paths that are explicitly included
 Changing to the following policy reduced a game's worth of logs from 5865 RUs to 3607 RUs
 [note that 1,000,000 RUs cost 21p, so one game costs approx. 0.07p, or approx 13 games for 1p]
 
+Make sure to click SAVE after updating the indexing policy with the following:
+
 {
     "indexingMode": "consistent",
     "automatic": true,
@@ -54,7 +58,11 @@ Changing to the following policy reduced a game's worth of logs from 5865 RUs to
         },
         {
             "path": "/docSeq/?"
+        },
+        {
+            "path": "/docDate/?"
         }
+
     ],
     "excludedPaths": [
         {
