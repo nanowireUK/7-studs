@@ -68,14 +68,14 @@ namespace SevenStuds.Models
             }
 
             // Check that this connection is not being used by someone with a different user name
-            Participant p = G.GetParticipantFromConnection(ConnectionId);
+            Participant p = ServerState.GetParticipantFromConnection(G, ConnectionId);
             if ( p != null ) {
                 if ( p.Name != this.UserName ) {
                     // This connection is already being used by someone else
                     throw new HubException("You attempted to "+ActionType.ToString().ToLower()+" (as user "+this.UserName+") from a connection that is already in use by "+p.Name); // client catches this as part of action method, i.e. no call to separate client method required
                 }
             }
-            Spectator s = G.GetSpectatorFromConnection(ConnectionId);
+            Spectator s = ServerState.GetSpectatorFromConnection(G, ConnectionId);
             if ( s != null ) {
                 if ( s.Name != this.UserName ) {
                     // This connection is already being used by someone else

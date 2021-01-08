@@ -9,7 +9,7 @@ namespace SevenStuds.Models
         public Participant(string PName) {
             this.Name = PName;
             this.RejoinCode = GenerateRejoinCode();
-            this.ParticipantLevelSignalRGroupName = PName + '.' + Guid.NewGuid().ToString(); // Unique group id for this player (who may connect)
+            this.ParticipantSignalRGroupName = PName + '.' + Guid.NewGuid().ToString(); // Unique group id for this player (who may connect)
             this._ConnectionIds = new List<string>(); // This user's connection ids will be recorded here
             this.Hand = new List<Card>();
             this.IsLockedOutFollowingReplay = false;
@@ -38,7 +38,7 @@ namespace SevenStuds.Models
         public int RoundNumberOfLastAction { get; set; }
         public int HandsWon { get; set; } 
         public string RejoinCode { get; set; } // e.g. 3 alphanumeric characters that enables a disconnected player to rejoin as the same person
-        public string ParticipantLevelSignalRGroupName { get; set; }
+        public string ParticipantSignalRGroupName { get; set; }
         public Boolean HasBeenActiveInCurrentGame { get; set; }
         public DateTimeOffset TimeOfBankruptcy { get; set; }
         public DateTimeOffset AllInDateTime{ get; set; } // note that this may not be the time they went bankrupt, i.e. they could win the hand

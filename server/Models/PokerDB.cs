@@ -148,6 +148,30 @@ namespace SevenStuds.Models
             Console.WriteLine("Upserted GameState item in database with id: {0} Operation consumed {1} RUs.\n", createResponse.Resource.id, createResponse.RequestCharge);
             this.consumedRUs += createResponse.RequestCharge; // Add this to our total
         }    
+        public async Task<Game> LoadGameState(string gameId)
+        {
+            // -------------------------------------------------------------------------------------------
+            // Load the most-recently stored version of the game state for the game with the given id
+            // Note that the game state has document id "GameState-0" and is overwritten with the latest game state at the end of each action.
+
+            bool dbExists = await this.DatabaseConnectionHasBeenEstablished();
+            if ( dbExists == false ) { return null; }
+
+            try
+            {
+                // Read the item. We can access the body of the item with the Resource property off the ItemResponse. 
+                // We can also access the RequestCharge property to see the amount of RUs consumed on this request.
+                ItemResponse<DocOfTypeGameState> gameResponse = await this.ourGamesContainer.ReadItemAsync<DocOfTypeGameState>("GameState-0", new PartitionKey(gameId));
+                Console.WriteLine("Game state for game with id '{0}' successfully loaded. Operation consumed {1} RUs.\n", gameResponse.Resource.id);
+                this.consumedRUs += gameResponse.RequestCharge; // Add this to our total
+                return gameResponse.Resource.gameState;
+            }
+            catch(CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+            {
+                Console.WriteLine("Game state for game with id '{0}' not found.\n", gameId);
+                return null;
+            }            
+        }    
         // public async Task UpsertGameLog(Game g)
         // {
         //     // -------------------------------------------------------------------------------------------

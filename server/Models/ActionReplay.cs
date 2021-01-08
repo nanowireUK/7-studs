@@ -57,7 +57,7 @@ namespace SevenStuds.Models
                 // Handle the most complicated scenario of taking a game log and playing it through to the end or to the action number named in the log in the pauseAfter attribute 
                 ResponseType = ActionResponseTypeEnum.OverallGameState; // On completion of replay, the tester will have the overall game state returned to them
                 ResponseAudience =  ActionResponseAudienceEnum.Caller; // Tester will then have to rejoin each player using their respective rejoin codes
-                G.ClearConnectionMappings();
+                ServerState.ClearConnectionMappings(G);
                 replayContext = JsonSerializer.Deserialize<GameLog>(this.Parameters);
                 FixCardOrderInDesererialisedDecks(replayContext); // (it loads them in array order, which gives a reversed deck)
 

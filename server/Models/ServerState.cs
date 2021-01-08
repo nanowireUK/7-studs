@@ -11,7 +11,7 @@ namespace SevenStuds.Models
         // Maintains a registry of games which enables a game object to be found from its ID.
         // Also provides other room-level functions (where a room may have hosted a whole series of games)
         public static Hashtable RoomList = new Hashtable(); // Server-level list of Rooms
-        public static StatefulGameData GameConnections = new StatefulGameData(); // Server-level list of Rooms
+        public static StatefulGameData GameConnections = new StatefulGameData(); // Server-level list of connections
         public static PokerHandRankingTable RankingTable = new PokerHandRankingTable(); // Only need one of these
         public static Card DummyCard = new Card(CardEnum.Dummy, SuitEnum.Clubs);
         public static PokerDB OurDB = new PokerDB();
@@ -75,5 +75,56 @@ namespace SevenStuds.Models
             string jsonString = JsonSerializer.Serialize(l, options);
             return jsonString;
         }  
+        public static void ClearConnectionMappings(Game g) {
+            // Clear out the tester's current connection (and any other connections currently associated with the game)
+            // Note that this is only expected to be called during a replay in a dev environment, not on the live server
+            ServerState.GameConnections.MapOfConnectionIdToParticipantSignalRGroupName.Clear(); 
+            ServerState.GameConnections.MapOfConnectionIdToSpectatorSignalRGroupName.Clear(); 
+        }
+
+        public static void LinkConnectionToParticipant(Game g, string connectionId, Participant p) 
+        {
+            ServerState.GameConnections.MapOfConnectionIdToParticipantSignalRGroupName.Add(connectionId, p.ParticipantSignalRGroupName);
+        }
+        public static void LinkConnectionToSpectator(Game g, string connectionId, Spectator p) 
+        {
+            ServerState.GameConnections.MapOfConnectionIdToSpectatorSignalRGroupName.Add(connectionId, p.SpectatorSignalRGroupName);
+        }
+
+        public static Participant GetParticipantFromConnection(Game g, string connectionId) 
+        {
+            string groupName;
+            if ( ServerState.GameConnections.MapOfConnectionIdToParticipantSignalRGroupName.TryGetValue(connectionId, out groupName) )
+            {
+                foreach ( Participant p in g.Participants ) {
+                    if ( p.ParticipantSignalRGroupName == groupName ) {
+                        return p;
+                    }
+                }
+                return null;
+            }
+            else 
+            {
+                return null;
+            }
+        }
+
+        public static Spectator GetSpectatorFromConnection(Game g, string connectionId) 
+        {
+            string groupName;
+            if ( ServerState.GameConnections.MapOfConnectionIdToSpectatorSignalRGroupName.TryGetValue(connectionId, out groupName) )
+            {
+                foreach ( Spectator s in g.Spectators ) {
+                    if ( s.SpectatorSignalRGroupName == groupName ) {
+                        return s;
+                    }
+                }
+                return null;
+            }
+            else 
+            {
+                return null;
+            }
+        }
     }
 }

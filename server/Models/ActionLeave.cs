@@ -22,7 +22,7 @@ namespace SevenStuds.Models
             {
                 // Remove the spectator from the game
                 // Set the response type that will trigger the player's client session to disconnect and everyone else's game state to be updated
-                SignalRGroupNameForAdditionalNotifications = G.Spectators[spectatorIndex].SpectatorLevelSignalRGroupName;
+                SignalRGroupNameForAdditionalNotifications = G.Spectators[spectatorIndex].SpectatorSignalRGroupName;
                 ResponseType = ActionResponseTypeEnum.ConfirmToPlayerLeavingAndUpdateRemainingPlayers;   
                 G.LeaversLogForGame.Add(new LeavingRecord(UserName, DateTimeOffset.Now, SignalRGroupNameForAdditionalNotifications, 0, false, true));
                 G.Spectators.RemoveAt(spectatorIndex);
@@ -91,7 +91,7 @@ namespace SevenStuds.Models
                 G.Participants[PlayerIndex].RoundNumberOfLastAction = G._CardsDealtIncludingCurrent;
 
                 // Player is now bankrupt (their contributions to the pots will remain but any uncommitted funds will be discarded at the end of the hand)
-                G.LeaversLogForGame.Add(new LeavingRecord(p.Name, DateTimeOffset.Now, p.ParticipantLevelSignalRGroupName, 0, true, false));
+                G.LeaversLogForGame.Add(new LeavingRecord(p.Name, DateTimeOffset.Now, p.ParticipantSignalRGroupName, 0, true, false));
                 if ( G.IndexOfParticipantToTakeNextAction == PlayerIndex ) {
                     // It was player's turn to move anyway, so implement the fold in the same way as if they had just folded in turn
                     G.RecordLastEvent(UserName + " has left the game and effectively folded"+ changeOfAdminMessage);
@@ -120,7 +120,7 @@ namespace SevenStuds.Models
                             : DateTimeOffset.Now // catch-all, don't think this is actually possible  
                         )
                     ),                     
-                    p.ParticipantLevelSignalRGroupName, 
+                    p.ParticipantSignalRGroupName, 
                     p.UncommittedChips, 
                     p.HasBeenActiveInCurrentGame, 
                     false));
@@ -133,7 +133,7 @@ namespace SevenStuds.Models
             }
 
             // Set the response type that will trigger the player's client session to disconnect and everyone else's game state to be updated
-            SignalRGroupNameForAdditionalNotifications = p.ParticipantLevelSignalRGroupName;
+            SignalRGroupNameForAdditionalNotifications = p.ParticipantSignalRGroupName;
             ResponseType = ActionResponseTypeEnum.ConfirmToPlayerLeavingAndUpdateRemainingPlayers;   
         }
     }     

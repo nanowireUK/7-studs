@@ -24,7 +24,6 @@ namespace SevenStuds.Models
         public string LastEvent { get; set; }
         public string NextAction { get; set; }
         public List<string> HandCommentary { get; set; }
-        //public List<List<string>> LastHandResult { get; set; }
         public List<List<PotResult>> MostRecentHandResult { get; set; } // New way of doing this 
         public int IndexOfParticipantDealingThisHand { get; set; } // Rotates from player 0
         public int IndexOfParticipantToTakeNextAction { get; set; } // Determined by cards showing (at start of round) then on player order
@@ -112,47 +111,6 @@ namespace SevenStuds.Models
         public bool IsRunningInReplayMode() {
             return this._ReplayContext != null;
         }
-
-        public void ClearConnectionMappings() {
-            ServerState.GameConnections._ConnectionToParticipantMap.Clear(); // Clear out the tester's current connection (and any other connections currently associated with the game)
-            ServerState.GameConnections._ConnectionToSpectatorMap.Clear(); // Clear out the tester's current connection (and any other connections currently associated with the game)
-        }
-
-        public void LinkConnectionToParticipant(string connectionId, Participant p) 
-        {
-            ServerState.GameConnections._ConnectionToParticipantMap.Add(connectionId, p);
-        }
-        public void LinkConnectionToSpectator(string connectionId, Spectator p) 
-        {
-            ServerState.GameConnections._ConnectionToSpectatorMap.Add(connectionId, p);
-        }
-
-        public Participant GetParticipantFromConnection(string connectionId) 
-        {
-            Participant p;
-            if ( ServerState.GameConnections._ConnectionToParticipantMap.TryGetValue(connectionId, out p) )
-            {
-                return p;
-            }
-            else 
-            {
-                return null;
-            }
-        }
-
-        public Spectator GetSpectatorFromConnection(string connectionId) 
-        {
-            Spectator p;
-            if ( ServerState.GameConnections._ConnectionToSpectatorMap.TryGetValue(connectionId, out p) )
-            {
-                return p;
-            }
-            else 
-            {
-                return null;
-            }
-        }
-
         public async Task StartNewGame()
         {
             GameNumber++;
