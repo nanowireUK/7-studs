@@ -41,7 +41,8 @@ namespace SevenStuds.Models
         public DateTimeOffset StartTimeUTC { get; set; }
         public DateTimeOffset LastSuccessfulAction { get; set; }
         //protected GameLog _GameLog { get; set; } // not to be exported with the game state
-        protected GameLog _ReplayContext { get; set; } // not to be exported with the game state
+        public string _ReplayRoomId; // The ID of the inner room if the current game is being used to host a replay
+        //protected GameLog _ReplayContext { get; set; } // not to be exported with the game state
         public List<LeavingRecord> LeaversLogForGame { get; set; }
         public List<List<int>> Pots { get; set; } // pot(s) built up in the current hand (over multiple rounds of betting)
         public List<Participant> Participants { get; set; } // ordered list of participants (order represents order around the table)
@@ -54,14 +55,13 @@ namespace SevenStuds.Models
         public Game() {
             // Be aware that this parameterless constructor is called both on saving to and reloading from the database
             // This is why I moved 'InitialiseGame' out of the main constructor
-            int a = 3;
+            int a = 3; // Just for breakpoints
             a++;
         }
         public Game(string roomId, int gameNumber) {
             this.RoomId = roomId;
             this.GameNumber = gameNumber;
         }
-
 
         public Room ParentRoom() {
             return (Room) ServerState.RoomList[this.RoomId.ToLower()];
@@ -115,20 +115,22 @@ namespace SevenStuds.Models
         }
         public void SetReplayContext(GameLog replayContext)
         {
-            _ReplayContext = replayContext; // Note: this affects some system behaviour ... need to search for IsRunningInReplayMode() to see where
+            this.ParentRoom().ReplayContext = replayContext; // Note: this affects some system behaviour ... need to search for IsRunningInReplayMode() to see where
         }
         public GameLog GetReplayContext()
         {
-            return this._ReplayContext;
+            return this.ParentRoom().ReplayContext;
         }
         public bool IsRunningInReplayMode() {
-            return this._ReplayContext != null;
+            return this.ParentRoom().ReplayContext != null;
         }
         public async Task StartNewGame()
         {
             GameNumber++;
             StartTimeUTC = DateTimeOffset.UtcNow;
-            ResetGameId(StartTimeUTC);
+            if ( this.IsRunningInReplayMode() == false ) {
+                ResetGameId(StartTimeUTC);
+            }
             HandsPlayedIncludingCurrent = 0;
             ActionNumber = 0;
             CountOfLeavers = 0;
@@ -153,7 +155,7 @@ namespace SevenStuds.Models
                 // We are running in test mode (i.e. under the control of an ActionReplay command) so set the original player order
                 // First remove any players who have not yet joined (allows for players joining between hands)
                 System.Diagnostics.Debug.WriteLine("Setting player order as per game log");
-                List<String> correctedPlayersInOrder = new List<String>(this._ReplayContext.playersInOrderAtStartOfGame);
+                List<String> correctedPlayersInOrder = new List<String>(this.GetReplayContext().playersInOrderAtStartOfGame);
                 for ( int playerPos = correctedPlayersInOrder.Count - 1; playerPos >= 0; playerPos-- ) {
                     string playerName = correctedPlayersInOrder[playerPos];
                     bool participantExists = false;
@@ -180,16 +182,16 @@ namespace SevenStuds.Models
                         System.Diagnostics.Debug.WriteLine("Moved "+p.Name+" to position "+requiredPos);
                     }
                     else {
-                        System.Diagnostics.Debug.WriteLine(Participants[requiredPos].Name+" was already at position "+requiredPos);
+                        //System.Diagnostics.Debug.WriteLine(Participants[requiredPos].Name+" was already at position "+requiredPos);
                     }
                 }
                 // Set the right player as the administrator 
                 foreach ( Participant p in Participants) {
-                    if ( p.IsGameAdministrator == false && p.Name == this._ReplayContext.administrator) {
+                    if ( p.IsGameAdministrator == false && p.Name == this.GetReplayContext().administrator) {
                         p.IsGameAdministrator = true;
                         System.Diagnostics.Debug.WriteLine("Setting "+p.Name+" as administrator for the replay");
                     }
-                    if ( p.IsGameAdministrator == true && p.Name != this._ReplayContext.administrator) {
+                    if ( p.IsGameAdministrator == true && p.Name != this.GetReplayContext().administrator) {
                         p.IsGameAdministrator = false;
                     }  
                 }                   
@@ -279,7 +281,7 @@ namespace SevenStuds.Models
             }
             else {
                 // Need to replace the pack with the next one from the historical game log
-                CardPack = this._ReplayContext.decks[HandsPlayedIncludingCurrent - 1].Clone(newDeckNo);
+                CardPack = this.GetReplayContext().decks[HandsPlayedIncludingCurrent - 1].Clone(newDeckNo);
             }
 
             //this.TakeSnapshotOfNewDeck();
@@ -288,6 +290,8 @@ namespace SevenStuds.Models
 
             var dbTasks = new List<Task>();
             dbTasks.Add(ServerState.OurDB.RecordDeck(this, newDeck));
+
+            System.Diagnostics.Debug.WriteLine("Hand starting with this deck: {0}", CardPack.ToString());
 
             this.ClearHandDataBetweenHands();
             this.GameStatistics.UpdateStatistics(this);
@@ -710,7 +714,6 @@ namespace SevenStuds.Models
                 }
             }
         }
-
         public Card DealCard() {
             return this.CardPack.NextCard(); 
         }

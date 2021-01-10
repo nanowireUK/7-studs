@@ -50,13 +50,14 @@ namespace SevenStuds.Models
                 id = "GameHeader-" + 0               
             };
 
-            ItemResponse<DocOfTypeGameHeader> createResponse = await this.ourGamesContainer.CreateItemAsync<DocOfTypeGameHeader>(
+            ItemResponse<DocOfTypeGameHeader> dbResponse = await this.ourGamesContainer.CreateItemAsync<DocOfTypeGameHeader>(
                 gameHeader, 
                 new PartitionKey(gameHeader.docGameId));
 
             // Note that after creating the item, we can access the body of the item with the Resource property off the ItemResponse. We can also access the RequestCharge property to see the amount of RUs consumed on this request.
-            Console.WriteLine("Created GameHeader in database with id: {0} Operation consumed {1} RUs.\n", createResponse.Resource.id, createResponse.RequestCharge);
-            this.consumedRUs += createResponse.RequestCharge; // Add this to our total
+            Console.WriteLine("Created GameHeader in database with id: {0} Operation consumed {1} RUs. Game id = {2}.\n", 
+                dbResponse.Resource.id, dbResponse.RequestCharge, dbResponse.Resource.docGameId);
+            this.consumedRUs += dbResponse.RequestCharge; // Add this to our total
         }
 
         public async Task RecordGameLogAction(Game g, GameLogAction gla)
@@ -78,13 +79,14 @@ namespace SevenStuds.Models
                 action = gla      
             };
 
-            ItemResponse<DocOfTypeGameLogAction> createResponse = await this.ourGamesContainer.CreateItemAsync<DocOfTypeGameLogAction>(
+            ItemResponse<DocOfTypeGameLogAction> dbResponse = await this.ourGamesContainer.CreateItemAsync<DocOfTypeGameLogAction>(
                 gameLogAction, 
                 new PartitionKey(gameLogAction.docGameId));
 
             // Note that after creating the item, we can access the body of the item with the Resource property off the ItemResponse. We can also access the RequestCharge property to see the amount of RUs consumed on this request.
-            Console.WriteLine("Created GameLogAction item in database with id: {0} Operation consumed {1} RUs.\n", createResponse.Resource.id, createResponse.RequestCharge);
-            this.consumedRUs += createResponse.RequestCharge; // Add this to our total
+            Console.WriteLine("Created GameLogAction item in database with id: {0} Operation consumed {1} RUs. Game id = {2}.\n", 
+                dbResponse.Resource.id, dbResponse.RequestCharge, dbResponse.Resource.docGameId);
+            this.consumedRUs += dbResponse.RequestCharge; // Add this to our total
         }
 
         public async Task RecordDeck(Game g, Deck d)
@@ -112,12 +114,13 @@ namespace SevenStuds.Models
             string jsonString = JsonSerializer.Serialize(details, options);
 
             // Create an item in the container representing the game header. Note we provide the value of the partition key for this item
-            ItemResponse<DocOfTypeDeck> createResponse = await this.ourGamesContainer.CreateItemAsync<DocOfTypeDeck>(
+            ItemResponse<DocOfTypeDeck> dbResponse = await this.ourGamesContainer.CreateItemAsync<DocOfTypeDeck>(
                 details, 
                 new PartitionKey(details.docGameId));
             // Note that after creating the item, we can access the body of the item with the Resource property off the ItemResponse. We can also access the RequestCharge property to see the amount of RUs consumed on this request.
-            Console.WriteLine("Created GameLogAction item in database with id: {0} Operation consumed {1} RUs.\n", createResponse.Resource.id, createResponse.RequestCharge);
-            this.consumedRUs += createResponse.RequestCharge; // Add this to our total
+            Console.WriteLine("Created GameLogAction item in database with id: {0} Operation consumed {1} RUs. Game id = {2}.\n", 
+                dbResponse.Resource.id, dbResponse.RequestCharge, dbResponse.Resource.docGameId);
+            this.consumedRUs += dbResponse.RequestCharge; // Add this to our total
 
         }  
         public async Task UpsertGameState(Game g)
@@ -139,13 +142,14 @@ namespace SevenStuds.Models
                 gameState = g
             };
 
-            ItemResponse<DocOfTypeGameState> createResponse = await this.ourGamesContainer.UpsertItemAsync<DocOfTypeGameState>(
+            ItemResponse<DocOfTypeGameState> dbResponse = await this.ourGamesContainer.UpsertItemAsync<DocOfTypeGameState>(
                 gameState, 
                 new PartitionKey(gameState.docGameId));
 
             // Note that after upserting the item, we can access the body of the item with the Resource property off the ItemResponse. We can also access the RequestCharge property to see the amount of RUs consumed on this request.
-            Console.WriteLine("Upserted GameState item in database with id: {0} Operation consumed {1} RUs.\n", createResponse.Resource.id, createResponse.RequestCharge);
-            this.consumedRUs += createResponse.RequestCharge; // Add this to our total
+            Console.WriteLine("Upserted GameState item in database with id: {0} Operation consumed {1} RUs. Game id = {2}.\n", 
+                dbResponse.Resource.id, dbResponse.RequestCharge, dbResponse.Resource.docGameId);
+            this.consumedRUs += dbResponse.RequestCharge; // Add this to our total
         }    
         public async Task<Game> LoadGameState(string gameId)
         {
@@ -161,7 +165,8 @@ namespace SevenStuds.Models
                 // Read the item. We can access the body of the item with the Resource property off the ItemResponse. 
                 // We can also access the RequestCharge property to see the amount of RUs consumed on this request.
                 ItemResponse<DocOfTypeGameState> dbResponse = await this.ourGamesContainer.ReadItemAsync<DocOfTypeGameState>("GameState-0", new PartitionKey(gameId));
-                Console.WriteLine("Game state for game with id '{0}' successfully loaded. Operation consumed {1} RUs.\n", dbResponse.Resource.id, dbResponse.RequestCharge);
+                Console.WriteLine("Game state for game with id '{0}' successfully loaded. Operation consumed {1} RUs.\n", 
+                    dbResponse.Resource.docGameId, dbResponse.RequestCharge);
                 this.consumedRUs += dbResponse.RequestCharge; // Add this to our total
                 Game returnedGame = dbResponse.Resource.gameState;
                 //string gameAsJson = returnedGame.AsJson();  // for inspection when debugging
@@ -190,7 +195,7 @@ namespace SevenStuds.Models
             while (queryResultSetIterator.HasMoreResults)
             {
                 FeedResponse<DocOfTypeGameState> currentResultSet = await queryResultSetIterator.ReadNextAsync();
-                Console.WriteLine("Next game state loaded. Operation consumed {0} RUs.\n", currentResultSet.RequestCharge);
+                Console.WriteLine("Results loaded. Operation consumed {0} RUs.\n", currentResultSet.RequestCharge);
                 this.consumedRUs += currentResultSet.RequestCharge; // Add this to our total
                 foreach (DocOfTypeGameState returnedDoc in currentResultSet)
                 {
@@ -221,13 +226,13 @@ namespace SevenStuds.Models
         //         log = g._GameLog      
         //     };
 
-        //     ItemResponse<DocOfTypeGameLog> createResponse = await this.ourGamesContainer.UpsertItemAsync<DocOfTypeGameLog>(
+        //     ItemResponse<DocOfTypeGameLog> dbResponse = await this.ourGamesContainer.UpsertItemAsync<DocOfTypeGameLog>(
         //         gameLog, 
         //         new PartitionKey(gameLog.gameId));
 
         //     // Note that after upserting the item, we can access the body of the item with the Resource property off the ItemResponse. We can also access the RequestCharge property to see the amount of RUs consumed on this request.
-        //     Console.WriteLine("Upserted GameLogAction item in database with id: {0} Operation consumed {1} RUs.\n", createResponse.Resource.id, createResponse.RequestCharge);
-        //     this.consumedRUs += createResponse.RequestCharge; // Add this to our total
+        //     Console.WriteLine("Upserted GameLogAction item in database with id: {0} Operation consumed {1} RUs.\n", dbResponse.Resource.id, dbResponse.RequestCharge);
+        //     this.consumedRUs += dbResponse.RequestCharge; // Add this to our total
         // }        
         public async Task<bool> DatabaseConnectionHasBeenEstablished() {
             if ( dbStatus == DatabaseConnectionStatusEnum.ConnectionNotAttempted ) {

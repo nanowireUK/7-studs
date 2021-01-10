@@ -67,7 +67,8 @@ namespace SevenStuds.Models
         OverallGameState = 1,
         GameLog = 2,
         ConfirmToPlayerLeavingAndUpdateRemainingPlayers = 3, // this is a bit of a messy mix of ResponseType and Audience
-        AdHocServerQuery = 4
+        AdHocServerQuery = 4,
+        ReplayReport = 5, // Used to return details of a replayed game to the game being used to control the replay
     }
 
     /// <summary>

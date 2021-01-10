@@ -25,8 +25,13 @@ namespace SevenStuds.Models
             this.pauseAfter = 0; 
             this.indexOfLastReplayedAction = -1; // means that next one will be 0
         }
-        public void LogNewDeck (Deck newDeck) {
-            this.decks.Add(newDeck);
+        // public void LogNewDeck (Deck newDeck) {
+        //     this.decks.Add(newDeck);
+        // }
+        public void ListDecks() {
+            foreach ( Deck d in decks ) {
+                Console.WriteLine("Deck #{0}: {1}", d.DeckNumber, d.ToString()); 
+            }
         }
 
         public async Task LogEndOfHand(Game g) {

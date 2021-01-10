@@ -53,6 +53,7 @@ namespace SevenStuds.Models
             Game g;
             if ( r.ActiveGameId != null) {
                 // This is the normal situation where we are just reloading the game state that was saved at the end of the previous action
+                Console.WriteLine("Loading game state for game with id '{0}'.", r.ActiveGameId);
                 g = await OurDB.LoadGameState(r.ActiveGameId);
                 //
                 // Need to catch failure here and start a new game (can happen if initial action failed to save a game state)
@@ -61,17 +62,16 @@ namespace SevenStuds.Models
             }
             else {
                 // Either this is a new room that has not yet had a game created for it, or the server has been restarted and all state has been lost
-                //
-                // TO DO: Add a bit that searches the database for the most recent game that was active for this room and reloads it
-                // WHERE c.id = "GameState-0" ORDER BY c.docDateUtc DESC
-                g = await OurDB.LoadMostRecentGameState(r.RoomId);
+                Console.WriteLine("Loading most recent game associated with room '{0}'.", r.RoomId);
+                g = await OurDB.LoadMostRecentGameState(r.RoomId); // If there is an existing game for this room then load it
                 if ( g == null ) { 
                     // No previous games recorded for this room, so just create a new game
-                    Console.WriteLine("No recent historical games found for room '{0}'. Creating new game.\n", r.RoomId);
+                    Console.WriteLine("No recent historical games found for room '{0}'. Creating new game.", r.RoomId);
                     g = new Game(r.RoomId, 0);
                     g.InitialiseGame(null);
                 }
                 r.ActiveGameId = g.GameId;
+                Console.WriteLine("Active game id flagged as '{0}'.", r.ActiveGameId);
                 return g;
             }
         }

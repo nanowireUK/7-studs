@@ -35,6 +35,7 @@ namespace SevenStuds.Models
             // The ProcessAction() method can use the same technique as long as the game state has not changed.
 
             G = ourGame;
+            R = G.ParentRoom();
             ActionType = actionType;
             UserName = user;
             Parameters = parameters;
@@ -137,6 +138,9 @@ namespace SevenStuds.Models
             // Set a status message that combines the last event with the next action
             // (noting that NextAction may not have changed as a result of the current action)
             G.StatusMessage = G.LastEvent + ". " + G.NextAction; 
+            // After dealing with the requested action, reset the permissions for each action to reflect the updated game state
+            G.SetActionAvailabilityBasedOnCurrentPlayer();
+            G.GameStatistics.UpdateStatistics(G); // Record game times etc.
 
             var dbTasks = new List<Task>();
 
@@ -146,14 +150,18 @@ namespace SevenStuds.Models
                 & this.ActionType != ActionEnum.GetState
                 & this.ActionType != ActionEnum.AdHocQuery ) 
             {
-                await G.LogActionWithResults(this); // Note: only log real game actions (not GetState, GetLog, Replay, Rejoin or AdHocQuery)
+                // Note: only log real game actions (not GetState, GetLog, Replay, Rejoin or AdHocQuery)
+                dbTasks.Add(G.LogActionWithResults(this)); 
             }
-            // After dealing with the requested action, reset the permissions for each action to reflect the updated game state
-            G.SetActionAvailabilityBasedOnCurrentPlayer();
 
-            G.GameStatistics.UpdateStatistics(G); // Record game times etc.
-
-            dbTasks.Add(ServerState.OurDB.UpsertGameState(G));
+            if ( this.ActionType != ActionEnum.Replay // Not sure about replay ... but it is the actions that it has run that actually change the state
+                & this.ActionType != ActionEnum.GetLog
+                & this.ActionType != ActionEnum.GetState
+                & this.ActionType != ActionEnum.AdHocQuery ) 
+            {
+                // Note: Only update game state following actions that would normally change the game state
+                dbTasks.Add(ServerState.OurDB.UpsertGameState(G));
+            }            
 
             await Task.WhenAll(dbTasks); // Wait until all of the DB tasks completed
             return G;

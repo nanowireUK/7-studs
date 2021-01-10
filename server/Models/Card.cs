@@ -5,22 +5,44 @@ namespace SevenStuds.Models
 {
     public class Card
     {
-
-        private CardEnum cardValue;
-        private SuitEnum cardSuit;
+        public Card()
+        {
+            // Constructor without parameters is required to enabled JSON deserialisation
+        }
 
         public Card(CardEnum CV, SuitEnum CS)
         {
-            cardValue = CV;
-            cardSuit = CS;
+            CardValue = CV;
+            CardSuit = CS;
         }
-
-        public Card()
+        public Card(string cardCode)
         {
-            // Constructor without parameters is required to deserialise
+            switch ( cardCode.Substring(0,1) )
+            {
+                case "2" : CardValue = CardEnum.Two; break;
+                case "3" : CardValue = CardEnum.Three; break;
+                case "4" : CardValue = CardEnum.Four; break;
+                case "5" : CardValue = CardEnum.Five; break;
+                case "6" : CardValue = CardEnum.Six; break;
+                case "7" : CardValue = CardEnum.Seven; break;
+                case "8" : CardValue = CardEnum.Eight; break;
+                case "9" : CardValue = CardEnum.Nine; break;
+                case "T" : CardValue = CardEnum.Ten; break;
+                case "J" : CardValue = CardEnum.Jack; break;
+                case "Q" : CardValue = CardEnum.Queen; break;
+                case "K" : CardValue = CardEnum.King; break;
+                case "A" : CardValue = CardEnum.Ace; break;
+            }   
+            switch ( cardCode.Substring(1,1) )
+            {
+                case "c" : CardSuit = SuitEnum.Clubs; break;
+                case "d" : CardSuit = SuitEnum.Diamonds; break;
+                case "h" : CardSuit = SuitEnum.Hearts; break;
+                case "s" : CardSuit = SuitEnum.Spades; break;
+            }                     
         }
-        public CardEnum CardValue { get => cardValue; set => cardValue = value; }
-        public SuitEnum CardSuit { get => cardSuit; set => cardSuit = value;}
+        public CardEnum CardValue { get; set; }
+        public SuitEnum CardSuit { get; set;}
 
         public override string ToString()
         {
