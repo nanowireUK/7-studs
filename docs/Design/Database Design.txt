@@ -1,6 +1,5 @@
 Database structure etc.
 
-
 Azure Cosmos DB Emulator: https://localhost:8081/_explorer/index.html
 - Database name: SocialPokerClub (throughput 400 ... or not specified for Serverless live DB)
 - Container: Games
@@ -78,3 +77,9 @@ UNIQUE KEYS
 - https://docs.microsoft.com/en-us/azure/cosmos-db/unique-keys
 - You can define unique keys only when you create an Azure Cosmos container (you have to delete/redefine to change unique keys)
 - null is like any other value (you can't have multiple nulls)
+
+ENVIRONMENT VARIABLES
+- SevenStudsDbPrimaryKey
+- SevenStudsDbUri
+- SevenStudsOrigin (can be left blank)
+- SevenStuds
