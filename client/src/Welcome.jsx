@@ -61,7 +61,6 @@ function Welcome() {
                         />
                     </Box>
                 </Box>
-
                 <Box direction="row" justify="end">
                     <Text margin="small" alignSelf="center">Rejoin Code</Text>
                     <Box>
