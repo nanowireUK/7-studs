@@ -25,4 +25,4 @@ jobs:
         dockerfile: ./client/Dockerfile
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
-        buildArgs: SERVER_URL=https://7studsserver.azurewebsites.net
+        buildArgs: SERVER_URL=${{ secrets.SERVER_URL }}
