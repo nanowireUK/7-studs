@@ -10,6 +10,7 @@ namespace SevenStuds.Models
 {
     public class PokerDB
     {
+        public DatabaseModeEnum dbMode;
         public DatabaseConnectionStatusEnum dbStatus = DatabaseConnectionStatusEnum.ConnectionNotAttempted;
         public double consumedRUs = 0;
         private string EndpointUri;
@@ -19,10 +20,31 @@ namespace SevenStuds.Models
         private CosmosClient cosmosClient; // The Cosmos client instance
         private Database ourDatabase; // The database we will create
         private Container ourGamesContainer; // The container we will create.
-        private string databaseId = "SevenStuds"; // The name of our database
+        private string databaseId = "SocialPokerClub"; // The name of our database
         private string gamesContainerId = "Games"; // The name of our container within the database
         public PokerDB() {
             // Establishes a poker DB object that we will initialise later via methods that will be called in an asynchronous context
+            string db_mode = Environment.GetEnvironmentVariable("SpcDbMode");
+            if ( db_mode == null ) { db_mode = "Not Found"; }
+            switch (db_mode) {
+                case "NoDatabase": 
+                    System.Diagnostics.Debug.WriteLine("SpcDbMode=NoDatabase. Application will run without database operations.");
+                    dbMode = DatabaseModeEnum.NoDatabase; 
+                    break;
+                case "Recoverability": 
+                    System.Diagnostics.Debug.WriteLine("SpcDbMode=Recoverability. Application will record actions for logging and use in recovery.");
+                    dbMode = DatabaseModeEnum.Recoverability;
+                    break;
+                case "Stateless": 
+                    System.Diagnostics.Debug.WriteLine("SpcDbMode=Stateless. Application will run in database-backed stateless mode.");
+                    dbMode = DatabaseModeEnum.Stateless; 
+                    break;
+                default: 
+                    System.Diagnostics.Debug.WriteLine("Env var 'SpcDbMode' has invalid value '"+db_mode+"', using default of 'NoDatabase'");
+                    System.Diagnostics.Debug.WriteLine("SpcDbMode=NoDatabase. Application will run without database operations.");
+                    dbMode = DatabaseModeEnum.NoDatabase; 
+                    break;
+            }
         }
          public async Task RecordGameStart(Game g)
         {
@@ -235,31 +257,32 @@ namespace SevenStuds.Models
         //     this.consumedRUs += dbResponse.RequestCharge; // Add this to our total
         // }        
         public async Task<bool> DatabaseConnectionHasBeenEstablished() {
+            if ( dbMode == DatabaseModeEnum.NoDatabase ) { return false; }; // Will never have a database connection
             if ( dbStatus == DatabaseConnectionStatusEnum.ConnectionNotAttempted ) {
                 try
                 {
                     // Get the Cosmos DB URI from the relevant environment variable
-                    System.Diagnostics.Debug.WriteLine("Getting env var SevenStudsDbUri");
-                    EndpointUri = Environment.GetEnvironmentVariable("SevenStudsDbUri", EnvironmentVariableTarget.Process);
+                    System.Diagnostics.Debug.WriteLine("Getting env var SpcDbUri");
+                    EndpointUri = Environment.GetEnvironmentVariable("SpcDbUri", EnvironmentVariableTarget.Process);
                     if ( EndpointUri == null ) {
-                        System.Diagnostics.Debug.WriteLine("Env var SevenStudsDbUri not found, server will continue with database functionality deactivated");
+                        System.Diagnostics.Debug.WriteLine("Env var SpcDbUri not found, server will continue with database functionality deactivated");
                         dbStatus = DatabaseConnectionStatusEnum.ConnectionFailed;
                         return false;
                     }
                     else {
-                        System.Diagnostics.Debug.WriteLine("SevenStudsDbUri="+EndpointUri);
+                        System.Diagnostics.Debug.WriteLine("SpcDbUri="+EndpointUri);
                     }
 
                     // Get the Cosmos DB PrimaryKey from the relevant environment variable
-                    System.Diagnostics.Debug.WriteLine("Getting env var SevenStudsDbPrimaryKey");
-                    PrimaryKey = Environment.GetEnvironmentVariable("SevenStudsDbPrimaryKey", EnvironmentVariableTarget.Process);
+                    System.Diagnostics.Debug.WriteLine("Getting env var SpcDbPrimaryKey");
+                    PrimaryKey = Environment.GetEnvironmentVariable("SpcDbPrimaryKey", EnvironmentVariableTarget.Process);
                     if ( PrimaryKey == null ) {
-                        System.Diagnostics.Debug.WriteLine("Env var SevenStudsDbPrimaryKey not found, server will continue with database functionality deactivated");
+                        System.Diagnostics.Debug.WriteLine("Env var SpcDbPrimaryKey not found, server will continue with database functionality deactivated");
                         dbStatus = DatabaseConnectionStatusEnum.ConnectionFailed;
                         return false;
                     }
                     else {
-                        System.Diagnostics.Debug.WriteLine("SevenStudsDbPrimaryKey="+PrimaryKey);
+                        System.Diagnostics.Debug.WriteLine("SpcDbPrimaryKey="+PrimaryKey);
                     }
                                         
                     // Establish connection to the DB server

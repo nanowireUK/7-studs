@@ -16,10 +16,10 @@ namespace SevenStuds.Models
         public static PokerHandRankingTable RankingTable = new PokerHandRankingTable(); // Only need one of these
         public static Card DummyCard = new Card(CardEnum.Dummy, SuitEnum.Clubs);
         public static PokerDB OurDB = new PokerDB();
-        public static Boolean IsRunningOnPublicServer() {
-            string origin_value = Environment.GetEnvironmentVariable("SevenStudsOrigin");
-            if ( origin_value == null ) { return false; }
-            return ( origin_value == "https://7studsserver.azurewebsites.net/" );
+        public static Boolean AllowTestFunctions() {
+            string env_value = Environment.GetEnvironmentVariable("SpcAllowTestFunctions");
+            if ( env_value == null ) { return false; }
+            return ( env_value.ToLower() == "yes" ? true : false );
         }
         public static Random ServerLevelRandomNumberGenerator = new Random();
         public static Boolean RoomExists(string roomId) {
@@ -40,7 +40,7 @@ namespace SevenStuds.Models
             }
         }
         public static async Task<Game> LoadOrRecoverOrCreateGame(Room r) {
-            if ( OurDB.dbStatus == DatabaseConnectionStatusEnum.ConnectionFailed ) {
+            if ( OurDB.dbMode == DatabaseModeEnum.NoDatabase || OurDB.dbStatus == DatabaseConnectionStatusEnum.ConnectionFailed ) {
                 // We are working without a DB so will use the 'cached' game (if there is one) or create a new one
                 // (this is more or less how it worked before stateless operation was implemented)
                 if ( r.ActiveGame == null ) {

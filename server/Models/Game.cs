@@ -348,7 +348,7 @@ namespace SevenStuds.Models
             Permissions.SetAvailability(ActionEnum.Spectate, AvailabilityEnum.AnyUnregisteredPlayer); // Open up SPECTATE at any time to anyone who has not yet joined
 
             // Add any additional commands that are only available when we are not on the public server (i.e. test features)
-            if ( ! ServerState.IsRunningOnPublicServer() ) {
+            if ( ! ServerState.AllowTestFunctions() ) {
                 Permissions.SetAvailability(ActionEnum.GetState, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who previously joined
                 Permissions.SetAvailability(ActionEnum.GetLog, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who previously joined
                 Permissions.SetAvailability(ActionEnum.Replay, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who previously joined  

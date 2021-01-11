@@ -79,7 +79,10 @@ UNIQUE KEYS
 - null is like any other value (you can't have multiple nulls)
 
 ENVIRONMENT VARIABLES
-- SevenStudsDbPrimaryKey
-- SevenStudsDbUri
-- SevenStudsOrigin (can be left blank)
-- SevenStuds
+- SpcDbPrimaryKey
+- SpcDbUri
+- SpcAllowTestFunctions: yes/no
+- SpcDbMode:
+    - NoDatabase: does not attempt to establish a DB connection and operates in-memory only
+    - Recoverability: records game state on completion of an action and can recover from a server crash/restart
+    - Stateless: records game state on completion of an action and reloads game state from DB on processing next action

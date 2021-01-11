@@ -128,6 +128,13 @@ namespace SevenStuds.Models
         ConnectionFailed = 1,
         ConnectionEstablished = 2
     }
+    public enum DatabaseModeEnum : int
+    {
+        NoDatabase = 0,     // Does not attempt to establish a DB connection and operates in-memory only
+        Recoverability = 1, // Records game state on completion of an action and can recover from a server crash/restart
+        Stateless = 2       // Records game state on completion of an action and reloads game state from DB on processing next action
+    }
+
    
     /// <summary>
     /// Enumeration values are used to calculate hand rank keys

@@ -45,7 +45,7 @@ namespace SevenStuds.Models
                         break;  
                     case "list-env": 
                         // Check if running on public server
-                        if ( ServerState.IsRunningOnPublicServer() ) {
+                        if ( ServerState.AllowTestFunctions() ) {
                             queryResults.Add("Game is running on the public server");
                         }
                         else {
