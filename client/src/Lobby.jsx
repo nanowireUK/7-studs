@@ -93,8 +93,7 @@ function Lobby () {
             columns={['fill']}
             rows={['xsmall', 'auto', 'xsmall']}
         >
-            <Box pad="small" gridArea="header" direction="column"
-            background="brand">
+            <Box pad="small" gridArea="header" direction="column" background="brand">
                 <Box margin="small" alignSelf="end" alignContent="center" fill="vertical" justify="center">
                     <Text alignSelf="center" size="large">{rejoinCode}</Text>
                     <Button color="accent-1" onClick={leaveGame}>Leave</Button>
