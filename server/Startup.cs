@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using SevenStuds.Hubs; // new
+using SevenStuds.Hubs;
 
 namespace SevenStuds
 {
@@ -27,7 +27,7 @@ namespace SevenStuds
             System.Diagnostics.Debug.WriteLine("Getting env var SevenStudsOrigin");
             string originUrl = Environment.GetEnvironmentVariable("SevenStudsOrigin", EnvironmentVariableTarget.Process);
             if ( originUrl == null ) {
-                originUrl = "http://localhost:3000"; // or e.g. "https://7studsserver.azurewebsites.net/"                
+                originUrl = "http://localhost:3000"; // or e.g. "https://7studsserver.azurewebsites.net/"
                 System.Diagnostics.Debug.WriteLine("Env var SevenStudsOrigin not found, setting to default value, "+originUrl);
 
             }
