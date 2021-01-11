@@ -6,6 +6,7 @@ on:
       - develop
     paths:
       - client/**
+  workflow_dispatch:
 
 jobs:
   path-context:
@@ -19,7 +20,7 @@ jobs:
       with:
         image: 7studsclient
         tag: latest
-        registry: 7studsacr.azurecr.io
+        registry: ${{ secrets.DOCKER_URL }}
         directory: ./client
         dockerfile: ./client/Dockerfile
         username: ${{ secrets.DOCKER_USERNAME }}

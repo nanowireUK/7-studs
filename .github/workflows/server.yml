@@ -6,6 +6,7 @@ on:
       - develop
     paths:
       - server/**
+  workflow_dispatch:
 
 jobs:
   path-context:
@@ -19,7 +20,7 @@ jobs:
       with:
         image: 7studsserver
         tag: latest
-        registry: 7studsacr.azurecr.io
+        registry: ${{ secrets.DOCKER_URL }}
         directory: ./server
         dockerfile: ./server/Dockerfile
         username: ${{ secrets.DOCKER_USERNAME }}
