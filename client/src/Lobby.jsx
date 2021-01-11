@@ -115,7 +115,7 @@ function Lobby () {
                     pad="small"
                     round="small"
                 >
-                    <Heading margin="small">Social Poker - {roomId}</Heading>
+                    <Heading margin="small">{roomId}</Heading>
                     <Box pad="medium">
                         {playerList}
                     </Box>

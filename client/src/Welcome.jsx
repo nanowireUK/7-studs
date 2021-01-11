@@ -38,7 +38,7 @@ function Welcome() {
                 gap="small"
                 margin="auto"
             >
-                <Heading textAlign="center">Seven Studs</Heading>
+                <Heading textAlign="center">socialpoker.club</Heading>
 
                 <Box direction="row" justify="end">
                     <Text margin="small" alignSelf="center">Room</Text>
