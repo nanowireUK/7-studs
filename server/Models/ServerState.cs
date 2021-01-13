@@ -40,7 +40,9 @@ namespace SevenStuds.Models
             }
         }
         public static async Task<Game> LoadOrRecoverOrCreateGame(Room r) {
-            if ( OurDB.dbMode == DatabaseModeEnum.NoDatabase || OurDB.dbStatus == DatabaseConnectionStatusEnum.ConnectionFailed ) {
+            Game g;
+            if ( OurDB.dbMode == DatabaseModeEnum.NoDatabase 
+                || OurDB.dbStatus == DatabaseConnectionStatusEnum.ConnectionFailed ) {
                 // We are working without a DB so will use the 'cached' game (if there is one) or create a new one
                 // (this is more or less how it worked before stateless operation was implemented)
                 if ( r.ActiveGame == null ) {
@@ -49,33 +51,49 @@ namespace SevenStuds.Models
                 }
                 return r.ActiveGame;
             }
-            // Otherwise we are working in more-or-less-stateless mode
-            Game g;
-            if ( r.ActiveGameId != null) {
+            else if ( OurDB.dbMode == DatabaseModeEnum.Recoverability ) {
+                if ( r.RecoveryAlreadyAttempted ) {
+                     return r.ActiveGame;
+                }
+                else {
+                    // Either this is a new room or there was an active game in this room but the server has been restarted and all state has been lost
+                    g = await RecoverOrCreateGame(r);
+                    r.RecoveryAlreadyAttempted = true; // make sure we don't try this again during the life of this server process
+                    r.ActiveGame = g;
+                    Console.WriteLine("Active game reference cached");
+                    return g;
+                }
+            }
+            // Otherwise we are running Stateless
+            if ( r.RecoveryAlreadyAttempted ) {
                 // This is the normal situation where we are just reloading the game state that was saved at the end of the previous action
-                Console.WriteLine("Loading game state for game with id '{0}'.", r.ActiveGameId);
+                Console.WriteLine("Loading game state for game with id '{0}'.\n", r.ActiveGameId);
                 g = await OurDB.LoadGameState(r.ActiveGameId);
-                //
-                // Need to catch failure here and start a new game (can happen if initial action failed to save a game state)
-                //
                 return g;
             }
             else {
-                // Either this is a new room that has not yet had a game created for it, or the server has been restarted and all state has been lost
-                Console.WriteLine("Loading most recent game associated with room '{0}'.", r.RoomId);
-                g = await OurDB.LoadMostRecentGameState(r.RoomId); // If there is an existing game for this room then load it
-                if ( g == null ) { 
-                    // No previous games recorded for this room, so just create a new game
-                    Console.WriteLine("No recent historical games found for room '{0}'. Creating new game.", r.RoomId);
-                    g = new Game(r.RoomId, 0);
-                    g.InitialiseGame(null);
-                }
+                // Either this is a new room or there was an active game in this room but the server has been restarted and all state has been lost
+                g = await RecoverOrCreateGame(r);
+                r.RecoveryAlreadyAttempted = true; // make sure we don't try this again during the life of this server process
                 r.ActiveGameId = g.GameId;
-                Console.WriteLine("Active game id flagged as '{0}'.", r.ActiveGameId);
+                Console.WriteLine("Active game id noted as '{0}'.\n", r.ActiveGameId);
                 return g;
             }
         }
+        public static async Task<Game> RecoverOrCreateGame(Room r) {
+            // Either this is a new room or there was an active game in this room but the server has been restarted and all state has been lost
+            Game g;
+            Console.WriteLine("Attempting recovery of most recent game associated with room '{0}'.\n", r.RoomId);
+            g = await OurDB.LoadMostRecentGameState(r.RoomId); // If there is an existing game for this room then load it
+            if ( g == null ) { 
+                // No previous games recorded for this room, so just create a new game
+                Console.WriteLine("No recent historical games found for room '{0}'. Creating new game.\n", r.RoomId);
+                g = new Game(r.RoomId, 0);
+                g.InitialiseGame(null);
+            }
 
+            return g;
+        }
         public static string StringArrayAsJson(List<string> l)
         {
             var options = new JsonSerializerOptions
@@ -93,7 +111,6 @@ namespace SevenStuds.Models
             ServerState.GameConnections.MapOfConnectionIdToParticipantSignalRGroupName.Clear(); 
             ServerState.GameConnections.MapOfConnectionIdToSpectatorSignalRGroupName.Clear(); 
         }
-
         public static void LinkConnectionToParticipant(Game g, string connectionId, Participant p) 
         {
             ServerState.GameConnections.MapOfConnectionIdToParticipantSignalRGroupName.Add(connectionId, p.ParticipantSignalRGroupName);
@@ -102,7 +119,6 @@ namespace SevenStuds.Models
         {
             ServerState.GameConnections.MapOfConnectionIdToSpectatorSignalRGroupName.Add(connectionId, p.SpectatorSignalRGroupName);
         }
-
         public static Participant GetParticipantFromConnection(Game g, string connectionId) 
         {
             string groupName;

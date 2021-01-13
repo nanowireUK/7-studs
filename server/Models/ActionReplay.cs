@@ -108,7 +108,7 @@ namespace SevenStuds.Models
                     p.IsLockedOutFollowingReplay = true;
                 }
                 System.Diagnostics.Debug.WriteLine("Use the game state to find each player and rejoin each of them from a separate browser using their respective rejoin codes.");
-                System.Diagnostics.Debug.WriteLine("Replay room id is '{0}'", replayRoom.RoomId);
+                System.Diagnostics.Debug.WriteLine("Replay room id is '{0}'\n", replayRoom.RoomId);
             }
             else if ( replayMode == ReplayModeEnum.AdvanceToNamedStep ) {
                 // Continue the replay until we have completed a step whose action number (not index) is not less than the requested action number
@@ -136,7 +136,7 @@ namespace SevenStuds.Models
                 replayContext = replayRoom.ReplayContext;
                 replayContext.indexOfLastReplayedAction++; // Move to next action
                 GameLogAction gla = replayContext.actions[replayContext.indexOfLastReplayedAction];
-                actionSucceeded = await ReplayAction(replayRoom, gla);
+                actionSucceeded = await ActionReplay.ReplayAction(replayRoom, gla);
                 inconsistenciesFound += ( actionSucceeded ? 0 : 1);
             }            
 
@@ -149,7 +149,7 @@ namespace SevenStuds.Models
                 replayRoom.ReplayContext = null; // Probably a better way of doing this, but it avoids needing the game
             }
         }
-        private async Task<bool> ReplayAction(Room replayRoom, GameLogAction gla) {
+        public static async Task<bool> ReplayAction(Room replayRoom, GameLogAction gla) {
             bool resultsAreConsistent = true;
             ActionEnum actionType = gla.ActionType;
             Action a = await ActionFactory.NewAction(

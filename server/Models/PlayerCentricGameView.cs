@@ -33,6 +33,7 @@ namespace SevenStuds.Models
         public int RoundNumberIfCardsJustDealt { get; set; } // So that client know it can animate the deal
         public int RoundNumber { get; set; }
         public int CountOfLeavers { get; set; }
+        public DatabaseModeEnum DatabaseMode { get; set; }
         public DatabaseConnectionStatusEnum DatabaseConnectionStatus { get; set; }
         public double DatabaseRequestUnits { get; set; }
         public List<string> AvailableActions { get; set; } // A player-centric view of the actions available to them
@@ -64,6 +65,7 @@ namespace SevenStuds.Models
             RoundNumberIfCardsJustDealt = g.RoundNumberIfCardsJustDealt;
             RoundNumber = g.RoundNumber;
             CountOfLeavers = g.CountOfLeavers;
+            DatabaseMode = ServerState.OurDB.dbMode;
             DatabaseConnectionStatus = ServerState.OurDB.dbStatus;
             DatabaseRequestUnits = ServerState.OurDB.consumedRUs;
             CommunityCard = g.CommunityCard == null ? "" : g.CommunityCard.ToString(CardToStringFormatEnum.ShortCardName);

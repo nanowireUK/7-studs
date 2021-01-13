@@ -54,8 +54,8 @@ namespace SevenStuds.Models
         Replay = 22,
         GetMyState = 23,
         AdHocQuery = 24,
-        // Used to indicate that no action is applicable (this is for use in 'LastActionInThisHand' when no action has been taken by the player yet)
-        Undefined = 25
+        Undefined = 25, // Used to indicate that no action is applicable (this is for use in 'LastActionInThisHand' when no action has been taken by the player yet)
+        ReplaySetup = 26
     }
 
     /// <summary>

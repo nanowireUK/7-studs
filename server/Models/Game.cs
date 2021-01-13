@@ -291,7 +291,7 @@ namespace SevenStuds.Models
             var dbTasks = new List<Task>();
             dbTasks.Add(ServerState.OurDB.RecordDeck(this, newDeck));
 
-            System.Diagnostics.Debug.WriteLine("Hand starting with this deck: {0}", CardPack.ToString());
+            System.Diagnostics.Debug.WriteLine("Hand starting with this deck: {0}\n", CardPack.ToString());
 
             this.ClearHandDataBetweenHands();
             this.GameStatistics.UpdateStatistics(this);

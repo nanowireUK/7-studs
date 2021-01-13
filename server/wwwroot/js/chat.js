@@ -294,7 +294,7 @@ document.getElementById("actionReplay").addEventListener("click", function (even
     var user = getUser();
     var leaverCount = getLeaverCount();
     var gameLog = getModifiers();
-    connection.invoke("UserClickedReplay", roomId, user, leaverCount, gameLog).catch(logError);
+    connection.invoke("UserClickedReplaySetup", gameLog).catch(logError);
     event.preventDefault();
 });
 
