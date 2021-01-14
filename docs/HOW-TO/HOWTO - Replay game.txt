@@ -8,19 +8,20 @@ To replay a game from Visual Studio Code using a saved GameLog from e.g. .\docs\
    - At this point a web page will open saying 'Cannot connect to server'
    - Leave this page open
 2) Hit F5 (or select Run > Start Debugging from the menu) to start the server and bring up the server page (index.cshtml) in another browser window
-3) Enter a new Room name and any player name (it will be discarded in a later step so the name doesn't matter)
-4) Click 'Join'
-5) Prepare your GameLog in an external editor such as Notepad++ (e.g. copy from one of the saved game logs)
+3) Prepare your GameLog in an external editor such as Notepad++ (e.g. copy from one of the saved game logs)
    - If desired, add a line "PauseAfter": 50 to cause the replay to pause after the action with an "ActionNumber" of 50
-6) Copy and paste the prepared game log into the Parameters field
-7) Click 'Replay Game From Log'
-8) Check the Debug Console for results, but if all runs ok the server web page will show the 'Overall game state'
-9) Copy and paste the rejoinCodes section into e.g. Notepad++ for use in later steps
-10) In the client web page (from step 1):
+4) Copy and paste the prepared game log into the Parameters field of the server screen (note that Room and User are not required)
+5) Click 'Replay Game From Log'
+6) Check the Debug Console for results, but if all runs ok the server web page will return a Room name and list the rejoin codes for all players
+7) Copy and paste the rejoinCodes section into e.g. Notepad++ for use in later steps
+8) In the client web page (from step 1):
     - Click Refresh (this should now show the Seven Studs login page)
     - Enter the Room name that was used for the replay
     - Enter a player name and rejoin code from the list of rejoin codes and click Join
     - This will bring you to the game state as it was at the end of the log (or as it was following the action that you paused at)
+9) Also join this game from the server window (as any one of the players)
+10) Use the Step and Advance functions to move the game on one step or multiple steps at a time
+11) Alternatively, if any of the players makes an actual game move, this will stop the replay and allow play to continue normally from that point onwards
 
     ///////////////// Need to understand this: if you open a second window it will show the same as the first one. How do you get it to allow you to login again --> LEAVE
 		- Enter these into the User and Parameters area respectively and click Rejoin This Game
