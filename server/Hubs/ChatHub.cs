@@ -28,7 +28,7 @@ namespace SevenStuds.Hubs
         public async Task UserClickedBlindIntent(string roomId, string user, string leavers) { await UserClickedGameRelatedActionButton(ActionEnum.BlindIntent, roomId,  user, leavers,  ""); }
         public async Task UserClickedBlindReveal(string roomId, string user, string leavers) { await UserClickedGameRelatedActionButton(ActionEnum.BlindReveal, roomId,  user, leavers,  ""); }
         public async Task UserClickedGetState(string roomId, string user, string leavers) { await UserClickedGameRelatedActionButton(ActionEnum.GetState, roomId,  user, leavers,  ""); }
-        public async Task UserClickedGetLog(string roomId, string user, string leavers) { await UserClickedGameRelatedActionButton(ActionEnum.GetLog, roomId,  user, leavers,  ""); }
+        public async Task UserClickedGetLog(string gameId) { await UserClickedGetLogButton(gameId); } // NOTE: not a standard action
         public async Task UserClickedReplaySetup(string gameLog) { await UserClickedReplaySetupButton(gameLog); } // NOTE: not a standard action
         public async Task UserClickedReplay(string roomId, string user, string leavers, string replayOption) { await UserClickedGameRelatedActionButton(ActionEnum.Replay, roomId,  user, leavers, replayOption ); }
         public async Task UserClickedGetMyState(string roomId, string user, string leavers) { await UserClickedGameRelatedActionButton(ActionEnum.GetMyState, roomId,  user, leavers,  ""); }
@@ -196,6 +196,26 @@ namespace SevenStuds.Hubs
             ReplayResponse response = new ReplayResponse(replayGame);
             string resultAsJson = response.AsJson();
             await Clients.Caller.SendAsync("ReceiveMyGameState", resultAsJson);
+        }
+       private async Task UserClickedGetLogButton(string gameId)
+        {
+            // This is a non-standard action that does not require a game or a player as it just loads a historical game log from the database.
+            // The response to the caller will just be a JSON doc containing the game log.
+            System.Diagnostics.Debug.WriteLine("Attempting to load historical game log for game with id {0}\n", gameId);
+            GameLog gl = await ServerState.OurDB.LoadGameLog(gameId);
+            if ( gl == null ) { return; }
+            // Check that game is at least 15 minutes old (i.e. 15 mins from last move)
+            int minAge = 15;
+            double lastMoveMinutesAgo = ( DateTimeOffset.UtcNow - gl.endTimeUtc ).TotalMinutes;
+            if ( lastMoveMinutesAgo < minAge ) {
+                string msg = "Last move in game occurred "+lastMoveMinutesAgo+" minutes ago. Log is not available until "+minAge+" minutes after last move";
+                System.Diagnostics.Debug.WriteLine(msg+"\n");
+                await Clients.Caller.SendAsync("ReceiveMyGameState", "{"+msg+"}");
+            }
+            else {
+                string resultAsJson = gl.AsJson();
+                await Clients.Caller.SendAsync("ReceiveMyGameState", resultAsJson);
+            }
         }        
         private void AddRejoinCodes(Game g) {
             g.rejoinCodes = new List<string>();

@@ -200,13 +200,12 @@ namespace SevenStuds.Models
                 return null;
             }            
         }  
-
         public async Task<Game> LoadMostRecentGameState(string roomId)
         {
             bool dbExists = await this.DatabaseConnectionHasBeenEstablished();
             if ( dbExists == false ) { return null; }
 
-            var sqlQueryText = "SELECT TOP 1 * FROM c WHERE c.id = 'GameState-0' AND c.docRoomId = '"+roomId+"' ORDER BY c.docDateUtc DESC"; ////// change top TOP 1?
+            var sqlQueryText = "SELECT TOP 1 * FROM c WHERE c.id = 'GameState-0' AND c.docRoomId = '"+roomId+"' ORDER BY c.docDateUtc DESC";
             Console.WriteLine("Running query: {0}\n", sqlQueryText);
 
             QueryDefinition queryDefinition = new QueryDefinition(sqlQueryText);
@@ -228,34 +227,80 @@ namespace SevenStuds.Models
             }
             Console.WriteLine("No recent historical games found for room '{0}'.\n", roomId);
             return null;
-        }          
-        // public async Task UpsertGameLog(Game g)
-        // {
-        //     // -------------------------------------------------------------------------------------------
-        //     // Store the complete game log for the current game (overwriting any previous log for this game, as it is provisionaly stored at the end of each hand)
+        }     
+        public async Task<GameLog> LoadGameLog(string gameId)
+        {
+            Console.WriteLine("Attempting to load game log for game with id '{0}'\n", gameId);
 
-        //     bool dbExists = await this.DatabaseConnectionHasBeenEstablished();
-        //     if ( dbExists == false ) { return; }
+            bool dbExists = await this.DatabaseConnectionHasBeenEstablished();
+            if ( dbExists == false ) { return null; }
 
-        //     DocOfTypeGameLog gameLog = new DocOfTypeGameLog
-        //     {
-        //         roomId = g.RoomId,
-        //         docType = "Log",
-        //         docSeq = 0,
-        //         // Set values that depend on the other values
-        //         gameId = g.StartTimeUTC.ToString("u") + " " + g.RoomId,
-        //         id = "Log-0",  
-        //         log = g._GameLog      
-        //     };
+            GameLog rebuiltLog = new GameLog();
+       
+            // (1) Get the GameHeader and start the GameLog from there
+            try
+            {
+                // Read the item. We can access the body of the item with the Resource property off the ItemResponse. 
+                // We can also access the RequestCharge property to see the amount of RUs consumed on this request.
+                ItemResponse<DocOfTypeGameHeader> dbResponse = await this.ourGamesContainer.ReadItemAsync<DocOfTypeGameHeader>("GameHeader-0", new PartitionKey(gameId));
+                Console.WriteLine("Game header for game with id '{0}' successfully loaded. Operation consumed {1} RUs.\n", 
+                    dbResponse.Resource.docGameId, dbResponse.RequestCharge);
+                DocOfTypeGameHeader returnedDoc = dbResponse.Resource;
+                rebuiltLog.roomId = returnedDoc.docRoomId;
+                rebuiltLog.administrator = returnedDoc.administrator;
+                rebuiltLog.startTimeUtc = returnedDoc.startTimeUtc;
+                rebuiltLog.endTimeUtc = DateTimeOffset.MinValue;
+                rebuiltLog.playersInOrderAtStartOfGame = new List<string>(returnedDoc.playersInOrderAtStartOfGame);
+            }
+            catch(CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+            {
+                Console.WriteLine("Game header for game with id '{0}' not found.\n", gameId);
+                return null;
+            }  
 
-        //     ItemResponse<DocOfTypeGameLog> dbResponse = await this.ourGamesContainer.UpsertItemAsync<DocOfTypeGameLog>(
-        //         gameLog, 
-        //         new PartitionKey(gameLog.gameId));
+            // (2) Load the decks used in the game
+            var deckQueryText = "SELECT * FROM c WHERE c.docType = 'Deck' AND c.docGameId = '"+gameId+"' ORDER BY c.docSeq ASC"; 
+            Console.WriteLine("Running query: {0}\n", deckQueryText);
+            QueryDefinition deckQueryDefinition = new QueryDefinition(deckQueryText);
+            FeedIterator<DocOfTypeDeck> deckIterator = this.ourGamesContainer.GetItemQueryIterator<DocOfTypeDeck>(deckQueryDefinition);
+            List<DocOfTypeDeck> decks = new List<DocOfTypeDeck>();
+            while (deckIterator.HasMoreResults)
+            {
+                FeedResponse<DocOfTypeDeck> currentResultSet = await deckIterator.ReadNextAsync();
+                Console.WriteLine("Deck loaded. Operation consumed {0} RUs.\n", currentResultSet.RequestCharge);
+                foreach (DocOfTypeDeck returnedDoc in currentResultSet)
+                {
+                    Deck d = returnedDoc.deck;
+                    Console.WriteLine("Loaded deck {0}: {1}.\n", d.DeckNumber, d.CardList);
+                    d.Cards = null;
+                    rebuiltLog.decks.Add(d);
+                }
+            }
 
-        //     // Note that after upserting the item, we can access the body of the item with the Resource property off the ItemResponse. We can also access the RequestCharge property to see the amount of RUs consumed on this request.
-        //     Console.WriteLine("Upserted GameLogAction item in database with id: {0} Operation consumed {1} RUs.\n", dbResponse.Resource.id, dbResponse.RequestCharge);
-        //     this.consumedRUs += dbResponse.RequestCharge; // Add this to our total
-        // }        
+            // (3) Load the actions used in the game
+            var actionQueryText = "SELECT * FROM c WHERE c.docType = 'Action' AND c.docGameId = '"+gameId+"' ORDER BY c.docSeq ASC"; 
+            Console.WriteLine("Running query: {0}\n", actionQueryText);
+            QueryDefinition actionQueryDefinition = new QueryDefinition(actionQueryText);
+            FeedIterator<DocOfTypeGameLogAction> actionIterator = this.ourGamesContainer.GetItemQueryIterator<DocOfTypeGameLogAction>(actionQueryDefinition);
+            List<DocOfTypeGameLogAction> actions = new List<DocOfTypeGameLogAction>();
+            while (actionIterator.HasMoreResults)
+            {
+                FeedResponse<DocOfTypeGameLogAction> currentResultSet = await actionIterator.ReadNextAsync();
+                Console.WriteLine("Action loaded. Operation consumed {0} RUs.\n", currentResultSet.RequestCharge);
+                foreach (DocOfTypeGameLogAction returnedDoc in currentResultSet)
+                {
+                    GameLogAction a = returnedDoc.action;
+                    Console.WriteLine("Loaded action {0}: {1} by {2}.\n", a.ActionNumber, a.ActionType, a.UserName);
+                    rebuiltLog.actions.Add(a);
+                    if ( returnedDoc.docDateUtc > rebuiltLog.endTimeUtc ) {
+                        rebuiltLog.endTimeUtc= returnedDoc.docDateUtc;
+                    } 
+                }
+            }
+            Console.WriteLine("Reload complete.\n");
+
+            return rebuiltLog;
+        }               
         public async Task<bool> DatabaseConnectionHasBeenEstablished() {
             if ( dbMode == DatabaseModeEnum.NoDatabase ) { return false; }; // Will never have a database connection
             if ( dbStatus == DatabaseConnectionStatusEnum.ConnectionNotAttempted ) {

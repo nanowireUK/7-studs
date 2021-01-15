@@ -268,10 +268,8 @@ document.getElementById("actionGetState").addEventListener("click", function (ev
 // --------------- Get Game Log (test feature)
 
 document.getElementById("actionGetLog").addEventListener("click", function (event) {
-    var roomId = getRoomId();
-    var user = getUser();
-    var leaverCount = getLeaverCount();
-    connection.invoke("UserClickedGetLog", roomId, user, leaverCount).catch(logError);
+    var gameId = getModifiers();
+    connection.invoke("UserClickedGetLog", gameId).catch(logError);
     event.preventDefault();
 });
 
@@ -286,13 +284,9 @@ document.getElementById("actionAdHocQuery").addEventListener("click", function (
     event.preventDefault();
 });
 
-
 // --------------- Replay game from game log (test feature)
 
 document.getElementById("actionReplay").addEventListener("click", function (event) {
-    var roomId = getRoomId();
-    var user = getUser();
-    var leaverCount = getLeaverCount();
     var gameLog = getModifiers();
     connection.invoke("UserClickedReplaySetup", gameLog).catch(logError);
     event.preventDefault();
