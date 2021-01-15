@@ -216,7 +216,10 @@ export default function GameActionsWithKeyboard () {
                     if (canReveal) dispatch(reveal());
                     break;
                 case 'R':
-                    if (canRaise) setIsRaising(true);
+                    if (canRaise) {
+                        e.preventDefault();
+                        setIsRaising(true);
+                    }
                     break;
                 default:
                     break;
