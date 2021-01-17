@@ -10,7 +10,7 @@ namespace SevenStuds.Models
         public bool RecoveryAlreadyAttempted { get; set; }
         public Game ActiveGame { get; set; } // Only used when operating without a database
         public string ActiveGameId { get; set; } // Used when operating in database-backed stateless mode
-        public List<GameLog> GameLogs { get; set; } // Copies of game logs get dumped here each time a game completes in this room
+        //public List<GameLog> GameLogs { get; set; } // Copies of game logs get dumped here each time a game completes in this room
         protected List<User> RegisteredUsers { get; set; }
         public string AdHocQueryType { get; set; }
         public GameLog ReplayContext { get; set; }

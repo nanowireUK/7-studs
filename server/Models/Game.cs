@@ -51,6 +51,8 @@ namespace SevenStuds.Models
         public List<Boolean> CardPositionIsVisible { get; set; } 
         public LobbyData LobbyData { get; set; }
         public GameStatistics GameStatistics { get; set; }
+        public double AccumulatedDbCost { get; set; } // This is the total game cost that the game is aware of prior to it being persisted (at further, unknown cost)
+        public double GameLoadDbCost { get; set; } // The is the cost of loading the game back in from the DB
         public Deck CardPack { get; set; } // Starts as a full shuffled deck but is depleted as cards are dealt from it
         public Game() {
             // Be aware that this parameterless constructor is called both on saving to and reloading from the database
@@ -74,6 +76,8 @@ namespace SevenStuds.Models
             StartTimeUTC = DateTimeOffset.UtcNow; // At this point the time just represents the time the game was created
             ResetGameId(StartTimeUTC);
             SetReplayContext(replayContext);
+            InitialiseAccumulatedDbCost(0);
+            GameLoadDbCost = 0; // in case no load costs incurred as not working via DB connection
             Participants = new List<Participant>(); // start with empty list of participants
             Spectators = new List<Spectator>(); // start with empty list of spectators
             InitialChipQuantity = 1000;
@@ -84,7 +88,6 @@ namespace SevenStuds.Models
             //LastHandResult = new List<List<string>>();
             MostRecentHandResult = new List<List<PotResult>>();
             GameStatistics = new GameStatistics(this); // initialise the game stats
-
             Permissions = new ActionAvailabilityMap();
             HandsPlayedIncludingCurrent = 0;
             LeaversLogForGame = new List<LeavingRecord>();
@@ -197,7 +200,8 @@ namespace SevenStuds.Models
                 }                   
             }
             //StartNewGameLog(); // start a new log for this game
-            await ServerState.OurDB.RecordGameStart(this); 
+            double dbCost = await ServerState.OurDB.RecordGameStart(this); 
+            AddToAccumulatedDbCost("Start new game", dbCost);
         }
 
         public void RemoveDisconnectedPlayersFromGameState() {
@@ -288,8 +292,9 @@ namespace SevenStuds.Models
             Deck newDeck = this.CardPack.Clone();
             //this._GameLog.LogNewDeck(newDeck);
 
-            var dbTasks = new List<Task>();
-            dbTasks.Add(ServerState.OurDB.RecordDeck(this, newDeck));
+            var dbTasks = new List<Task<double>>();
+            Task<double> addDeckTask = ServerState.OurDB.RecordDeck(this, newDeck);
+            dbTasks.Add(addDeckTask);
 
             System.Diagnostics.Debug.WriteLine("Hand starting with this deck: {0}\n", CardPack.ToString());
 
@@ -326,7 +331,10 @@ namespace SevenStuds.Models
             _CardsDealtIncludingCurrent = MaxCardsDealtSoFar();
             RoundNumberIfCardsJustDealt = _CardsDealtIncludingCurrent; // Will be cleared as soon as next action comes in
             RoundNumber = _CardsDealtIncludingCurrent; // Kept for entire round
-            await Task.WhenAll(dbTasks); // Wait until any DB tasks have completed
+            await Task.WhenAll(dbTasks); // Wait until all DB tasks have completed
+            foreach (Task<double> t in dbTasks) {
+                this.AddToAccumulatedDbCost("Record deck", t.Result);
+            }
         }
         public void SetActionAvailabilityBasedOnCurrentPlayer() 
         {
@@ -983,14 +991,48 @@ namespace SevenStuds.Models
             return jsonString;
         }  
 
-        public void UpdateGameStatistics() {
-            this.GameStatistics.UpdateStatistics(this);
-        }
-        // public void TakeSnapshotOfNewDeck(){
-        //     this.SnapshotOfDeckForCurrentHand = this.CardPack.Clone();
-        // } 
+        public void InitialiseAccumulatedDbCost(double initialValue) {
 
-        public async Task LogActionWithResults(Action a) {
+            if ( ServerState.StatefulData.MapOfGameIdToDbCosts.ContainsKey(this.GameId)) {
+                ServerState.StatefulData.MapOfGameIdToDbCosts[this.GameId] = initialValue;
+            }
+            else {
+                ServerState.StatefulData.MapOfGameIdToDbCosts.Add(this.GameId, initialValue);
+            }
+            this.AccumulatedDbCost = ServerState.StatefulData.MapOfGameIdToDbCosts[this.GameId]; // Get the updated value
+        }
+        public void AddToAccumulatedDbCost(string reason, double increment) {
+            // Update the total DB costs incurred by this game. Note that the cost is recorded in two places:
+            // (1) In a hashtable on the server, which will be the definitive source as long as the server process remains active
+            // (2) On the game, which will be used as a backup if the server process has to restart (it will pick up the cost when it next reloads the game)
+            if ( ServerState.StatefulData.MapOfGameIdToDbCosts.ContainsKey(this.GameId)) {
+                ServerState.StatefulData.MapOfGameIdToDbCosts[this.GameId] += increment; // normal scenario (i.e. hashtable entry already exists)
+            Console.WriteLine("DB cost for game id '{0}' increased by {1} to {2} due to {3}\n", 
+                this.GameId, increment, ServerState.StatefulData.MapOfGameIdToDbCosts[this.GameId], reason);
+            }
+            else {
+                if ( this.AccumulatedDbCost > 0 ) {
+                    // The server doesn't have a record of any costs but the game itself does.
+                    // The only way this should be able to happen is if the server has been restarted for some reason 
+                    // and the game we have just reloaded from the database has the old cumulative total recorded against it.
+                    // In that specific case, we will take the game total as being the best-available starting point for continuing the total.
+                    // Note that the total will not include the cost of saving the final game state before the server restarted
+                    // (we could estimate a small allowance for this but it is likely to be no more than 50 - 200 RUs so not really worth the effort)
+                    ServerState.StatefulData.MapOfGameIdToDbCosts.Add(this.GameId, this.AccumulatedDbCost + increment);
+                    Console.WriteLine("DB cost for game id '{0}' set to {1} via recovery from game, and increased by {2} to {3} due to {4}\n", 
+                        this.GameId, this.AccumulatedDbCost, increment, ServerState.StatefulData.MapOfGameIdToDbCosts[this.GameId], reason);
+                }
+                else {
+                    // This is the first record of a database cost for this game
+                    ServerState.StatefulData.MapOfGameIdToDbCosts.Add(this.GameId, increment);
+                    Console.WriteLine("DB cost for game id '{0}' initialised to {1} due to {2}\n", 
+                    this.GameId, ServerState.StatefulData.MapOfGameIdToDbCosts[this.GameId], reason);                    
+                }
+            }
+            // Finally, ensure that the new total recorded on the server is reflected back on the game
+            this.AccumulatedDbCost = ServerState.StatefulData.MapOfGameIdToDbCosts[this.GameId]; // Get the updated value
+        }
+        public async Task<double> LogActionWithResults(Action a) {
             this.ActionNumber++;
             GameLogAction gla = new GameLogAction(
                 a, 
@@ -1002,7 +1044,8 @@ namespace SevenStuds.Models
             //this._GameLog.actions.Add(gla);
             this.LastSuccessfulAction = DateTimeOffset.Now; 
             // Log the action to the DB
-            await ServerState.OurDB.RecordGameLogAction(this, gla);
+            double dbCost = await ServerState.OurDB.RecordGameLogAction(this, gla);
+            return dbCost;
         }
 
         public string PlayerSummaries()

@@ -1,4 +1,24 @@
 ----------------------------------------- SERVER-SIDE TO DO (higher priority first) ---------------------------------
+- test latest changes re recording DB cost per game
+- bug fix: bankruptcy times not preserved across hands
+- bug fix: community card still visible
+- perhaps make community card visible in everyone's hand
+- need fanfare or colour change on end-of-hand ... not currently obvious ... perhaps colour change on beize and for winning player(s)
+- allow player to change their name
+- allow players to download a log of a game (perhaps personalised from their perspective) ... as HTML, or even PDF?
+- klaxon by majority vote (if enough players click on that player)? needs server involvement ... could be different message to game state 
+- klaxon for fastest bet placed?
+- 'all in' button?
+- shuffle more? (not sure necessary ... decks looked well scrambled)
+- settings on lobby screen (ante, start amount, rule variations etc.)
+- document versioning ... standard approaches to ensure old-format data can still be loaded
+- analyse game costs
+- record running game RU cost on the game (record on game state even if one move behind)
+- all card lists as simple strings
+- recovery should only be possible for 10 mins or so?
+- game number should be within session ... but what defines a session?
+- clear out any obviously unnecessary fields/objects
+- clear community card once hand finished (probably done)
 
 * Allow admin to reject a player prior to starting or continuing a game
 * Allow admin to forcibly remove an inactive player (like an involuntary leave)

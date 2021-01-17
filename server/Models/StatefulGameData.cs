@@ -12,10 +12,12 @@ namespace SevenStuds.Models
 
         public Dictionary<string, string> MapOfConnectionIdToParticipantSignalRGroupName { get; set; } 
         public Dictionary<string, string> MapOfConnectionIdToSpectatorSignalRGroupName { get; set; } 
+        public Dictionary<string, double> MapOfGameIdToDbCosts { get; set; } 
         public StatefulGameData()
         {
             MapOfConnectionIdToParticipantSignalRGroupName = new Dictionary<string, string>(); 
             MapOfConnectionIdToSpectatorSignalRGroupName = new Dictionary<string, string>(); 
+            MapOfGameIdToDbCosts = new Dictionary<string, double>(); 
         }
     }
 }

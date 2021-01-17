@@ -12,7 +12,7 @@ namespace SevenStuds.Models
         // Maintains a registry of games which enables a game object to be found from its ID.
         // Also provides other room-level functions (where a room may have hosted a whole series of games)
         public static Hashtable RoomList = new Hashtable(); // Server-level list of Rooms
-        public static StatefulGameData GameConnections = new StatefulGameData(); // Server-level list of connections
+        public static StatefulGameData StatefulData = new StatefulGameData(); // Server-level list of connections
         public static PokerHandRankingTable RankingTable = new PokerHandRankingTable(); // Only need one of these
         public static Card DummyCard = new Card(CardEnum.Dummy, SuitEnum.Clubs);
         public static PokerDB OurDB = new PokerDB();
@@ -22,9 +22,9 @@ namespace SevenStuds.Models
             return ( env_value.ToLower() == "yes" ? true : false );
         }
         public static Random ServerLevelRandomNumberGenerator = new Random();
-        public static Boolean RoomExists(string roomId) {
-            return RoomList.ContainsKey(roomId.ToLower());
-        }
+        // public static Boolean RoomExists(string roomId) {
+        //     return RoomList.ContainsKey(roomId.ToLower());
+        // }
         public static async Task<Room> FindOrCreateRoom(string RoomId) {
             string roomIdToUse = RoomId; 
             string lowercaseId = RoomId.ToLower();
@@ -69,6 +69,7 @@ namespace SevenStuds.Models
                 // This is the normal situation where we are just reloading the game state that was saved at the end of the previous action
                 Console.WriteLine("Loading game state for game with id '{0}'.\n", r.ActiveGameId);
                 g = await OurDB.LoadGameState(r.ActiveGameId);
+                g.AddToAccumulatedDbCost("Loading game in stateless mode", g.GameLoadDbCost);
                 return g;
             }
             else {
@@ -85,13 +86,15 @@ namespace SevenStuds.Models
             Game g;
             Console.WriteLine("Attempting recovery of most recent game associated with room '{0}'.\n", r.RoomId);
             g = await OurDB.LoadMostRecentGameState(r.RoomId); // If there is an existing game for this room then load it
-            if ( g == null ) { 
+            if ( g != null ) {
+                g.AddToAccumulatedDbCost("Recovering game", g.GameLoadDbCost);
+            }
+            else { 
                 // No previous games recorded for this room, so just create a new game
                 Console.WriteLine("No recent historical games found for room '{0}'. Creating new game.\n", r.RoomId);
                 g = new Game(r.RoomId, 0);
                 g.InitialiseGame(null);
             }
-
             return g;
         }
         public static string StringArrayAsJson(List<string> l)
@@ -108,21 +111,21 @@ namespace SevenStuds.Models
         public static void ClearConnectionMappings(Game g) {
             // Clear out the tester's current connection (and any other connections currently associated with the game)
             // Note that this is only expected to be called during a replay in a dev environment, not on the live server
-            ServerState.GameConnections.MapOfConnectionIdToParticipantSignalRGroupName.Clear(); 
-            ServerState.GameConnections.MapOfConnectionIdToSpectatorSignalRGroupName.Clear(); 
+            ServerState.StatefulData.MapOfConnectionIdToParticipantSignalRGroupName.Clear(); 
+            ServerState.StatefulData.MapOfConnectionIdToSpectatorSignalRGroupName.Clear(); 
         }
         public static void LinkConnectionToParticipant(Game g, string connectionId, Participant p) 
         {
-            ServerState.GameConnections.MapOfConnectionIdToParticipantSignalRGroupName.Add(connectionId, p.ParticipantSignalRGroupName);
+            ServerState.StatefulData.MapOfConnectionIdToParticipantSignalRGroupName.Add(connectionId, p.ParticipantSignalRGroupName);
         }
         public static void LinkConnectionToSpectator(Game g, string connectionId, Spectator p) 
         {
-            ServerState.GameConnections.MapOfConnectionIdToSpectatorSignalRGroupName.Add(connectionId, p.SpectatorSignalRGroupName);
+            ServerState.StatefulData.MapOfConnectionIdToSpectatorSignalRGroupName.Add(connectionId, p.SpectatorSignalRGroupName);
         }
         public static Participant GetParticipantFromConnection(Game g, string connectionId) 
         {
             string groupName;
-            if ( ServerState.GameConnections.MapOfConnectionIdToParticipantSignalRGroupName.TryGetValue(connectionId, out groupName) )
+            if ( ServerState.StatefulData.MapOfConnectionIdToParticipantSignalRGroupName.TryGetValue(connectionId, out groupName) )
             {
                 foreach ( Participant p in g.Participants ) {
                     if ( p.ParticipantSignalRGroupName == groupName ) {
@@ -140,7 +143,7 @@ namespace SevenStuds.Models
         public static Spectator GetSpectatorFromConnection(Game g, string connectionId) 
         {
             string groupName;
-            if ( ServerState.GameConnections.MapOfConnectionIdToSpectatorSignalRGroupName.TryGetValue(connectionId, out groupName) )
+            if ( ServerState.StatefulData.MapOfConnectionIdToSpectatorSignalRGroupName.TryGetValue(connectionId, out groupName) )
             {
                 foreach ( Spectator s in g.Spectators ) {
                     if ( s.SpectatorSignalRGroupName == groupName ) {

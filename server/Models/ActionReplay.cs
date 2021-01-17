@@ -87,7 +87,8 @@ namespace SevenStuds.Models
                 }
                 replayGame.SetActionAvailabilityBasedOnCurrentPlayer(); // Ensures the initial selection of available actions is set
                 Console.WriteLine("Replay is saving initial game state for replayed game id '{0}'\n", replayGame.GameId);
-                await ServerState.OurDB.UpsertGameState(replayGame); // Store the initial game state for the game that we are recreating
+                double dbCost = await ServerState.OurDB.UpsertGameState(replayGame); // Store the initial game state for the game that we are recreating
+                replayGame.AddToAccumulatedDbCost("OLD REPLAY CODE", dbCost);
 
                 // Replay each game action in the recorded order (including joins and starts)
                 for ( int actionIndex = 0; actionIndex < replayContext.actions.Count; actionIndex++ ) {

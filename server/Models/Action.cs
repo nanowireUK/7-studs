@@ -142,7 +142,7 @@ namespace SevenStuds.Models
             G.SetActionAvailabilityBasedOnCurrentPlayer();
             G.GameStatistics.UpdateStatistics(G); // Record game times etc.
 
-            var dbTasks = new List<Task>();
+            var dbTasks = new List<Task<double>>();
 
             if ( this.ActionType != ActionEnum.Replay 
                 & this.ActionType != ActionEnum.Rejoin
@@ -154,16 +154,19 @@ namespace SevenStuds.Models
                 dbTasks.Add(G.LogActionWithResults(this)); 
             }
 
-            if ( this.ActionType != ActionEnum.Replay // Not sure about replay ... but it is the actions that it has run that actually change the state
+            if ( this.ActionType != ActionEnum.Replay
                 & this.ActionType != ActionEnum.GetLog
                 & this.ActionType != ActionEnum.GetState
                 & this.ActionType != ActionEnum.AdHocQuery ) 
             {
                 // Note: Only update game state following actions that would normally change the game state
                 dbTasks.Add(ServerState.OurDB.UpsertGameState(G));
-            }            
+            }  
 
             await Task.WhenAll(dbTasks); // Wait until all of the DB tasks completed
+            foreach (Task<double> t in dbTasks) {
+                G.AddToAccumulatedDbCost(this.ActionType.ToString(), t.Result);
+            }
             return G;
         }        
         public abstract Task ProcessAction();
