@@ -132,12 +132,13 @@ namespace SevenStuds.Models
                 else {
                     this.Hand.Add(g.CommunityCard); // same card for each player in this round
                 }
+                
                 PokerHand visibleHand = new PokerHand(
                     this.Hand[2], 
                     roundNumber >= 4 ? this.Hand[3] : ServerState.DummyCard, 
                     roundNumber >= 5 ? this.Hand[4] : ServerState.DummyCard, 
                     roundNumber >= 6 ? this.Hand[5] : ServerState.DummyCard, 
-                    ServerState.DummyCard, // never more than 4 visible
+                    roundNumber == 7 && g.CardPositionIsVisible[6] == true ? this.Hand[6] : ServerState.DummyCard, // final card can be open if we're in a community card situation
                     ServerState.RankingTable);
                 this._VisibleHandDescription = /*visibleHand.ToString(HandToStringFormatEnum.ShortCardsHeld) + ": " + */ visibleHand.ToString(HandToStringFormatEnum.HandDescription);
                 this._VisibleHandRank = visibleHand.Rank;
