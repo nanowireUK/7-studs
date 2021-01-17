@@ -137,6 +137,9 @@ namespace SevenStuds.Models
             HandsPlayedIncludingCurrent = 0;
             ActionNumber = 0;
             CountOfLeavers = 0;
+            CommunityCard = null;
+            CardPositionIsVisible[6] = false;
+
             RemoveDisconnectedPlayersFromGameState();
             foreach ( Participant p in Participants )
             {
@@ -299,6 +302,10 @@ namespace SevenStuds.Models
             System.Diagnostics.Debug.WriteLine("Hand starting with this deck: {0}\n", CardPack.ToString());
 
             this.ClearHandDataBetweenHands();
+
+            CommunityCard = null;
+            CardPositionIsVisible[6] = false;
+            
             this.GameStatistics.UpdateStatistics(this);
 
             // Temporarily moved from ClearHandDataBetweenHands
@@ -456,9 +463,11 @@ namespace SevenStuds.Models
             RoundNumberIfCardsJustDealt = _CardsDealtIncludingCurrent; // Will be cleared as soon as next action comes in
             RoundNumber = _CardsDealtIncludingCurrent; // Kept for entire round
             CommunityCard = null;
+            CardPositionIsVisible[6] = false;
             if ( _CardsDealtIncludingCurrent == 7 && CountOfPlayersLeftInHand() > CardPack.Cards.Count ) {
                 // Edge case: we don't have enough cards to deal to all players (can only happen in round 7 if nearly everyone stayed in up to that point)
                 CommunityCard = DealCard(); // Random card that will be dealt to all players
+                CardPositionIsVisible[6] = true;
             }
             foreach (Participant p in Participants)
             {

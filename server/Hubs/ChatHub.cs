@@ -151,6 +151,8 @@ namespace SevenStuds.Hubs
             // This is a non-standard action that does not require a game or a player as it automatically builds a room
             // and a game that includes all the players from the replayed game. 
             // The response to the caller will just be a JSON doc containing a room id and a set of rejoin codes.
+            // Note that you can pause the game at a specific action by including a 'pauseAfter' attribute in the game log
+            // (the replay will be paused after any action with a number qual to or higher than the pauseAfter number)
             Room replayRoom = null;
             GameLog replayContext = JsonSerializer.Deserialize<GameLog>(gameLogToReplay);
             replayContext.ListDecks(); // Lists decks for info in debug console

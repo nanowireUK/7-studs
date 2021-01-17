@@ -42,7 +42,6 @@ namespace SevenStuds.Models
         //public List<List<string>> LastHandResult { get; set; }
         public List<PlayerCentricParticipantView> PlayerViewOfParticipants { get; set; } // ordered list of participants (order represents order around the table)
         public string CommunityCard { get; set; }
-
         public GameStatistics GameStatistics { get; set; }
         public LobbyData LobbyData { get; set; }
         public List<Boolean> CardPositionIsVisible { get; set; }

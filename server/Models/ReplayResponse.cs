@@ -13,7 +13,7 @@ namespace SevenStuds.Models
             RoomId = g.ParentRoom().RoomId;
             RejoinCodes = new List<string>();
             foreach ( Participant p in g.Participants ) {
-                RejoinCodes.Add( p.Name + ": " + p.RejoinCode + ( p.IsGameAdministrator ? " (admin)" : "" ) );
+                RejoinCodes.Add( p.Name + ( p.IsGameAdministrator ? " (admin)" : "" ) + ": " + p.RejoinCode);
             }
         }
         public string AsJson()

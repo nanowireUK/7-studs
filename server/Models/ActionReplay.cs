@@ -16,31 +16,22 @@ namespace SevenStuds.Models
         }
         public override async Task ProcessAction()
         {
-            // ActionReplay results in two games being active simultaneously:
-            // (1) The controlling game, in which the Replay action is running
-            //     - This game 'knows' the Room id of the game that is being replayed (stored in Game.ReplayRoomId)
-            // (2) The the game that is being replayed
-            //     - This game knows the details of the game log that it is replaying
-            //     - The game log is stored statefully on its parent room (note that the room object is stateful but the game object is not)
+            // ActionReplay has been completely reworked to fit in with the new stateless mode.
+            // A game log can now simply be entered into the parameters area of the server screen, 
+            // and, on clicking 'Replay Game From Log', Chathub.UserClickedReplaySetup() 
+            // will control the whole replay (this used to be done here, in ActionReplay).
             //
-            // ActionReplay works in three related modes:
-            // - If a game log is supplied as a parameter, a new game will be created and replayed from that log
-            //   - If a 'pauseAfter' attribute is included in that game log, the replay will be paused after any action with a number >= the pauseAfter number
-            // - If no parameter is passed, the replay will process the next unprocessed action
-            // - If a numeric parameter is passed, it will effectively reset the pauseAfter value (i.e. it is like a continue to step 'n')
-            // Note that if any player (who has rejoined the game in the meantime) make a move in the UI, this will exit the 'replay' mode and play will continue as normal
+            // ActionReplay now only deals with stepping through a replayed game that was paused because of a PauseAfter value in the replayed log
+            // (you should use the server screen to rejoin the replayed game according to the instructions that UserClickedReplaySetup,
+            // then use the 'Step' and 'Advance To Action <n>' options to step through the rest of the game
 
             ReplayModeEnum replayMode;
             int advanceToActionNumber = 0;
-            if ( this.Parameters != null && this.Parameters.Length >= 5 ) {
-                // Parameter is neither blank, nor short enough to be a number, so assume we are handling a new game log
-                replayMode = ReplayModeEnum.NewGameLog; 
-            }
-            else if ( this.Parameters == null || this.Parameters == "" ) {
+            if ( this.Parameters == null || this.Parameters == "" ) {
                 // Parameter is blank, so assume user is stepping through an existing replay one step at a time
                 replayMode = ReplayModeEnum.AdvanceOneStep;
                 if ( G.IsRunningInReplayMode() == false ) {
-                    throw new HubException("Stepwise Replay (i.e. without supplying a GameLog) is not possible at this stage as there is no current replay context");
+                    throw new HubException("Stepwise replay is not possible as this game is not paused");
                 }
             }
             else {
@@ -50,77 +41,23 @@ namespace SevenStuds.Models
                     throw new HubException("A numeric action number is required by the Replay(AdvanceTo) action");
                 }
                 if ( G.IsRunningInReplayMode() == false ) {
-                    throw new HubException("Advancing to a given step is not possible at this stage as there is no current replay context");
+                    throw new HubException("Advancing to a given step is not possible as this game is not paused");
                 }
-                // if ( advanceToActionNumber <= replayContext.indexOfLastReplayedAction ) {
-                //     throw new HubException("Requested target step (" + advanceToActionNumber + ") is not after the currently reached step (" + replayContext.indexOfLastReplayedAction + ")");
-                // }  
             }
 
             bool actionSucceeded;
             int inconsistenciesFound = 0;
 
-            // Note: all paths must set these
-            Room replayRoom = null;
-            GameLog replayContext = null;
-            
-            if ( replayMode == ReplayModeEnum.NewGameLog ) {
-                // Handle the most complicated scenario of taking a game log and playing it through to the end or to the action number named in the log in the pauseAfter attribute 
-                ResponseType = ActionResponseTypeEnum.OverallGameState; // On completion of replay, the tester will have the overall game state returned to them
-                ResponseAudience =  ActionResponseAudienceEnum.Caller; // Tester will then have to rejoin each player using their respective rejoin codes
-                //ServerState.ClearConnectionMappings(G);
-                replayContext = JsonSerializer.Deserialize<GameLog>(this.Parameters);
-                //FixCardOrderInDesererialisedDecks(replayContext); // (it loads them in array order, which gives a reversed deck)
-                replayContext.ListDecks();
+            GameLog replayContext = G.GetReplayContext();
 
-                // Now create a new Game which we will apply the previously-recorded actions to one step at a time
-                System.Diagnostics.Debug.WriteLine("Creating a new Room and Game in which to replay a game from supplied game log");
-                replayRoom = await ServerState.FindOrCreateRoom("Replay-"+DateTimeOffset.UtcNow.ToString("yyyyMMdd-HHmmss"));
-                Game replayGame = new Game(replayRoom.RoomId, 0);
-                replayGame.InitialiseGame(replayContext); // Initialise the replayed game and also stores the game log statefully on the replay Room
-                G._ReplayRoomId = replayRoom.RoomId; // Stores the replay Room id on the controlling game
-                // Add all the players (note that the replay log should not contain join actions for the players who joined at the start of the game)
-                foreach ( string playerName in replayContext.playersInOrderAtStartOfGame ) {
-                    Participant newPlayer = new Participant(playerName);
-                    newPlayer.IsGameAdministrator = ( playerName == replayContext.administrator ); 
-                    replayGame.Participants.Add(newPlayer);
-                }
-                replayGame.SetActionAvailabilityBasedOnCurrentPlayer(); // Ensures the initial selection of available actions is set
-                Console.WriteLine("Replay is saving initial game state for replayed game id '{0}'\n", replayGame.GameId);
-                double dbCost = await ServerState.OurDB.UpsertGameState(replayGame); // Store the initial game state for the game that we are recreating
-                replayGame.AddToAccumulatedDbCost("OLD REPLAY CODE", dbCost);
-
-                // Replay each game action in the recorded order (including joins and starts)
-                for ( int actionIndex = 0; actionIndex < replayContext.actions.Count; actionIndex++ ) {
-                    replayContext.indexOfLastReplayedAction += 1;
-                    GameLogAction gla = replayContext.actions[actionIndex];
-                    actionSucceeded = await ReplayAction(replayRoom, gla);
-                    inconsistenciesFound += ( actionSucceeded == true ? 0 : 1 );
-                    replayContext.indexOfLastReplayedAction = actionIndex;
-                    if ( replayContext.pauseAfter > 0 && gla.ActionNumber >= replayContext.pauseAfter ) {
-                        // The user asked us to pause after processing a given action (and to leave the replay in a paused state that can be stepped through)
-                        System.Diagnostics.Debug.WriteLine("Replay paused due to pauseAfter ("+replayContext.pauseAfter
-                            +") request ... single step via Replay with no parameters or advance multiple steps by specifying target action number");
-                        break;
-                    }
-                }
-                // Mark each player as locked ... this will be unlocked once someone rejoins as that player using a unique new connection                
-                foreach ( Participant p in replayGame.Participants ) {
-                    p.IsLockedOutFollowingReplay = true;
-                }
-                System.Diagnostics.Debug.WriteLine("Use the game state to find each player and rejoin each of them from a separate browser using their respective rejoin codes.");
-                System.Diagnostics.Debug.WriteLine("Replay room id is '{0}'\n", replayRoom.RoomId);
-            }
-            else if ( replayMode == ReplayModeEnum.AdvanceToNamedStep ) {
+            if ( replayMode == ReplayModeEnum.AdvanceToNamedStep ) {
                 // Continue the replay until we have completed a step whose action number (not index) is not less than the requested action number
                 ResponseType = ActionResponseTypeEnum.PlayerCentricGameState; // All connected players will receive their own view of the updated game state
                 ResponseAudience =  ActionResponseAudienceEnum.AllPlayers; // All connected players will receive an update
-                replayRoom = await ServerState.FindOrCreateRoom(G._ReplayRoomId);
-                replayContext = replayRoom.ReplayContext;
                 for ( int actionIndex = replayContext.indexOfLastReplayedAction + 1; actionIndex < replayContext.actions.Count; actionIndex++ ) {
                     replayContext.indexOfLastReplayedAction = actionIndex;
                     GameLogAction gla = replayContext.actions[actionIndex];
-                    actionSucceeded = await ReplayAction(replayRoom, gla);
+                    actionSucceeded = await ReplayAction(G.ParentRoom(), gla);
                     inconsistenciesFound += ( actionSucceeded == true ? 0 : 1 );
                     if ( gla.ActionNumber >= advanceToActionNumber ) {
                         // We have reached (and processed) the requested target action
@@ -133,11 +70,9 @@ namespace SevenStuds.Models
                 // Move a paused replay forward one step
                 ResponseType = ActionResponseTypeEnum.PlayerCentricGameState; // All connected players will receive their own view of the updated game state
                 ResponseAudience =  ActionResponseAudienceEnum.AllPlayers; // All connected players will receive an update
-                replayRoom = await ServerState.FindOrCreateRoom(G._ReplayRoomId);
-                replayContext = replayRoom.ReplayContext;
                 replayContext.indexOfLastReplayedAction++; // Move to next action
                 GameLogAction gla = replayContext.actions[replayContext.indexOfLastReplayedAction];
-                actionSucceeded = await ActionReplay.ReplayAction(replayRoom, gla);
+                actionSucceeded = await ActionReplay.ReplayAction(G.ParentRoom(), gla);
                 inconsistenciesFound += ( actionSucceeded ? 0 : 1);
             }            
 
@@ -147,7 +82,7 @@ namespace SevenStuds.Models
            
             if ( replayContext.indexOfLastReplayedAction >= ( replayContext.actions.Count - 1 ) ) {
                 System.Diagnostics.Debug.WriteLine("Replayed game is no longer in replay mode and will continue under normal conditions from here");
-                replayRoom.ReplayContext = null; // Probably a better way of doing this, but it avoids needing the game
+                G.SetReplayContext(null); 
             }
         }
         public static async Task<bool> ReplayAction(Room replayRoom, GameLogAction gla) {
