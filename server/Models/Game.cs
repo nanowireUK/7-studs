@@ -200,6 +200,10 @@ namespace SevenStuds.Models
                     if ( p.IsGameAdministrator == true && p.Name != this.GetReplayContext().administrator) {
                         p.IsGameAdministrator = false;
                     }  
+                    if ( this.GetReplayContext().playersStartingBlind.Contains(p.Name) ) {
+                        p.IsPlayingBlindInCurrentHand = true;
+                        System.Diagnostics.Debug.WriteLine("Setting "+p.Name+" as blind player for this hand");
+                    }  
                 }                   
             }
             //StartNewGameLog(); // start a new log for this game
@@ -299,13 +303,13 @@ namespace SevenStuds.Models
             Task<double> addDeckTask = ServerState.OurDB.RecordDeck(this, newDeck);
             dbTasks.Add(addDeckTask);
 
-            System.Diagnostics.Debug.WriteLine("Hand starting with this deck: {0}\n", CardPack.ToString());
+            System.Diagnostics.Debug.WriteLine("Hand starting with this deck: " + CardPack.ToString() + "\n");
 
             this.ClearHandDataBetweenHands();
 
             CommunityCard = null;
             CardPositionIsVisible[6] = false;
-            
+
             this.GameStatistics.UpdateStatistics(this);
 
             // Temporarily moved from ClearHandDataBetweenHands
@@ -497,41 +501,29 @@ namespace SevenStuds.Models
             // Assumption: a player is still in if they have money in the pot and have not folded.
             // Assumption: someone else other than the dealer must still be in otherwise the hand has ended. 
             // Note: the dealer could be out too.
-            // Note: lower hand ranking values are better. A blind hand is treated as having a very high ranking (i.e. of no actual value)
-            //int ZbiLeftOfDealer = (this.IndexOfParticipantDealingThisHand + 1) % Participants.Count;
-            int ZbiOfFirstToBet = -1;
+            // Note: lower hand ranking values are better
+            //int IndexLeftOfDealer = (this.IndexOfParticipantDealingThisHand + 1) % Participants.Count;
+            int IndexOfFirstToBet = -1;
             int HandRankOfFirstToBet = Int32.MaxValue;
             for (int i = 0; i < Participants.Count; i++) 
             {
-                int ZbiOfNextPlayerToInspect = (this.IndexOfParticipantDealingThisHand + 1 + i) % Participants.Count; // starts one to left of dealer
+                int IndexOfNextPlayerToInspect = (this.IndexOfParticipantDealingThisHand + 1 + i) % Participants.Count; // starts one to left of dealer
                 if (
-                    Participants[ZbiOfNextPlayerToInspect].HasFolded == false // i.e. player has not folded out of this hand
-                    && Participants[ZbiOfNextPlayerToInspect].HasCovered == false // i.e. player has not covered the pot 
-                    && Participants[ZbiOfNextPlayerToInspect].StartedHandWithNoFunds == false // i.e. player was in the hand to start off with
-                    && 
-                    ( // players hand is the first to be checked or is better than any checked so far
-                        ( 
-                            Participants[ZbiOfNextPlayerToInspect].IsPlayingBlindInCurrentHand 
-                            ? Int32.MaxValue - 1
-                            : Participants[ZbiOfNextPlayerToInspect]._VisibleHandRank 
-                        )
-                        < HandRankOfFirstToBet
-                    )
+                    Participants[IndexOfNextPlayerToInspect].HasFolded == false // i.e. player has not folded out of this hand
+                    && Participants[IndexOfNextPlayerToInspect].HasCovered == false // i.e. player has not covered the pot 
+                    && Participants[IndexOfNextPlayerToInspect].StartedHandWithNoFunds == false // i.e. player was in the hand to start off with
+                    && Participants[IndexOfNextPlayerToInspect]._VisibleHandRank < HandRankOfFirstToBet // hand is the first to be checked or is better than any checked so far
                 )
                 {
-                    ZbiOfFirstToBet = ZbiOfNextPlayerToInspect; // This player is still in and has a better hand 
-                    HandRankOfFirstToBet = ( 
-                        Participants[ZbiOfFirstToBet].IsPlayingBlindInCurrentHand 
-                        ? Int32.MaxValue - 1
-                        : Participants[ZbiOfFirstToBet]._VisibleHandRank
-                    );
+                    IndexOfFirstToBet = IndexOfNextPlayerToInspect; // This player is still in and has a better hand 
+                    HandRankOfFirstToBet = Participants[IndexOfFirstToBet]._VisibleHandRank;
                 }
             }
             if ( HandRankOfFirstToBet == Int32.MaxValue) {
                 // If this is the case, there is no one left in with a valid reason to bet. Not sure it can happen, but allowed for anyway.
                 return -1;
             }
-            return ZbiOfFirstToBet;
+            return IndexOfFirstToBet;
         } 
         public int CountOfPlayersLeftInHand() {
            // Count how many players were in the round in the first place and have not folded in the meantime
@@ -770,12 +762,12 @@ namespace SevenStuds.Models
                 // Find and set next player to reveal their hand (or fold)
                 int firstToReveal = ( _CheckIsAvailable ? _IndexOfLastPlayerToStartChecking : _IndexOfLastPlayerToRaise );
                 for ( int i = 0; i < Participants.Count; i++ ) {
-                    int ZbiOfNextPlayerToInspect = (firstToReveal + i) % Participants.Count;
-                    if ( Participants[ZbiOfNextPlayerToInspect].IsSharingHandDetails == false
-                        && Participants[ZbiOfNextPlayerToInspect].HasFolded == false // i.e. player has not folded out of this hand
-                        && Participants[ZbiOfNextPlayerToInspect].StartedHandWithNoFunds == false // i.e. player has not yet lost all of their funds
+                    int IndexOfNextPlayerToInspect = (firstToReveal + i) % Participants.Count;
+                    if ( Participants[IndexOfNextPlayerToInspect].IsSharingHandDetails == false
+                        && Participants[IndexOfNextPlayerToInspect].HasFolded == false // i.e. player has not folded out of this hand
+                        && Participants[IndexOfNextPlayerToInspect].StartedHandWithNoFunds == false // i.e. player has not yet lost all of their funds
                     ) {
-                        IndexOfParticipantToTakeNextAction = ZbiOfNextPlayerToInspect;
+                        IndexOfParticipantToTakeNextAction = IndexOfNextPlayerToInspect;
                         NextAction = /*Trigger + ", " +*/ Participants[IndexOfParticipantToTakeNextAction].Name + " to reveal (or fold)"; 
                         AddCommentary(NextAction);
                         return;
@@ -793,18 +785,18 @@ namespace SevenStuds.Models
             for (int i = 0; i < Participants.Count - 1 ; i++) // Check all except current player
             { 
                 // Check for a complete round of checking
-                int ZbiOfNextPlayerToInspect = (currentPlayer + 1 + i) % Participants.Count;
-                if ( ZbiOfNextPlayerToInspect == _IndexOfLastPlayerToRaise 
-                    || ( this._CheckIsAvailable && ZbiOfNextPlayerToInspect == _IndexOfLastPlayerToStartChecking ) ) 
+                int IndexOfNextPlayerToInspect = (currentPlayer + 1 + i) % Participants.Count;
+                if ( IndexOfNextPlayerToInspect == _IndexOfLastPlayerToRaise 
+                    || ( this._CheckIsAvailable && IndexOfNextPlayerToInspect == _IndexOfLastPlayerToStartChecking ) ) 
                 {
                     // Have got back round to last player who raised or started a round of checking, so this is the end of the round 
                     return -1; 
                 }
-                if ( Participants[ZbiOfNextPlayerToInspect].HasFolded == false // i.e. player has not folded out of this hand
-                    && Participants[ZbiOfNextPlayerToInspect].HasCovered == false // i.e. player has not covered the pot
-                    && Participants[ZbiOfNextPlayerToInspect].StartedHandWithNoFunds == false // i.e. player has not yet lost all of their funds
+                if ( Participants[IndexOfNextPlayerToInspect].HasFolded == false // i.e. player has not folded out of this hand
+                    && Participants[IndexOfNextPlayerToInspect].HasCovered == false // i.e. player has not covered the pot
+                    && Participants[IndexOfNextPlayerToInspect].StartedHandWithNoFunds == false // i.e. player has not yet lost all of their funds
                 ) {
-                    return ZbiOfNextPlayerToInspect;
+                    return IndexOfNextPlayerToInspect;
                 }
             }
             return -1;
@@ -1016,8 +1008,8 @@ namespace SevenStuds.Models
             // (2) On the game, which will be used as a backup if the server process has to restart (it will pick up the cost when it next reloads the game)
             if ( ServerState.StatefulData.MapOfGameIdToDbCosts.ContainsKey(this.GameId)) {
                 ServerState.StatefulData.MapOfGameIdToDbCosts[this.GameId] += increment; // normal scenario (i.e. hashtable entry already exists)
-            Console.WriteLine("DB cost for game id '{0}' increased by {1} to {2} due to {3}\n", 
-                this.GameId, increment, ServerState.StatefulData.MapOfGameIdToDbCosts[this.GameId], reason);
+            // Console.WriteLine("DB cost for game id '{0}' increased by {1} to {2} due to {3}\n", 
+            //     this.GameId, increment, ServerState.StatefulData.MapOfGameIdToDbCosts[this.GameId], reason);
             }
             else {
                 if ( this.AccumulatedDbCost > 0 ) {
@@ -1034,8 +1026,8 @@ namespace SevenStuds.Models
                 else {
                     // This is the first record of a database cost for this game
                     ServerState.StatefulData.MapOfGameIdToDbCosts.Add(this.GameId, increment);
-                    Console.WriteLine("DB cost for game id '{0}' initialised to {1} due to {2}\n", 
-                    this.GameId, ServerState.StatefulData.MapOfGameIdToDbCosts[this.GameId], reason);                    
+                    // Console.WriteLine("DB cost for game id '{0}' initialised to {1} due to {2}\n", 
+                    //     this.GameId, ServerState.StatefulData.MapOfGameIdToDbCosts[this.GameId], reason);                    
                 }
             }
             // Finally, ensure that the new total recorded on the server is reflected back on the game

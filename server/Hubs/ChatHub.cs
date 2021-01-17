@@ -166,6 +166,7 @@ namespace SevenStuds.Hubs
             foreach ( string playerName in replayContext.playersInOrderAtStartOfGame ) {
                 Participant newPlayer = new Participant(playerName);
                 newPlayer.IsGameAdministrator = ( playerName == replayContext.administrator ); 
+                newPlayer.IntendsToPlayBlindInNextHand = replayContext.playersStartingBlind.Contains(playerName);
                 replayGame.Participants.Add(newPlayer);
             }
             replayGame.SetActionAvailabilityBasedOnCurrentPlayer(); // Ensures the initial selection of available actions is set

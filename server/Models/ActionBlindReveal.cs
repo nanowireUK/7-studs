@@ -17,7 +17,7 @@ namespace SevenStuds.Models
             // Note that there is no change to the internal (i.e. game state) view of the blind player's face-up and face-down cards
             // (the hiding of the blind player's face-down cards from himself is managed purely in his player-centric view of the game)
             
-            G.RecordLastEvent(this.UserName + " revealed their blind cards");
+            G.RecordLastEvent(this.UserName + " revealed their blind cards and is no longer player blind");
             G.Participants[this.PlayerIndex].IsPlayingBlindInCurrentHand = false;
             G.Participants[this.PlayerIndex].RebuildHandSummaries(G); // To enable ex-blind player to see an evaluation of his complete hand
 

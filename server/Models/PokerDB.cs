@@ -55,8 +55,12 @@ namespace SevenStuds.Models
             if ( dbExists == false ) { return 0; }
 
             List<string> players = new List<string>();
+            List<string> blindPlayers = new List<string>();
             foreach ( Participant p in g.Participants ) {
                 players.Add(p.Name);
+                if ( p.IsPlayingBlindInCurrentHand ) {
+                    blindPlayers.Add(p.Name);
+                }
             }
 
             DocOfTypeGameHeader gameHeader = new DocOfTypeGameHeader
@@ -69,6 +73,7 @@ namespace SevenStuds.Models
                 startTimeUtc = g.StartTimeUTC,
                 endTimeUtc = DateTimeOffset.MaxValue, // should be set at end of game
                 playersInOrderAtStartOfGame = players,
+                playersStartingBlind = blindPlayers,
                 id = "GameHeader-" + 0               
             };
 
@@ -77,8 +82,8 @@ namespace SevenStuds.Models
                 new PartitionKey(gameHeader.docGameId));
 
             // Note that after creating the item, we can access the body of the item with the Resource property off the ItemResponse. We can also access the RequestCharge property to see the amount of RUs consumed on this request.
-            Console.WriteLine("Created GameHeader in database with id: {0} Operation consumed {1} RUs. Game id = {2}.\n", 
-                dbResponse.Resource.id, dbResponse.RequestCharge, dbResponse.Resource.docGameId);
+            // Console.WriteLine("Created GameHeader in database with id: {0} Operation consumed {1} RUs. Game id = {2}.\n", 
+            //     dbResponse.Resource.id, dbResponse.RequestCharge, dbResponse.Resource.docGameId);
             this.ServerTotalConsumedRUs += dbResponse.RequestCharge; // Add this to our total
             return dbResponse.RequestCharge;
         }
@@ -107,8 +112,8 @@ namespace SevenStuds.Models
                 new PartitionKey(gameLogAction.docGameId));
 
             // Note that after creating the item, we can access the body of the item with the Resource property off the ItemResponse. We can also access the RequestCharge property to see the amount of RUs consumed on this request.
-            Console.WriteLine("Created GameLogAction item in database with id: {0} Operation consumed {1} RUs. Game id = {2}.\n", 
-                dbResponse.Resource.id, dbResponse.RequestCharge, dbResponse.Resource.docGameId);
+            // Console.WriteLine("Created GameLogAction item in database with id: {0} Operation consumed {1} RUs. Game id = {2}.\n", 
+            //     dbResponse.Resource.id, dbResponse.RequestCharge, dbResponse.Resource.docGameId);
             this.ServerTotalConsumedRUs += dbResponse.RequestCharge; // Add this to our total
             return dbResponse.RequestCharge;
         }
@@ -142,8 +147,8 @@ namespace SevenStuds.Models
                 details, 
                 new PartitionKey(details.docGameId));
             // Note that after creating the item, we can access the body of the item with the Resource property off the ItemResponse. We can also access the RequestCharge property to see the amount of RUs consumed on this request.
-            Console.WriteLine("Created GameLogAction item in database with id: {0} Operation consumed {1} RUs. Game id = {2}.\n", 
-                dbResponse.Resource.id, dbResponse.RequestCharge, dbResponse.Resource.docGameId);
+            // Console.WriteLine("Created GameLogAction item in database with id: {0} Operation consumed {1} RUs. Game id = {2}.\n", 
+            //     dbResponse.Resource.id, dbResponse.RequestCharge, dbResponse.Resource.docGameId);
             this.ServerTotalConsumedRUs += dbResponse.RequestCharge; // Add this to our total
             return dbResponse.RequestCharge;
         }  
@@ -171,8 +176,8 @@ namespace SevenStuds.Models
                 new PartitionKey(gameState.docGameId));
 
             // Note that after upserting the item, we can access the body of the item with the Resource property off the ItemResponse. We can also access the RequestCharge property to see the amount of RUs consumed on this request.
-            Console.WriteLine("Upserted GameState item in database with id: {0} Operation consumed {1} RUs. Game id = {2}.\n", 
-                dbResponse.Resource.id, dbResponse.RequestCharge, dbResponse.Resource.docGameId);
+            // Console.WriteLine("Upserted GameState item in database with id: {0} Operation consumed {1} RUs. Game id = {2}.\n", 
+            //     dbResponse.Resource.id, dbResponse.RequestCharge, dbResponse.Resource.docGameId);
             this.ServerTotalConsumedRUs += dbResponse.RequestCharge; // Add this to our total
             return dbResponse.RequestCharge;
         }    
@@ -190,8 +195,8 @@ namespace SevenStuds.Models
                 // Read the item. We can access the body of the item with the Resource property off the ItemResponse. 
                 // We can also access the RequestCharge property to see the amount of RUs consumed on this request.
                 ItemResponse<DocOfTypeGameState> dbResponse = await this.ourGamesContainer.ReadItemAsync<DocOfTypeGameState>("GameState-0", new PartitionKey(gameId));
-                Console.WriteLine("Game state for game with id '{0}' successfully loaded. Operation consumed {1} RUs.\n", 
-                    dbResponse.Resource.docGameId, dbResponse.RequestCharge);
+                // Console.WriteLine("Game state for game with id '{0}' successfully loaded. Operation consumed {1} RUs.\n", 
+                //     dbResponse.Resource.docGameId, dbResponse.RequestCharge);
                 this.ServerTotalConsumedRUs += dbResponse.RequestCharge; // Add this to our total
                 Game returnedGame = dbResponse.Resource.gameState;
                 returnedGame.GameLoadDbCost = dbResponse.RequestCharge;
@@ -257,6 +262,7 @@ namespace SevenStuds.Models
                 rebuiltLog.startTimeUtc = returnedDoc.startTimeUtc;
                 rebuiltLog.endTimeUtc = DateTimeOffset.MinValue;
                 rebuiltLog.playersInOrderAtStartOfGame = new List<string>(returnedDoc.playersInOrderAtStartOfGame);
+                rebuiltLog.playersStartingBlind = new List<string>(returnedDoc.playersStartingBlind);
             }
             catch(CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
             {
