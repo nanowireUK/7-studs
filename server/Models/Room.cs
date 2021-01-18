@@ -11,13 +11,13 @@ namespace SevenStuds.Models
         public Game ActiveGame { get; set; } // Only used when operating without a database
         public string ActiveGameId { get; set; } // Used when operating in database-backed stateless mode
         //public List<GameLog> GameLogs { get; set; } // Copies of game logs get dumped here each time a game completes in this room
-        protected List<User> RegisteredUsers { get; set; }
+        //protected List<User> RegisteredUsers { get; set; }
         public string AdHocQueryType { get; set; }
         public GameLog ReplayContext { get; set; }
         public int SavedCountOfLeavers { get; set; }
         public Room(string roomId) {
             RoomId = roomId;
-            RegisteredUsers = new List<User>();
+            //RegisteredUsers = new List<User>();
             //GameLogs = new List<GameLog>();
             RecoveryAlreadyAttempted = false;
             ActiveGame = null;

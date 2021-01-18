@@ -10,7 +10,6 @@ namespace SevenStuds.Models
         // Used to present the current status of a game 
         public string PlayerName { get; set; } 
         public PlayerStatusEnum Status { get; set; } 
-        // public Boolean IsPartOfLastGameRankingOrder { get; set; } // No means a new joiner
         public int RemainingFunds { get; set; } 
         public Boolean HasLeftRoom { get; set; } // Could be a player who was in the game or could even be a new joiner who has left again
         public DateTimeOffset UTCTimeAsTieBreaker { get; set; } 

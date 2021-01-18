@@ -1,4 +1,15 @@
 ----------------------------------------- SERVER-SIDE TO DO (higher priority first) ---------------------------------
+DONE
+- Community card fixes: clear at end of hand; expose everyone's 7th card; include 7th card in visible hand evaluation; clear 7th card visibility for next hand
+- Playing blind fix: record who starts a hand blind so that this can be allowed for in replays
+- Lobby data fix: retain details of when people when bankrupt for use in sorting lobby data
+- Database cost recording: now recorded on the game (includes everything except the cost of the latest save of the game state)
+
+
+TO DO
+- don't reload a game that is more than an hour old
+- allow for ties in the lobby order
+- remove unused code e.g. User.cs (or expand this idea further)
 - test latest changes re recording DB cost per game
 - bug fix: bankruptcy times not preserved across hands
 - bug fix: community card still visible
