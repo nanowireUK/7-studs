@@ -91,13 +91,28 @@ namespace SevenStuds.Models
                     if (a == 0)
                         a = y.UTCTimeAsTieBreaker.CompareTo(x.UTCTimeAsTieBreaker) * y.DateComparisonModifier;
 
-                    // If both players are inseparable even on date, use their names as a random time breaker (probably need to do this better)
+                    // If both players are inseparable even on date, use their names as a random time breaker (ties will be recognised after sorting is complete)
                     if (a == 0)
                         a = x.PlayerName.CompareTo(y.PlayerName);  
 
                     return a;
                 }
             );
+            // Now that the list is sorted, note each player's relative positions on the leader board (if they are on it)
+            for ( int i = 0; i < result.Count; i++ ) {
+                LobbyDataCurrentGame p = result[i];
+                if ( p.PriorityOrderForLobbyData == 5 ) {
+                    // Player is on the leaderboard, their position will be as is unless their situation is identical to the player above them,
+                    // in which case they will inherit that position (which may itself have been inherited in the case of multiple-way ties)
+                    p.LeaderBoardPositionAllowingForTies = i+1; 
+                    if ( i > 0 ) {
+                        if ( p.RemainingFunds == result[i-1].RemainingFunds && p.UTCTimeAsTieBreaker == result[i-1].UTCTimeAsTieBreaker ) {
+                            // Player are tied on funds (and also on bankruptcy date, although this should be null)
+                            p.LeaderBoardPositionAllowingForTies = result[i-1].LeaderBoardPositionAllowingForTies;
+                        }
+                    }
+                }
+            }
             return result;
         }    
     }
