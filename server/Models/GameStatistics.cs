@@ -15,9 +15,9 @@ namespace SevenStuds.Models
             this.UpdateStatistics(g); // initial population of values
         }
         public void UpdateStatistics(Game g) {
-            timeNowUtc = DateTimeOffset.Now;
+            timeNowUtc = DateTimeOffset.UtcNow;
             startTimeUtc = g.StartTimeUTC;
-            gameMinutes = Convert.ToInt32( (DateTimeOffset.Now - g.StartTimeUTC).TotalMinutes);
+            gameMinutes = Convert.ToInt32( (DateTimeOffset.UtcNow - g.StartTimeUTC).TotalMinutes);
             handsPlayed = g.HandsPlayedIncludingCurrent;
         }
     }

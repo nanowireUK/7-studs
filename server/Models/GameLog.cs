@@ -19,7 +19,7 @@ namespace SevenStuds.Models
         public List<Deck> decks { get; set; } // Records start state of each deck used (so it can be redealt in the same order)
         public List<GameLogAction> actions { get; set; }
         public GameLog() {
-            this.startTimeUtc = DateTimeOffset.Now;
+            this.startTimeUtc = DateTimeOffset.UtcNow;
             this.playersInOrderAtStartOfGame = new List<string>();
             this.playersStartingBlind = new List<string>();
             this.actions = new List<GameLogAction>();
@@ -34,7 +34,7 @@ namespace SevenStuds.Models
         }
         public async Task LogEndOfHand(Game g) {
             // We'll only know for sure that this is the end of the overall game if someone starts a new one instead of continuing with this one
-            this.endTimeUtc = DateTimeOffset.Now;
+            this.endTimeUtc = DateTimeOffset.UtcNow;
             // Log the deck and the complete game log to the DB
             // var dbTasks = new List<Task>();
             // dbTasks.Add(ServerState.OurDB.UpsertGameLog(g));

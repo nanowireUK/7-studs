@@ -195,7 +195,7 @@ namespace SevenStuds.Hubs
                 p.IsLockedOutFollowingReplay = true;
             }
             System.Diagnostics.Debug.WriteLine("Use the game state to find each player and rejoin each of them from a separate browser using their respective rejoin codes.\n");
-            System.Diagnostics.Debug.WriteLine("Replay room is '{0}'\n", replayRoom.RoomId);
+            System.Diagnostics.Debug.WriteLine("Replay room is '" + replayRoom.RoomId + "'\n");
             // Send the results of the action according to the ResponseType and ResponseAudience on the action object
             ReplayResponse response = new ReplayResponse(replayGame);
             string resultAsJson = response.AsJson();

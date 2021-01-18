@@ -12,7 +12,7 @@ namespace SevenStuds.Models
         public DateTimeOffset LeftAtUtc { get; set; }
         public User(string userName) {
             DisplayName = userName;
-            JoinedAtUtc = DateTimeOffset.Now;
+            JoinedAtUtc = DateTimeOffset.UtcNow;
         }
     }
 }
