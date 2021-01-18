@@ -69,13 +69,23 @@ namespace SevenStuds.Models
                 // This is the normal situation where we are just reloading the game state that was saved at the end of the previous action
                 Console.WriteLine("Loading game state for game with id '{0}'.\n", r.ActiveGameId);
                 g = await OurDB.LoadGameState(r.ActiveGameId);
-                g.AddToAccumulatedDbCost("Loading game in stateless mode", g.GameLoadDbCost);
-                return g;
+                double lastMoveMinutesAgo = ( DateTimeOffset.UtcNow - g.LastSuccessfulAction ).TotalMinutes;
+                if ( lastMoveMinutesAgo <= 60 ) {
+                    // Use the returned game if the last action on it was less than an hour ago
+                    g.AddToAccumulatedDbCost("Loading game in stateless mode", g.GameLoadDbCost); // Add the cost of reloading the game to its overall cost
+                    return g;
+                }   
+                else {
+                    Console.WriteLine("Game recovered successfully but is more than an hour old, so creating new game instead\n");
+                    g = new Game(r.RoomId, 0);
+                    g.InitialiseGame(null);
+                    return g;                       
+                }   
             }
             else {
                 // Either this is a new room or there was an active game in this room but the server has been restarted and all state has been lost
                 g = await RecoverOrCreateGame(r);
-                r.RecoveryAlreadyAttempted = true; // make sure we don't try this again during the life of this server process
+                r.RecoveryAlreadyAttempted = true; // make sure we don't try this again (for this room) during the life of this server process
                 r.ActiveGameId = g.GameId;
                 Console.WriteLine("Active game id noted as '{0}'.\n", r.ActiveGameId);
                 return g;
@@ -87,14 +97,22 @@ namespace SevenStuds.Models
             Console.WriteLine("Attempting recovery of most recent game associated with room '{0}'.\n", r.RoomId);
             g = await OurDB.LoadMostRecentGameState(r.RoomId); // If there is an existing game for this room then load it
             if ( g != null ) {
-                g.AddToAccumulatedDbCost("Recovering game", g.GameLoadDbCost);
+                double lastMoveMinutesAgo = ( DateTimeOffset.UtcNow - g.LastSuccessfulAction ).TotalMinutes;
+                if ( lastMoveMinutesAgo <= 60 ) {
+                    // Use the returned game if the last action on it was less than an hour ago
+                    g.AddToAccumulatedDbCost("Recovering game", g.GameLoadDbCost); // Add the cost of reloading the game to its overall cost
+                    return g;
+                }
+                else {
+                    Console.WriteLine("Game recovered successfully but is more than an hour old, so creating new game instead\n");
+                }
             }
             else { 
                 // No previous games recorded for this room, so just create a new game
                 Console.WriteLine("No recent historical games found for room '{0}'. Creating new game.\n", r.RoomId);
-                g = new Game(r.RoomId, 0);
-                g.InitialiseGame(null);
             }
+            g = new Game(r.RoomId, 0);
+            g.InitialiseGame(null);
             return g;
         }
         public static string StringArrayAsJson(List<string> l)
