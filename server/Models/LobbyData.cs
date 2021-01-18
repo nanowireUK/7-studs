@@ -21,7 +21,7 @@ namespace SevenStuds.Models
             //    QueuingForNextGame (in which case date is joining date and an older date ranks higher in tie-breaking)
             //    Spectator (in which case date is joining date and an older date ranks higher in tie-breaking))
         
-            DateTimeOffset now = DateTimeOffset.Now;
+            DateTimeOffset now = DateTimeOffset.UtcNow;
             List<LobbyDataCurrentGame> result = new List<LobbyDataCurrentGame>();
 
             // First add all players who are still connected to the game, without worrying about the order as the list will be sorted later
@@ -34,16 +34,9 @@ namespace SevenStuds.Models
                         false, // has not left
                         // If player was already bankrupt at start of hand, use that date
                         // If they went bankrupt during the hand (by going all-in) use the date/time they went all in
-                        // (i.e. on the principle that they were the last bankrupt player to actually put all their remaining funds at risk)
-                        ( 
-                            ( p.HasBeenActiveInCurrentGame && p.UncommittedChips == 0 )
-                            ? p.AllInDateTime
-                            : (
-                                p.TimeOfBankruptcy != DateTimeOffset.MinValue 
-                                ? p.TimeOfBankruptcy 
-                                : now // catch-all for players not yet bankrupt  
-                            )
-                        )                        
+                        // (i.e. on the principle that committing your last chip to the pot means that that was the time you exposed yourself to bankruptcy)
+                        ( p.TimeOfBankruptcy != DateTimeOffset.MinValue ? p.TimeOfBankruptcy 
+                        : ( ( p.UncommittedChips == 0 && p.AllInDateTime != DateTimeOffset.MinValue ) ? p.AllInDateTime : now )) // 'now' is catch-all for players not yet bankrupt       
                     ));
                 }
             }

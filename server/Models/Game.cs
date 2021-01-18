@@ -40,9 +40,6 @@ namespace SevenStuds.Models
         public Card CommunityCard { get; set; }
         public DateTimeOffset StartTimeUTC { get; set; }
         public DateTimeOffset LastSuccessfulAction { get; set; }
-        //protected GameLog _GameLog { get; set; } // not to be exported with the game state
-        public string _ReplayRoomId; // The ID of the inner room if the current game is being used to host a replay
-        //protected GameLog _ReplayContext { get; set; } // not to be exported with the game state
         public List<LeavingRecord> LeaversLogForGame { get; set; }
         public List<List<int>> Pots { get; set; } // pot(s) built up in the current hand (over multiple rounds of betting)
         public List<Participant> Participants { get; set; } // ordered list of participants (order represents order around the table)
@@ -72,7 +69,7 @@ namespace SevenStuds.Models
         public void InitialiseGame(GameLog replayContext)
         {
             GameMode = GameModeEnum.LobbyOpen;
-            LastSuccessfulAction = DateTimeOffset.Now; // This will be updated as the game progresses but need to set a baseline here
+            LastSuccessfulAction = DateTimeOffset.UtcNow; // This will be updated as the game progresses but need to set a baseline here
             StartTimeUTC = DateTimeOffset.UtcNow; // At this point the time just represents the time the game was created
             ResetGameId(StartTimeUTC);
             SetReplayContext(replayContext);
@@ -97,21 +94,6 @@ namespace SevenStuds.Models
             SetActionAvailabilityBasedOnCurrentPlayer(); // Ensures the initial section of available actions is set
             //StartNewGameLog(); // This sets up a dummy log that will just capture joins ahead of any actual games
         }
-        // public void StartNewGameLog() {
-        //     // Initialise the game log, which will be added to as game actions take place
-        //     this._GameLog = new GameLog(); 
-        //     this._GameLog.roomId = this.RoomId;
-        //     // Log player order
-        //     this._GameLog.playersInOrderAtStartOfGame = new List<string>();
-        //     foreach ( Participant p in this.Participants ) {
-        //         this._GameLog.playersInOrderAtStartOfGame.Add(p.Name);
-        //         //System.Diagnostics.Debug.WriteLine("Logging player "+p.Name);
-        //         if ( p.IsGameAdministrator ) {
-        //             this._GameLog.administrator = p.Name; 
-        //         }
-        //     }
-        //     this.ParentRoom().GameLogs.Add(this._GameLog); // Add the game log to the history of game logs for the room
-        // }
         public void ResetGameId(DateTimeOffset startTime) {
             this.GameId = startTime.ToString("u") + " " + this.RoomId;
             this.ParentRoom().ActiveGameId = this.GameId;
@@ -636,12 +618,10 @@ namespace SevenStuds.Models
             int amountLeftToAdd = amt;
             this.Participants[playerIndex].UncommittedChips -= amt; // Reduce the player's pile of chips before adding them to the various pots
             if ( this.Participants[playerIndex].UncommittedChips == 0 && amt > 0 ) {
-                // Note the time this player went all in (as it can make a difference to the player rankings at the end)
-                this.Participants[playerIndex].AllInDateTime = DateTimeOffset.Now;
+                // Note the time this player went all in, i.e. when their uncommitted chips first drops to zero
+                // (as it can make a difference to the player rankings at the end)
+                this.Participants[playerIndex].AllInDateTime = DateTimeOffset.UtcNow;
             }
-            // if ( amountLeftToAdd > 0 ) {
-            //     AddCommentary(amountLeftToAdd +" is to be added to the pot (or pots)");
-            // }
             for ( int pot = 0; pot < Pots.Count; pot++) {
                 int myExistingContributionToThisPot = ChipsInSpecifiedPotForSpecifiedPlayer (pot, playerIndex);
                 AddCommentary("Own current contribution to pot #" + (pot+1) + " = " + myExistingContributionToThisPot);
@@ -898,10 +878,10 @@ namespace SevenStuds.Models
 
             // Identify anyone who became backrupt during the hand. 
             for (int p = 0; p < Participants.Count ; p++) {
-                DateTimeOffset now = DateTimeOffset.Now;
+                //DateTimeOffset now = DateTimeOffset.UtcNow;
                 if ( Participants[p].UncommittedChips == 0 && Participants[p].StartedHandWithNoFunds == false ) {
                     // Player is now bankrupt having been in this hand with some funds at the beginning of the hand
-                    Participants[p].TimeOfBankruptcy = now;
+                    Participants[p].TimeOfBankruptcy = Participants[p].AllInDateTime; // This is the time they committed their last chip to the pot
                 }
             }
             
@@ -1043,7 +1023,7 @@ namespace SevenStuds.Models
                 this.HandCommentary
                 );
             //this._GameLog.actions.Add(gla);
-            this.LastSuccessfulAction = DateTimeOffset.Now; 
+            this.LastSuccessfulAction = DateTimeOffset.UtcNow; 
             // Log the action to the DB
             double dbCost = await ServerState.OurDB.RecordGameLogAction(this, gla);
             return dbCost;
@@ -1085,7 +1065,7 @@ namespace SevenStuds.Models
         //     return this._GameLog.AsJson();
         // }
         public int MinutesSinceLastAction() {
-            return Convert.ToInt32( (DateTimeOffset.Now - this.LastSuccessfulAction).TotalMinutes);
+            return Convert.ToInt32( (DateTimeOffset.UtcNow - this.LastSuccessfulAction).TotalMinutes);
         }
     }
 }
