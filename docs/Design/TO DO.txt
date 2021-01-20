@@ -7,12 +7,8 @@ DONE
 - Don't allow actions on game more than 1 hour old
 
 TO DO
-- don't reload a game that is more than an hour old
 - remove unused code e.g. User.cs (or expand this idea further)
 - test latest changes re recording DB cost per game
-- bug fix: bankruptcy times not preserved across hands
-- bug fix: community card still visible
-- perhaps make community card visible in everyone's hand
 - need fanfare or colour change on end-of-hand ... not currently obvious ... perhaps colour change on beize and for winning player(s)
 - allow player to change their name
 - allow players to download a log of a game (perhaps personalised from their perspective) ... as HTML, or even PDF?

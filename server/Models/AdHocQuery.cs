@@ -17,40 +17,39 @@ namespace SevenStuds.Models
             {
                 switch (queryType.ToLower())  
                 { 
-                    case "list-vars": 
-                        // List environment variables 
-                        List<string> envVars = new List<string>();
-                        foreach (DictionaryEntry de in Environment.GetEnvironmentVariables()) {
-                            envVars.Add("Key: " + de.Key + " Value: " + de.Value);
-                        }
-                        envVars.Sort();
-                        queryResults.Add(ServerState.StringArrayAsJson(envVars));
-                        break;   
-                    case "list-games": 
-                        // List rooms with active games
-                        List<string> games = new List<string>();
-                        foreach (DictionaryEntry pair in ServerState.RoomList )
-                        {
-                            Room r = (Room) pair.Value;
-                            Game g = r.ActiveGame;
-                            games.Add(
-                                "Room:" + pair.Key 
-                                + ", Participants:" + g.Participants.Count
-                                + ", Hands:" + g.HandsPlayedIncludingCurrent
-                                + ", Last Action:" + g.LastSuccessfulAction.ToString("yyyy-MM-dd HH:mm")
-                                + " (" + g.MinutesSinceLastAction()+" Minutes Ago)"
-                                );
-                        }
-                        queryResults.Add(ServerState.StringArrayAsJson(games));
-                        break;  
+                    // case "list-vars": 
+                    //     // List environment variables 
+                    //     List<string> envVars = new List<string>();
+                    //     foreach (DictionaryEntry de in Environment.GetEnvironmentVariables()) {
+                    //         envVars.Add("Key: " + de.Key + " Value: " + de.Value);
+                    //     }
+                    //     envVars.Sort();
+                    //     queryResults.Add(ServerState.StringArrayAsJson(envVars));
+                    //     break;   
+                    // case "list-games": 
+                    //     // List rooms with active games
+                    //     List<string> games = new List<string>();
+                    //     foreach (DictionaryEntry pair in ServerState.RoomList )
+                    //     {
+                    //         Room r = (Room) pair.Value;
+                    //         Game g = r.ActiveGame;
+                    //         games.Add(
+                    //             "Room:" + pair.Key 
+                    //             + ", Participants:" + g.Participants.Count
+                    //             + ", Hands:" + g.HandsPlayedIncludingCurrent
+                    //             + ", Last Action:" + g.LastSuccessfulAction.ToString("yyyy-MM-dd HH:mm")
+                    //             + " (" + g.MinutesSinceLastAction()+" Minutes Ago)"
+                    //             );
+                    //     }
+                    //     queryResults.Add(ServerState.StringArrayAsJson(games));
+                    //     break;  
                     case "list-env": 
                         // Check if running on public server
                         if ( ServerState.AllowTestFunctions() ) {
-                            queryResults.Add("Game is running on the public server");
+                            queryResults.Add("Test functions are allowed");
                         }
                         else {
-                            queryResults.Add("Game is running on something other than the public server");
-
+                            queryResults.Add("Test functions are disallowed");
                         }
                         break;    
                     // case "list-logs":
