@@ -344,15 +344,16 @@ namespace SevenStuds.Models
             Permissions.SetAvailability(ActionEnum.Rejoin, AvailabilityEnum.AnyRegisteredPlayer); // Open up REJOIN to anyone who previously joined
             Permissions.SetAvailability(ActionEnum.Leave, AvailabilityEnum.AnyRegisteredPlayer); // Open up LEAVE to anyone who has joined
             Permissions.SetAvailability(ActionEnum.BlindIntent, AvailabilityEnum.AnyRegisteredPlayer); // Allow any registered player to toggle their intent to play blind
-            Permissions.SetAvailability(ActionEnum.AdHocQuery, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who previously joined
+            Permissions.SetAvailability(ActionEnum.AdHocQuery, AvailabilityEnum.AnyRegisteredPlayer);  
+            Permissions.SetAvailability(ActionEnum.Replay, AvailabilityEnum.AnyRegisteredPlayer); // Note: these are the 'stepping' Replay actions (main Replay is handled separately)
+
             // To not-yet-registered players
             Permissions.SetAvailability(ActionEnum.Spectate, AvailabilityEnum.AnyUnregisteredPlayer); // Open up SPECTATE at any time to anyone who has not yet joined
 
             // Add any additional commands that are only available when we are not on the public server (i.e. test features)
-            if ( ! ServerState.AllowTestFunctions() ) {
+            if ( ServerState.AllowTestFunctions() ) {
                 Permissions.SetAvailability(ActionEnum.GetState, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who previously joined
                 Permissions.SetAvailability(ActionEnum.GetLog, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who previously joined
-                Permissions.SetAvailability(ActionEnum.Replay, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who previously joined  
                 Permissions.SetAvailability(ActionEnum.GetMyState, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who previously joined
             }
                       
@@ -497,7 +498,7 @@ namespace SevenStuds.Models
                     && Participants[IndexOfNextPlayerToInspect]._VisibleHandRank < HandRankOfFirstToBet // hand is the first to be checked or is better than any checked so far
                 )
                 {
-                    IndexOfFirstToBet = IndexOfNextPlayerToInspect; // This player is still in and has a better hand 
+                    IndexOfFirstToBet = IndexOfNextPlayerToInspect; // This player is still in and has a better hand (or is the first we have checked)
                     HandRankOfFirstToBet = Participants[IndexOfFirstToBet]._VisibleHandRank;
                 }
             }
