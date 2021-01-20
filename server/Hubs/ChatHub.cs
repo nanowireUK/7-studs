@@ -211,7 +211,7 @@ namespace SevenStuds.Hubs
             // Check that game is at least 15 minutes old (i.e. 15 mins from last move)
             int minAge = 15;
             double lastMoveMinutesAgo = ( DateTimeOffset.UtcNow - gl.endTimeUtc ).TotalMinutes;
-            if ( lastMoveMinutesAgo < minAge ) {
+            if ( lastMoveMinutesAgo < minAge && ServerState.AllowTestFunctions() == false ) {
                 string msg = "Last move in game occurred "+lastMoveMinutesAgo+" minutes ago. Log is not available until "+minAge+" minutes after last move";
                 System.Diagnostics.Debug.WriteLine(msg+"\n");
                 await Clients.Caller.SendAsync("ReceiveMyGameState", "{"+msg+"}");
