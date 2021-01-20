@@ -1041,6 +1041,8 @@ namespace SevenStuds.Models
                     + ( p.StartedHandWithNoFunds ? "O" : "" )
                     + ( p.HasFolded ? "F" : "" )
                     + ( p.HasCovered ? "C" : "" )
+                    + ( p.IsPlayingBlindInCurrentHand ? "B" : "" )
+                    + ( p.IntendsToPlayBlindInNextHand ? "I" : "" )
                     + ( i == IndexOfParticipantDealingThisHand ? "D" : "" )
                     + ( p.HasDisconnected ? "X" : "" )
                     + "]"+ p.UncommittedChips + PlayersPotContributions(i)
