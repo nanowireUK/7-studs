@@ -1,4 +1,5 @@
 {
+	"notes": "16 Jan 2021 game 2. Log extracted from DB and replayed/validated successfully 19 Jan (after adding playersStartingBlind)",
 	"roomId": "1501",
 	"administrator": "John",
 	"pauseAfter": 0,
@@ -77,7 +78,7 @@
 			"UserName": "John",
 			"Parameters": null,
 			"StatusMessage": "John started the game (player order now randomised). Paul to bet",
-			"PlayerSummaries": "P[D]999(1)Ah D[]999(1)Ts A[]999(1)9h J[]999(1)7d F[]999(1)3h N[]999(1)8d P[]999(1)6d R[]999(1)Jh ",
+			"PlayerSummaries": "P[D]999(1)Ah D[]999(1)Ts A[]999(1)9h J[]999(1)7d F[B]999(1)3h N[]999(1)8d P[]999(1)6d R[]999(1)Jh ",
 			"HandCommentary": []
 		},
 		{
@@ -86,7 +87,7 @@
 			"UserName": "Paul",
 			"Parameters": null,
 			"StatusMessage": "Paul checked. Dan to bet",
-			"PlayerSummaries": "P[D]999(1)Ah D[]999(1)Ts A[]999(1)9h J[]999(1)7d F[]999(1)3h N[]999(1)8d P[]999(1)6d R[]999(1)Jh ",
+			"PlayerSummaries": "P[D]999(1)Ah D[]999(1)Ts A[]999(1)9h J[]999(1)7d F[B]999(1)3h N[]999(1)8d P[]999(1)6d R[]999(1)Jh ",
 			"HandCommentary": [
 				"Paul checked",
 				"Dan to bet"
@@ -98,7 +99,7 @@
 			"UserName": "Dan",
 			"Parameters": null,
 			"StatusMessage": "Dan checked. Andrew to bet",
-			"PlayerSummaries": "P[D]999(1)Ah D[]999(1)Ts A[]999(1)9h J[]999(1)7d F[]999(1)3h N[]999(1)8d P[]999(1)6d R[]999(1)Jh ",
+			"PlayerSummaries": "P[D]999(1)Ah D[]999(1)Ts A[]999(1)9h J[]999(1)7d F[B]999(1)3h N[]999(1)8d P[]999(1)6d R[]999(1)Jh ",
 			"HandCommentary": [
 				"Dan checked",
 				"Andrew to bet"
@@ -110,7 +111,7 @@
 			"UserName": "Andrew",
 			"Parameters": null,
 			"StatusMessage": "Andrew checked. John to bet",
-			"PlayerSummaries": "P[D]999(1)Ah D[]999(1)Ts A[]999(1)9h J[]999(1)7d F[]999(1)3h N[]999(1)8d P[]999(1)6d R[]999(1)Jh ",
+			"PlayerSummaries": "P[D]999(1)Ah D[]999(1)Ts A[]999(1)9h J[]999(1)7d F[B]999(1)3h N[]999(1)8d P[]999(1)6d R[]999(1)Jh ",
 			"HandCommentary": [
 				"Andrew checked",
 				"John to bet"
@@ -122,7 +123,7 @@
 			"UserName": "John",
 			"Parameters": null,
 			"StatusMessage": "John checked. Fabrice to bet",
-			"PlayerSummaries": "P[D]999(1)Ah D[]999(1)Ts A[]999(1)9h J[]999(1)7d F[]999(1)3h N[]999(1)8d P[]999(1)6d R[]999(1)Jh ",
+			"PlayerSummaries": "P[D]999(1)Ah D[]999(1)Ts A[]999(1)9h J[]999(1)7d F[B]999(1)3h N[]999(1)8d P[]999(1)6d R[]999(1)Jh ",
 			"HandCommentary": [
 				"John checked",
 				"Fabrice to bet"
@@ -134,7 +135,7 @@
 			"UserName": "Fabrice",
 			"Parameters": null,
 			"StatusMessage": "Fabrice checked. Nigel to bet",
-			"PlayerSummaries": "P[D]999(1)Ah D[]999(1)Ts A[]999(1)9h J[]999(1)7d F[]999(1)3h N[]999(1)8d P[]999(1)6d R[]999(1)Jh ",
+			"PlayerSummaries": "P[D]999(1)Ah D[]999(1)Ts A[]999(1)9h J[]999(1)7d F[B]999(1)3h N[]999(1)8d P[]999(1)6d R[]999(1)Jh ",
 			"HandCommentary": [
 				"Fabrice checked",
 				"Nigel to bet"
@@ -146,7 +147,7 @@
 			"UserName": "Nigel",
 			"Parameters": null,
 			"StatusMessage": "Nigel checked. Phil to bet",
-			"PlayerSummaries": "P[D]999(1)Ah D[]999(1)Ts A[]999(1)9h J[]999(1)7d F[]999(1)3h N[]999(1)8d P[]999(1)6d R[]999(1)Jh ",
+			"PlayerSummaries": "P[D]999(1)Ah D[]999(1)Ts A[]999(1)9h J[]999(1)7d F[B]999(1)3h N[]999(1)8d P[]999(1)6d R[]999(1)Jh ",
 			"HandCommentary": [
 				"Nigel checked",
 				"Phil to bet"
@@ -158,7 +159,7 @@
 			"UserName": "Phil",
 			"Parameters": null,
 			"StatusMessage": "Phil checked. Robert to bet",
-			"PlayerSummaries": "P[D]999(1)Ah D[]999(1)Ts A[]999(1)9h J[]999(1)7d F[]999(1)3h N[]999(1)8d P[]999(1)6d R[]999(1)Jh ",
+			"PlayerSummaries": "P[D]999(1)Ah D[]999(1)Ts A[]999(1)9h J[]999(1)7d F[B]999(1)3h N[]999(1)8d P[]999(1)6d R[]999(1)Jh ",
 			"HandCommentary": [
 				"Phil checked",
 				"Robert to bet"
@@ -170,7 +171,7 @@
 			"UserName": "Robert",
 			"Parameters": null,
 			"StatusMessage": "Robert checked. Started next round, Paul to bet",
-			"PlayerSummaries": "P[D]999(1)Ah4s D[]999(1)TsKd A[]999(1)9h5d J[]999(1)7dKs F[]999(1)3hTd N[]999(1)8d2s P[]999(1)6dTh R[]999(1)Jh9s ",
+			"PlayerSummaries": "P[D]999(1)Ah4s D[]999(1)TsKd A[]999(1)9h5d J[]999(1)7dKs F[B]999(1)3hTd N[]999(1)8d2s P[]999(1)6dTh R[]999(1)Jh9s ",
 			"HandCommentary": [
 				"Robert checked",
 				"Started next round, Paul to bet"
@@ -182,7 +183,7 @@
 			"UserName": "Paul",
 			"Parameters": null,
 			"StatusMessage": "Paul checked. Dan to bet",
-			"PlayerSummaries": "P[D]999(1)Ah4s D[]999(1)TsKd A[]999(1)9h5d J[]999(1)7dKs F[]999(1)3hTd N[]999(1)8d2s P[]999(1)6dTh R[]999(1)Jh9s ",
+			"PlayerSummaries": "P[D]999(1)Ah4s D[]999(1)TsKd A[]999(1)9h5d J[]999(1)7dKs F[B]999(1)3hTd N[]999(1)8d2s P[]999(1)6dTh R[]999(1)Jh9s ",
 			"HandCommentary": [
 				"Paul checked",
 				"Dan to bet"
@@ -194,7 +195,7 @@
 			"UserName": "Dan",
 			"Parameters": null,
 			"StatusMessage": "Dan checked. Andrew to bet",
-			"PlayerSummaries": "P[D]999(1)Ah4s D[]999(1)TsKd A[]999(1)9h5d J[]999(1)7dKs F[]999(1)3hTd N[]999(1)8d2s P[]999(1)6dTh R[]999(1)Jh9s ",
+			"PlayerSummaries": "P[D]999(1)Ah4s D[]999(1)TsKd A[]999(1)9h5d J[]999(1)7dKs F[B]999(1)3hTd N[]999(1)8d2s P[]999(1)6dTh R[]999(1)Jh9s ",
 			"HandCommentary": [
 				"Dan checked",
 				"Andrew to bet"
@@ -206,7 +207,7 @@
 			"UserName": "Andrew",
 			"Parameters": null,
 			"StatusMessage": "Andrew checked. John to bet",
-			"PlayerSummaries": "P[D]999(1)Ah4s D[]999(1)TsKd A[]999(1)9h5d J[]999(1)7dKs F[]999(1)3hTd N[]999(1)8d2s P[]999(1)6dTh R[]999(1)Jh9s ",
+			"PlayerSummaries": "P[D]999(1)Ah4s D[]999(1)TsKd A[]999(1)9h5d J[]999(1)7dKs F[B]999(1)3hTd N[]999(1)8d2s P[]999(1)6dTh R[]999(1)Jh9s ",
 			"HandCommentary": [
 				"Andrew checked",
 				"John to bet"
@@ -218,7 +219,7 @@
 			"UserName": "John",
 			"Parameters": "25",
 			"StatusMessage": "John raised by 25. Fabrice to bet",
-			"PlayerSummaries": "P[D]999(1)Ah4s D[]999(1)TsKd A[]999(1)9h5d J[]974(26)7dKs F[]999(1)3hTd N[]999(1)8d2s P[]999(1)6dTh R[]999(1)Jh9s ",
+			"PlayerSummaries": "P[D]999(1)Ah4s D[]999(1)TsKd A[]999(1)9h5d J[]974(26)7dKs F[B]999(1)3hTd N[]999(1)8d2s P[]999(1)6dTh R[]999(1)Jh9s ",
 			"HandCommentary": [
 				"John raised by 25",
 				"Fabrice to bet"

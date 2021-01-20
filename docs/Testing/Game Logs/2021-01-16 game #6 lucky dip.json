@@ -1,5 +1,6 @@
 {
 	"roomId": "1501",
+	"notes": "16 Jan 2021 lucky dip. Log extracted from DB and replayed/validated successfully 20 Jan",
 	"administrator": "John",
 	"pauseAfter": 0,
 	"indexOfLastReplayedAction": -1,
