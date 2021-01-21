@@ -1,5 +1,6 @@
 {
 	"roomId": "1229",
+	"notes": "29 Dec 2020 game 5 (lucky dip). Original format log replayed, re-extracted and validated successfully 21 Jan",
 	"administrator": "Robert",
 	"pauseAfter": 0,
 	"indexOfLastReplayedAction": -1,
@@ -14,6 +15,14 @@
 		"Paul",
 		"Fabrice",
 		"Andrew"
+	],
+	"playersStartingBlind": [],
+	"decks": [
+		{
+			"CardList": "6d4dQdTcQc6hKh2s4cJdAh4h4sAsJc9d5h6s7sTd7d6c9c2h9hTh5c3dKcQh3h3s9s2c2d7c8c5sJsQsJhAc3c7hTs5dKdAd8s8dKs8h",
+			"DeckNumber": 1,
+			"Cards": null
+		}
 	],
 	"actions": [
 		{
@@ -403,7 +412,7 @@
 			"UserName": "Andrew",
 			"Parameters": null,
 			"StatusMessage": "Andrew checked. Started next round, Robert to bet",
-			"PlayerSummaries": "R[D]0(1000)Qd9h9sJh D[]0(1000)6hTh2cAc J[]0(1000)4c5c2d3c P[]0(1000)4h3d7c7h J[]0(1000)JcKc8cTs P[]0(1000)6sQh5s5d F[]0(1000)7d3hJsKd A[]0(1000)2h3sQsAd ",
+			"PlayerSummaries": "R[D]0(1000)Qd9h9sJh8s D[]0(1000)6hTh2cAc8s J[]0(1000)4c5c2d3c8s P[]0(1000)4h3d7c7h8s J[]0(1000)JcKc8cTs8s P[]0(1000)6sQh5s5d8s F[]0(1000)7d3hJsKd8s A[]0(1000)2h3sQsAd8s ",
 			"HandCommentary": [
 				"Andrew checked",
 				"Started next round, Robert to bet"
@@ -415,7 +424,7 @@
 			"UserName": "Robert",
 			"Parameters": null,
 			"StatusMessage": "Robert checked. Dan to bet",
-			"PlayerSummaries": "R[D]0(1000)Qd9h9sJh D[]0(1000)6hTh2cAc J[]0(1000)4c5c2d3c P[]0(1000)4h3d7c7h J[]0(1000)JcKc8cTs P[]0(1000)6sQh5s5d F[]0(1000)7d3hJsKd A[]0(1000)2h3sQsAd ",
+			"PlayerSummaries": "R[D]0(1000)Qd9h9sJh8s D[]0(1000)6hTh2cAc8s J[]0(1000)4c5c2d3c8s P[]0(1000)4h3d7c7h8s J[]0(1000)JcKc8cTs8s P[]0(1000)6sQh5s5d8s F[]0(1000)7d3hJsKd8s A[]0(1000)2h3sQsAd8s ",
 			"HandCommentary": [
 				"Robert checked",
 				"Dan to bet"
@@ -427,7 +436,7 @@
 			"UserName": "Dan",
 			"Parameters": null,
 			"StatusMessage": "Dan checked. John to bet",
-			"PlayerSummaries": "R[D]0(1000)Qd9h9sJh D[]0(1000)6hTh2cAc J[]0(1000)4c5c2d3c P[]0(1000)4h3d7c7h J[]0(1000)JcKc8cTs P[]0(1000)6sQh5s5d F[]0(1000)7d3hJsKd A[]0(1000)2h3sQsAd ",
+			"PlayerSummaries": "R[D]0(1000)Qd9h9sJh8s D[]0(1000)6hTh2cAc8s J[]0(1000)4c5c2d3c8s P[]0(1000)4h3d7c7h8s J[]0(1000)JcKc8cTs8s P[]0(1000)6sQh5s5d8s F[]0(1000)7d3hJsKd8s A[]0(1000)2h3sQsAd8s ",
 			"HandCommentary": [
 				"Dan checked",
 				"John to bet"
@@ -439,7 +448,7 @@
 			"UserName": "John",
 			"Parameters": null,
 			"StatusMessage": "John checked. Phil to bet",
-			"PlayerSummaries": "R[D]0(1000)Qd9h9sJh D[]0(1000)6hTh2cAc J[]0(1000)4c5c2d3c P[]0(1000)4h3d7c7h J[]0(1000)JcKc8cTs P[]0(1000)6sQh5s5d F[]0(1000)7d3hJsKd A[]0(1000)2h3sQsAd ",
+			"PlayerSummaries": "R[D]0(1000)Qd9h9sJh8s D[]0(1000)6hTh2cAc8s J[]0(1000)4c5c2d3c8s P[]0(1000)4h3d7c7h8s J[]0(1000)JcKc8cTs8s P[]0(1000)6sQh5s5d8s F[]0(1000)7d3hJsKd8s A[]0(1000)2h3sQsAd8s ",
 			"HandCommentary": [
 				"John checked",
 				"Phil to bet"
@@ -451,7 +460,7 @@
 			"UserName": "Phil",
 			"Parameters": null,
 			"StatusMessage": "Phil checked. Jake to bet",
-			"PlayerSummaries": "R[D]0(1000)Qd9h9sJh D[]0(1000)6hTh2cAc J[]0(1000)4c5c2d3c P[]0(1000)4h3d7c7h J[]0(1000)JcKc8cTs P[]0(1000)6sQh5s5d F[]0(1000)7d3hJsKd A[]0(1000)2h3sQsAd ",
+			"PlayerSummaries": "R[D]0(1000)Qd9h9sJh8s D[]0(1000)6hTh2cAc8s J[]0(1000)4c5c2d3c8s P[]0(1000)4h3d7c7h8s J[]0(1000)JcKc8cTs8s P[]0(1000)6sQh5s5d8s F[]0(1000)7d3hJsKd8s A[]0(1000)2h3sQsAd8s ",
 			"HandCommentary": [
 				"Phil checked",
 				"Jake to bet"
@@ -463,7 +472,7 @@
 			"UserName": "Jake",
 			"Parameters": null,
 			"StatusMessage": "Jake checked. Paul to bet",
-			"PlayerSummaries": "R[D]0(1000)Qd9h9sJh D[]0(1000)6hTh2cAc J[]0(1000)4c5c2d3c P[]0(1000)4h3d7c7h J[]0(1000)JcKc8cTs P[]0(1000)6sQh5s5d F[]0(1000)7d3hJsKd A[]0(1000)2h3sQsAd ",
+			"PlayerSummaries": "R[D]0(1000)Qd9h9sJh8s D[]0(1000)6hTh2cAc8s J[]0(1000)4c5c2d3c8s P[]0(1000)4h3d7c7h8s J[]0(1000)JcKc8cTs8s P[]0(1000)6sQh5s5d8s F[]0(1000)7d3hJsKd8s A[]0(1000)2h3sQsAd8s ",
 			"HandCommentary": [
 				"Jake checked",
 				"Paul to bet"
@@ -475,7 +484,7 @@
 			"UserName": "Paul",
 			"Parameters": null,
 			"StatusMessage": "Paul checked. Fabrice to bet",
-			"PlayerSummaries": "R[D]0(1000)Qd9h9sJh D[]0(1000)6hTh2cAc J[]0(1000)4c5c2d3c P[]0(1000)4h3d7c7h J[]0(1000)JcKc8cTs P[]0(1000)6sQh5s5d F[]0(1000)7d3hJsKd A[]0(1000)2h3sQsAd ",
+			"PlayerSummaries": "R[D]0(1000)Qd9h9sJh8s D[]0(1000)6hTh2cAc8s J[]0(1000)4c5c2d3c8s P[]0(1000)4h3d7c7h8s J[]0(1000)JcKc8cTs8s P[]0(1000)6sQh5s5d8s F[]0(1000)7d3hJsKd8s A[]0(1000)2h3sQsAd8s ",
 			"HandCommentary": [
 				"Paul checked",
 				"Fabrice to bet"
@@ -487,7 +496,7 @@
 			"UserName": "Fabrice",
 			"Parameters": null,
 			"StatusMessage": "Fabrice checked. Andrew to bet",
-			"PlayerSummaries": "R[D]0(1000)Qd9h9sJh D[]0(1000)6hTh2cAc J[]0(1000)4c5c2d3c P[]0(1000)4h3d7c7h J[]0(1000)JcKc8cTs P[]0(1000)6sQh5s5d F[]0(1000)7d3hJsKd A[]0(1000)2h3sQsAd ",
+			"PlayerSummaries": "R[D]0(1000)Qd9h9sJh8s D[]0(1000)6hTh2cAc8s J[]0(1000)4c5c2d3c8s P[]0(1000)4h3d7c7h8s J[]0(1000)JcKc8cTs8s P[]0(1000)6sQh5s5d8s F[]0(1000)7d3hJsKd8s A[]0(1000)2h3sQsAd8s ",
 			"HandCommentary": [
 				"Fabrice checked",
 				"Andrew to bet"
@@ -499,7 +508,7 @@
 			"UserName": "Andrew",
 			"Parameters": null,
 			"StatusMessage": "Andrew checked. Betting completed, proceeding to hand reveal stage, Robert to reveal (or fold)",
-			"PlayerSummaries": "R[D]0(1000)Qd9h9sJh D[]0(1000)6hTh2cAc J[]0(1000)4c5c2d3c P[]0(1000)4h3d7c7h J[]0(1000)JcKc8cTs P[]0(1000)6sQh5s5d F[]0(1000)7d3hJsKd A[]0(1000)2h3sQsAd ",
+			"PlayerSummaries": "R[D]0(1000)Qd9h9sJh8s D[]0(1000)6hTh2cAc8s J[]0(1000)4c5c2d3c8s P[]0(1000)4h3d7c7h8s J[]0(1000)JcKc8cTs8s P[]0(1000)6sQh5s5d8s F[]0(1000)7d3hJsKd8s A[]0(1000)2h3sQsAd8s ",
 			"HandCommentary": [
 				"Andrew checked",
 				"Betting completed, proceeding to hand reveal stage, Robert to reveal (or fold)"
@@ -511,7 +520,7 @@
 			"UserName": "Robert",
 			"Parameters": null,
 			"StatusMessage": "Robert revealed their hand details. Dan to reveal (or fold)",
-			"PlayerSummaries": "R[D]0(1000)Qd9h9sJh D[]0(1000)6hTh2cAc J[]0(1000)4c5c2d3c P[]0(1000)4h3d7c7h J[]0(1000)JcKc8cTs P[]0(1000)6sQh5s5d F[]0(1000)7d3hJsKd A[]0(1000)2h3sQsAd ",
+			"PlayerSummaries": "R[D]0(1000)Qd9h9sJh8s D[]0(1000)6hTh2cAc8s J[]0(1000)4c5c2d3c8s P[]0(1000)4h3d7c7h8s J[]0(1000)JcKc8cTs8s P[]0(1000)6sQh5s5d8s F[]0(1000)7d3hJsKd8s A[]0(1000)2h3sQsAd8s ",
 			"HandCommentary": [
 				"Robert revealed their hand details",
 				"Dan to reveal (or fold)"
@@ -523,7 +532,7 @@
 			"UserName": "Dan",
 			"Parameters": null,
 			"StatusMessage": "Dan revealed their hand details. John to reveal (or fold)",
-			"PlayerSummaries": "R[D]0(1000)Qd9h9sJh D[]0(1000)6hTh2cAc J[]0(1000)4c5c2d3c P[]0(1000)4h3d7c7h J[]0(1000)JcKc8cTs P[]0(1000)6sQh5s5d F[]0(1000)7d3hJsKd A[]0(1000)2h3sQsAd ",
+			"PlayerSummaries": "R[D]0(1000)Qd9h9sJh8s D[]0(1000)6hTh2cAc8s J[]0(1000)4c5c2d3c8s P[]0(1000)4h3d7c7h8s J[]0(1000)JcKc8cTs8s P[]0(1000)6sQh5s5d8s F[]0(1000)7d3hJsKd8s A[]0(1000)2h3sQsAd8s ",
 			"HandCommentary": [
 				"Dan revealed their hand details",
 				"John to reveal (or fold)"
@@ -535,7 +544,7 @@
 			"UserName": "John",
 			"Parameters": null,
 			"StatusMessage": "John revealed their hand details. Phil to reveal (or fold)",
-			"PlayerSummaries": "R[D]0(1000)Qd9h9sJh D[]0(1000)6hTh2cAc J[]0(1000)4c5c2d3c P[]0(1000)4h3d7c7h J[]0(1000)JcKc8cTs P[]0(1000)6sQh5s5d F[]0(1000)7d3hJsKd A[]0(1000)2h3sQsAd ",
+			"PlayerSummaries": "R[D]0(1000)Qd9h9sJh8s D[]0(1000)6hTh2cAc8s J[]0(1000)4c5c2d3c8s P[]0(1000)4h3d7c7h8s J[]0(1000)JcKc8cTs8s P[]0(1000)6sQh5s5d8s F[]0(1000)7d3hJsKd8s A[]0(1000)2h3sQsAd8s ",
 			"HandCommentary": [
 				"John revealed their hand details",
 				"Phil to reveal (or fold)"
@@ -547,7 +556,7 @@
 			"UserName": "Phil",
 			"Parameters": null,
 			"StatusMessage": "Phil revealed their hand details. Jake to reveal (or fold)",
-			"PlayerSummaries": "R[D]0(1000)Qd9h9sJh D[]0(1000)6hTh2cAc J[]0(1000)4c5c2d3c P[]0(1000)4h3d7c7h J[]0(1000)JcKc8cTs P[]0(1000)6sQh5s5d F[]0(1000)7d3hJsKd A[]0(1000)2h3sQsAd ",
+			"PlayerSummaries": "R[D]0(1000)Qd9h9sJh8s D[]0(1000)6hTh2cAc8s J[]0(1000)4c5c2d3c8s P[]0(1000)4h3d7c7h8s J[]0(1000)JcKc8cTs8s P[]0(1000)6sQh5s5d8s F[]0(1000)7d3hJsKd8s A[]0(1000)2h3sQsAd8s ",
 			"HandCommentary": [
 				"Phil revealed their hand details",
 				"Jake to reveal (or fold)"
@@ -559,7 +568,7 @@
 			"UserName": "Jake",
 			"Parameters": null,
 			"StatusMessage": "Jake revealed their hand details. Paul to reveal (or fold)",
-			"PlayerSummaries": "R[D]0(1000)Qd9h9sJh D[]0(1000)6hTh2cAc J[]0(1000)4c5c2d3c P[]0(1000)4h3d7c7h J[]0(1000)JcKc8cTs P[]0(1000)6sQh5s5d F[]0(1000)7d3hJsKd A[]0(1000)2h3sQsAd ",
+			"PlayerSummaries": "R[D]0(1000)Qd9h9sJh8s D[]0(1000)6hTh2cAc8s J[]0(1000)4c5c2d3c8s P[]0(1000)4h3d7c7h8s J[]0(1000)JcKc8cTs8s P[]0(1000)6sQh5s5d8s F[]0(1000)7d3hJsKd8s A[]0(1000)2h3sQsAd8s ",
 			"HandCommentary": [
 				"Jake revealed their hand details",
 				"Paul to reveal (or fold)"
@@ -571,7 +580,7 @@
 			"UserName": "Paul",
 			"Parameters": null,
 			"StatusMessage": "Paul revealed their hand details. Fabrice to reveal (or fold)",
-			"PlayerSummaries": "R[D]0(1000)Qd9h9sJh D[]0(1000)6hTh2cAc J[]0(1000)4c5c2d3c P[]0(1000)4h3d7c7h J[]0(1000)JcKc8cTs P[]0(1000)6sQh5s5d F[]0(1000)7d3hJsKd A[]0(1000)2h3sQsAd ",
+			"PlayerSummaries": "R[D]0(1000)Qd9h9sJh8s D[]0(1000)6hTh2cAc8s J[]0(1000)4c5c2d3c8s P[]0(1000)4h3d7c7h8s J[]0(1000)JcKc8cTs8s P[]0(1000)6sQh5s5d8s F[]0(1000)7d3hJsKd8s A[]0(1000)2h3sQsAd8s ",
 			"HandCommentary": [
 				"Paul revealed their hand details",
 				"Fabrice to reveal (or fold)"
@@ -583,225 +592,10 @@
 			"UserName": "Fabrice",
 			"Parameters": null,
 			"StatusMessage": "Fabrice revealed their hand details. Andrew to reveal (or fold)",
-			"PlayerSummaries": "R[D]0(1000)Qd9h9sJh D[]0(1000)6hTh2cAc J[]0(1000)4c5c2d3c P[]0(1000)4h3d7c7h J[]0(1000)JcKc8cTs P[]0(1000)6sQh5s5d F[]0(1000)7d3hJsKd A[]0(1000)2h3sQsAd ",
+			"PlayerSummaries": "R[D]0(1000)Qd9h9sJh8s D[]0(1000)6hTh2cAc8s J[]0(1000)4c5c2d3c8s P[]0(1000)4h3d7c7h8s J[]0(1000)JcKc8cTs8s P[]0(1000)6sQh5s5d8s F[]0(1000)7d3hJsKd8s A[]0(1000)2h3sQsAd8s ",
 			"HandCommentary": [
 				"Fabrice revealed their hand details",
 				"Andrew to reveal (or fold)"
-			]
-		}
-	],
-	"decks": [
-		{
-			"DeckNumber": 1,
-			"Cards": [
-				{
-					"CardValue": 17,
-					"CardSuit": 1
-				},
-				{
-					"CardValue": 37,
-					"CardSuit": 0
-				},
-				{
-					"CardValue": 17,
-					"CardSuit": 3
-				},
-				{
-					"CardValue": 17,
-					"CardSuit": 0
-				},
-				{
-					"CardValue": 41,
-					"CardSuit": 3
-				},
-				{
-					"CardValue": 37,
-					"CardSuit": 3
-				},
-				{
-					"CardValue": 7,
-					"CardSuit": 3
-				},
-				{
-					"CardValue": 23,
-					"CardSuit": 0
-				},
-				{
-					"CardValue": 13,
-					"CardSuit": 1
-				},
-				{
-					"CardValue": 3,
-					"CardSuit": 2
-				},
-				{
-					"CardValue": 41,
-					"CardSuit": 2
-				},
-				{
-					"CardValue": 29,
-					"CardSuit": 1
-				},
-				{
-					"CardValue": 31,
-					"CardSuit": 0
-				},
-				{
-					"CardValue": 29,
-					"CardSuit": 0
-				},
-				{
-					"CardValue": 7,
-					"CardSuit": 0
-				},
-				{
-					"CardValue": 17,
-					"CardSuit": 2
-				},
-				{
-					"CardValue": 13,
-					"CardSuit": 2
-				},
-				{
-					"CardValue": 2,
-					"CardSuit": 3
-				},
-				{
-					"CardValue": 2,
-					"CardSuit": 2
-				},
-				{
-					"CardValue": 19,
-					"CardSuit": 0
-				},
-				{
-					"CardValue": 3,
-					"CardSuit": 0
-				},
-				{
-					"CardValue": 3,
-					"CardSuit": 1
-				},
-				{
-					"CardValue": 31,
-					"CardSuit": 1
-				},
-				{
-					"CardValue": 37,
-					"CardSuit": 2
-				},
-				{
-					"CardValue": 3,
-					"CardSuit": 3
-				},
-				{
-					"CardValue": 7,
-					"CardSuit": 2
-				},
-				{
-					"CardValue": 23,
-					"CardSuit": 1
-				},
-				{
-					"CardValue": 19,
-					"CardSuit": 1
-				},
-				{
-					"CardValue": 2,
-					"CardSuit": 1
-				},
-				{
-					"CardValue": 19,
-					"CardSuit": 2
-				},
-				{
-					"CardValue": 11,
-					"CardSuit": 2
-				},
-				{
-					"CardValue": 13,
-					"CardSuit": 3
-				},
-				{
-					"CardValue": 23,
-					"CardSuit": 3
-				},
-				{
-					"CardValue": 13,
-					"CardSuit": 0
-				},
-				{
-					"CardValue": 11,
-					"CardSuit": 0
-				},
-				{
-					"CardValue": 7,
-					"CardSuit": 1
-				},
-				{
-					"CardValue": 19,
-					"CardSuit": 3
-				},
-				{
-					"CardValue": 29,
-					"CardSuit": 2
-				},
-				{
-					"CardValue": 41,
-					"CardSuit": 0
-				},
-				{
-					"CardValue": 5,
-					"CardSuit": 0
-				},
-				{
-					"CardValue": 5,
-					"CardSuit": 1
-				},
-				{
-					"CardValue": 41,
-					"CardSuit": 1
-				},
-				{
-					"CardValue": 29,
-					"CardSuit": 3
-				},
-				{
-					"CardValue": 5,
-					"CardSuit": 2
-				},
-				{
-					"CardValue": 2,
-					"CardSuit": 0
-				},
-				{
-					"CardValue": 37,
-					"CardSuit": 1
-				},
-				{
-					"CardValue": 11,
-					"CardSuit": 1
-				},
-				{
-					"CardValue": 31,
-					"CardSuit": 2
-				},
-				{
-					"CardValue": 23,
-					"CardSuit": 2
-				},
-				{
-					"CardValue": 31,
-					"CardSuit": 3
-				},
-				{
-					"CardValue": 5,
-					"CardSuit": 3
-				},
-				{
-					"CardValue": 11,
-					"CardSuit": 3
-				}
 			]
 		}
 	]
