@@ -15,7 +15,8 @@ namespace SevenStuds.Models
         public DateTimeOffset UTCTimeAsTieBreaker { get; set; } 
         public int DateComparisonModifier { get; set; } 
         public int PriorityOrderForLobbyData { get; set; } 
-        public int LeaderBoardPositionAllowingForTies { get; set; }
+        public int LeaderBoardPosition { get; set; }
+        public Boolean LeaderBoardPositionIsTied { get; set; }
         public LobbyDataCurrentGame (
             string argPlayerName, 
             PlayerStatusEnum argStatus,
@@ -29,7 +30,8 @@ namespace SevenStuds.Models
             this.RemainingFunds = argRemainingFunds;
             this.HasLeftRoom = argHasLeftRoom;
             this.UTCTimeAsTieBreaker = argUTCTimeAsTieBreaker;
-            this.LeaderBoardPositionAllowingForTies = Int32.MaxValue; // 1 = winner, 2/3/4etc. = places, MaxInt = not in game
+            this.LeaderBoardPosition = Int32.MaxValue; // 1 = winner, 2/3/4etc. = places, MaxInt = not in game
+            this.LeaderBoardPositionIsTied = false; 
 
             // This is all so ugly but at least it's mostly in one place :-)
 

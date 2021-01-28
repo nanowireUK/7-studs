@@ -104,11 +104,13 @@ namespace SevenStuds.Models
                 if ( p.PriorityOrderForLobbyData == 5 ) {
                     // Player is on the leaderboard, their position will be as is unless their situation is identical to the player above them,
                     // in which case they will inherit that position (which may itself have been inherited in the case of multiple-way ties)
-                    p.LeaderBoardPositionAllowingForTies = i+1; 
+                    p.LeaderBoardPosition = i+1; 
                     if ( i > 0 ) {
                         if ( p.RemainingFunds == result[i-1].RemainingFunds && p.UTCTimeAsTieBreaker == result[i-1].UTCTimeAsTieBreaker ) {
-                            // Player are tied on funds (and also on bankruptcy date, although this should be null)
-                            p.LeaderBoardPositionAllowingForTies = result[i-1].LeaderBoardPositionAllowingForTies;
+                            // Player are tied on funds (but use bankruptcy date to ensure players with zero funds are not treated as ties)
+                            p.LeaderBoardPosition = result[i-1].LeaderBoardPosition;
+                            p.LeaderBoardPositionIsTied = true;
+                            result[i-1].LeaderBoardPositionIsTied = true;
                         }
                     }
                 }
