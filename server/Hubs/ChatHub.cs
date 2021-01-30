@@ -12,8 +12,10 @@ namespace SevenStuds.Hubs
         // --------------------------------------------------------------------------------------------------
         // This is the server-side code that is called directly by the client
 
+        public async Task UserClickedCreateAndJoinRoom(string roomId, string user) { await UserClickedGameRelatedActionButton(ActionEnum.Join, roomId,  user, "-1", "RoomCannotExist"); }
+        public async Task UserClickedJoinExistingRoom(string roomId, string user) { await UserClickedGameRelatedActionButton(ActionEnum.Join, roomId,  user, "-1", "RoomMustExist"); }
+        public async Task UserClickedJoin(string roomId, string user) { await UserClickedGameRelatedActionButton(ActionEnum.Join, roomId,  user, "-1",  "RoomCanExist"); }
         public async Task UserClickedOpen(string roomId, string user, string leavers) { await UserClickedGameRelatedActionButton(ActionEnum.Open, roomId,  user, leavers,  ""); }
-        public async Task UserClickedJoin(string roomId, string user) { await UserClickedGameRelatedActionButton(ActionEnum.Join, roomId,  user, "-1",  ""); }
         public async Task UserClickedSpectate(string roomId, string user) { await UserClickedGameRelatedActionButton(ActionEnum.Spectate, roomId,  user, "-1",  ""); }
         public async Task UserClickedRejoin(string roomId, string user, string rejoinCode) { await UserClickedGameRelatedActionButton(ActionEnum.Rejoin, roomId,  user, "-1",  rejoinCode); }
         public async Task UserClickedLeave(string roomId, string user) { await UserClickedGameRelatedActionButton(ActionEnum.Leave, roomId,  user, "-1",  ""); }
@@ -41,7 +43,7 @@ namespace SevenStuds.Hubs
         {
             SevenStuds.Models.Action a = await ActionFactory.NewAction(Context.ConnectionId, actionType, roomId, user, leavers, parameters);
             Game g = await a.ProcessActionAndReturnGameReference();
-
+         
             // New connections may have been linked to players, so link those connections to the relevant player groups in SignalR
             foreach ( Participant p in g.Participants ) {
                 List<string> conns = p.GetConnectionIds();

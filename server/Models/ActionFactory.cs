@@ -15,28 +15,25 @@ namespace SevenStuds.Models
             string user,
             string leavers,
             string parameters // only used in some cases
+          
         )
         {
             if ( roomId == "" ) {
-                // User has not put in a room name ... can't do anything without that
-                // Note that the client catches this exception at the time it is processing the action method, i.e. there is no need to push anything more back to the client
-                throw new HubException("You tried to "+actionType.ToString().ToLower()+" but you did not specify a room name"); 
+                // User has not put in a room name ... can't do anything without that.
+                // Client should prevent this happening anyway, but if it does slip through, the client can catch this exception.
+                throw new HubException(SpcExceptionCodes.RoomNameIsAlwaysRequired.ToString()); 
             }
-            Room ourRoom = await ServerState.FindOrCreateRoom(roomId); // Find our room or create a new one if required
+
+            // Find our room or create a new one if required
+            Room ourRoom = await ServerState.FindOrCreateRoom(roomId); 
             Game ourGame = await ServerState.LoadOrRecoverOrCreateGame(ourRoom); 
-            // Only Join is allowable for games that do not exist
-            // Find out why I did this !!!!!!!!!!!!!!
-            // if ( ServerState.RoomExists(roomId) == false && actionType != ActionEnum.Join ) {
-            //     throw new HubException("The only allowable action against a non-existent room is to join it");
-            // }
-         
 
             switch (actionType)  
             { 
-                case ActionEnum.Open:  
-                    return new ActionOpen(connectionId, actionType, ourGame, user, leavers);
                 case ActionEnum.Join:  
-                    return new ActionJoin(connectionId, actionType, ourGame, user, leavers);                    
+                    return new ActionJoin(connectionId, actionType, ourGame, user, leavers, parameters);                     
+                case ActionEnum.Open:  
+                    return new ActionOpen(connectionId, actionType, ourGame, user, leavers);                    
                 case ActionEnum.Rejoin:  
                     return new ActionRejoin(connectionId, actionType, ourGame, user, leavers, parameters);                
                 case ActionEnum.Leave:  
@@ -74,7 +71,7 @@ namespace SevenStuds.Models
                 case ActionEnum.Replay:  
                     return new ActionReplay(connectionId, actionType, ourGame, user, leavers, parameters);                                                                                                   
                 default:  
-                    throw new System.Exception("7Studs User Exception: Unsupported action");
+                    throw new System.Exception("Social Poker Club internal error: unsupported action '"+actionType.ToString()+"'");
             }  
         }
     }

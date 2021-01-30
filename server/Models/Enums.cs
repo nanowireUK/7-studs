@@ -176,4 +176,11 @@ namespace SevenStuds.Models
         HandDescription
     }
 
+    public enum SpcExceptionCodes
+    {
+        RoomNameIsAlwaysRequired = 0,
+        RoomAlreadyExists = 1,
+        RoomDoesNotExist = 2
+    }
+
 }

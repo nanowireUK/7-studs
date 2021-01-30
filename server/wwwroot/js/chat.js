@@ -85,6 +85,28 @@ connection.start().catch(logError);
 // -------------------------------------------------------------------------------------------------------------
 // Client-side actions that we want to pass to the server
 
+// --------------- CREATE and JOIN new room
+
+document.getElementById("actionCreateAndJoinRoom").addEventListener("click",
+    function (event) {
+        var roomId = getRoomId();
+        var user = getUser();
+        connection.invoke("UserClickedCreateAndJoinRoom", roomId, user).catch(logError);
+        event.preventDefault();
+    }
+);
+
+// --------------- JOIN existing room
+
+document.getElementById("actionJoinExistingRoom").addEventListener("click",
+    function (event) {
+        var roomId = getRoomId();
+        var user = getUser();
+        connection.invoke("UserClickedJoinExistingRoom", roomId, user).catch(logError);
+        event.preventDefault();
+    }
+);
+
 // --------------- OPEN
 
 document.getElementById("actionOpen").addEventListener("click",

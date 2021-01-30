@@ -9,14 +9,21 @@ namespace SevenStuds.Models
     /// </summary>  
     public class ActionJoin : Action
     {  
-        public ActionJoin(string connectionId, ActionEnum actionType, Game ourGame, string user, string leavers) 
-            : base(connectionId, actionType, ourGame, user, "-1")
+        public ActionJoin(string connectionId, ActionEnum actionType, Game ourGame, string user, string leavers, string joinOption) 
+            : base(connectionId, actionType, ourGame, user, "-1", joinOption)
         {
         }
 
         public override async Task ProcessAction()
         {
             G.RemoveDisconnectedPlayersFromGameState(); // clear out disconnected players to possibly make way for new joiner
+
+            if ( Parameters == "RoomCannotExist" && G.Participants.Count > 0 ) {
+                throw new HubException(SpcExceptionCodes.RoomAlreadyExists.ToString());                
+            }
+            if ( Parameters == "RoomMustExist" && G.Participants.Count == 0 ) {
+                throw new HubException(SpcExceptionCodes.RoomDoesNotExist.ToString());                
+            }
 
             // First make sure the limit of 8 players is not exceeded
             if ( G.Participants.Count == 8 ) {
