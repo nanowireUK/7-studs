@@ -39,6 +39,7 @@ namespace SevenStuds.Models
         public int _IndexOfLastPlayerToRaise { get; set; } 
         public int _IndexOfLastPlayerToStartChecking { get; set; } 
         public bool _CheckIsAvailable { get; set; }
+        public bool _ContinueIsAvailable { get; set; } // Won't be allowed after changing some lobby settings 
         public int CountOfLeavers { get; set; }
         public Card CommunityCard { get; set; }
         public DateTimeOffset StartTimeUTC { get; set; }
@@ -326,6 +327,7 @@ namespace SevenStuds.Models
             _IndexOfLastPlayerToRaise = -1;
             _IndexOfLastPlayerToStartChecking = -1; 
             _CheckIsAvailable = true;
+            _ContinueIsAvailable = true;
             _CardsDealtIncludingCurrent = MaxCardsDealtSoFar();
             RoundNumberIfCardsJustDealt = _CardsDealtIncludingCurrent; // Will be cleared as soon as next action comes in
             RoundNumber = _CardsDealtIncludingCurrent; // Kept for entire round
@@ -369,7 +371,9 @@ namespace SevenStuds.Models
                 Permissions.SetAvailability(ActionEnum.Open, AvailabilityEnum.NotAvailable); // OPEN is no longer possible as lobby is already open
                 Permissions.SetAvailability(ActionEnum.Start, ( this.Participants.Count >= 2 ) ? AvailabilityEnum.AdministratorOnly : AvailabilityEnum.NotAvailable ); 
                 Permissions.SetAvailability(ActionEnum.Continue, 
-                    ( this.Participants.Count >= 2 && this.HandsPlayedIncludingCurrent > 0 ) ? AvailabilityEnum.AdministratorOnly : AvailabilityEnum.NotAvailable ); 
+                    ( this.Participants.Count >= 2 && this.HandsPlayedIncludingCurrent > 0 && _ContinueIsAvailable ) 
+                    ? AvailabilityEnum.AdministratorOnly 
+                    : AvailabilityEnum.NotAvailable ); 
                 Permissions.SetAvailability(ActionEnum.UpdateLobbySettings, AvailabilityEnum.AdministratorOnly); 
             }
             else if ( GameMode == GameModeEnum.HandsBeingRevealed ) {
