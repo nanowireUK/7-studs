@@ -35,6 +35,7 @@ namespace SevenStuds.Hubs
         public async Task UserClickedReplay(string roomId, string user, string leavers, string replayOption) { await UserClickedGameRelatedActionButton(ActionEnum.Replay, roomId,  user, leavers, replayOption ); }
         public async Task UserClickedGetMyState(string roomId, string user, string leavers) { await UserClickedGameRelatedActionButton(ActionEnum.GetMyState, roomId,  user, leavers,  ""); }
         public async Task UserClickedAdHocQuery(string roomId, string user, string leavers, string queryNum) { await UserClickedGameRelatedActionButton(ActionEnum.AdHocQuery, roomId,  user, leavers,  queryNum); }
+        public async Task UserClickedUpdateLobbySettings(string roomId, string user, string settingsAsJson) { await UserClickedGameRelatedActionButton(ActionEnum.UpdateLobbySettings, roomId,  user, "-1", settingsAsJson); }
 
         // --------------------------------------------------------------------------------------------------
         // Internal methods

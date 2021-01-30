@@ -55,7 +55,9 @@ namespace SevenStuds.Models
         GetMyState = 23,
         AdHocQuery = 24,
         Undefined = 25, // Used to indicate that no action is applicable (this is for use in 'LastActionInThisHand' when no action has been taken by the player yet)
-        ReplaySetup = 26
+        ReplaySetup = 26,
+        // Room (or lobby) level actions
+        UpdateLobbySettings = 30
     }
 
     /// <summary>
@@ -180,7 +182,10 @@ namespace SevenStuds.Models
     {
         RoomNameIsAlwaysRequired = 0,
         RoomAlreadyExists = 1,
-        RoomDoesNotExist = 2
+        RoomDoesNotExist = 2,
+        RoomNotAcceptingNewPlayers = 3,
+        RoomNotAcceptingSpectators = 4,
+        RoomIsFull = 5
     }
 
 }

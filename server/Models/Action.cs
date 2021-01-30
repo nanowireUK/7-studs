@@ -61,6 +61,15 @@ namespace SevenStuds.Models
             if ( this.UserName == "" ) {
                 throw new HubException("You tried to "+ActionType.ToString().ToLower()+" but your user name was blank"); // client catches this as part of action method, i.e. no call to separate client method required
             }
+            
+            if ( actionType == ActionEnum.Join ) {
+                if ( Parameters == "RoomCannotExist" && G.Participants.Count > 0 ) {
+                    throw new HubException(SpcExceptionCodes.RoomAlreadyExists.ToString());                
+                }
+                if ( Parameters == "RoomMustExist" && G.Participants.Count == 0 ) {
+                    throw new HubException(SpcExceptionCodes.RoomDoesNotExist.ToString());                
+                }
+            }
 
             // Check that this connection is not being used by someone with a different user name
             Participant p = ServerState.GetParticipantFromConnection(G, ConnectionId);

@@ -69,7 +69,9 @@ namespace SevenStuds.Models
                 case ActionEnum.AdHocQuery:  
                     return new ActionAdHocQuery(connectionId, actionType, ourGame, user, leavers, parameters);   
                 case ActionEnum.Replay:  
-                    return new ActionReplay(connectionId, actionType, ourGame, user, leavers, parameters);                                                                                                   
+                    return new ActionReplay(connectionId, actionType, ourGame, user, leavers, parameters);   
+                case ActionEnum.UpdateLobbySettings:  
+                    return new ActionUpdateLobbySettings(connectionId, actionType, ourGame, user, leavers, parameters);                                                                                                 
                 default:  
                     throw new System.Exception("Social Poker Club internal error: unsupported action '"+actionType.ToString()+"'");
             }  

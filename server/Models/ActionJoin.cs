@@ -18,16 +18,13 @@ namespace SevenStuds.Models
         {
             G.RemoveDisconnectedPlayersFromGameState(); // clear out disconnected players to possibly make way for new joiner
 
-            if ( Parameters == "RoomCannotExist" && G.Participants.Count > 0 ) {
-                throw new HubException(SpcExceptionCodes.RoomAlreadyExists.ToString());                
-            }
-            if ( Parameters == "RoomMustExist" && G.Participants.Count == 0 ) {
-                throw new HubException(SpcExceptionCodes.RoomDoesNotExist.ToString());                
-            }
-
             // First make sure the limit of 8 players is not exceeded
             if ( G.Participants.Count == 8 ) {
-                throw new HubException("This game already has the maximum of 8 registered players");
+                throw new HubException(SpcExceptionCodes.RoomIsFull.ToString());
+            }
+
+            if ( G.AcceptNewPlayers == false ) {
+                throw new HubException(SpcExceptionCodes.RoomNotAcceptingNewPlayers.ToString());
             }
 
             // Add player (note that the base class has already checked the player's basic eligibility for this action)

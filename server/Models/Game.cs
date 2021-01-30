@@ -18,8 +18,11 @@ namespace SevenStuds.Models
         public int ActionNumber { get; set; }
         public List<string> rejoinCodes { get; set; }
         public GameModeEnum GameMode { get; set; }
+        // Lobby settings
         public int InitialChipQuantity { get; set; }
         public int Ante { get; set; }
+        public bool AcceptNewPlayers { get; set; }
+        public bool AcceptNewSpectators { get; set; }
         // Game state 
         public string StatusMessage { get; set; }
         public string LastEvent { get; set; }
@@ -79,6 +82,8 @@ namespace SevenStuds.Models
             Spectators = new List<Spectator>(); // start with empty list of spectators
             InitialChipQuantity = 1000;
             Ante = 1;
+            AcceptNewPlayers = true;
+            AcceptNewSpectators = true;
 
             //CardPack = new Deck(true);
             HandCommentary = new List<string>();
@@ -365,6 +370,7 @@ namespace SevenStuds.Models
                 Permissions.SetAvailability(ActionEnum.Start, ( this.Participants.Count >= 2 ) ? AvailabilityEnum.AdministratorOnly : AvailabilityEnum.NotAvailable ); 
                 Permissions.SetAvailability(ActionEnum.Continue, 
                     ( this.Participants.Count >= 2 && this.HandsPlayedIncludingCurrent > 0 ) ? AvailabilityEnum.AdministratorOnly : AvailabilityEnum.NotAvailable ); 
+                Permissions.SetAvailability(ActionEnum.UpdateLobbySettings, AvailabilityEnum.AdministratorOnly); 
             }
             else if ( GameMode == GameModeEnum.HandsBeingRevealed ) {
                 // Player can only fold or reveal in this phase

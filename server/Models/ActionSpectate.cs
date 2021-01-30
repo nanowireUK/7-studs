@@ -17,6 +17,10 @@ namespace SevenStuds.Models
         {
             // Add player as a spectator, i.e. they will not have a place at the table and will only see cards that are currently face up
             // (note that the base class has already checked the player's basic eligibility for this action)
+            
+            if ( G.AcceptNewSpectators == false ) {
+                throw new HubException(SpcExceptionCodes.RoomNotAcceptingSpectators.ToString());
+            }
             Spectator p = new Spectator(this.UserName);
             G.Spectators.Add(p);
             p.NoteConnectionId(this.ConnectionId);
@@ -26,7 +30,6 @@ namespace SevenStuds.Models
             ResponseType = ActionResponseTypeEnum.PlayerCentricGameState; // Default response type for actions
             ResponseAudience =  ActionResponseAudienceEnum.AllPlayers; // Default audience for action response   
             await Task.FromResult(0); // Just to work around compiler warning "This async method lacks 'await' operators and will run synchronously"
-
         }
     }     
 }  

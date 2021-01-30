@@ -107,6 +107,18 @@ document.getElementById("actionJoinExistingRoom").addEventListener("click",
     }
 );
 
+// --------------- Update settings whilst game is in the lobby
+
+document.getElementById("actionUpdateLobbySettings").addEventListener("click",
+    function (event) {
+        var roomId = getRoomId();
+        var user = getUser();
+        var settingsAsJson = getModifiers();
+        connection.invoke("UserClickedUpdateLobbySettings", roomId, user, settingsAsJson).catch(logError);
+        event.preventDefault();
+    }
+);
+
 // --------------- OPEN
 
 document.getElementById("actionOpen").addEventListener("click",

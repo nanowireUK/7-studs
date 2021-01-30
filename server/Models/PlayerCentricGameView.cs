@@ -44,6 +44,7 @@ namespace SevenStuds.Models
         public string CommunityCard { get; set; }
         public GameStatistics GameStatistics { get; set; }
         public LobbyData LobbyData { get; set; }
+        public LobbySettings LobbySettings { get; set; }
         public List<Boolean> CardPositionIsVisible { get; set; }
         public List<List<PotResult>> MostRecentHandResult { get; set; }
         public PlayerCentricGameView(Game g, int requestedPlayerIndex, int spectatorIndex) {
@@ -72,6 +73,9 @@ namespace SevenStuds.Models
             CommunityCard = g.CommunityCard == null ? "" : g.CommunityCard.ToString(CardToStringFormatEnum.ShortCardName);
             CardPositionIsVisible = g.CardPositionIsVisible;
             LobbyData = g.LobbyData;
+
+            LobbySettings = new LobbySettings(g);
+
             GameStatistics = g.GameStatistics;
             //LastHandResult = new List<List<string>>(g.LastHandResult); // This definitely needs to be a copy
             MostRecentHandResult = new List<List<PotResult>>(g.MostRecentHandResult); // This definitely needs to be a copy
