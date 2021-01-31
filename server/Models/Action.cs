@@ -62,6 +62,7 @@ namespace SevenStuds.Models
                 throw new HubException("You tried to "+ActionType.ToString().ToLower()+" but your user name was blank"); // client catches this as part of action method, i.e. no call to separate client method required
             }
             
+            // JOIN is a bit of a special case we do some checks here ahead of the more generic permissions testing
             if ( actionType == ActionEnum.Join ) {
                 if ( Parameters == "RoomCannotExist" && G.Participants.Count > 0 ) {
                     throw new HubException(SpcExceptionCodes.RoomAlreadyExists.ToString());                
@@ -69,6 +70,9 @@ namespace SevenStuds.Models
                 if ( Parameters == "RoomMustExist" && G.Participants.Count == 0 ) {
                     throw new HubException(SpcExceptionCodes.RoomDoesNotExist.ToString());                
                 }
+                if ( G.GameMode != GameModeEnum.LobbyOpen ) {
+                    throw new HubException(SpcExceptionCodes.CannotJoinGameInProgress.ToString());
+                }                
             }
 
             // Check that this connection is not being used by someone with a different user name

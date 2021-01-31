@@ -18,7 +18,6 @@ namespace SevenStuds.Models
         {
             G.RemoveDisconnectedPlayersFromGameState(); // clear out disconnected players to possibly make way for new joiner
 
-            // First make sure the limit of 8 players is not exceeded
             if ( G.Participants.Count == 8 ) {
                 throw new HubException(SpcExceptionCodes.RoomIsFull.ToString());
             }

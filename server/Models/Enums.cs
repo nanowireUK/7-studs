@@ -185,7 +185,8 @@ namespace SevenStuds.Models
         RoomDoesNotExist = 2,
         RoomNotAcceptingNewPlayers = 3,
         RoomNotAcceptingSpectators = 4,
-        RoomIsFull = 5
+        RoomIsFull = 5,
+        CannotJoinGameInProgress = 6
     }
 
 }
