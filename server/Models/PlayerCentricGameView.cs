@@ -143,7 +143,11 @@ namespace SevenStuds.Models
                     if ( aa.Availability == AvailabilityEnum.AnyRegisteredPlayer
                         || ( aa.Availability == AvailabilityEnum.ActivePlayerOnly & IsMyTurn )
                         || ( aa.Availability == AvailabilityEnum.AdministratorOnly & IAmAdministrator )
-                        || ( aa.Availability == AvailabilityEnum.AnyUnrevealedRegisteredPlayer & g.Participants[playerIndex].IsSharingHandDetails == false )
+                        || ( 
+                            aa.Availability == AvailabilityEnum.AnyUnrevealedRegisteredPlayer 
+                            & g.Participants[playerIndex].StartedHandWithNoFunds == false 
+                            & g.Participants[playerIndex].IsSharingHandDetails == false 
+                            )
                     ) {
                         AvailableActions.Add(aa.Action.ToString());
                     }
