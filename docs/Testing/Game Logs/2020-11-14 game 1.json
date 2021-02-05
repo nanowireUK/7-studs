@@ -3,7 +3,7 @@
 	"notes2": "Replayed again on 2020-12-31 after lots of games changes -> all ran ok, and PlayerSummaries now added for comparison in further replays",
 	"administrator": "John",
 	"pauseAfter": 0,
-	"playersInOrderAtStartOfGame": [
+	"LobbySettings": { "InitialChipQuantity": 1000, "Ante": 1, "AcceptNewPlayers": true, "AcceptNewSpectators": true, "LowestCardPlacesFirstBet": false},"playersInOrderAtStartOfGame": [
 		"Jon",
 		"John",
 		"Adam",

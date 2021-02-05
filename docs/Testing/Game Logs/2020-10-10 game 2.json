@@ -3,7 +3,7 @@
 	"notes2": "tried replaying this on 2020-12-31 after fixing pair-comparison bug, but the fix has made it unreplayable ... keeping it for info only ",
 	"administrator": "Robert",
 	"pauseAfter": 0,
-	"playersInOrderAtStartOfGame": [
+	"LobbySettings": { "InitialChipQuantity": 1000, "Ante": 1, "AcceptNewPlayers": true, "AcceptNewSpectators": true, "LowestCardPlacesFirstBet": false},"playersInOrderAtStartOfGame": [
 		"Robert",
 		"Adam",
 		"Paul",

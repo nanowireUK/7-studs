@@ -6,7 +6,7 @@
 	"indexOfLastReplayedAction": -1,
 	"startTimeUtc": "2020-12-29T19:56:25.3643599+00:00",
 	"endTimeUtc": "2020-12-29T20:49:18.7827114+00:00",
-	"playersInOrderAtStartOfGame": [
+	"LobbySettings": { "InitialChipQuantity": 1000, "Ante": 1, "AcceptNewPlayers": true, "AcceptNewSpectators": true, "LowestCardPlacesFirstBet": false},"playersInOrderAtStartOfGame": [
 	  "Jake",
 	  "Phil",
 	  "Paul",
