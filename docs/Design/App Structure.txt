@@ -45,3 +45,10 @@ To recreate a single game from a game log that contains multiple games
 	- e.g. "2020-11-14 game 1.json"
 
 (reopened|started the game|started next hand|joined|continued|folded=)
+
+Game parameters:
+- Stored as fields on game itself (e.g. Ante) and so recorded as part of game status
+- Reported on LobbySettings object of PlayerCentricGameView
+- Should be part of GameHeader object (like PlayersInOrder and PlayersStartingBlind)
+- DocOfTypeGameHeader.LobbySettings is used to store/restore these LobbySettings
+  - use nullable bool/int in LobbySettings to show where no setting available
