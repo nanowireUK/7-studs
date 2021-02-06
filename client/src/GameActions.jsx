@@ -74,7 +74,7 @@ function Fold () {
 
     const clickFold = () => dispatch(fold());
 
-    return <Button label="Fold [F]" onClick={clickFold} disabled={!canFold} />
+    return <Button secondary style={{ border: '2px solid #037d50'}} label="Fold [F]" onClick={clickFold} disabled={!canFold} />
 }
 
 function RevealHand () {
@@ -106,14 +106,14 @@ function Continue () {
     const dispatch = useDispatch();
     const clickContinue = () => dispatch(proceed());
 
-    return <Button secondary label="Next Game" onClick={clickContinue} />;
+    return <Button style={{ border: '2px solid black'}} secondary label="Next Game" onClick={clickContinue} />;
 }
 
 function OpenLobby () {
     const dispatch = useDispatch();
     const clickOpenLobby = () => dispatch(open());
 
-    return <Button secondary label="Open Lobby" onClick={clickOpenLobby} />
+    return <Button style={{ border: '2px solid black'}} border secondary label="Open Lobby" onClick={clickOpenLobby} />
 }
 
 function GameActions ({ isRaising, setIsRaising, raiseAmount, setRaiseAmount, submitRaise, endRaising }) {

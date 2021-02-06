@@ -101,6 +101,25 @@ export const join = (roomId, username) => (dispatch, getState, connection) => {
         });
 };
 
+export const spectate = (roomId, username) => (dispatch, getState, connection) => {
+    dispatch(awaitingResponse(true));
+    connection
+        .invoke('UserClickedSpectate', roomId, username)
+        .then(() => {
+            window.history.pushState(null, '', window.encodeURIComponent(roomId));
+            localStorage.setItem('roomId', roomId);
+            localStorage.setItem('username', username);
+            dispatch(setUsername(username));
+            dispatch(setJoinError(null));
+        })
+        .catch(e => {
+            const [error, hubException = error] = e.toString().split('HubException: ');
+
+            if (hubException === 'RoomDoesNotExist') dispatch(setJoinError('Couldn\'t find an existing room with that name'));
+            else dispatch(setJoinError('Something went wrong'));
+        });
+};
+
 export const rejoin = (roomId, username, rejoinCode) => (dispatch, getState, connection) => {
     dispatch(awaitingResponse(true));
     connection

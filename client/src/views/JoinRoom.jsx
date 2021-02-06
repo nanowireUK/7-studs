@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { TextInput, Button, Box, Heading, Text, Card, CardHeader, CardBody, CardFooter } from 'grommet';
 
-import { join, rejoin, selectJoinError, setJoinError } from '../redux/slices/hub';
+import { join, rejoin, spectate, selectJoinError, setJoinError } from '../redux/slices/hub';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectRoomId, selectUsername } from '../redux/slices/hub';
 import BackToWelcome from '../components/BackToWelcome';
@@ -21,6 +21,16 @@ function Welcome() {
         if (!isInvalid) {
             if (rejoinCode.trim() === '') {
                 dispatch(join(roomId, playerName));
+            } else {
+                dispatch(rejoin(roomId, playerName, rejoinCode));
+            }
+        }
+    }
+
+    const submitSpectate = () => {
+        if (!isInvalid) {
+            if (rejoinCode.trim() === '') {
+                dispatch(spectate(roomId, playerName));
             } else {
                 dispatch(rejoin(roomId, playerName, rejoinCode));
             }
@@ -86,8 +96,9 @@ function Welcome() {
                     </Box>
                     {joinError ? <Text textAlign="end" color="error" size="small">{joinError}</Text> : null}
                 </CardBody>
-                <CardFooter direction="column" gap="xsmall">
-                    <Button fill primary label="Join" onClick={submitJoin} disabled={isInvalid}/>
+                <CardFooter direction="row" gap="xsmall" justify="end">
+                    <Button primary label="Join" onClick={submitJoin} disabled={isInvalid}/>
+                    <Button secondary label="Spectate" onClick={submitSpectate} disabled={isInvalid}/>
                 </CardFooter>
             </Card>
         </Box>

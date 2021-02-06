@@ -12,7 +12,5 @@ export default function RejoinCode () {
     return <Box direction="row" gap="xsmall" justify="center">
         <Text alignSelf="center" size="xlarge">{rejoinCode}</Text>
         <Tip content="Use this code to join from another device"><Box><CircleInformation size="small" /></Box></Tip>
-    </Box>
-
-    return
+    </Box>;
 }
