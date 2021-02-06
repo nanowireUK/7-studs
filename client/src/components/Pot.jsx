@@ -78,7 +78,7 @@ export default function PotArea () {
 
     if (handCompleted) {
         return (
-            <Box fill pad="medium" justify="center" align="center" round={true} background="brand" direction="column">
+            <Box fill pad="medium" justify="center" align="center" round={true} background="brand" direction="column" border={{ color: 'accent-1', size: 'medium' }}>
                 <Box zindex={100} align="center" direction="row" wrap pad="small">
                     {lastHandResult.map((potResult, potNumber) => (
                         <PotWinnings key={potNumber} contents={potResult} potNumber={potNumber} />
