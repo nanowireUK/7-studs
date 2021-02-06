@@ -2,8 +2,8 @@ import React, { useContext, useEffect } from 'react';
 
 import { Howl } from 'howler';
 
-import notificationSrc from './assets/audio/notify.mp3';
-import airhornSrc from './assets/audio/airhorn.mp3';
+import notificationSrc from '../assets/audio/notify.mp3';
+import airhornSrc from '../assets/audio/airhorn.mp3';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -12,15 +12,15 @@ import {
     leave,
     selectActionReference,
     selectIsMyTurn
-} from './redux/slices/game';
+} from '../redux/slices/game';
 
-import { selectRoomId, selectRejoinCode, mute, unmute, selectMuted } from './redux/slices/hub';
+import { selectRoomId, selectRejoinCode, mute, unmute, selectMuted } from '../redux/slices/hub';
 
-import Player from './components/Player';
+import Player from '../components/Player';
 import { Box, Grid, Text, Button, ResponsiveContext } from 'grommet';
 import { Volume, VolumeMute } from 'grommet-icons';
-import GameActions from './GameActions';
-import Pot from './components/Pot';
+import GameActions from '../GameActions';
+import Pot from '../components/Pot';
 
 function Game() {
     const players = useSelector(selectPlayers);

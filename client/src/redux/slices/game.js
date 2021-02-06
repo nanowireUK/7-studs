@@ -64,47 +64,55 @@ export const selectIntendsToPlayBlind = (state) =>
 export const selectPlayingBlind = (state) =>
     state.game !== null && state.game.IAmPlayingBlindInCurrentHand;
 
-export const selectPlayers = (state) =>
-           (state.game !== null ? state.game.PlayerViewOfParticipants : []).map(
-               (
-                   {
-                       Name: name,
-                       UncommittedChips: chips,
-                       Cards: cards,
-                       IsCurrentPlayer: isCurrentPlayer,
-                       IsMe: isMe,
-                       IsAdmin: isAdmin,
-                       IsDealer: isDealer,
-                       IsOutOfThisGame: isOutOfThisGame,
-                       HasFolded: hasFolded,
-                       VisibleHandDescription: handDescription,
-                       IsSharingHandDetails: isSharingHandDetails,
-                       GainOrLossInLastHand: gainOrLossInLastHand,
-                       HandsWon: handsWon,
-                       LastActionInThisHand: lastActionInHand,
-                       LastActionAmount: lastActionAmount,
-                       RoundNumberOfLastAction: roundNumberOfLastAction,
-                       IsPlayingBlindInCurrentHand: isPlayingBlind,
-                    },
-               ) => ({
-                   name,
-                   chips,
-                   cards,
-                   handDescription,
-                   isMe,
-                   isCurrentPlayer,
-                   isDealer,
-                   isAdmin,
-                   isOutOfThisGame,
-                   hasFolded,
-                   isSharingHandDetails,
-                   gainOrLossInLastHand,
-                   handsWon,
-                   lastActionInHand: roundNumberOfLastAction === state.game.RoundNumber ? lastActionInHand : '',
-                   lastActionAmount: roundNumberOfLastAction === state.game.RoundNumber ? lastActionAmount : 0,
-                   isPlayingBlind
-               })
-           );
+export const selectPlayers = (state) => {
+    if (state.game === null) return [];
+
+    const dealerIndex = state.game.PlayerViewOfParticipants.findIndex(({ IsDealer }) => IsDealer);
+    const playerCount = state.game.PlayerViewOfParticipants.length;
+
+    return state.game.PlayerViewOfParticipants.map(
+        (
+            {
+                Name: name,
+                UncommittedChips: chips,
+                Cards: cards,
+                IsCurrentPlayer: isCurrentPlayer,
+                IsMe: isMe,
+                IsAdmin: isAdmin,
+                IsDealer: isDealer,
+                IsOutOfThisGame: isOutOfThisGame,
+                HasFolded: hasFolded,
+                VisibleHandDescription: handDescription,
+                IsSharingHandDetails: isSharingHandDetails,
+                GainOrLossInLastHand: gainOrLossInLastHand,
+                HandsWon: handsWon,
+                LastActionInThisHand: lastActionInHand,
+                LastActionAmount: lastActionAmount,
+                RoundNumberOfLastAction: roundNumberOfLastAction,
+                IsPlayingBlindInCurrentHand: isPlayingBlind,
+             },
+             playerIndex,
+        ) => ({
+            name,
+            chips,
+            cards,
+            cardIndex: (playerIndex + dealerIndex + playerCount) % playerCount,
+            handDescription,
+            isMe,
+            isCurrentPlayer,
+            isDealer,
+            isAdmin,
+            isOutOfThisGame,
+            hasFolded,
+            isSharingHandDetails,
+            gainOrLossInLastHand,
+            handsWon,
+            lastActionInHand: roundNumberOfLastAction === state.game.RoundNumber ? lastActionInHand : '',
+            lastActionAmount: roundNumberOfLastAction === state.game.RoundNumber ? lastActionAmount : 0,
+            isPlayingBlind
+        })
+    );
+}
 
 export const selectAdminName = (state) => selectPlayers(state).find(({ isAdmin }) => isAdmin).name;
 

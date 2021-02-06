@@ -16,6 +16,7 @@ export const hubSlice = createSlice({
         leaverCount: 0,
         awaitingResponse: false,
         muted: JSON.parse(localStorage.getItem('muted')) || false,
+        joinError: null,
     },
     reducers: {
         connected: (state) => {
@@ -33,6 +34,7 @@ export const hubSlice = createSlice({
         setLeaverCount: (state, { payload }) => ({ ...state, leaverCount: payload }),
         awaitingResponse: (state, { payload } ) => ({ ...state, awaitingResponse: payload}),
         setMuted: (state, { payload} ) => ({ ...state, muted: payload }),
+        setJoinError: (state, { payload} ) => ({ ...state, joinError: payload }),
     },
 });
 
@@ -46,6 +48,7 @@ export const {
     setLeaverCount,
     awaitingResponse,
     setMuted,
+    setJoinError,
 } = hubSlice.actions;
 
 export const serverConnected = () => (dispatch, getState, connection) => {
@@ -60,17 +63,42 @@ export const serverConnected = () => (dispatch, getState, connection) => {
     }
 }
 
-export const join = (roomId, username) => (dispatch, getState, connection) => {
+export const create = (roomId, username) => (dispatch, getState, connection) => {
     dispatch(awaitingResponse(true));
     connection
-        .invoke('UserClickedJoin', roomId, username)
+        .invoke('UserClickedCreateAndJoinRoom', roomId, username)
         .then(() => {
             window.history.pushState(null, '', window.encodeURIComponent(roomId))
             localStorage.setItem('roomId', roomId);
             localStorage.setItem('username', username);
             dispatch(setUsername(username));
+            dispatch(setJoinError(null));
         })
-        .catch(console.log);
+        .catch(e => {
+            const [error, hubException = error] = e.toString().split('HubException: ');
+
+            if (hubException === 'RoomAlreadyExists') dispatch(setJoinError('Room already exists, please try a different name'));
+            else dispatch(setJoinError('Something went wrong'));
+        });
+};
+
+export const join = (roomId, username) => (dispatch, getState, connection) => {
+    dispatch(awaitingResponse(true));
+    connection
+        .invoke('UserClickedJoinExistingRoom', roomId, username)
+        .then(() => {
+            window.history.pushState(null, '', window.encodeURIComponent(roomId));
+            localStorage.setItem('roomId', roomId);
+            localStorage.setItem('username', username);
+            dispatch(setUsername(username));
+            dispatch(setJoinError(null));
+        })
+        .catch(e => {
+            const [error, hubException = error] = e.toString().split('HubException: ');
+
+            if (hubException === 'RoomDoesNotExist') dispatch(setJoinError('Couldn\'t find an existing room with that name'));
+            else dispatch(setJoinError('Something went wrong'));
+        });
 };
 
 export const rejoin = (roomId, username, rejoinCode) => (dispatch, getState, connection) => {
@@ -110,6 +138,8 @@ export const selectRejoinCode = (state) => state.hub.rejoinCode;
 export const selectConnectionState = (state) => state.hub.connectionState;
 
 export const selectMuted = (state) => state.hub.muted;
+
+export const selectJoinError = (state) => state.hub.joinError;
 
 export const mute = () => (dispatch) => {
     localStorage.setItem('muted', true);

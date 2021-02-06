@@ -1,9 +1,13 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectPlayers, selectCanDoAction, start, proceed, leave, PlayerActions, selectCurrentGameStandings, selectIsAdmin, selectAdminName, selectIntendsToPlayBlind, goBlind } from './redux/slices/game';
-import { selectUsername, selectRoomId, selectRejoinCode } from './redux/slices/hub';
-import { Text, Box, Button, Heading, Grid, Tip } from 'grommet';
-import { FormView, Hide } from 'grommet-icons';
+
+import { Text, Box, Button, Heading, Grid, Tip, Header, Card, CardHeader, CardBody, CardFooter } from 'grommet';
+import { Car, FormView, Hide } from 'grommet-icons';
+
+import RejoinCode from '../components/RejoinCode';
+import { selectPlayers, selectCanDoAction, start, proceed, leave, PlayerActions, selectCurrentGameStandings, selectIsAdmin, selectAdminName, selectIntendsToPlayBlind, goBlind } from '../redux/slices/game';
+import { selectUsername, selectRoomId } from '../redux/slices/hub';
+
 
 function ordinal(i) {
     const j = i % 10, k = i % 100;
@@ -53,7 +57,6 @@ function ToggleBlind () {
 function Lobby () {
     const players = useSelector(selectPlayers);
     const roomId = useSelector(selectRoomId);
-    const rejoinCode = useSelector(selectRejoinCode);
 
     const username = useSelector(selectUsername);
     const canStart = useSelector(selectCanDoAction(PlayerActions.START));
@@ -82,7 +85,7 @@ function Lobby () {
             <Player key={name} name={name} {...player} position={position} />
         )) : players.map(({ name }) => <Text key={name} weight={name === username ? 600 : 'normal'}>{name}</Text>);
 
-    return <div style={{ height: '100vh' }}>
+    return <Box background="brand" style={{ height: '100vh' }}>
         <Grid
             fill={true}
             areas={[
@@ -93,33 +96,29 @@ function Lobby () {
             columns={['fill']}
             rows={['xsmall', 'auto', 'xsmall']}
         >
-            <Box pad="small" gridArea="header" direction="column" background="brand">
+            <Header pad="small" gridArea="header" direction="column" background="brand">
                 <Box margin="small" alignSelf="end" alignContent="center" fill="vertical" justify="center">
-                    <Text alignSelf="center" size="large">{rejoinCode}</Text>
+                    <RejoinCode />
                     <Button color="accent-1" onClick={leaveGame}>Leave</Button>
                 </Box>
-            </Box>
+            </Header>
             <Box
                 pad="small"
                 justify="center"
                 direction="column"
-                width="800px"
+                width="500px"
                 gap="small"
                 margin="auto"
                 gridArea="lobby"
             >
-                <Box
-                    justify="center"
-                    border={true}
-                    margin="xsmall"
-                    pad="small"
-                    round="small"
-                >
-                    <Heading margin="small">{roomId}</Heading>
-                    <Box pad="medium">
+                <Card>
+                    <CardHeader>
+                        <Heading margin="none">{roomId}</Heading>
+                    </CardHeader>
+                    <CardBody>
                         {playerList}
-                    </Box>
-                    <Box direction="row" justify="between">
+                    </CardBody>
+                    <CardFooter direction="row" justify="between">
                         <ToggleBlind/>
 
                         <Box direction="row" gap="xsmall" justify="end">
@@ -129,11 +128,11 @@ function Lobby () {
                             {canContinue && <Button margin="xxsmall" primary label="Continue game"
                                 onClick={continueGame} />}
                         </Box>
-                    </Box>
-                </Box>
+                    </CardFooter>
+                </Card>
             </Box>
         </Grid>
-    </div>;
+    </Box>;
 }
 
 export default Lobby;
