@@ -14,18 +14,18 @@ import {
     selectIsMyTurn
 } from '../redux/slices/game';
 
-import { selectRoomId, selectRejoinCode, mute, unmute, selectMuted } from '../redux/slices/hub';
+import { selectRoomId, mute, unmute, selectMuted } from '../redux/slices/hub';
 
 import Player from '../components/Player';
 import { Box, Grid, Text, Button, ResponsiveContext } from 'grommet';
 import { Volume, VolumeMute } from 'grommet-icons';
 import GameActions from '../GameActions';
 import Pot from '../components/Pot';
+import RejoinCode from '../components/RejoinCode';
 
 function Game() {
     const players = useSelector(selectPlayers);
     const roomId = useSelector(selectRoomId);
-    const rejoinCode = useSelector(selectRejoinCode);
     const actionReference = useSelector(selectActionReference);
     const isMyTurn = useSelector(selectIsMyTurn);
     const isMuted = useSelector(selectMuted);
@@ -109,8 +109,8 @@ function Game() {
                     <Box direction="row" align="center">
 
                         <Box justify="center">
-                            <Text alignSelf="center" size="large">{rejoinCode}</Text>
-                            <Button color="accent-1" onClick={leaveGame}>Leave</Button>
+                            <RejoinCode />
+                            <Button onClick={leaveGame}>Leave</Button>
                         </Box>
                         <Box pad="small">{isMuted ? <VolumeMute onClick={() => dispatch(unmute())}/> : <Volume onClick={() => dispatch(mute())}/>}</Box>
                     </Box>
