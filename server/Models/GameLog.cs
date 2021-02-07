@@ -16,6 +16,7 @@ namespace SevenStuds.Models
         public DateTimeOffset endTimeUtc { get; set; }
         public List<string> playersInOrderAtStartOfGame { get; set; } // Records player names in the order that the game was played
         public List<string> playersStartingBlind { get; set; }
+        public LobbySettings lobbySettings { get; set; }        
         public List<Deck> decks { get; set; } // Records start state of each deck used (so it can be redealt in the same order)
         public List<GameLogAction> actions { get; set; }
         public GameLog() {

@@ -164,6 +164,9 @@ namespace SevenStuds.Hubs
             System.Diagnostics.Debug.WriteLine("Creating a new Room and Game in which to replay a game from supplied game log");
             replayRoom = await ServerState.FindOrCreateRoom("Replay-"+DateTimeOffset.UtcNow.ToString("yyyyMMdd-HHmmss"));
             Game replayGame = await ServerState.LoadOrRecoverOrCreateGame(replayRoom); // Should end up just creating it (no game exists in the room)
+            if ( replayContext.lobbySettings != null && replayContext.lobbySettings.UpdateGameSettings(replayGame) ) {
+                System.Diagnostics.Debug.WriteLine("Lobby settings updated from supplied game log");
+            }
             replayGame.InitialiseGame(replayContext); // Initialise the replayed game and also stores the game log statefully on the replay Room
             // Add all the players (note that the replay log should not contain join actions for the players who joined at the start of the game)
             foreach ( string playerName in replayContext.playersInOrderAtStartOfGame ) {

@@ -74,6 +74,7 @@ namespace SevenStuds.Models
                 endTimeUtc = DateTimeOffset.MaxValue, // should be set at end of game
                 playersInOrderAtStartOfGame = players,
                 playersStartingBlind = blindPlayers,
+                lobbySettings = new LobbySettings(g),
                 id = "GameHeader-" + 0               
             };
 
@@ -263,6 +264,7 @@ namespace SevenStuds.Models
                 rebuiltLog.endTimeUtc = DateTimeOffset.MinValue;
                 rebuiltLog.playersInOrderAtStartOfGame = new List<string>(returnedDoc.playersInOrderAtStartOfGame);
                 rebuiltLog.playersStartingBlind = new List<string>(returnedDoc.playersStartingBlind);
+                rebuiltLog.lobbySettings = returnedDoc.lobbySettings;
             }
             catch(CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
             {

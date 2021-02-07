@@ -23,6 +23,7 @@ namespace SevenStuds.Models
         public int Ante { get; set; }
         public bool AcceptNewPlayers { get; set; }
         public bool AcceptNewSpectators { get; set; }
+        public bool LowestCardPlacesFirstBet { get; set; }
         // Game state 
         public string StatusMessage { get; set; }
         public string LastEvent { get; set; }
@@ -64,6 +65,14 @@ namespace SevenStuds.Models
         public Game(string roomId, int gameNumber) {
             this.RoomId = roomId;
             this.GameNumber = gameNumber;
+            // These are the default game settings.
+            // They can be overridden from the lobby using an ActionUpdateLobbySettings command.
+            // An ActionReplay command can also override one or more of them from its LobbySettings section.
+            InitialChipQuantity = 1000;
+            Ante = 1;
+            AcceptNewPlayers = true;
+            AcceptNewSpectators = true;
+            LowestCardPlacesFirstBet = true; // New as of 3-Jan-21 (all historical games have been changed to have this set to false)
         }
 
         public Room ParentRoom() {
@@ -81,10 +90,6 @@ namespace SevenStuds.Models
             GameLoadDbCost = 0; // in case no load costs incurred as not working via DB connection
             Participants = new List<Participant>(); // start with empty list of participants
             Spectators = new List<Spectator>(); // start with empty list of spectators
-            InitialChipQuantity = 1000;
-            Ante = 1;
-            AcceptNewPlayers = true;
-            AcceptNewSpectators = true;
 
             //CardPack = new Deck(true);
             HandCommentary = new List<string>();
@@ -495,6 +500,7 @@ namespace SevenStuds.Models
             // Assumption: someone else other than the dealer must still be in otherwise the hand has ended. 
             // Note: the dealer could be out too.
             // Note: lower hand ranking values are better
+            // The first round (after three cards) can also be configured to make the lowest card start (including suit c/d/h/s) 
             //int IndexLeftOfDealer = (this.IndexOfParticipantDealingThisHand + 1) % Participants.Count;
             int IndexOfFirstToBet = -1;
             int HandRankOfFirstToBet = Int32.MaxValue;
@@ -505,11 +511,18 @@ namespace SevenStuds.Models
                     Participants[IndexOfNextPlayerToInspect].HasFolded == false // i.e. player has not folded out of this hand
                     && Participants[IndexOfNextPlayerToInspect].HasCovered == false // i.e. player has not covered the pot 
                     && Participants[IndexOfNextPlayerToInspect].StartedHandWithNoFunds == false // i.e. player was in the hand to start off with
-                    && Participants[IndexOfNextPlayerToInspect]._VisibleHandRank < HandRankOfFirstToBet // hand is the first to be checked or is better than any checked so far
                 )
                 {
-                    IndexOfFirstToBet = IndexOfNextPlayerToInspect; // This player is still in and has a better hand (or is the first we have checked)
-                    HandRankOfFirstToBet = Participants[IndexOfFirstToBet]._VisibleHandRank;
+                    int rankOfHandBeingTested = Participants[IndexOfNextPlayerToInspect]._VisibleHandRank; // normal situation (highest hand wins)
+                    if ( LowestCardPlacesFirstBet && RoundNumber == 3 ) {
+                        // Low cards naturally get a low ranking here, which means they 
+                        rankOfHandBeingTested = Participants[IndexOfNextPlayerToInspect].GetRankingOfThirdCard(); 
+                    }
+                    if ( rankOfHandBeingTested < HandRankOfFirstToBet ) {
+                        // Hand is the first to be checked or is better than any checked so far (where better is a lower value ranking)
+                        IndexOfFirstToBet = IndexOfNextPlayerToInspect; // This player is still in and has a better hand (or is the first we have checked)
+                        HandRankOfFirstToBet = Participants[IndexOfFirstToBet]._VisibleHandRank;
+                    }
                 }
             }
             if ( HandRankOfFirstToBet == Int32.MaxValue) {

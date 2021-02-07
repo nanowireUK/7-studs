@@ -43,7 +43,6 @@ namespace SevenStuds.Models
         public DateTimeOffset TimeOfBankruptcy { get; set; }
         public DateTimeOffset AllInDateTime{ get; set; } // note that this may not be the time they went bankrupt, i.e. they could win the hand
         private List<string> _ConnectionIds { get; set; }
-                
         [Required]
         public int _VisibleHandRank { get; set; }
         public int _FullHandRank { get; set; }
@@ -245,6 +244,17 @@ namespace SevenStuds.Models
             if ( this.IsPlayingBlindInCurrentHand ) {
                 this._HandSummary = ""; // Clear the hand summary (not sure it is used in the client anyway)
             }
-        }            
+        } 
+        public int GetRankingOfThirdCard()
+        {
+            // Return a low-to-high integer representing the relative order of the cards 2c, 2d, 2h, 2s, 3c, 3d, etc.
+            int valueRanking = (int) this.Hand[2].CardValue; // prime number from 1 to 41
+            int suitRanking = 0;
+            if ( this.Hand[2].CardSuit == SuitEnum.Clubs )    { suitRanking = 1; }
+            else if ( this.Hand[2].CardSuit == SuitEnum.Diamonds ) { suitRanking = 2; }
+            else if ( this.Hand[2].CardSuit == SuitEnum.Hearts )   { suitRanking = 3; }
+            else if ( this.Hand[2].CardSuit == SuitEnum.Spades )   { suitRanking = 4; }
+            return ( valueRanking * 10 ) + suitRanking;
+        }          
     }
 }

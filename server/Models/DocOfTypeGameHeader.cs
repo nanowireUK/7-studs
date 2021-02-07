@@ -12,6 +12,7 @@ namespace SevenStuds.Models
         public DateTimeOffset endTimeUtc { get; set; }
         public List<string> playersInOrderAtStartOfGame { get; set; }
         public List<string> playersStartingBlind { get; set; }
+        public LobbySettings lobbySettings { get; set; }
 
         public override string ToString()
         {
