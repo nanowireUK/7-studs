@@ -3,11 +3,21 @@ namespace SevenStuds.Models
     public class LobbySettings
     {
         // Used to present the current status of a game 
+
+        // Note: when adding new settings:
+        // (1) Ensure that 'Game' has the same fields and sets defaults for them
+        // (2) Ensure that 'LobbySettings' (this class) handles the new settings using the same pattern as existing ones (four different places below)
+
         public int? InitialChipQuantity { get; set; }
         public int? Ante { get; set; }
         public bool? AcceptNewPlayers { get; set; }
         public bool? AcceptNewSpectators { get; set; }
         public bool? LowestCardPlacesFirstBet { get; set; }
+        public bool? IsLimitGame { get; set; }
+        public int? LimitGameBringInAmount { get; set; }
+        public int? LimitGameSmallBet { get; set; }
+        public int? LimitGameBigBet { get; set; }
+        public int? LimitGameMaxRaises { get; set; }
         public LobbySettings ()
         {
             // This constructor is used only by the JSON deserialiser
@@ -17,6 +27,11 @@ namespace SevenStuds.Models
             AcceptNewPlayers = null;
             AcceptNewSpectators = null;
             LowestCardPlacesFirstBet = null;
+            IsLimitGame = null;
+            LimitGameBringInAmount = null;
+            LimitGameSmallBet = null;
+            LimitGameBigBet = null;
+            LimitGameMaxRaises = null;
         }
         public LobbySettings (Game g)
         {
@@ -25,6 +40,11 @@ namespace SevenStuds.Models
             AcceptNewPlayers = g.AcceptNewPlayers;
             AcceptNewSpectators = g.AcceptNewSpectators;
             LowestCardPlacesFirstBet = g.LowestCardPlacesFirstBet;
+            IsLimitGame = g.IsLimitGame;
+            LimitGameBringInAmount = g.LimitGameBringInAmount;
+            LimitGameSmallBet = g.LimitGameSmallBet;
+            LimitGameBigBet = g.LimitGameBigBet;
+            LimitGameMaxRaises = g.LimitGameMaxRaises;
         }
 
         public bool UpdateGameSettings(Game g) {
@@ -60,6 +80,31 @@ namespace SevenStuds.Models
                 g.LowestCardPlacesFirstBet = (bool) this.LowestCardPlacesFirstBet; 
                 anythingChanged = true;
             }
+            if ( this.IsLimitGame != null && this.IsLimitGame != g.IsLimitGame ) {
+                System.Diagnostics.Debug.WriteLine("Changing IsLimitGame from "+g.IsLimitGame+" to "+this.IsLimitGame);
+                g.IsLimitGame = (bool) this.IsLimitGame; 
+                anythingChanged = true;
+            }
+            if ( this.LimitGameBringInAmount != null && this.LimitGameBringInAmount != g.LimitGameBringInAmount ) {
+                System.Diagnostics.Debug.WriteLine("Changing LimitGameBringInAmount from "+g.LimitGameBringInAmount+" to "+this.LimitGameBringInAmount);
+                g.LimitGameBringInAmount = (int) this.LimitGameBringInAmount; 
+                anythingChanged = true;
+            }
+            if ( this.LimitGameSmallBet != null && this.LimitGameSmallBet != g.LimitGameSmallBet ) {
+                System.Diagnostics.Debug.WriteLine("Changing LimitGameSmallBet from "+g.LimitGameSmallBet+" to "+this.LimitGameSmallBet);
+                g.LimitGameSmallBet = (int) this.LimitGameSmallBet; 
+                anythingChanged = true;
+            }                                    
+            if ( this.LimitGameBigBet != null && this.LimitGameBigBet != g.LimitGameBigBet ) {
+                System.Diagnostics.Debug.WriteLine("Changing LimitGameBigBet from "+g.LimitGameBigBet+" to "+this.LimitGameBigBet);
+                g.LimitGameBigBet = (int) this.LimitGameBigBet; 
+                anythingChanged = true;
+            }            
+            if ( this.LimitGameMaxRaises != null && this.LimitGameMaxRaises != g.LimitGameMaxRaises ) {
+                System.Diagnostics.Debug.WriteLine("Changing LimitGameMaxRaises from "+g.LimitGameMaxRaises+" to "+this.LimitGameMaxRaises);
+                g.LimitGameMaxRaises = (int) this.LimitGameMaxRaises; 
+                anythingChanged = true;
+            }            
             return anythingChanged;
         }
     }

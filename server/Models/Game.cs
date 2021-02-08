@@ -24,6 +24,11 @@ namespace SevenStuds.Models
         public bool AcceptNewPlayers { get; set; }
         public bool AcceptNewSpectators { get; set; }
         public bool LowestCardPlacesFirstBet { get; set; }
+        public bool IsLimitGame { get; set; }
+        public int LimitGameBringInAmount { get; set; }
+        public int LimitGameSmallBet { get; set; }
+        public int LimitGameBigBet { get; set; }
+        public int LimitGameMaxRaises { get; set; }
         // Game state 
         public string StatusMessage { get; set; }
         public string LastEvent { get; set; }
@@ -41,6 +46,13 @@ namespace SevenStuds.Models
         public int _IndexOfLastPlayerToStartChecking { get; set; } 
         public bool _CheckIsAvailable { get; set; }
         public bool _ContinueIsAvailable { get; set; } // Won't be allowed after changing some lobby settings 
+        public bool _BringInBetHasBeenMade { get; set; }
+        public int _NumberOfRaisesInThisRound { get; set; }
+        public bool _SmallRaiseStillAllowable { get; set; }
+        public bool _SmallBetHasBeenCompleted { get; set; }
+        public List<int> _AllowedRaiseAmounts { get; set; }
+        public List<LimitGameRaiseOptions> _AllowedRaiseOptions { get; set; }
+        
         public int CountOfLeavers { get; set; }
         public Card CommunityCard { get; set; }
         public DateTimeOffset StartTimeUTC { get; set; }
@@ -73,6 +85,14 @@ namespace SevenStuds.Models
             AcceptNewPlayers = true;
             AcceptNewSpectators = true;
             LowestCardPlacesFirstBet = true; // New as of 3-Jan-21 (all historical games have been changed to have this set to false)
+            IsLimitGame = false; // New as of 7-Jan-21 (all historical games have been changed to have this set to false)
+            if ( IsLimitGame) {
+                InitialChipQuantity = 100; // Smaller amount just while testing
+                LimitGameBringInAmount = Ante * 2;
+                LimitGameSmallBet = Ante * 5;
+                LimitGameBigBet = Ante * 10;
+                LimitGameMaxRaises = 4;
+            }
         }
 
         public Room ParentRoom() {
@@ -336,6 +356,11 @@ namespace SevenStuds.Models
             _CardsDealtIncludingCurrent = MaxCardsDealtSoFar();
             RoundNumberIfCardsJustDealt = _CardsDealtIncludingCurrent; // Will be cleared as soon as next action comes in
             RoundNumber = _CardsDealtIncludingCurrent; // Kept for entire round
+            _NumberOfRaisesInThisRound = -1; // This means the first 'raise' (which is really just making the first full bet) will be ignored
+            _BringInBetHasBeenMade = false;   
+            _SmallRaiseStillAllowable = true;     
+            _SmallBetHasBeenCompleted = false;  
+            _AllowedRaiseAmounts = new List<int>();
             await Task.WhenAll(dbTasks); // Wait until all DB tasks have completed
             foreach (Task<double> t in dbTasks) {
                 this.AddToAccumulatedDbCost("Record deck", t.Result);
@@ -462,6 +487,11 @@ namespace SevenStuds.Models
         public void DealNextRound()
         {
             _CardsDealtIncludingCurrent += 1;
+            _NumberOfRaisesInThisRound = -1; // This means the first 'raise' (which is really just making the first full bet) will be ignored
+            _BringInBetHasBeenMade = false;
+            _SmallRaiseStillAllowable = true;   
+            _SmallBetHasBeenCompleted = false;   
+            _AllowedRaiseAmounts = new List<int>();
             RoundNumberIfCardsJustDealt = _CardsDealtIncludingCurrent; // Will be cleared as soon as next action comes in
             RoundNumber = _CardsDealtIncludingCurrent; // Kept for entire round
             CommunityCard = null;

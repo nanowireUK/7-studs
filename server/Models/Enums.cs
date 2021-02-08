@@ -189,4 +189,11 @@ namespace SevenStuds.Models
         CannotJoinGameInProgress = 6
     }
 
+    public enum LimitGameRaiseOptions
+    {
+        BringIn = 0,
+        CompleteSmallBet = 1,
+        SmallBet = 2,
+        BigBet = 3
+    }    
 }
