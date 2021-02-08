@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { Text, Box, Button, Heading, Grid, Tip, Header, Card, CardHeader, CardBody, CardFooter } from 'grommet';
-import { Car, FormView, Hide } from 'grommet-icons';
+import { Configure, FormView, Hide } from 'grommet-icons';
 
 import RejoinCode from '../components/RejoinCode';
 import { selectPlayers, selectCanDoAction, start, proceed, leave, PlayerActions, selectCurrentGameStandings, selectIsAdmin, selectAdminName, selectIntendsToPlayBlind, goBlind } from '../redux/slices/game';
 import { selectUsername, selectRoomId } from '../redux/slices/hub';
+import LobbySettings from '../components/LobbySettings';
 
 
 function ordinal(i) {
@@ -28,6 +29,8 @@ function Player ({ name, hasLeftRoom, remainingFunds, status, position }) {
         return <Box
             direction="row"
             gap="xsmall"
+            round="xsmall"
+            justify="start"
         >
             <Text color={textColor}>{inMostRecentGame ? `${ordinal(position + 1)}:` : '-'}</Text>
             <Text color={textColor} weight={isMe ? 600 : 'normal'}>{name}</Text>
@@ -50,8 +53,8 @@ function ToggleBlind () {
 
     if (!canToggleBlind) return null;
 
-    if (intendsToPlayBlind) return <Tip key="1" content="Don't play blind in next hand"><Box><Hide size="35px" onClick={clickToggleBlind} /></Box></Tip>
-    return <Tip key="2" content="Play blind in next hand"><Box><FormView size="35px" onClick={clickToggleBlind} /></Box></Tip>
+    if (intendsToPlayBlind) return <Tip key="1" content="Don't play blind in next hand"><Box><Button plain icon={<Hide size="35px" />} onClick={clickToggleBlind} /></Box></Tip>
+    return <Tip key="2" content="Play blind in next hand"><Box><Button plain icon={<FormView size="35px" />} onClick={clickToggleBlind} /></Box></Tip>
 }
 
 function Lobby () {
@@ -63,6 +66,7 @@ function Lobby () {
     const canContinue = useSelector(selectCanDoAction(PlayerActions.CONINUE));
     const isAdmin = useSelector(selectIsAdmin);
     const adminName = useSelector(selectAdminName);
+    const [settingsOpen, setSettingsOpen] = useState(true);
 
     const currentGameStandings = useSelector(selectCurrentGameStandings);
 
@@ -107,15 +111,16 @@ function Lobby () {
                 justify="center"
                 direction="column"
                 width="500px"
-                gap="small"
+                gap="xxsmall"
                 margin="auto"
                 gridArea="lobby"
             >
-                <Card>
+                <Card fill>
                     <CardHeader>
                         <Heading margin="none">{roomId}</Heading>
+                        <Button plain icon={<Configure />} onClick={() => setSettingsOpen(open => !open)}/>
                     </CardHeader>
-                    <CardBody>
+                    <CardBody gap="xsmall">
                         {playerList}
                     </CardBody>
                     <CardFooter direction="row" justify="between">
@@ -130,6 +135,7 @@ function Lobby () {
                         </Box>
                     </CardFooter>
                 </Card>
+                {settingsOpen && <LobbySettings />}
             </Box>
         </Grid>
     </Box>;

@@ -22,6 +22,7 @@ import {
 import {
     serverUrl
 } from '../../config';
+import { setLobbySettings } from '../slices/lobby';
 
 export const connection = new HubConnectionBuilder()
     .configureLogging(LogLevel.Debug)
@@ -36,13 +37,14 @@ export const connection = new HubConnectionBuilder()
 export default (store) => {
     connection.on('ReceiveMyGameState', (msg) => {
         const game = JSON.parse(msg);
-        const { MyRejoinCode, CountOfLeavers, RoomId } = game;
+        const { MyRejoinCode, CountOfLeavers, RoomId, LobbySettings } = game;
 
         localStorage.setItem('rejoinCode', MyRejoinCode);
 
         store.dispatch(setRejoinCode(MyRejoinCode));
         store.dispatch(setRoomId(RoomId));
         store.dispatch(setLeaverCount(CountOfLeavers));
+        store.dispatch(setLobbySettings(LobbySettings));
         store.dispatch(updateGame(game));
         store.dispatch(awaitingResponse(false));
     });

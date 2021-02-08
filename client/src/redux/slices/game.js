@@ -64,6 +64,8 @@ export const selectIntendsToPlayBlind = (state) =>
 export const selectPlayingBlind = (state) =>
     state.game !== null && state.game.IAmPlayingBlindInCurrentHand;
 
+export const selectRaiseOptions = (state) => state.game !== null && state.game.MyRaiseOptions;
+
 export const selectPlayers = (state) => {
     if (state.game === null) return [];
 

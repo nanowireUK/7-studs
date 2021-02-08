@@ -9,8 +9,10 @@ import {
     selectCanDoAction, selectIsAdmin,
     selectHandInProgress, selectHandCompleted, selectHandsBeingRevealed,
     selectAnte, selectMaxRaise, selectCallAmount,
-    PlayerActions, raise, proceed, check, fold, cover, call, reveal, open, selectIntendsToPlayBlind, goBlind
+    PlayerActions, raise, proceed, check, fold, cover, call, reveal, open, selectIntendsToPlayBlind, goBlind, selectRaiseOptions
 } from './redux/slices/game';
+
+import { selectIsLimitGame, selectLimitGameBigBet, selectLimitGameBringInAmount, selectLimitGameSmallBet } from './redux/slices/lobby';
 
 import { FormView, Hide } from 'grommet-icons';
 
@@ -27,6 +29,33 @@ function Raise ({ setIsRaising }) {
     const clickRaise = () => setIsRaising(true);
 
     return <Button primary label="Raise [R]" onClick={clickRaise} disabled={!canRaise} />
+}
+
+function LimitRaise ({ raiseType }) {
+    const bringIn = useSelector(selectLimitGameBringInAmount);
+    const smallBet = useSelector(selectLimitGameSmallBet);
+    const bigBet = useSelector(selectLimitGameBigBet);
+    const dispatch = useDispatch();
+
+    const completeSmallBet = smallBet - bringIn;
+
+    const clickRaise = (raiseAmount) => () => dispatch(raise(raiseAmount.toString()));
+
+    switch (raiseType) {
+        case 'BringIn':
+            return <Button primary label={`Raise ${bringIn} (Bring In)`} onClick={clickRaise(bringIn)} />;
+
+        case 'SmallBet':
+            return <Button primary label={`Raise ${smallBet} (Small Bet)`} onClick={clickRaise(smallBet)} />;
+
+        case 'BigBet':
+            return <Button primary label={`Raise ${bigBet} (Big Bet)`} onClick={clickRaise(bigBet)} />;
+
+        case 'CompleteSmallBet':
+            return <Button primary label={`Raise ${completeSmallBet} (Complete Small Bet)`} onClick={clickRaise(completeSmallBet)} />;
+        default:
+            return null;
+    }
 }
 
 function Check () {
@@ -74,7 +103,7 @@ function Fold () {
 
     const clickFold = () => dispatch(fold());
 
-    return <Button secondary style={{ border: '2px solid #037d50'}} label="Fold [F]" onClick={clickFold} disabled={!canFold} />
+    return <Button secondary style={{ border: '2px solid #037d50' }} label="Fold [F]" onClick={clickFold} disabled={!canFold} />
 }
 
 function RevealHand () {
@@ -106,14 +135,14 @@ function Continue () {
     const dispatch = useDispatch();
     const clickContinue = () => dispatch(proceed());
 
-    return <Button style={{ border: '2px solid black'}} secondary label="Next Game" onClick={clickContinue} />;
+    return <Button style={{ border: '2px solid #037d50'}} secondary label="Next Game" onClick={clickContinue} />;
 }
 
 function OpenLobby () {
     const dispatch = useDispatch();
     const clickOpenLobby = () => dispatch(open());
 
-    return <Button style={{ border: '2px solid black'}} border secondary label="Open Lobby" onClick={clickOpenLobby} />
+    return <Button style={{ border: '2px solid #037d50'}} border secondary label="Open Lobby" onClick={clickOpenLobby} />
 }
 
 function GameActions ({ isRaising, setIsRaising, raiseAmount, setRaiseAmount, submitRaise, endRaising }) {
@@ -121,6 +150,8 @@ function GameActions ({ isRaising, setIsRaising, raiseAmount, setRaiseAmount, su
     const handsBeingRevealed = useSelector(selectHandsBeingRevealed);
     const handCompleted = useSelector(selectHandCompleted);
     const isAdmin = useSelector(selectIsAdmin);
+    const isLimitGame = useSelector(selectIsLimitGame);
+    const raiseOptions = useSelector(selectRaiseOptions);
     const ante = useSelector(selectAnte);
     const maxRaise = useSelector(selectMaxRaise);
     const callAmount = useSelector(selectCallAmount);
@@ -145,7 +176,8 @@ function GameActions ({ isRaising, setIsRaising, raiseAmount, setRaiseAmount, su
         </Box>;
         return (
             <Box direction="row" gap="xsmall">
-                <Raise {...{ setIsRaising }}/>
+                {!isLimitGame && <Raise {...{ setIsRaising }}/>}
+                {isLimitGame && raiseOptions.map(option => <LimitRaise raiseType={option } />)}
                 <Check />
                 <Call callAmount={callAmount}/>
                 <Cover />
