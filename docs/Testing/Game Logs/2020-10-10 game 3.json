@@ -2,7 +2,7 @@
 	"notes": "original log from 2020-10-10 (third game), changed to conform to new Deck structure and rebuilt by running through Replay and retrieving the log from that",
   	"administrator": "Robert",
 	"pauseAfter": 0,
-	"LobbySettings": { "InitialChipQuantity": 1000, "Ante": 1, "AcceptNewPlayers": true, "AcceptNewSpectators": true, "LowestCardPlacesFirstBet": false},"playersInOrderAtStartOfGame": [
+	"lobbySettings": { "InitialChipQuantity": 1000, "Ante": 1, "AcceptNewPlayers": true, "AcceptNewSpectators": true, "LowestCardPlacesFirstBet": false},"playersInOrderAtStartOfGame": [
 		"Nigel",
 		"John",
 		"Dan",

@@ -6,7 +6,7 @@
 	"indexOfLastReplayedAction": -1,
 	"startTimeUtc": "2020-11-28T20:11:03.8064795+00:00",
 	"endTimeUtc": "2020-11-28T21:15:09.654649+00:00",
-	"LobbySettings": { "InitialChipQuantity": 1000, "Ante": 1, "AcceptNewPlayers": true, "AcceptNewSpectators": true, "LowestCardPlacesFirstBet": false},"playersInOrderAtStartOfGame": [
+	"lobbySettings": { "InitialChipQuantity": 1000, "Ante": 1, "AcceptNewPlayers": true, "AcceptNewSpectators": true, "LowestCardPlacesFirstBet": false},"playersInOrderAtStartOfGame": [
 		"Fabrice",
 		"Nigel",
 		"Paul",
