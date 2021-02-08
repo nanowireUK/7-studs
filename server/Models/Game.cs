@@ -348,7 +348,6 @@ namespace SevenStuds.Models
                     this.Pots[0][i] = 0; // Should already be 0 but setting it explicity to be clear
                 }
             }
-            this.IndexOfParticipantToTakeNextAction = GetIndexOfPlayerToBetFirst();
             _IndexOfLastPlayerToRaise = -1;
             _IndexOfLastPlayerToStartChecking = -1; 
             _CheckIsAvailable = true;
@@ -361,6 +360,7 @@ namespace SevenStuds.Models
             _SmallRaiseStillAllowable = true;     
             _SmallBetHasBeenCompleted = false;  
             _AllowedRaiseAmounts = new List<int>();
+            this.IndexOfParticipantToTakeNextAction = GetIndexOfPlayerToBetFirst();
             await Task.WhenAll(dbTasks); // Wait until all DB tasks have completed
             foreach (Task<double> t in dbTasks) {
                 this.AddToAccumulatedDbCost("Record deck", t.Result);
@@ -551,7 +551,7 @@ namespace SevenStuds.Models
                     if ( rankOfHandBeingTested < HandRankOfFirstToBet ) {
                         // Hand is the first to be checked or is better than any checked so far (where better is a lower value ranking)
                         IndexOfFirstToBet = IndexOfNextPlayerToInspect; // This player is still in and has a better hand (or is the first we have checked)
-                        HandRankOfFirstToBet = Participants[IndexOfFirstToBet]._VisibleHandRank;
+                        HandRankOfFirstToBet = rankOfHandBeingTested; 
                     }
                 }
             }
