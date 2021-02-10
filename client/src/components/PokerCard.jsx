@@ -72,16 +72,16 @@ export default function PokerCard ({ face, suit, invisibleToOthers = false, card
 
     // <a.div style={{ transform: `perspective(300px) rotateY(${rotation}deg)`}}>
 
-    return <a.div style={props}>
+    return <a.div style={props} fill="vertical" ref={cardRef} >
         {face === '?' || suit === '?' ? (
-            <Box fill="vertical" ref={cardRef} direction="row" title={`Hidden - ${cardIndex}`} elevation="xsmall" pad="xsmall" border round="xsmall" gap="xsmall" background={{
+            <Box fill="vertical" direction="row" title={`Hidden - ${cardIndex}`} elevation="xsmall" pad="xsmall" border round="xsmall" gap="xsmall" background={{
                 image: `url(${CardBack})`,
                 size: "115%"
             }}>
                 <Box pad="xsmall" direction="column" align="center" justify="around" width={`${height + 2}px`} testborder={{ color: 'blue', style: 'dashed' }}></Box>
             </Box>
         ) : (
-            <Box fill="vertical" ref={cardRef} direction="row" title={`${generateTitle(suit, face)} - ${cardIndex}`} elevation="xsmall" pad="xsmall" border round="xsmall" gap="2px" background="white">
+            <Box fill="vertical" direction="row" title={`${generateTitle(suit, face)} - ${cardIndex}`} elevation="xsmall" pad="xsmall" border round="xsmall" gap="2px" background="white">
                 <Box direction="column" align="center" justify="around" width={`${height/2}px`} testborder={{ color: 'blue', style: 'dashed' }}><Face invisibleToOthers={invisibleToOthers} face={face} suit={suit}/></Box>
                 <Box direction="column" align="center" justify="around" width={`${height/2}px`} testborder={{ color: 'red', style: 'dashed' }}><Suit invisibleToOthers={invisibleToOthers} suit={suit} /></Box>
             </Box>
