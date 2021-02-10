@@ -66,7 +66,7 @@ function Lobby () {
     const canContinue = useSelector(selectCanDoAction(PlayerActions.CONINUE));
     const isAdmin = useSelector(selectIsAdmin);
     const adminName = useSelector(selectAdminName);
-    const [settingsOpen, setSettingsOpen] = useState(true);
+    const [settingsOpen, setSettingsOpen] = useState(isAdmin);
 
     const currentGameStandings = useSelector(selectCurrentGameStandings);
 

@@ -33,8 +33,9 @@ export const updateAcceptNewPlayers = (AcceptNewPlayers) => updateLobbySettings(
 export const updateAllowSpectators = (AcceptNewSpectators) => updateLobbySettings({ AcceptNewSpectators });
 export const updateAnte = (Ante) => updateLobbySettings({ Ante });
 export const updateInitialChipQuantity = (InitialChipQuantity) => updateLobbySettings({ InitialChipQuantity });
-export const updateIsLimitGame = (IsLimitGame) => updateLobbySettings({ IsLimitGame });
+export const updateIsLimitGame = (IsLimitGame) => updateLobbySettings({ IsLimitGame, LimitGameBringInAmount: 2, LimitGameSmallBet: 5, LimitGameBigBet: 10, LimitGameMaxRaises: 4 });
 export const updateLowestCardPlacesFirstBet = (LowestCardPlacesFirstBet) => updateLobbySettings({ LowestCardPlacesFirstBet });
+export const updateHideFoldedCards = (HideFoldedCards) => updateLobbySettings({ HideFoldedCards });
 
 export const selectAcceptNewPlayers = (state) => state.lobby.AcceptNewPlayers
 export const selectAllowSpectators = (state) => state.lobby.AcceptNewSpectators;
@@ -46,5 +47,6 @@ export const selectLimitGameBringInAmount = (state) => state.lobby.LimitGameBrin
 export const selectLimitGameMaxRaises = (state) => state.lobby.LimitGameMaxRaises;
 export const selectLimitGameSmallBet = (state) => state.lobby.LimitGameSmallBet;
 export const selectLowestCardPlacesFirstBet = (state) => state.lobby.LowestCardPlacesFirstBet;
+export const selectHideFoldedCards = (state) => state.lobby.HideFoldedCards;
 
 export default lobbySlice.reducer;
