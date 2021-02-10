@@ -105,7 +105,7 @@ namespace SevenStuds.Models
                 ServerState.DummyCard, ServerState.RankingTable);
             this._FullHandDescription = /*_PokerHand.ToString(HandToStringFormatEnum.ShortCardsHeld) + ": " + */ _PokerHand.ToString(HandToStringFormatEnum.HandDescription);
             this._FullHandRank = _PokerHand.Rank;  
-            RebuildHandSummaries(g);
+            RebuildMyHandSummary(g);
         }
 
         public void StartNewHandForBankruptPlayer(Game g) {
@@ -227,10 +227,10 @@ namespace SevenStuds.Models
                 }                
                 this._FullHandDescription = /*_PokerHand.ToString(HandToStringFormatEnum.ShortCardsHeld) + ": " + */ _PokerHand.ToString(HandToStringFormatEnum.HandDescription);
                 this._FullHandRank = _PokerHand.Rank;
-                RebuildHandSummaries(g);
+                RebuildMyHandSummary(g);
             }
         }  
-        public void RebuildHandSummaries(Game g) {
+        public void RebuildMyHandSummary(Game g) {
             this._HandSummary = "";
             this._VisibleHandSummary = "";
             for ( int ci = 0; ci < this.Hand.Count; ci++ ) {
@@ -238,6 +238,7 @@ namespace SevenStuds.Models
                 string cardCode = c.ToString(CardToStringFormatEnum.ShortCardName);
                 this._HandSummary += cardCode + " ";
                 if ( g.CardPositionIsVisible[ci] == true ) {
+                    // Could hide folded cards here too but decided not too (as this data is not exposed to the clients anyway)
                     this._VisibleHandSummary += cardCode + ( ci+1 < this.Hand.Count ? " " : "");
                 }
             }

@@ -19,7 +19,7 @@ namespace SevenStuds.Models
             
             G.RecordLastEvent(this.UserName + " is no longer playing blind");
             G.Participants[this.PlayerIndex].IsPlayingBlindInCurrentHand = false;
-            G.Participants[this.PlayerIndex].RebuildHandSummaries(G); // To enable ex-blind player to see an evaluation of his complete hand
+            G.Participants[this.PlayerIndex].RebuildMyHandSummary(G); // To enable ex-blind player to see an evaluation of his complete hand
 
             await Task.FromResult(0); // Just to work around compiler warning "This async method lacks 'await' operators and will run synchronously"
         }

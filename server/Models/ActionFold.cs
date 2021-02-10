@@ -30,6 +30,7 @@ namespace SevenStuds.Models
             G.Participants[PlayerIndex].LastActionInThisHand = this.ActionType;
             G.Participants[PlayerIndex].LastActionAmount = 0;
             G.Participants[PlayerIndex].RoundNumberOfLastAction = G._CardsDealtIncludingCurrent;
+            G.Participants[PlayerIndex].RebuildMyHandSummary(G); // Enables folded cards to be hidden if requireed
 
             // Find and set next player (could be no one if all players have now folded)
             await G.SetNextPlayerToActOrHandleEndOfHand(PlayerIndex, G.LastEvent);  

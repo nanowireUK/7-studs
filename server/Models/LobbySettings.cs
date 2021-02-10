@@ -13,6 +13,7 @@ namespace SevenStuds.Models
         public bool? AcceptNewPlayers { get; set; }
         public bool? AcceptNewSpectators { get; set; }
         public bool? LowestCardPlacesFirstBet { get; set; }
+        public bool? HideFoldedCards { get; set; }
         public bool? IsLimitGame { get; set; }
         public int? LimitGameBringInAmount { get; set; }
         public int? LimitGameSmallBet { get; set; }
@@ -27,6 +28,7 @@ namespace SevenStuds.Models
             AcceptNewPlayers = null;
             AcceptNewSpectators = null;
             LowestCardPlacesFirstBet = null;
+            HideFoldedCards = null;
             IsLimitGame = null;
             LimitGameBringInAmount = null;
             LimitGameSmallBet = null;
@@ -40,6 +42,7 @@ namespace SevenStuds.Models
             AcceptNewPlayers = g.AcceptNewPlayers;
             AcceptNewSpectators = g.AcceptNewSpectators;
             LowestCardPlacesFirstBet = g.LowestCardPlacesFirstBet;
+            HideFoldedCards = g.HideFoldedCards; 
             IsLimitGame = g.IsLimitGame;
             LimitGameBringInAmount = g.LimitGameBringInAmount;
             LimitGameSmallBet = g.LimitGameSmallBet;
@@ -83,6 +86,11 @@ namespace SevenStuds.Models
             if ( this.IsLimitGame != null && this.IsLimitGame != g.IsLimitGame ) {
                 System.Diagnostics.Debug.WriteLine("Changing IsLimitGame from "+g.IsLimitGame+" to "+this.IsLimitGame);
                 g.IsLimitGame = (bool) this.IsLimitGame; 
+                anythingChanged = true;
+            }
+            if ( this.HideFoldedCards != null && this.HideFoldedCards != g.HideFoldedCards ) {
+                System.Diagnostics.Debug.WriteLine("Changing HideFoldedCards from "+g.HideFoldedCards+" to "+this.HideFoldedCards);
+                g.HideFoldedCards = (bool) this.HideFoldedCards; 
                 anythingChanged = true;
             }
             if ( this.LimitGameBringInAmount != null && this.LimitGameBringInAmount != g.LimitGameBringInAmount ) {

@@ -29,6 +29,7 @@ namespace SevenStuds.Models
         public int LimitGameSmallBet { get; set; }
         public int LimitGameBigBet { get; set; }
         public int LimitGameMaxRaises { get; set; }
+        public bool HideFoldedCards { get; set; }
         // Game state 
         public string StatusMessage { get; set; }
         public string LastEvent { get; set; }
@@ -85,6 +86,7 @@ namespace SevenStuds.Models
             AcceptNewPlayers = true;
             AcceptNewSpectators = true;
             LowestCardPlacesFirstBet = true; // New as of 3-Jan-21 (all historical games have been changed to have this set to false)
+            HideFoldedCards = false; 
             IsLimitGame = false; // New as of 7-Jan-21 (all historical games have been changed to have this set to false)
             if ( IsLimitGame) {
                 InitialChipQuantity = 100; // Smaller amount just while testing

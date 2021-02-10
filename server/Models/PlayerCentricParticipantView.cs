@@ -73,6 +73,10 @@ namespace SevenStuds.Models
                     // If this is the current player's view of their own cards and they are playing blind, do not allow them to see their own face-down cards
                     Cards.Add("?");
                 }
+                else if ( observedPlayer.HasFolded && g.HideFoldedCards == true ) {
+                    // Game is hiding all folded cards (so players have to remember what other people had before they folded)
+                    Cards.Add("?");
+                }
                 else{
                     Cards.Add(observedPlayer.Hand[i].ToString(CardToStringFormatEnum.ShortCardName));
                 }
