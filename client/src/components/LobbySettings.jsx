@@ -50,13 +50,13 @@ export default function LobbySettings () {
                             if (isAdmin) dispatch(updateHideFoldedCards(!hideFoldedCards))
                         }}
                     />
-                    <CheckBox
+                    {(isAdmin || isLimitGame) && <CheckBox
                         checked={isLimitGame}
                         label="Limit game"
                         onChange={() =>{
                             if (isAdmin) dispatch(updateIsLimitGame(!isLimitGame))
                         }}
-                    />
+                    />}
                     {isLimitGame && <Box direction="row" gap="medium" pad={{ left: '40px' }}>
                         <Text>Bring in: {bringIn}</Text>
                         <Text>Small bet: {smallBet}</Text>
