@@ -3,7 +3,7 @@ import { Box, Button, Stack, Text, Tip } from 'grommet';
 import { Hide, Trophy } from 'grommet-icons';
 
 import {ReactComponent as Chip} from '../assets/images/poker-chip.svg';
-import { selectHandCompleted, selectMyHandDescription, selectPots, PlayerActions, revealBlind, selectCanDoAction } from '../redux/slices/game';
+import { selectHandCompleted, selectMyHandDescription, selectPots, PlayerActions, revealBlind, selectCanDoAction, selectHandId } from '../redux/slices/game';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { useContainerDimensions } from '../utils/hooks';
@@ -23,6 +23,7 @@ function CardRow ({ cards, invisibleToOthers = false, name, showRowName, playing
     const ref = useRef(null);
     const dimensions = useContainerDimensions(ref);
     const canRevealCards = useSelector(selectCanDoAction(PlayerActions.BLIND_REVEAL));
+    const handId = useSelector(selectHandId);
     const dispatch = useDispatch();
 
     const viewBlindCards = () => {
@@ -34,13 +35,14 @@ function CardRow ({ cards, invisibleToOthers = false, name, showRowName, playing
             <Box fill="vertical" border={{ style: "dashed"}} pad="xsmall" round="xsmall" direction="row" justify="between" height={{ min: '50px' }}>
                 <Box ref={ref} direction="row" gap="xsmall" fill="vertical">
                     {cards.map((card, index) => {
-                        const [value, suit] = [...card];
+                        const { value, suit, cardIndex} = card;
 
                         return <PokerCard
-                            key={index}
+                            key={`${handId}-${index}`}
                             index={index}
                             face={value}
                             suit={suit}
+                            cardIndex={cardIndex}
                             availableDimensions={dimensions}
                             invisibleToOthers={invisibleToOthers}
                         />

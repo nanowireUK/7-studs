@@ -70,7 +70,9 @@ export const selectPlayers = (state) => {
     if (state.game === null) return [];
 
     const dealerIndex = state.game.PlayerViewOfParticipants.findIndex(({ IsDealer }) => IsDealer);
-    const playerCount = state.game.PlayerViewOfParticipants.length;
+    const numPlayersInRound = state.game.PlayerViewOfParticipants.filter(({ IsOutOfThisGame }) => !IsOutOfThisGame).length;
+
+    const roundNumber = state.game.RoundNumberIfCardsJustDealt;
 
     return state.game.PlayerViewOfParticipants.map(
         (
@@ -94,25 +96,34 @@ export const selectPlayers = (state) => {
                 IsPlayingBlindInCurrentHand: isPlayingBlind,
              },
              playerIndex,
-        ) => ({
-            name,
-            chips,
-            cards,
-            cardIndex: (playerIndex + dealerIndex + playerCount) % playerCount,
-            handDescription,
-            isMe,
-            isCurrentPlayer,
-            isDealer,
-            isAdmin,
-            isOutOfThisGame,
-            hasFolded,
-            isSharingHandDetails,
-            gainOrLossInLastHand,
-            handsWon,
-            lastActionInHand: roundNumberOfLastAction === state.game.RoundNumber ? lastActionInHand : '',
-            lastActionAmount: roundNumberOfLastAction === state.game.RoundNumber ? lastActionAmount : 0,
-            isPlayingBlind
-        })
+        ) => {
+            const dealIndex = (playerIndex - dealerIndex + numPlayersInRound - 1) % numPlayersInRound;
+
+            return {
+                name,
+                chips,
+                cards: cards.map(([value, suit], index) => {
+                    return {
+                        value,
+                        suit,
+                        cardIndex: roundNumber === -1 || (roundNumber > 3 && (1 + index) < roundNumber) ? -1 : dealIndex + ((roundNumber === 3) ? index : (index - roundNumber + 1)) * numPlayersInRound,
+                    };
+                }),
+                handDescription,
+                isMe,
+                isCurrentPlayer,
+                isDealer,
+                isAdmin,
+                isOutOfThisGame,
+                hasFolded,
+                isSharingHandDetails,
+                gainOrLossInLastHand,
+                handsWon,
+                lastActionInHand: roundNumberOfLastAction === state.game.RoundNumber ? lastActionInHand : '',
+                lastActionAmount: roundNumberOfLastAction === state.game.RoundNumber ? lastActionAmount : 0,
+                isPlayingBlind
+            }
+        }
     );
 }
 
@@ -147,6 +158,8 @@ export const selectCallAmount = (state) => state.game.MyCallAmount;
 export const selectCommunityCard = (state) => state.game.CommunityCard;
 
 export const selectActionReference = (state) => `${state.game.RoomId}-${state.game.GameNumber}.${state.game.HandsPlayedIncludingCurrent}.${state.game.ActionNumber}`;
+
+export const selectHandId = (state) => `${state.game.GameNumber}-${state.game.HandsPlayedIncludingCurrent}`;
 
 export const selectIsMyTurn = (state) => state.game.IsMyTurn;
 
