@@ -49,7 +49,7 @@ namespace SevenStuds.Models
             HasCovered = observedPlayer.HasCovered;
             IsOutOfThisGame = observedPlayer.StartedHandWithNoFunds; 
             HasDisconnected = observedPlayer.HasDisconnected; 
-            VisibleHandDescription = observedPlayer._VisibleHandDescription;
+            VisibleHandDescription = ( observedPlayer.Name != viewingPlayer.Name && observedPlayer.HasFolded && g.HideFoldedCards == true ) ? "" : observedPlayer._VisibleHandDescription;
             GainOrLossInLastHand = observedPlayer.GainOrLossInLastHand;
             HandsWon = observedPlayer.HandsWon;
             LastActionInThisHand = observedPlayer.LastActionInThisHand;
