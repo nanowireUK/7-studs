@@ -33,7 +33,7 @@ function CardRow ({ cards, invisibleToOthers = false, name, showRowName, playing
     return (
         <Stack margin="xsmall" fill="vertical">
             <Box fill="vertical" border={{ style: "dashed"}} pad="xsmall" round="xsmall" direction="row" justify="between" height={{ min: '50px' }}>
-                <Box ref={ref} direction="row" gap="xsmall" fill="vertical">
+                <Box ref={ref} direction="row" gap="xsmall" fill>
                     {cards.map((card, index) => {
                         const { value, suit, cardIndex} = card;
 

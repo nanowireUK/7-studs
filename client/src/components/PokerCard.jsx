@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 
 import { Box } from 'grommet';
 
-import { animated as a, useSpring } from 'react-spring';
+import { animated, useSpring } from 'react-spring';
 
 import {ReactComponent as Heart} from '../assets/images/suit-hearts.svg';
 import {ReactComponent as Club} from '../assets/images/suit-clubs.svg';
@@ -60,19 +60,19 @@ function Suit ({ suit, invisibleToOthers = false }) {
     return <Face invisibleToOthers={invisibleToOthers} face="?" suit={suit}/>
 }
 
-export default function PokerCard ({ face, suit, invisibleToOthers = false, cardIndex }) {
+const AnimatedBox = animated(Box);
+
+export default function PokerCard ({ face, suit, invisibleToOthers = false, cardIndex, availableDimensions }) {
     const cardRef = useRef(null);
     const { height } = useContainerDimensions(cardRef);
     const props = useSpring({
-        delay: cardIndex * 300,
+        delay: cardIndex * 200,
         immediate: cardIndex === -1,
         transform: 'perspective(300px) rotateY(0deg)',
         from: { transform: 'perspective(300px) rotateY(90deg)' }
     });
 
-    // <a.div style={{ transform: `perspective(300px) rotateY(${rotation}deg)`}}>
-
-    return <a.div style={props} fill="vertical" ref={cardRef} >
+    return <AnimatedBox style={props} fill="vertical" ref={cardRef}>
         {face === '?' || suit === '?' ? (
             <Box fill="vertical" direction="row" title={`Hidden - ${cardIndex}`} elevation="xsmall" pad="xsmall" border round="xsmall" gap="xsmall" background={{
                 image: `url(${CardBack})`,
@@ -86,5 +86,5 @@ export default function PokerCard ({ face, suit, invisibleToOthers = false, card
                 <Box direction="column" align="center" justify="around" width={`${height/2}px`} testborder={{ color: 'red', style: 'dashed' }}><Suit invisibleToOthers={invisibleToOthers} suit={suit} /></Box>
             </Box>
         )}
-    </a.div>
+    </AnimatedBox>
 }
