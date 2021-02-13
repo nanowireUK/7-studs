@@ -22,7 +22,7 @@ namespace SevenStuds.Models
         public string MyRejoinCode { get; set; }
         public int MyCallAmount { get; set; }
         public int MyMaxRaise { get; set; }
-        private List<int> MyRaiseAmounts { get; set; } // these are just for passing back to the game
+        private List<int> MyRaiseAmounts { get; set; }
         public List<LimitGameRaiseOptions> MyRaiseOptions { get; set; }
         public string GameMode { get; set; }
         public Boolean IsMyTurn { get; set; }
@@ -75,7 +75,6 @@ namespace SevenStuds.Models
             CommunityCard = g.CommunityCard == null ? "" : g.CommunityCard.ToString(CardToStringFormatEnum.ShortCardName);
             CardPositionIsVisible = g.CardPositionIsVisible;
             LobbyData = g.LobbyData;
-            bool IAmObligedToPostTheBringIn = false;
 
             LobbySettings = new LobbySettings(g);
 
@@ -104,59 +103,13 @@ namespace SevenStuds.Models
                 MyRejoinCode = p.RejoinCode;
                 MyCallAmount = g.IndexOfParticipantToTakeNextAction == playerIndex ? g.CallAmountForParticipantToTakeNextAction : 0;
                 MyMaxRaise = g.IndexOfParticipantToTakeNextAction == playerIndex ? g.MaxRaiseForParticipantToTakeNextAction : 0;
+                MyRaiseAmounts = g.IndexOfParticipantToTakeNextAction == playerIndex ? g._AllowedRaiseAmounts : new List<int>();
+                MyRaiseOptions = g.IndexOfParticipantToTakeNextAction == playerIndex ? g._AllowedRaiseOptions : new List<LimitGameRaiseOptions>();
                 IsMyTurn = ( playerIndex == g.IndexOfParticipantToTakeNextAction );
                 IAmDealer = ( playerIndex == g.IndexOfParticipantDealingThisHand ) ;
                 IAmAdministrator = ( g.GetIndexOfAdministrator() == playerIndex );
                 IIntendToPlayBlindInNextHand = ( p.IntendsToPlayBlindInNextHand );
                 IAmPlayingBlindInCurrentHand = ( p.IsPlayingBlindInCurrentHand );
-                MyRaiseAmounts = new List<int>();
-                MyRaiseOptions = new List<LimitGameRaiseOptions>();
-                // In a limit game we need to set strict limits on what a player can bet
-                if ( g.IsLimitGame == true 
-                    && g.IndexOfParticipantToTakeNextAction == playerIndex 
-                    && g.MaxRaiseForParticipantToTakeNextAction > 0
-                    && g._NumberOfRaisesInThisRound < g.LimitGameMaxRaises
-                ) {
-                    if ( 
-                        this.RoundNumber == 3 
-                        && g._BringInBetHasBeenMade == false 
-                        && p.UncommittedChips >= g.LimitGameBringInAmount 
-                        && g.MaxRaiseForParticipantToTakeNextAction >= g.LimitGameBringInAmount 
-                    ) {
-                        MyRaiseOptions.Add(LimitGameRaiseOptions.BringIn);
-                        MyRaiseAmounts.Add(g.LimitGameBringInAmount);
-                        IAmObligedToPostTheBringIn = true; // This will prevent checking
-                    }
-                    if ( 
-                        this.RoundNumber == 3 
-                        && g._BringInBetHasBeenMade == true 
-                        && g._SmallBetHasBeenCompleted == false
-                        && p.UncommittedChips >= ( g.LimitGameSmallBet - g.LimitGameBringInAmount )
-                        && g.MaxRaiseForParticipantToTakeNextAction >= ( g.LimitGameSmallBet - g.LimitGameBringInAmount ) 
-                    ) {
-                        MyRaiseOptions.Add(LimitGameRaiseOptions.CompleteSmallBet);
-                        MyRaiseAmounts.Add( ( g.LimitGameSmallBet - g.LimitGameBringInAmount ) );
-                    }
-                    else if ( 
-                        ( this.RoundNumber == 3 || this.RoundNumber == 4 )
-                        && p.UncommittedChips >= g.LimitGameSmallBet 
-                        && g.MaxRaiseForParticipantToTakeNextAction >= g.LimitGameSmallBet 
-                        && g._SmallRaiseStillAllowable == true
-                    ) {
-                        MyRaiseOptions.Add(LimitGameRaiseOptions.SmallBet);
-                        MyRaiseAmounts.Add(g.LimitGameSmallBet);
-                    }
-                    if ( 
-                        ( this.RoundNumber >= 5 || ( this.RoundNumber == 4 && SomeoneHasAPairShowing(g) ) )
-                        && p.UncommittedChips >= g.LimitGameBigBet 
-                        && g.MaxRaiseForParticipantToTakeNextAction >= g.LimitGameBigBet 
-                    ) {
-                        MyRaiseOptions.Add(LimitGameRaiseOptions.BigBet);
-                        MyRaiseAmounts.Add(g.LimitGameBigBet);
-                    }
-                    g._AllowedRaiseAmounts = new List<int>(MyRaiseAmounts); // note this is so Raise command can verify in case the player does actually decide to raise
-                    g._AllowedRaiseOptions = new List<LimitGameRaiseOptions>(MyRaiseOptions); // ditto
-                } 
             }
             // Reproduce the pots (the pots themselves stay in the same order, but the current player's contributions becomes the first slot in the inner array)
             if ( g.Pots == null ) {
@@ -202,19 +155,10 @@ namespace SevenStuds.Models
                             & g.Participants[playerIndex].IsSharingHandDetails == false 
                             )
                     ) {
-                        if ( aa.Action != ActionEnum.Check || ( aa.Action == ActionEnum.Check && IAmObligedToPostTheBringIn == false ) ) {
-                            AvailableActions.Add(aa.Action.ToString());
-                        }
+                        AvailableActions.Add(aa.Action.ToString());
                     }
                 }
             }
-        }
-
-        public bool SomeoneHasAPairShowing (Game g) {
-            foreach ( Participant p in g.Participants ) {
-                if ( p._VisibleHandDescription.Contains("Pair") ) { return true; }
-            }
-            return false;
         }
         public string AsJson()
         {

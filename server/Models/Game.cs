@@ -40,6 +40,7 @@ namespace SevenStuds.Models
         public int IndexOfParticipantToTakeNextAction { get; set; } // Determined by cards showing (at start of round) then on player order
         public int CallAmountForParticipantToTakeNextAction { get; set; } // So that client doesn't need to work this out
         public int MaxRaiseForParticipantToTakeNextAction { get; set; } // So that client doesn't need to work this out
+        public bool ParticipantToTakeNextActionIsObligedToPostTheBringIn { get; set; }
         public int RoundNumberIfCardsJustDealt { get; set; } // So that client know it can animate the deal
         public int RoundNumber { get; set; } 
         public int _CardsDealtIncludingCurrent { get; set; } // 0 = hand not started
@@ -53,7 +54,6 @@ namespace SevenStuds.Models
         public bool _SmallBetHasBeenCompleted { get; set; }
         public List<int> _AllowedRaiseAmounts { get; set; }
         public List<LimitGameRaiseOptions> _AllowedRaiseOptions { get; set; }
-        
         public int CountOfLeavers { get; set; }
         public Card CommunityCard { get; set; }
         public DateTimeOffset StartTimeUTC { get; set; }
@@ -427,12 +427,6 @@ namespace SevenStuds.Models
                 // (actually always available as player becomes inactive on folding and so will never be current player)
                 Permissions.SetAvailability(ActionEnum.Fold, AvailabilityEnum.ActivePlayerOnly); 
 
-                // Decide whether the player can check at this stage
-                // (possible until someone does something other than checking)
-                Permissions.SetAvailability(
-                    ActionEnum.Check, 
-                    _CheckIsAvailable ? AvailabilityEnum.ActivePlayerOnly: AvailabilityEnum.NotAvailable
-                );                 
                 // Decide whether player can call, raise or cover at this stage
                 // (depends on their uncommitted funds, how much they need to match the pot and other people's funds)
                 int catchupAmount = MaxChipsInAllPotsForAnyPlayer() - ChipsInAllPotsForSpecifiedPlayer(playerIndex);
@@ -451,6 +445,20 @@ namespace SevenStuds.Models
                 Permissions.SetAvailability(
                     ActionEnum.Cover, 
                     p.UncommittedChips < catchupAmount ? AvailabilityEnum.ActivePlayerOnly: AvailabilityEnum.NotAvailable); 
+
+                // If we're playing a limit game, set the specific amounts that the player can raise by
+                SetAllowableRaiseAmounts(p);
+                if ( IsLimitGame && _AllowedRaiseOptions.Contains(LimitGameRaiseOptions.BringIn) ) {
+                    _CheckIsAvailable = false; // Player cannot check if they can afford at least the bring amount
+                }
+
+                // Decide whether the player can check at this stage
+                // (possible until someone does something other than checking, or unless the player is obliged to play the bring in)
+                Permissions.SetAvailability(
+                    ActionEnum.Check, 
+                    _CheckIsAvailable ? AvailabilityEnum.ActivePlayerOnly: AvailabilityEnum.NotAvailable
+                );    
+
                 // To reveal their blind cards to themselves, they need to have been playing blind up to this point
                 Permissions.SetAvailability(
                     ActionEnum.BlindReveal, 
@@ -661,6 +669,61 @@ namespace SevenStuds.Models
                 return p.UncommittedChips - catchupAmount;
             }               
         }  
+        public void SetAllowableRaiseAmounts(Participant p) {
+            // If the game is a limit game, define the raises that will be available to the next player if they choose to raise
+
+            _AllowedRaiseAmounts = new List<int>();
+            _AllowedRaiseOptions = new List<LimitGameRaiseOptions>();
+        
+            // In a limit game we need to set strict limits on what a player can bet
+            if ( IsLimitGame == true 
+                && MaxRaiseForParticipantToTakeNextAction > 0
+                && _NumberOfRaisesInThisRound < LimitGameMaxRaises
+            ) {
+                if ( 
+                    this.RoundNumber == 3 
+                    && _BringInBetHasBeenMade == false 
+                    && p.UncommittedChips >= LimitGameBringInAmount 
+                    && MaxRaiseForParticipantToTakeNextAction >= LimitGameBringInAmount 
+                ) {
+                    _AllowedRaiseOptions.Add(LimitGameRaiseOptions.BringIn);
+                    _AllowedRaiseAmounts.Add(LimitGameBringInAmount);
+                }
+                if ( 
+                    this.RoundNumber == 3 
+                    && _BringInBetHasBeenMade == true 
+                    && _SmallBetHasBeenCompleted == false
+                    && p.UncommittedChips >= ( LimitGameSmallBet - LimitGameBringInAmount )
+                    && MaxRaiseForParticipantToTakeNextAction >= ( LimitGameSmallBet - LimitGameBringInAmount ) 
+                ) {
+                    _AllowedRaiseOptions.Add(LimitGameRaiseOptions.CompleteSmallBet);
+                    _AllowedRaiseAmounts.Add( ( LimitGameSmallBet - LimitGameBringInAmount ) );
+                }
+                else if ( 
+                    ( this.RoundNumber == 3 || this.RoundNumber == 4 )
+                    && p.UncommittedChips >= LimitGameSmallBet 
+                    && MaxRaiseForParticipantToTakeNextAction >= LimitGameSmallBet 
+                    && _SmallRaiseStillAllowable == true
+                ) {
+                    _AllowedRaiseOptions.Add(LimitGameRaiseOptions.SmallBet);
+                    _AllowedRaiseAmounts.Add(LimitGameSmallBet);
+                }
+                if ( 
+                    ( this.RoundNumber >= 5 || ( this.RoundNumber == 4 && SomeoneHasAPairShowing() ) )
+                    && p.UncommittedChips >= LimitGameBigBet 
+                    && MaxRaiseForParticipantToTakeNextAction >= LimitGameBigBet 
+                ) {
+                    _AllowedRaiseOptions.Add(LimitGameRaiseOptions.BigBet);
+                    _AllowedRaiseAmounts.Add(LimitGameBigBet);
+                }
+            } 
+        }  
+        public bool SomeoneHasAPairShowing () {
+            foreach ( Participant p in Participants ) {
+                if ( p._VisibleHandDescription.Contains("Pair") ) { return true; }
+            }
+            return false;
+        }
         public int TotalInSpecifiedPot (int pot) {
             int totalPot = 0;
             for (int player = 0; player < this.Participants.Count; player++) {
@@ -1021,7 +1084,6 @@ namespace SevenStuds.Models
             var options = new JsonSerializerOptions
             {
                 WriteIndented = true,
-                
             };
             //options.Converters.Add(new JsonStringEnumConverter(null /*JsonNamingPolicy.CamelCase*/));
             string jsonString = JsonSerializer.Serialize(this, options);
