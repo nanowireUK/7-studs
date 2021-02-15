@@ -56,8 +56,13 @@ namespace SevenStuds.Models
                     key *= -1;
                 }
             }
-
             mEvalHand = EvalTable.EvalHands[key];
+        }
+        public List<int> PresentationOrder() {
+            return mEvalHand.PresentationOrder();
+        }
+        public List<int> CardValues() {
+            return new List<int>{(int)mC1.CardValue, (int)mC2.CardValue, (int)mC3.CardValue , (int)mC4.CardValue, (int)mC5.CardValue};
         }
 
         /// <summary>
@@ -225,7 +230,6 @@ namespace SevenStuds.Models
                 default:
                     return mEvalHand.Name;
             }
-
         }
 
         public override bool Equals(object obj)
