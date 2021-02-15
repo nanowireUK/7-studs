@@ -33,6 +33,7 @@ namespace SevenStuds.Models
         public int GainOrLossInLastHand { get; set; }
         public int HandsWon { get; set; }
         public List<string> Cards { get; set; }
+        public List<int> IndexesOfCardsFormingHandInPresentationOrder { get; set; }
 
         public PlayerCentricParticipantView(Game g, int thisPlayersIndex, int observedPlayersIndex, bool isSpectatorView ) {
             Participant viewingPlayer = g.Participants[thisPlayersIndex];
@@ -57,6 +58,7 @@ namespace SevenStuds.Models
             RoundNumberOfLastAction = observedPlayer.RoundNumberOfLastAction;  
             IsPlayingBlindInCurrentHand = observedPlayer.IsPlayingBlindInCurrentHand;
             IntendsToPlayBlindInNextHand = observedPlayer.IntendsToPlayBlindInNextHand;
+            IndexesOfCardsFormingHandInPresentationOrder = null; 
 
             // Add a list of this player's cards, substituting with '?' if the player receiving this data is not allowed to see this card
             // (which can include the player themselves if they are playing blind)
@@ -80,6 +82,9 @@ namespace SevenStuds.Models
                 else{
                     Cards.Add(observedPlayer.Hand[i].ToString(CardToStringFormatEnum.ShortCardName));
                 }
+            }
+            if ( observedPlayer.IsSharingHandDetails == true ) {
+                IndexesOfCardsFormingHandInPresentationOrder = observedPlayer._CardIndexesInPresentationOrder;
             }
         }
         public string AsJson()

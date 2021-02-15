@@ -52,6 +52,8 @@ namespace SevenStuds.Models
         public string _HandSummary { get; set; }
         public int GainOrLossInLastHand { get; set; }
         private PokerHand _PokerHand { get; set; }
+        private PokerHand _PresentablePokerHand { get; set; }
+        public List<int> _CardIndexesInPresentationOrder { get; set; }
         public Boolean IsLockedOutFollowingReplay { get; set; }
         public Boolean IsGameAdministrator { get; set; }
         public List<Card> Hand { get; set; }
@@ -141,6 +143,7 @@ namespace SevenStuds.Models
                     ServerState.RankingTable);
                 this._VisibleHandDescription = /*visibleHand.ToString(HandToStringFormatEnum.ShortCardsHeld) + ": " + */ visibleHand.ToString(HandToStringFormatEnum.HandDescription);
                 this._VisibleHandRank = visibleHand.Rank;
+                this._CardIndexesInPresentationOrder = null;
 
                 if ( g._CardsDealtIncludingCurrent < 6 ) {
                     _PokerHand = new PokerHand(
@@ -152,21 +155,17 @@ namespace SevenStuds.Models
                         ServerState.RankingTable);
                 }
                 else if ( g._CardsDealtIncludingCurrent == 6 ) {
-                    _PokerHand = new PokerHand( // Start off assuming first combination is best
-                        this.Hand[0], 
-                        this.Hand[1], 
-                        this.Hand[2], 
-                        this.Hand[3], 
-                        this.Hand[4], 
-                        ServerState.RankingTable);
+                    List<int> chosenCombo = null;
+                    _PokerHand = null;
                     List<List<int>> combos = new List<List<int>>();
-                    //combos.Add(new List<int>(){0, 1, 2, 3, 4}); // already done
+                    combos.Add(new List<int>(){0, 1, 2, 3, 4});
                     combos.Add(new List<int>(){0, 1, 2, 3, 5});
                     combos.Add(new List<int>(){0, 1, 2, 4, 5});
                     combos.Add(new List<int>(){0, 1, 3, 4, 5});
                     combos.Add(new List<int>(){0, 2, 3, 4, 5});
                     combos.Add(new List<int>(){1, 2, 3, 4, 5});
                     PokerHand testHand;
+                    bool initDone = false;
                     for (int i = 0; i < combos.Count ; i++) {
                         testHand = new PokerHand(
                             this.Hand[combos[i][0]], 
@@ -175,22 +174,25 @@ namespace SevenStuds.Models
                             this.Hand[combos[i][3]], 
                             this.Hand[combos[i][4]], 
                             ServerState.RankingTable);                        
-                        if ( testHand.Rank < _PokerHand.Rank) {
+                        // Note current best hand and which card positions were used to form that hand
+                        if ( initDone == false ) {
                             _PokerHand = testHand;
+                            chosenCombo = combos[i];
+                            initDone = true; 
                         }
+                        else if ( testHand.Rank < _PokerHand.Rank) {
+                            _PokerHand = testHand;
+                            chosenCombo = combos[i];
+                        }                        
                     }
+                    _CardIndexesInPresentationOrder = GetCardIndexesInPresentationOrder(chosenCombo);
                 }
                 else {
                     // All 7 have been dealt
-                    _PokerHand = new PokerHand( // Start off assuming first combination is best
-                        this.Hand[0], 
-                        this.Hand[1], 
-                        this.Hand[2], 
-                        this.Hand[3], 
-                        this.Hand[4], 
-                        ServerState.RankingTable);
+                    List<int> chosenCombo = null;
+                    _PokerHand = null;
                     List<List<int>> combos = new List<List<int>>();
-                    //combos.Add(new List<int>(){0, 1, 2, 3, 4}); // already done
+                    combos.Add(new List<int>(){0, 1, 2, 3, 4});
                     combos.Add(new List<int>(){0, 1, 2, 3, 5});
                     combos.Add(new List<int>(){0, 1, 2, 3, 6});
                     combos.Add(new List<int>(){0, 1, 2, 4, 5});
@@ -212,6 +214,7 @@ namespace SevenStuds.Models
                     combos.Add(new List<int>(){1, 3, 4, 5, 6});
                     combos.Add(new List<int>(){2, 3, 4, 5, 6});
                     PokerHand testHand;
+                    bool initDone = false;                    
                     for (int i = 0; i < combos.Count ; i++) {
                         testHand = new PokerHand(
                             this.Hand[combos[i][0]], 
@@ -220,16 +223,24 @@ namespace SevenStuds.Models
                             this.Hand[combos[i][3]], 
                             this.Hand[combos[i][4]], 
                             ServerState.RankingTable);                        
-                        if ( testHand.Rank < _PokerHand.Rank) {
+                        // Note current best hand and which card positions were used to form that hand
+                        if ( initDone == false ) {
                             _PokerHand = testHand;
+                            chosenCombo = combos[i];
+                            initDone = true; 
                         }
+                        else if ( testHand.Rank < _PokerHand.Rank) {
+                            _PokerHand = testHand;
+                            chosenCombo = combos[i];
+                        }  
                     }
+                    _CardIndexesInPresentationOrder = GetCardIndexesInPresentationOrder(chosenCombo);
                 }                
                 this._FullHandDescription = /*_PokerHand.ToString(HandToStringFormatEnum.ShortCardsHeld) + ": " + */ _PokerHand.ToString(HandToStringFormatEnum.HandDescription);
                 this._FullHandRank = _PokerHand.Rank;
                 RebuildMyHandSummary(g);
             }
-        }  
+        } 
         public void RebuildMyHandSummary(Game g) {
             this._HandSummary = "";
             this._VisibleHandSummary = "";
@@ -246,6 +257,55 @@ namespace SevenStuds.Models
                 this._HandSummary = ""; // Clear the hand summary (not sure it is used in the client anyway)
             }
         } 
+        private List<int> GetCardIndexesInPresentationOrder(List<int> chosenCombo) {
+            // Will use attributes Hand and _PokerHand
+            // Note that chosenCombo contains card position indexers that are zero-based
+            // Assumes all 3 arrays are the same length (5)
+            List<int> presentationOrder = this._PokerHand.PresentationOrder(); // e.g. 1,4,5,3,2 (says what order to change a sorted card list to)
+            List<int> cardValues = this._PokerHand.CardValues();
+
+            // First sort chosenCombo in the same way as you would have to do to get the card values in descending order
+            while (true)
+            {
+                bool swapped = false;
+                for ( int i = 0; i < cardValues.Count - 1; i++ ) {
+                    if (cardValues[i] < cardValues[i + 1]) // Use '<' for descending, '>' for ascending
+                    {
+                        // Swap the values in the list being sorted
+                        int tmp = cardValues[i];
+                        cardValues[i] = cardValues[i + 1];
+                        cardValues[i + 1] = tmp;
+
+                        // Swap the corresponding values in the list of card positions
+                        tmp = chosenCombo[i];
+                        chosenCombo[i] = chosenCombo[i + 1];
+                        chosenCombo[i + 1] = tmp;
+
+                        swapped = true;
+                    }
+                }
+                if (!swapped) {
+                    break;
+                }
+            }
+            // Now further reorder chosenCombo to reflect the presentation order of the hand
+            List<int> chosenComboInPresentationOrder = new List<int>();
+            for ( int pos = 0; pos < 5; pos++ ) {
+                int requiredOrder = presentationOrder[pos]-1; // Gets the index of the card to be used in position 'pos'
+                chosenComboInPresentationOrder.Add(chosenCombo[requiredOrder]);
+            }
+            _PresentablePokerHand = new PokerHand(
+                this.Hand[chosenComboInPresentationOrder[0]], 
+                this.Hand[chosenComboInPresentationOrder[1]], 
+                this.Hand[chosenComboInPresentationOrder[2]], 
+                this.Hand[chosenComboInPresentationOrder[3]], 
+                this.Hand[chosenComboInPresentationOrder[4]], 
+                ServerState.RankingTable);   
+            if ( _PresentablePokerHand.Rank != _PokerHand.Rank ) {
+                throw new Exception("Poker hand in presentation order is not equivalent to unsorted hand");
+            }
+            return chosenComboInPresentationOrder; // This is the original card indexes
+        }
         public int GetRankingOfThirdCard()
         {
             // Return a low-to-high integer representing the relative order of the cards 2c, 2d, 2h, 2s, 3c, 3d, etc.
