@@ -14,7 +14,8 @@ namespace SevenStuds.Models
             this.Hand = new List<Card>();
             this.IsLockedOutFollowingReplay = false;
             this.IsGameAdministrator = false;
-            this.IsSharingHandDetails = false;
+            this.IsSharingHandDetails = false; 
+            this.HasJustSharedHandDetails = false; // set when the player reveals; will be cleared as soon as anyone else does anything else
             this.HasBeenActiveInCurrentGame = false;
             this.TimeOfBankruptcy = DateTimeOffset.MinValue;
             this.AllInDateTime = DateTimeOffset.MinValue;
@@ -30,6 +31,7 @@ namespace SevenStuds.Models
         public Boolean StartedHandWithNoFunds { get; set; } // i.e. had no funds at the start of the current hand
         public Boolean HasDisconnected { get; set; } // Player has chosen to leave the game (i.e. is no longer connected and will be removed at end of hand)
         public Boolean IsSharingHandDetails { get; set; }
+        public Boolean HasJustSharedHandDetails { get; set; }
         public Boolean WonSomethingInCurrentHand { get; set; }
         public Boolean IsPlayingBlindInCurrentHand { get; set; }
         public Boolean IntendsToPlayBlindInNextHand { get; set; }
@@ -318,6 +320,9 @@ namespace SevenStuds.Models
             System.Diagnostics.Debug.WriteLine(this.Name + " 3rd card is " + this.Hand[2].ToString(CardToStringFormatEnum.ShortCardName) 
                 + ", value ranked as " + valueRanking + ", suit ranked as " + suitRanking + ", " + (( valueRanking * 10 ) + suitRanking) + " overall");
             return ( valueRanking * 10 ) + suitRanking;
-        }          
+        }  
+        public int HandStrength() {
+            return this._PokerHand.Strength();
+        }
     }
 }

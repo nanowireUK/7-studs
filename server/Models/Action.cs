@@ -131,7 +131,13 @@ namespace SevenStuds.Models
                     G.Participants[PlayerIndex].IsLockedOutFollowingReplay = false;
                     // Can continue processing the command now 
                 }
-                G.RoundNumberIfCardsJustDealt = -1; // The new action will clear any requirement for the client to animate the dealing of the cards
+                if ( this.ActionType != ActionEnum.Replay && this.ActionType != ActionEnum.Rejoin ) {
+                    G.RoundNumberIfCardsJustDealt = -1; // The new action will clear any requirement for the client to animate the dealing of the cards
+                    foreach ( Participant p1 in G.Participants ) {
+                        // Clear this as someone else is now doing something (this helps ensure the reveal is animated only once)
+                        p1.HasJustSharedHandDetails = false;
+                    }
+                }
             }
         }
         protected Room R { get; set; } 

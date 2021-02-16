@@ -20,6 +20,7 @@ namespace SevenStuds.Models
         public Boolean IsDealer { get; set; }
         public Boolean IsAdmin { get; set; }
         public Boolean IsSharingHandDetails { get; set; }
+        public Boolean HasJustSharedHandDetails { get; set; }
         public Boolean HasFolded { get; set; }
         public Boolean HasCovered { get; set; }
         public Boolean IsOutOfThisGame { get; set; }
@@ -33,6 +34,7 @@ namespace SevenStuds.Models
         public int GainOrLossInLastHand { get; set; }
         public int HandsWon { get; set; }
         public List<string> Cards { get; set; }
+        public int HandStrength { get; set; }
         public List<int> IndexesOfCardsFormingHandInPresentationOrder { get; set; }
 
         public PlayerCentricParticipantView(Game g, int thisPlayersIndex, int observedPlayersIndex, bool isSpectatorView ) {
@@ -46,6 +48,7 @@ namespace SevenStuds.Models
             IsDealer = ( observedPlayersIndex == g.IndexOfParticipantDealingThisHand ) ;
             IsAdmin  = ( observedPlayersIndex == g.GetIndexOfAdministrator() );   
             IsSharingHandDetails = observedPlayer.IsSharingHandDetails;   
+            HasJustSharedHandDetails = observedPlayer.HasJustSharedHandDetails;   
             HasFolded = observedPlayer.HasFolded;
             HasCovered = observedPlayer.HasCovered;
             IsOutOfThisGame = observedPlayer.StartedHandWithNoFunds; 
@@ -58,6 +61,7 @@ namespace SevenStuds.Models
             RoundNumberOfLastAction = observedPlayer.RoundNumberOfLastAction;  
             IsPlayingBlindInCurrentHand = observedPlayer.IsPlayingBlindInCurrentHand;
             IntendsToPlayBlindInNextHand = observedPlayer.IntendsToPlayBlindInNextHand;
+            HandStrength = 0;
             IndexesOfCardsFormingHandInPresentationOrder = null; 
 
             // Add a list of this player's cards, substituting with '?' if the player receiving this data is not allowed to see this card
@@ -85,6 +89,7 @@ namespace SevenStuds.Models
             }
             if ( observedPlayer.IsSharingHandDetails == true ) {
                 IndexesOfCardsFormingHandInPresentationOrder = observedPlayer._CardIndexesInPresentationOrder;
+                HandStrength = observedPlayer.HandStrength();
             }
         }
         public string AsJson()

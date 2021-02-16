@@ -23,6 +23,7 @@ namespace SevenStuds.Models
             G.Participants[this.PlayerIndex].IsSharingHandDetails = true;
             G.Participants[this.PlayerIndex]._VisibleHandDescription = G.Participants[this.PlayerIndex]._FullHandDescription;
             G.Participants[this.PlayerIndex].IsPlayingBlindInCurrentHand = false; // If player was playing blind, they are no longer doing so
+            G.Participants[this.PlayerIndex].HasJustSharedHandDetails = true; // Enables the client to animate the reveal if desired
             if ( G.GameMode == GameModeEnum.HandsBeingRevealed ){
                 await G.SetNextPlayerToActOrHandleEndOfHand(PlayerIndex, G.LastEvent);    
             }

@@ -65,6 +65,17 @@ namespace SevenStuds.Models
             return new List<int>{(int)mC1.CardValue, (int)mC2.CardValue, (int)mC3.CardValue , (int)mC4.CardValue, (int)mC5.CardValue};
         }
 
+        public int Strength() {
+            // All non-zero hand values are integers of the form lssnnnnnnnn, where 'l' is the level (0-8) and 'ss' is the sublevel (02 - 14)
+            if ( mEvalHand.HandValue == 0 ) { return 0; }
+            int level = (int) ( mEvalHand.HandValue / 10000000000 ); // Takes the most significant digit which will be 0-8
+            if ( level > 8 ) { throw new Exception("Hand value of "+mEvalHand.HandValue+" gives a strength level of "+level+" which is not in the expected range of 1-8"); }
+            int subLevel = (int) ( ( mEvalHand.HandValue - ( 10000000000 * level ) ) / 100000000 ); // Get the 'ss' value which will be 2 - 14
+            if ( subLevel > 14 ) { throw new Exception("Hand value of "+mEvalHand.HandValue+" gives a strength sub-level of "+subLevel+" which is not in the expected range of 2-14"); }
+            int result = ( ( level + 1 ) * 10 ) + ( subLevel > 5 ? subLevel - 5 : 0 ); // should return a strength value from 10 to 99
+            return result;
+        } 
+
         /// <summary>
         /// The Key value of this hand.
         /// </summary>
