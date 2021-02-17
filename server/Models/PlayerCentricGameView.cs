@@ -32,7 +32,6 @@ namespace SevenStuds.Models
         public Boolean IAmPlayingBlindInCurrentHand { get; set; }
         public int InitialChipQuantity { get; set; }
         public int Ante { get; set; }
-        public int RoundNumberIfCardsJustDealt { get; set; } // So that client know it can animate the deal
         public int RoundNumber { get; set; }
         public int CountOfLeavers { get; set; }
         public DatabaseModeEnum DatabaseMode { get; set; }
@@ -41,6 +40,8 @@ namespace SevenStuds.Models
         public double ServerTotalDatabaseRequestUnits { get; set; }
         public List<string> AvailableActions { get; set; } // A player-centric view of the actions available to them
         public List<List<int>> Pots { get; set; } // pot(s) built up in the current hand (over multiple rounds of betting)
+        public int RoundNumberIfCardsJustDealt { get; set; } // So that client knows it can animate the deal
+        public List<int> DealOrderFromMyPerspective { get; set; } // Players dealt to in order, using indexes from this player's perspective
         //public List<List<string>> LastHandResult { get; set; }
         public List<PlayerCentricParticipantView> PlayerViewOfParticipants { get; set; } // ordered list of participants (order represents order around the table)
         public string CommunityCard { get; set; }
@@ -82,6 +83,7 @@ namespace SevenStuds.Models
             //LastHandResult = new List<List<string>>(g.LastHandResult); // This definitely needs to be a copy
             MostRecentHandResult = new List<List<PotResult>>(g.MostRecentHandResult); // This definitely needs to be a copy
             GameMode = g.GameMode.ToString();
+            DealOrderFromMyPerspective = null;
             if ( isSpectatorView ) {
                 // For spectators, always show neutral values
                 MyHandSummary = "";
@@ -124,6 +126,19 @@ namespace SevenStuds.Models
                     for ( int slot = 0; slot < g.Participants.Count; slot++ ) {
                         int sourceSlot =  ( slot + playerIndex ) % g.Participants.Count; // puts current player in slot 0 with rest following clockwise
                         this.Pots[pot].Add(g.Pots[pot][sourceSlot]);
+                    }
+                }
+            }
+            // If a hand has just been dealt, show the order of the players who have received cards
+            if ( RoundNumberIfCardsJustDealt != -1 ) {
+                DealOrderFromMyPerspective = new List<int>();
+                for ( int i = 0; i < g.Participants.Count; i++ ) {
+                    // Starting with player to left of dealer, add indexes of players who have received cards in this hand,
+                    // using the indexes as they would be if current player was player zero 
+                    int indexToCheck =  ( i + g.IndexOfParticipantDealingThisHand + 1 ) % g.Participants.Count;
+                    if ( g.Participants[indexToCheck].Hand.Count == RoundNumberIfCardsJustDealt ) {
+                        // Player has received a card (or the first three cards) so add their position (relative to our player) to the list
+                        DealOrderFromMyPerspective.Add( ( g.Participants.Count + indexToCheck - playerIndex ) % g.Participants.Count );
                     }
                 }
             }
