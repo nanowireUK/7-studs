@@ -50,6 +50,7 @@ namespace SevenStuds.Models
         public LobbySettings LobbySettings { get; set; }
         public List<Boolean> CardPositionIsVisible { get; set; }
         public List<List<PotResult>> MostRecentHandResult { get; set; }
+        public MetricsSummary MetricsSummary { get; set; }
         public PlayerCentricGameView(Game g, int requestedPlayerIndex, int spectatorIndex) {
             // Build up this player's view of the game
             // (note that if player index = -1 it means we're building a view for a spectator and the dealer will be the first player shown)
@@ -80,6 +81,7 @@ namespace SevenStuds.Models
             LobbySettings = new LobbySettings(g);
 
             GameStatistics = g.GameStatistics;
+            MetricsSummary = ServerState.MetricsSummary;
             //LastHandResult = new List<List<string>>(g.LastHandResult); // This definitely needs to be a copy
             MostRecentHandResult = new List<List<PotResult>>(g.MostRecentHandResult); // This definitely needs to be a copy
             GameMode = g.GameMode.ToString();

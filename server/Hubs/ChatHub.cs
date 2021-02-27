@@ -44,6 +44,7 @@ namespace SevenStuds.Hubs
         {
             SevenStuds.Models.Action a = await ActionFactory.NewAction(Context.ConnectionId, actionType, roomId, user, leavers, parameters);
             Game g = await a.ProcessActionAndReturnGameReference();
+            ServerState.TotalActionsProcessed++;
          
             // New connections may have been linked to players, so link those connections to the relevant player groups in SignalR
             foreach ( Participant p in g.Participants ) {

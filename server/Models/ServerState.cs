@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Timers;
 using System.Collections;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -11,11 +12,35 @@ namespace SevenStuds.Models
     {
         // Maintains a registry of games which enables a game object to be found from its ID.
         // Also provides other room-level functions (where a room may have hosted a whole series of games)
-        public static Hashtable RoomList = new Hashtable(); // Server-level list of Rooms
-        public static StatefulGameData StatefulData = new StatefulGameData(); // Server-level list of connections
-        public static PokerHandRankingTable RankingTable = new PokerHandRankingTable(); // Only need one of these
-        public static Card DummyCard = new Card(CardEnum.Dummy, SuitEnum.Clubs);
-        public static PokerDB OurDB = new PokerDB();
+
+        public static Hashtable RoomList; // Server-level list of Rooms
+        public static StatefulGameData StatefulData; // Server-level list of connections
+        public static PokerHandRankingTable RankingTable; // Only need one of these
+        public static Card DummyCard;
+        public static PokerDB OurDB;
+        public static MetricsSummary MetricsSummary;
+        public static System.Timers.Timer MonitorTimer;
+        public static MetricsManager MetricsManager;
+        public static int TotalActionsProcessed = 0;
+        static ServerState() {
+            // Static constructor, runs initialisations in the order we require
+            Console.WriteLine("ServerState static constructor running at at {0:HH:mm:ss.fff}", DateTimeOffset.UtcNow);
+            RoomList = new Hashtable(); // Server-level list of Rooms
+            StatefulData = new StatefulGameData(); // Server-level list of connections
+            RankingTable = new PokerHandRankingTable(); // Only need one of these
+            DummyCard = new Card(CardEnum.Dummy, SuitEnum.Clubs);
+            OurDB = new PokerDB();
+            MetricsSummary = new MetricsSummary(); // Just an initial 'zero' summary, but still needs OurDB to have been instantiated
+            MetricsManager = new MetricsManager(); // Needs MetricsSummary to have been instantiated. This object will maintain and emit statistics            
+            Console.WriteLine("Initalising MonitorTimer");
+            while ( DateTimeOffset.UtcNow.Millisecond < 100 || DateTimeOffset.UtcNow.Millisecond > 900 ) {
+                Console.WriteLine("Waiting 200 milliseconds to ensure repeat timer does not fire close to a boundary between two seconds");
+                System.Threading.Thread.Sleep(200);
+            }
+            MonitorTimer = new System.Timers.Timer(60000);
+            MonitorTimer.Elapsed+=MonitorStatistics;
+            MonitorTimer.Enabled=true;
+        }
         public static Boolean AllowTestFunctions() {
             string env_value = Environment.GetEnvironmentVariable("SpcAllowTestFunctions");
             if ( env_value == null ) { return false; }
@@ -157,7 +182,6 @@ namespace SevenStuds.Models
                 return null;
             }
         }
-
         public static Spectator GetSpectatorFromConnection(Game g, string connectionId) 
         {
             string groupName;
@@ -174,6 +198,28 @@ namespace SevenStuds.Models
             {
                 return null;
             }
+        }
+        public static int ActiveGames() {
+            int a = 0;
+            foreach ( Room r in RoomList.Values ) {
+                if ( r.ActiveGame != null ) {
+                    if ( ( DateTimeOffset.UtcNow - r.ActiveGame.LastSuccessfulAction ).TotalMinutes < 60 ) {
+                        a++;
+                    }
+                }
+            }
+            return a;
+        }
+        public static bool TelemetryActive() {
+            string metricsKey = Environment.GetEnvironmentVariable("APPINSIGHTS_INSTRUMENTATIONKEY", EnvironmentVariableTarget.Process);   
+            return ( metricsKey != null );
+        }
+
+        private static void MonitorStatistics(Object source, ElapsedEventArgs e)
+        {
+            DateTimeOffset eventTimeUtc = new DateTimeOffset(e.SignalTime.ToUniversalTime());
+            //Console.WriteLine("The MonitorStatistics event was raised at {0:HH:mm:ss.fff}", eventTimeUtc);
+            ServerState.MetricsManager.GatherAndEmitStatistics(eventTimeUtc);
         }
     }
 }
