@@ -42,8 +42,10 @@ export default function Welcome() {
                 </Box>
             </Box>
         </Box>
-        <Box background="white" pad="large">
-            <Introduction />
+        <Box background="white" pad="xlarge" fill justify="center" direction="row">
+            <Box width={{ max: 'large' }}>
+                <Introduction />
+            </Box>
         </Box>
     </Box>
 }
