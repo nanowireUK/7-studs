@@ -186,7 +186,8 @@ namespace SevenStuds.Models
         RoomNotAcceptingNewPlayers = 3,
         RoomNotAcceptingSpectators = 4,
         RoomIsFull = 5,
-        CannotJoinGameInProgress = 6
+        CannotJoinGameInProgress = 6,
+        CurrentGameLimitExceeded = 7
     }
 
     public enum LimitGameRaiseOptions

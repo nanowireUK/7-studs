@@ -26,6 +26,10 @@ namespace SevenStuds.Models
                 throw new HubException(SpcExceptionCodes.RoomNotAcceptingNewPlayers.ToString());
             }
 
+            if ( ServerState.ActiveGames() > 2 ) {
+                throw new HubException(SpcExceptionCodes.CurrentGameLimitExceeded.ToString()); // Protect our resources
+            }
+
             // Add player (note that the base class has already checked the player's basic eligibility for this action)
             Participant p = new Participant(this.UserName);
             G.Participants.Add(p);
