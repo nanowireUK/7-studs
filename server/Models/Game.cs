@@ -318,7 +318,7 @@ namespace SevenStuds.Models
             Task<double> addDeckTask = ServerState.OurDB.RecordDeck(this, newDeck);
             dbTasks.Add(addDeckTask);
 
-            System.Diagnostics.Debug.WriteLine("Hand starting with this deck: " + CardPack.ToString() + "\n");
+            //System.Diagnostics.Debug.WriteLine("Hand starting with this deck: " + CardPack.ToString() + "\n");
 
             this.ClearHandDataBetweenHands();
 
