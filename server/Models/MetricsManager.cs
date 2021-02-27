@@ -1,9 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Microsoft.ApplicationInsights;
-using Microsoft.ApplicationInsights.Extensibility;
-using Microsoft.ApplicationInsights.DataContracts;
+// using Microsoft.ApplicationInsights;
+// using Microsoft.ApplicationInsights.Extensibility;
+// using Microsoft.ApplicationInsights.DataContracts;
 
 namespace SevenStuds.Models
 {
