@@ -1,4 +1,4 @@
-import { Card, CardBody, CheckBox, Stack, Box, Text, TextInput } from 'grommet';
+import { Card, CardBody, CheckBox, Stack, Box, Text } from 'grommet';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectIsAdmin } from '../redux/slices/game';
