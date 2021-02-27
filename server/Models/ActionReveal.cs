@@ -1,13 +1,13 @@
 using System.Threading.Tasks;
 
-namespace SevenStuds.Models
-{  
-    /// <summary>  
-    /// The 'ActionReveal' Class  
-    /// </summary>  
+namespace SocialPokerClub.Models
+{
+    /// <summary>
+    /// The 'ActionReveal' Class
+    /// </summary>
     public class ActionReveal : Action
-    {  
-        public ActionReveal(string connectionId, ActionEnum actionType, Game ourGame, string user, string leavers) 
+    {
+        public ActionReveal(string connectionId, ActionEnum actionType, Game ourGame, string user, string leavers)
             : base(connectionId, actionType, ourGame, user, leavers)
         {
         }
@@ -25,8 +25,8 @@ namespace SevenStuds.Models
             G.Participants[this.PlayerIndex].IsPlayingBlindInCurrentHand = false; // If player was playing blind, they are no longer doing so
             G.Participants[this.PlayerIndex].HasJustSharedHandDetails = true; // Enables the client to animate the reveal if desired
             if ( G.GameMode == GameModeEnum.HandsBeingRevealed ){
-                await G.SetNextPlayerToActOrHandleEndOfHand(PlayerIndex, G.LastEvent);    
+                await G.SetNextPlayerToActOrHandleEndOfHand(PlayerIndex, G.LastEvent);
             }
         }
-    }     
-}  
+    }
+}

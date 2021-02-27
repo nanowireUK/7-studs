@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
 
-namespace SevenStuds.Models
+namespace SocialPokerClub.Models
 {
     public class Pot
     {

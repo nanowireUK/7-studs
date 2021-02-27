@@ -1,13 +1,13 @@
 using System.Threading.Tasks;
 
-namespace SevenStuds.Models
-{  
-    /// <summary>  
-    /// The 'ActionGetLog' Class  
-    /// </summary>  
+namespace SocialPokerClub.Models
+{
+    /// <summary>
+    /// The 'ActionGetLog' Class
+    /// </summary>
     public class ActionGetLog : Action
-    {  
-        public ActionGetLog(string connectionId, ActionEnum actionType, Game ourGame, string user, string leavers) 
+    {
+        public ActionGetLog(string connectionId, ActionEnum actionType, Game ourGame, string user, string leavers)
             : base(connectionId, actionType, ourGame, user, leavers)
         {
         }
@@ -19,5 +19,5 @@ namespace SevenStuds.Models
 
             await Task.FromResult(0); // Just to work around compiler warning "This async method lacks 'await' operators and will run synchronously"
         }
-    }     
-}  
+    }
+}

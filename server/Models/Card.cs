@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace SevenStuds.Models
+namespace SocialPokerClub.Models
 {
     public class Card
     {
@@ -32,14 +32,14 @@ namespace SevenStuds.Models
                 case "Q" : CardValue = CardEnum.Queen; break;
                 case "K" : CardValue = CardEnum.King; break;
                 case "A" : CardValue = CardEnum.Ace; break;
-            }   
+            }
             switch ( cardCode.Substring(1,1) )
             {
                 case "c" : CardSuit = SuitEnum.Clubs; break;
                 case "d" : CardSuit = SuitEnum.Diamonds; break;
                 case "h" : CardSuit = SuitEnum.Hearts; break;
                 case "s" : CardSuit = SuitEnum.Spades; break;
-            }                     
+            }
         }
         public CardEnum CardValue { get; set; }
         public SuitEnum CardSuit { get; set;}
@@ -70,7 +70,7 @@ namespace SevenStuds.Models
                             case CardEnum.Two:
                                 {
                                     return "2" + CardSuit.ToString().Substring(0, 1).ToLower();
-                                }                                
+                                }
 
                             case CardEnum.Three:
                                 {

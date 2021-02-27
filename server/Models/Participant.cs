@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
 
-namespace SevenStuds.Models
+namespace SocialPokerClub.Models
 {
     public class Participant
     {
@@ -14,16 +14,16 @@ namespace SevenStuds.Models
             this.Hand = new List<Card>();
             this.IsLockedOutFollowingReplay = false;
             this.IsGameAdministrator = false;
-            this.IsSharingHandDetails = false; 
+            this.IsSharingHandDetails = false;
             this.HasJustSharedHandDetails = false; // set when the player reveals; will be cleared as soon as anyone else does anything else
             this.HasBeenActiveInCurrentGame = false;
             this.TimeOfBankruptcy = DateTimeOffset.MinValue;
             this.AllInDateTime = DateTimeOffset.MinValue;
-            this.IntendsToPlayBlindInNextHand = false; 
-            this.IsPlayingBlindInCurrentHand = false; 
+            this.IntendsToPlayBlindInNextHand = false;
+            this.IsPlayingBlindInCurrentHand = false;
         }
         [Required]
-        
+
         public string Name { get; set; }
         public int UncommittedChips { get; set; }
         public Boolean HasFolded { get; set; }
@@ -38,7 +38,7 @@ namespace SevenStuds.Models
         public ActionEnum LastActionInThisHand { get; set; }
         public int LastActionAmount { get; set; }
         public int RoundNumberOfLastAction { get; set; }
-        public int HandsWon { get; set; } 
+        public int HandsWon { get; set; }
         public string RejoinCode { get; set; } // e.g. 3 alphanumeric characters that enables a disconnected player to rejoin as the same person
         public string ParticipantSignalRGroupName { get; set; }
         public Boolean HasBeenActiveInCurrentGame { get; set; }
@@ -80,35 +80,35 @@ namespace SevenStuds.Models
                 _ConnectionIds.Add(connectionId);
             }
         }
-        
+
         public void StartNewHandForActivePlayer(Game g) {
             //this.ChipsCommittedToCurrentBettingRound = g.Ante;
             this.UncommittedChips -= g.Ante;
             this.HasFolded = false;
             this.HasCovered = false;
             this.StartedHandWithNoFunds = false;
-            this.IsPlayingBlindInCurrentHand = this.IntendsToPlayBlindInNextHand; // intent was noted via action in lobby or during last hand             
+            this.IsPlayingBlindInCurrentHand = this.IntendsToPlayBlindInNextHand; // intent was noted via action in lobby or during last hand
             this.IntendsToPlayBlindInNextHand = false; // clear the intent for the current hand
             this.Hand = new List<Card>();
             this.Hand.Add(g.DealCard()); // 1st random card
             this.Hand.Add(g.DealCard()); // 2nd random card
             this.Hand.Add(g.DealCard()); // 3rd random card
             PokerHand visibleHand = new PokerHand(
-                this.Hand[2], 
-                ServerState.DummyCard, 
-                ServerState.DummyCard, 
-                ServerState.DummyCard, 
+                this.Hand[2],
+                ServerState.DummyCard,
+                ServerState.DummyCard,
+                ServerState.DummyCard,
                 ServerState.DummyCard, ServerState.RankingTable);
             this._VisibleHandDescription = /*visibleHand.ToString(HandToStringFormatEnum.ShortCardsHeld) + ": " + */ visibleHand.ToString(HandToStringFormatEnum.HandDescription);
             this._VisibleHandRank = visibleHand.Rank;
             _PokerHand = new PokerHand(
-                this.Hand[0], 
-                this.Hand[1], 
-                this.Hand[2], 
-                ServerState.DummyCard, 
+                this.Hand[0],
+                this.Hand[1],
+                this.Hand[2],
+                ServerState.DummyCard,
                 ServerState.DummyCard, ServerState.RankingTable);
             this._FullHandDescription = /*_PokerHand.ToString(HandToStringFormatEnum.ShortCardsHeld) + ": " + */ _PokerHand.ToString(HandToStringFormatEnum.HandDescription);
-            this._FullHandRank = _PokerHand.Rank;  
+            this._FullHandRank = _PokerHand.Rank;
             RebuildMyHandSummary(g);
         }
 
@@ -121,10 +121,10 @@ namespace SevenStuds.Models
             this._VisibleHandDescription = null;
             this._VisibleHandRank = int.MaxValue;
             this._FullHandDescription = null;
-            this._FullHandRank = int.MaxValue;  
+            this._FullHandRank = int.MaxValue;
             this._HandSummary = "";
             this._VisibleHandSummary = "";
-        } 
+        }
 
         public void PrepareForNextBettingRound(Game g, int roundNumber) {
             // Check whether player is still in, and deal them a new card if so (or the community card if specified)
@@ -135,12 +135,12 @@ namespace SevenStuds.Models
                 else {
                     this.Hand.Add(g.CommunityCard); // same card for each player in this round
                 }
-                
+
                 PokerHand visibleHand = new PokerHand(
-                    this.Hand[2], 
-                    roundNumber >= 4 ? this.Hand[3] : ServerState.DummyCard, 
-                    roundNumber >= 5 ? this.Hand[4] : ServerState.DummyCard, 
-                    roundNumber >= 6 ? this.Hand[5] : ServerState.DummyCard, 
+                    this.Hand[2],
+                    roundNumber >= 4 ? this.Hand[3] : ServerState.DummyCard,
+                    roundNumber >= 5 ? this.Hand[4] : ServerState.DummyCard,
+                    roundNumber >= 6 ? this.Hand[5] : ServerState.DummyCard,
                     roundNumber == 7 && g.CardPositionIsVisible[6] == true ? this.Hand[6] : ServerState.DummyCard, // final card can be open if we're in a community card situation
                     ServerState.RankingTable);
                 this._VisibleHandDescription = /*visibleHand.ToString(HandToStringFormatEnum.ShortCardsHeld) + ": " + */ visibleHand.ToString(HandToStringFormatEnum.HandDescription);
@@ -149,11 +149,11 @@ namespace SevenStuds.Models
 
                 if ( g._CardsDealtIncludingCurrent < 6 ) {
                     _PokerHand = new PokerHand(
-                        this.Hand[0], 
-                        this.Hand[1], 
-                        this.Hand[2], 
-                        roundNumber >= 4 ? this.Hand[3] : ServerState.DummyCard, 
-                        roundNumber >= 5 ? this.Hand[4] : ServerState.DummyCard, 
+                        this.Hand[0],
+                        this.Hand[1],
+                        this.Hand[2],
+                        roundNumber >= 4 ? this.Hand[3] : ServerState.DummyCard,
+                        roundNumber >= 5 ? this.Hand[4] : ServerState.DummyCard,
                         ServerState.RankingTable);
                 }
                 else if ( g._CardsDealtIncludingCurrent == 6 ) {
@@ -170,22 +170,22 @@ namespace SevenStuds.Models
                     bool initDone = false;
                     for (int i = 0; i < combos.Count ; i++) {
                         testHand = new PokerHand(
-                            this.Hand[combos[i][0]], 
-                            this.Hand[combos[i][1]], 
-                            this.Hand[combos[i][2]], 
-                            this.Hand[combos[i][3]], 
-                            this.Hand[combos[i][4]], 
-                            ServerState.RankingTable);                        
+                            this.Hand[combos[i][0]],
+                            this.Hand[combos[i][1]],
+                            this.Hand[combos[i][2]],
+                            this.Hand[combos[i][3]],
+                            this.Hand[combos[i][4]],
+                            ServerState.RankingTable);
                         // Note current best hand and which card positions were used to form that hand
                         if ( initDone == false ) {
                             _PokerHand = testHand;
                             chosenCombo = combos[i];
-                            initDone = true; 
+                            initDone = true;
                         }
                         else if ( testHand.Rank < _PokerHand.Rank) {
                             _PokerHand = testHand;
                             chosenCombo = combos[i];
-                        }                        
+                        }
                     }
                     _CardIndexesInPresentationOrder = GetCardIndexesInPresentationOrder(chosenCombo);
                 }
@@ -216,33 +216,33 @@ namespace SevenStuds.Models
                     combos.Add(new List<int>(){1, 3, 4, 5, 6});
                     combos.Add(new List<int>(){2, 3, 4, 5, 6});
                     PokerHand testHand;
-                    bool initDone = false;                    
+                    bool initDone = false;
                     for (int i = 0; i < combos.Count ; i++) {
                         testHand = new PokerHand(
-                            this.Hand[combos[i][0]], 
-                            this.Hand[combos[i][1]], 
-                            this.Hand[combos[i][2]], 
-                            this.Hand[combos[i][3]], 
-                            this.Hand[combos[i][4]], 
-                            ServerState.RankingTable);                        
+                            this.Hand[combos[i][0]],
+                            this.Hand[combos[i][1]],
+                            this.Hand[combos[i][2]],
+                            this.Hand[combos[i][3]],
+                            this.Hand[combos[i][4]],
+                            ServerState.RankingTable);
                         // Note current best hand and which card positions were used to form that hand
                         if ( initDone == false ) {
                             _PokerHand = testHand;
                             chosenCombo = combos[i];
-                            initDone = true; 
+                            initDone = true;
                         }
                         else if ( testHand.Rank < _PokerHand.Rank) {
                             _PokerHand = testHand;
                             chosenCombo = combos[i];
-                        }  
+                        }
                     }
                     _CardIndexesInPresentationOrder = GetCardIndexesInPresentationOrder(chosenCombo);
-                }                
+                }
                 this._FullHandDescription = /*_PokerHand.ToString(HandToStringFormatEnum.ShortCardsHeld) + ": " + */ _PokerHand.ToString(HandToStringFormatEnum.HandDescription);
                 this._FullHandRank = _PokerHand.Rank;
                 RebuildMyHandSummary(g);
             }
-        } 
+        }
         public void RebuildMyHandSummary(Game g) {
             this._HandSummary = "";
             this._VisibleHandSummary = "";
@@ -258,7 +258,7 @@ namespace SevenStuds.Models
             if ( this.IsPlayingBlindInCurrentHand ) {
                 this._HandSummary = ""; // Clear the hand summary (not sure it is used in the client anyway)
             }
-        } 
+        }
         private List<int> GetCardIndexesInPresentationOrder(List<int> chosenCombo) {
             // Will use attributes Hand and _PokerHand
             // Note that chosenCombo contains card position indexers that are zero-based
@@ -297,12 +297,12 @@ namespace SevenStuds.Models
                 chosenComboInPresentationOrder.Add(chosenCombo[requiredOrder]);
             }
             _PresentablePokerHand = new PokerHand(
-                this.Hand[chosenComboInPresentationOrder[0]], 
-                this.Hand[chosenComboInPresentationOrder[1]], 
-                this.Hand[chosenComboInPresentationOrder[2]], 
-                this.Hand[chosenComboInPresentationOrder[3]], 
-                this.Hand[chosenComboInPresentationOrder[4]], 
-                ServerState.RankingTable);   
+                this.Hand[chosenComboInPresentationOrder[0]],
+                this.Hand[chosenComboInPresentationOrder[1]],
+                this.Hand[chosenComboInPresentationOrder[2]],
+                this.Hand[chosenComboInPresentationOrder[3]],
+                this.Hand[chosenComboInPresentationOrder[4]],
+                ServerState.RankingTable);
             if ( _PresentablePokerHand.Rank != _PokerHand.Rank ) {
                 throw new Exception("Poker hand in presentation order is not equivalent to unsorted hand");
             }
@@ -317,10 +317,10 @@ namespace SevenStuds.Models
             else if ( this.Hand[2].CardSuit == SuitEnum.Diamonds ) { suitRanking = 2; }
             else if ( this.Hand[2].CardSuit == SuitEnum.Hearts )   { suitRanking = 3; }
             else if ( this.Hand[2].CardSuit == SuitEnum.Spades )   { suitRanking = 4; }
-            // System.Diagnostics.Debug.WriteLine(this.Name + " 3rd card is " + this.Hand[2].ToString(CardToStringFormatEnum.ShortCardName) 
+            // System.Diagnostics.Debug.WriteLine(this.Name + " 3rd card is " + this.Hand[2].ToString(CardToStringFormatEnum.ShortCardName)
             //     + ", value ranked as " + valueRanking + ", suit ranked as " + suitRanking + ", " + (( valueRanking * 10 ) + suitRanking) + " overall");
             return ( valueRanking * 10 ) + suitRanking;
-        }  
+        }
         public int HandStrength() {
             return this._PokerHand.Strength();
         }

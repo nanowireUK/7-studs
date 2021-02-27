@@ -5,9 +5,9 @@ using System.Collections.Generic;
 // using Microsoft.ApplicationInsights.Extensibility;
 // using Microsoft.ApplicationInsights.DataContracts;
 
-namespace SevenStuds.Models
+namespace SocialPokerClub.Models
 {
-    public class MetricsManager 
+    public class MetricsManager
     {
         // An object that maintains up-to-date server statistics, with automatic updates every minute
         public DateTimeOffset sessionStart;
@@ -55,7 +55,7 @@ namespace SevenStuds.Models
             ServerState.MetricsSummary.ActiveRooms = obs_n.ActiveGames;
             ServerState.MetricsSummary.MovesOverall = obs_n.TotalActionsProcessed;
             ServerState.MetricsSummary.RUsInLastHour = (long) (obs_n.ServerTotalConsumedRUs - obs_0.ServerTotalConsumedRUs);
-            ServerState.MetricsSummary.MovesInLastHour = obs_n.TotalActionsProcessed - obs_0.TotalActionsProcessed;  
+            ServerState.MetricsSummary.MovesInLastHour = obs_n.TotalActionsProcessed - obs_0.TotalActionsProcessed;
             ServerState.MetricsSummary.RUsInLastMinute   = (long) (obs_n.ServerTotalConsumedRUs - obs_n_minus_1.ServerTotalConsumedRUs);
             ServerState.MetricsSummary.MovesInLastMinute = obs_n.TotalActionsProcessed - obs_n_minus_1.TotalActionsProcessed;
 

@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 
-namespace SevenStuds.Models
+namespace SocialPokerClub.Models
 {
     public class PotResult
     {
         public string PlayerName { get; set; }
-        public int Stake { get; set; } 
-        public int AmountWonOrLost { get; set; } 
+        public int Stake { get; set; }
+        public int AmountWonOrLost { get; set; }
         public PotResultReasonEnum ReasonWhy { get; set; } // PlayerFolded, ViaHandComparisons, NoOneElseLeft
         public string HandDescription { get; set; }
         //public List<Card> Hand { get; set; }

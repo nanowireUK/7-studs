@@ -5,28 +5,28 @@ using System;
 using System.Globalization;
 using System.Collections;
 
-namespace SevenStuds.Models
+namespace SocialPokerClub.Models
 {
     public class AdHocQuery
     {
         // Various queries against the server
-        public List<string> queryResults { get; set; } 
+        public List<string> queryResults { get; set; }
         public AdHocQuery(Room thisRoom, string queryType) {
             queryResults = new List<string>();
             try
             {
-                switch (queryType.ToLower())  
-                { 
-                    // case "list-vars": 
-                    //     // List environment variables 
+                switch (queryType.ToLower())
+                {
+                    // case "list-vars":
+                    //     // List environment variables
                     //     List<string> envVars = new List<string>();
                     //     foreach (DictionaryEntry de in Environment.GetEnvironmentVariables()) {
                     //         envVars.Add("Key: " + de.Key + " Value: " + de.Value);
                     //     }
                     //     envVars.Sort();
                     //     queryResults.Add(ServerState.StringArrayAsJson(envVars));
-                    //     break;   
-                    // case "list-games": 
+                    //     break;
+                    // case "list-games":
                     //     // List rooms with active games
                     //     List<string> games = new List<string>();
                     //     foreach (DictionaryEntry pair in ServerState.RoomList )
@@ -34,7 +34,7 @@ namespace SevenStuds.Models
                     //         Room r = (Room) pair.Value;
                     //         Game g = r.ActiveGame;
                     //         games.Add(
-                    //             "Room:" + pair.Key 
+                    //             "Room:" + pair.Key
                     //             + ", Participants:" + g.Participants.Count
                     //             + ", Hands:" + g.HandsPlayedIncludingCurrent
                     //             + ", Last Action:" + g.LastSuccessfulAction.ToString("yyyy-MM-dd HH:mm")
@@ -42,8 +42,8 @@ namespace SevenStuds.Models
                     //             );
                     //     }
                     //     queryResults.Add(ServerState.StringArrayAsJson(games));
-                    //     break;  
-                    case "list-env": 
+                    //     break;
+                    case "list-env":
                         // Check if running on public server
                         if ( ServerState.AllowTestFunctions() ) {
                             queryResults.Add("Test functions are allowed");
@@ -51,11 +51,11 @@ namespace SevenStuds.Models
                         else {
                             queryResults.Add("Test functions are disallowed");
                         }
-                        break;    
-                    case "test-hand-lookup": 
+                        break;
+                    case "test-hand-lookup":
                         // Check if running on public server
                         TestHandLookupPerformance(queryResults);
-                        break;    
+                        break;
                     // case "list-logs":
                     //     // Return the game logs from all games completed since the server last restarted
                     //     foreach (DictionaryEntry pair in ServerState.RoomList )
@@ -65,10 +65,10 @@ namespace SevenStuds.Models
                     //             queryResults.Add(gl.AsJson());
                     //         }
                     //     }
-                    //     break;  
-                    default:  
+                    //     break;
+                    default:
                         throw new SystemException("Query type " + queryType + " not implemented");
-                }  
+                }
             }
             catch (System.Exception e)
             {
@@ -79,7 +79,7 @@ namespace SevenStuds.Models
 
         private void TestHandLookupPerformance(List<string> r) {
             // Test the performance of the SortedList lookup used to lookup the ranking of a singple poker hand
-            
+
             // CONCLUSIONS (Feb 2021 on Dell XPS15 laptop):
             // Total lookups = 311,875,200 (52*51*50*49*48)
             // Time taken to loop through and just increment the count = 108,162.552 milliseconds
@@ -90,9 +90,9 @@ namespace SevenStuds.Models
             // THEREFORE: No need to look into improving performance by changing to Dictionary and custom HashCodes
 
             List<Card> cards = new List<Card>();
-            foreach (CardEnum c in Enum.GetValues(typeof(CardEnum))) 
+            foreach (CardEnum c in Enum.GetValues(typeof(CardEnum)))
             {
-                foreach (SuitEnum s in Enum.GetValues(typeof(SuitEnum))) 
+                foreach (SuitEnum s in Enum.GetValues(typeof(SuitEnum)))
                 {
                     Card n = new Card(c, s);
                     cards.Add(n);

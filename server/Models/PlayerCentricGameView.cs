@@ -3,7 +3,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System;
 
-namespace SevenStuds.Models
+namespace SocialPokerClub.Models
 {
     public class PlayerCentricGameView
     {
@@ -136,7 +136,7 @@ namespace SevenStuds.Models
                 DealOrderFromMyPerspective = new List<int>();
                 for ( int i = 0; i < g.Participants.Count; i++ ) {
                     // Starting with player to left of dealer, add indexes of players who have received cards in this hand,
-                    // using the indexes as they would be if current player was player zero 
+                    // using the indexes as they would be if current player was player zero
                     int indexToCheck =  ( i + g.IndexOfParticipantDealingThisHand + 1 ) % g.Participants.Count;
                     if ( g.Participants[indexToCheck].Hand.Count == RoundNumberIfCardsJustDealt ) {
                         // Player has received a card (or the first three cards) so add their position (relative to our player) to the list
@@ -166,10 +166,10 @@ namespace SevenStuds.Models
                     if ( aa.Availability == AvailabilityEnum.AnyRegisteredPlayer
                         || ( aa.Availability == AvailabilityEnum.ActivePlayerOnly & IsMyTurn )
                         || ( aa.Availability == AvailabilityEnum.AdministratorOnly & IAmAdministrator )
-                        || ( 
-                            aa.Availability == AvailabilityEnum.AnyUnrevealedRegisteredPlayer 
-                            & g.Participants[playerIndex].StartedHandWithNoFunds == false 
-                            & g.Participants[playerIndex].IsSharingHandDetails == false 
+                        || (
+                            aa.Availability == AvailabilityEnum.AnyUnrevealedRegisteredPlayer
+                            & g.Participants[playerIndex].StartedHandWithNoFunds == false
+                            & g.Participants[playerIndex].IsSharingHandDetails == false
                             )
                     ) {
                         AvailableActions.Add(aa.Action.ToString());

@@ -2,7 +2,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
 
-namespace SevenStuds.Models
+namespace SocialPokerClub.Models
 {
     public class Deck
     {
@@ -41,7 +41,7 @@ namespace SevenStuds.Models
         public Deck(int deckNo, string sourceDeck)
         {
             DeckNumber = deckNo;
-            CardList = sourceDeck; 
+            CardList = sourceDeck;
             Cards = NewCardStackFromCardList(); // This deck was created from a string of cards ... create an equivalent stack of cards
         }
         private void Shuffle()
@@ -75,7 +75,7 @@ namespace SevenStuds.Models
             CardList = CardList.Remove(0,2);
             Card popCard = Cards.Pop();
             if ( popCard.ToString(CardToStringFormatEnum.ShortCardName) != dealtCard) {
-                System.Diagnostics.Debug.WriteLine("Error: card dealt from stack '" + popCard.ToString(CardToStringFormatEnum.ShortCardName) 
+                System.Diagnostics.Debug.WriteLine("Error: card dealt from stack '" + popCard.ToString(CardToStringFormatEnum.ShortCardName)
                     + "' does not match card dealt from string'"+dealtCard+"'");
             }
             return nextCard;
@@ -91,7 +91,7 @@ namespace SevenStuds.Models
                 CardList += cardsAsArray[i].ToString(CardToStringFormatEnum.ShortCardName);
             }
         }
-        public Deck Clone() 
+        public Deck Clone()
         {
             // Clone the current deck, keeping the same deck id
             return this.Clone(this.DeckNumber);

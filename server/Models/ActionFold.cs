@@ -1,14 +1,14 @@
 using System;
 using System.Threading.Tasks;
 
-namespace SevenStuds.Models
-{  
-    /// <summary>  
-    /// The 'ActionFold' Class  
-    /// </summary>  
+namespace SocialPokerClub.Models
+{
+    /// <summary>
+    /// The 'ActionFold' Class
+    /// </summary>
     public class ActionFold : Action
-    {  
-        public ActionFold(string connectionId, ActionEnum actionType, Game ourGame, string user, string leavers) 
+    {
+        public ActionFold(string connectionId, ActionEnum actionType, Game ourGame, string user, string leavers)
             : base(connectionId, actionType, ourGame, user, leavers)
         {
         }
@@ -33,7 +33,7 @@ namespace SevenStuds.Models
             G.Participants[PlayerIndex].RebuildMyHandSummary(G); // Enables folded cards to be hidden if requireed
 
             // Find and set next player (could be no one if all players have now folded)
-            await G.SetNextPlayerToActOrHandleEndOfHand(PlayerIndex, G.LastEvent);  
+            await G.SetNextPlayerToActOrHandleEndOfHand(PlayerIndex, G.LastEvent);
         }
-    }     
-}  
+    }
+}

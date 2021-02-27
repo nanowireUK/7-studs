@@ -1,7 +1,7 @@
 using System;
 using System.Text.Json;
 
-namespace SevenStuds.Models
+namespace SocialPokerClub.Models
 {
     public class MetricsSummary
     {
@@ -26,6 +26,6 @@ namespace SevenStuds.Models
             };
             string jsonString = JsonSerializer.Serialize(this, options);
             return jsonString;
-        }  
+        }
     }
 }

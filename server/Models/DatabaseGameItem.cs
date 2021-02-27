@@ -2,7 +2,7 @@ using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace SevenStuds.Models
+namespace SocialPokerClub.Models
 {
     public abstract class DatabaseGameItem
     {
@@ -15,7 +15,7 @@ namespace SevenStuds.Models
         public DatabaseGameItem () {
             docDateUtc = DateTimeOffset.UtcNow;
         }
- 
+
         public override string ToString()
         {
             var options = new JsonSerializerOptions

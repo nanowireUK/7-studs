@@ -6,7 +6,7 @@ using Microsoft.Azure.Cosmos;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace SevenStuds.Models
+namespace SocialPokerClub.Models
 {
     public class PokerDB
     {
@@ -27,22 +27,22 @@ namespace SevenStuds.Models
             string db_mode = Environment.GetEnvironmentVariable("SpcDbMode");
             if ( db_mode == null ) { db_mode = "Not Found"; }
             switch (db_mode) {
-                case "NoDatabase": 
+                case "NoDatabase":
                     System.Diagnostics.Debug.WriteLine("SpcDbMode=NoDatabase. Application will run without database operations.");
-                    dbMode = DatabaseModeEnum.NoDatabase; 
+                    dbMode = DatabaseModeEnum.NoDatabase;
                     break;
-                case "Recoverability": 
+                case "Recoverability":
                     System.Diagnostics.Debug.WriteLine("SpcDbMode=Recoverability. Application will record actions for logging and use in recovery.");
                     dbMode = DatabaseModeEnum.Recoverability;
                     break;
-                case "Stateless": 
+                case "Stateless":
                     System.Diagnostics.Debug.WriteLine("SpcDbMode=Stateless. Application will run in database-backed stateless mode.");
-                    dbMode = DatabaseModeEnum.Stateless; 
+                    dbMode = DatabaseModeEnum.Stateless;
                     break;
-                default: 
+                default:
                     System.Diagnostics.Debug.WriteLine("Env var 'SpcDbMode' has invalid value '"+db_mode+"', using default of 'NoDatabase'");
                     System.Diagnostics.Debug.WriteLine("SpcDbMode=NoDatabase. Application will run without database operations.");
-                    dbMode = DatabaseModeEnum.NoDatabase; 
+                    dbMode = DatabaseModeEnum.NoDatabase;
                     break;
             }
         }
@@ -75,15 +75,15 @@ namespace SevenStuds.Models
                 playersInOrderAtStartOfGame = players,
                 playersStartingBlind = blindPlayers,
                 lobbySettings = new LobbySettings(g),
-                id = "GameHeader-" + 0               
+                id = "GameHeader-" + 0
             };
 
             ItemResponse<DocOfTypeGameHeader> dbResponse = await this.ourGamesContainer.CreateItemAsync<DocOfTypeGameHeader>(
-                gameHeader, 
+                gameHeader,
                 new PartitionKey(gameHeader.docGameId));
 
             // Note that after creating the item, we can access the body of the item with the Resource property off the ItemResponse. We can also access the RequestCharge property to see the amount of RUs consumed on this request.
-            // Console.WriteLine("Created GameHeader in database with id: {0} Operation consumed {1} RUs. Game id = {2}.\n", 
+            // Console.WriteLine("Created GameHeader in database with id: {0} Operation consumed {1} RUs. Game id = {2}.\n",
             //     dbResponse.Resource.id, dbResponse.RequestCharge, dbResponse.Resource.docGameId);
             this.ServerTotalConsumedRUs += dbResponse.RequestCharge; // Add this to our total
             return dbResponse.RequestCharge;
@@ -104,16 +104,16 @@ namespace SevenStuds.Models
                 docType = "Action",
                 docSeq = gla.ActionNumber,
                 // Set values that depend on the other values
-                id = "Action-" + gla.ActionNumber,  
-                action = gla      
+                id = "Action-" + gla.ActionNumber,
+                action = gla
             };
 
             ItemResponse<DocOfTypeGameLogAction> dbResponse = await this.ourGamesContainer.CreateItemAsync<DocOfTypeGameLogAction>(
-                gameLogAction, 
+                gameLogAction,
                 new PartitionKey(gameLogAction.docGameId));
 
             // Note that after creating the item, we can access the body of the item with the Resource property off the ItemResponse. We can also access the RequestCharge property to see the amount of RUs consumed on this request.
-            // Console.WriteLine("Created GameLogAction item in database with id: {0} Operation consumed {1} RUs. Game id = {2}.\n", 
+            // Console.WriteLine("Created GameLogAction item in database with id: {0} Operation consumed {1} RUs. Game id = {2}.\n",
             //     dbResponse.Resource.id, dbResponse.RequestCharge, dbResponse.Resource.docGameId);
             this.ServerTotalConsumedRUs += dbResponse.RequestCharge; // Add this to our total
             return dbResponse.RequestCharge;
@@ -134,8 +134,8 @@ namespace SevenStuds.Models
                 docType = "Deck",
                 docSeq = g.HandsPlayedIncludingCurrent,
                 // Set values that depend on the other values
-                id = "Deck-" + g.HandsPlayedIncludingCurrent,  
-                deck = d,  
+                id = "Deck-" + g.HandsPlayedIncludingCurrent,
+                deck = d,
                 //lobbyData = g.LobbyData
             };
 
@@ -145,14 +145,14 @@ namespace SevenStuds.Models
 
             // Create an item in the container representing the game header. Note we provide the value of the partition key for this item
             ItemResponse<DocOfTypeDeck> dbResponse = await this.ourGamesContainer.CreateItemAsync<DocOfTypeDeck>(
-                details, 
+                details,
                 new PartitionKey(details.docGameId));
             // Note that after creating the item, we can access the body of the item with the Resource property off the ItemResponse. We can also access the RequestCharge property to see the amount of RUs consumed on this request.
-            // Console.WriteLine("Created GameLogAction item in database with id: {0} Operation consumed {1} RUs. Game id = {2}.\n", 
+            // Console.WriteLine("Created GameLogAction item in database with id: {0} Operation consumed {1} RUs. Game id = {2}.\n",
             //     dbResponse.Resource.id, dbResponse.RequestCharge, dbResponse.Resource.docGameId);
             this.ServerTotalConsumedRUs += dbResponse.RequestCharge; // Add this to our total
             return dbResponse.RequestCharge;
-        }  
+        }
         public async Task<double> UpsertGameState(Game g)
         {
             // -------------------------------------------------------------------------------------------
@@ -168,20 +168,20 @@ namespace SevenStuds.Models
                 docType = "GameState",
                 docSeq = 0,
                 // Set values that depend on the other values
-                id = "GameState-0",  
+                id = "GameState-0",
                 gameState = g
             };
 
             ItemResponse<DocOfTypeGameState> dbResponse = await this.ourGamesContainer.UpsertItemAsync<DocOfTypeGameState>(
-                gameState, 
+                gameState,
                 new PartitionKey(gameState.docGameId));
 
             // Note that after upserting the item, we can access the body of the item with the Resource property off the ItemResponse. We can also access the RequestCharge property to see the amount of RUs consumed on this request.
-            // Console.WriteLine("Upserted GameState item in database with id: {0} Operation consumed {1} RUs. Game id = {2}.\n", 
+            // Console.WriteLine("Upserted GameState item in database with id: {0} Operation consumed {1} RUs. Game id = {2}.\n",
             //     dbResponse.Resource.id, dbResponse.RequestCharge, dbResponse.Resource.docGameId);
             this.ServerTotalConsumedRUs += dbResponse.RequestCharge; // Add this to our total
             return dbResponse.RequestCharge;
-        }    
+        }
         public async Task<Game> LoadGameState(string gameId)
         {
             // -------------------------------------------------------------------------------------------
@@ -193,10 +193,10 @@ namespace SevenStuds.Models
 
             try
             {
-                // Read the item. We can access the body of the item with the Resource property off the ItemResponse. 
+                // Read the item. We can access the body of the item with the Resource property off the ItemResponse.
                 // We can also access the RequestCharge property to see the amount of RUs consumed on this request.
                 ItemResponse<DocOfTypeGameState> dbResponse = await this.ourGamesContainer.ReadItemAsync<DocOfTypeGameState>("GameState-0", new PartitionKey(gameId));
-                // Console.WriteLine("Game state for game with id '{0}' successfully loaded. Operation consumed {1} RUs.\n", 
+                // Console.WriteLine("Game state for game with id '{0}' successfully loaded. Operation consumed {1} RUs.\n",
                 //     dbResponse.Resource.docGameId, dbResponse.RequestCharge);
                 this.ServerTotalConsumedRUs += dbResponse.RequestCharge; // Add this to our total
                 Game returnedGame = dbResponse.Resource.gameState;
@@ -208,8 +208,8 @@ namespace SevenStuds.Models
             {
                 Console.WriteLine("Game state for game with id '{0}' not found.\n", gameId);
                 return null;
-            }            
-        }  
+            }
+        }
         public async Task<Game> LoadMostRecentGameState(string roomId)
         {
             bool dbExists = await this.DatabaseConnectionHasBeenEstablished();
@@ -239,7 +239,7 @@ namespace SevenStuds.Models
             }
             Console.WriteLine("No recent historical games found for room '{0}'.\n", roomId);
             return null;
-        }     
+        }
         public async Task<GameLog> LoadGameLog(string gameId)
         {
             Console.WriteLine("Attempting to load game log for game with id '{0}'\n", gameId);
@@ -248,14 +248,14 @@ namespace SevenStuds.Models
             if ( dbExists == false ) { return null; }
 
             GameLog rebuiltLog = new GameLog();
-       
+
             // (1) Get the GameHeader and start the GameLog from there
             try
             {
-                // Read the item. We can access the body of the item with the Resource property off the ItemResponse. 
+                // Read the item. We can access the body of the item with the Resource property off the ItemResponse.
                 // We can also access the RequestCharge property to see the amount of RUs consumed on this request.
                 ItemResponse<DocOfTypeGameHeader> dbResponse = await this.ourGamesContainer.ReadItemAsync<DocOfTypeGameHeader>("GameHeader-0", new PartitionKey(gameId));
-                Console.WriteLine("Game header for game with id '{0}' successfully loaded. Operation consumed {1} RUs.\n", 
+                Console.WriteLine("Game header for game with id '{0}' successfully loaded. Operation consumed {1} RUs.\n",
                     dbResponse.Resource.docGameId, dbResponse.RequestCharge);
                 DocOfTypeGameHeader returnedDoc = dbResponse.Resource;
                 rebuiltLog.roomId = returnedDoc.docRoomId;
@@ -270,10 +270,10 @@ namespace SevenStuds.Models
             {
                 Console.WriteLine("Game header for game with id '{0}' not found.\n", gameId);
                 return null;
-            }  
+            }
 
             // (2) Load the decks used in the game
-            var deckQueryText = "SELECT * FROM c WHERE c.docType = 'Deck' AND c.docGameId = '"+gameId+"' ORDER BY c.docSeq ASC"; 
+            var deckQueryText = "SELECT * FROM c WHERE c.docType = 'Deck' AND c.docGameId = '"+gameId+"' ORDER BY c.docSeq ASC";
             Console.WriteLine("Running query: {0}\n", deckQueryText);
             QueryDefinition deckQueryDefinition = new QueryDefinition(deckQueryText);
             FeedIterator<DocOfTypeDeck> deckIterator = this.ourGamesContainer.GetItemQueryIterator<DocOfTypeDeck>(deckQueryDefinition);
@@ -292,7 +292,7 @@ namespace SevenStuds.Models
             }
 
             // (3) Load the actions used in the game
-            var actionQueryText = "SELECT * FROM c WHERE c.docType = 'Action' AND c.docGameId = '"+gameId+"' ORDER BY c.docSeq ASC"; 
+            var actionQueryText = "SELECT * FROM c WHERE c.docType = 'Action' AND c.docGameId = '"+gameId+"' ORDER BY c.docSeq ASC";
             Console.WriteLine("Running query: {0}\n", actionQueryText);
             QueryDefinition actionQueryDefinition = new QueryDefinition(actionQueryText);
             FeedIterator<DocOfTypeGameLogAction> actionIterator = this.ourGamesContainer.GetItemQueryIterator<DocOfTypeGameLogAction>(actionQueryDefinition);
@@ -308,13 +308,13 @@ namespace SevenStuds.Models
                     rebuiltLog.actions.Add(a);
                     if ( returnedDoc.docDateUtc > rebuiltLog.endTimeUtc ) {
                         rebuiltLog.endTimeUtc= returnedDoc.docDateUtc;
-                    } 
+                    }
                 }
             }
             Console.WriteLine("Reload complete.\n");
 
             return rebuiltLog;
-        }               
+        }
         public async Task<bool> DatabaseConnectionHasBeenEstablished() {
             if ( dbMode == DatabaseModeEnum.NoDatabase ) { return false; }; // Will never have a database connection
             if ( dbStatus == DatabaseConnectionStatusEnum.ConnectionNotAttempted ) {
@@ -343,7 +343,7 @@ namespace SevenStuds.Models
                     else {
                         System.Diagnostics.Debug.WriteLine("SpcDbPrimaryKey="+PrimaryKey);
                     }
-                                        
+
                     // Establish connection to the DB server
                     this.cosmosClient = new CosmosClient(EndpointUri, PrimaryKey, new CosmosClientOptions() { ApplicationName = "SevenStuds" });
 
@@ -369,11 +369,11 @@ namespace SevenStuds.Models
                     {
                         Console.WriteLine("Container '{0}' has been created\n", Cresp.Container.Id);
                     }
-                    ourGamesContainer = Cresp.Container;       
-        
+                    ourGamesContainer = Cresp.Container;
+
                     dbStatus = DatabaseConnectionStatusEnum.ConnectionEstablished;
                 }
-                catch(Exception ex) 
+                catch(Exception ex)
                 {
                     // Note that after creating the item, we can access the body of the item with the Resource property off the ItemResponse. We can also access the RequestCharge property to see the amount of RUs consumed on this request.
                     Console.WriteLine("Database connection could not be established. Continuing without database. Reported exception = {0}\n", ex.Message);
@@ -381,6 +381,6 @@ namespace SevenStuds.Models
                 }
             }
             return dbStatus == DatabaseConnectionStatusEnum.ConnectionEstablished;
-        }                      
+        }
     }
 }

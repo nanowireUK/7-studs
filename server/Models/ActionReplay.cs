@@ -3,22 +3,22 @@ using System.Text.Json;
 using Microsoft.AspNetCore.SignalR;
 using System.Threading.Tasks;
 
-namespace SevenStuds.Models
-{  
-    /// <summary>  
-    /// The 'ActionReplay' Class  
-    /// </summary>  
+namespace SocialPokerClub.Models
+{
+    /// <summary>
+    /// The 'ActionReplay' Class
+    /// </summary>
     public class ActionReplay : Action
-    {  
-        public ActionReplay(string connectionId, ActionEnum actionType, Game ourGame, string user, string leavers, string logAsJson) 
+    {
+        public ActionReplay(string connectionId, ActionEnum actionType, Game ourGame, string user, string leavers, string logAsJson)
             : base(connectionId, actionType, ourGame, user, leavers, logAsJson)
         {
         }
         public override async Task ProcessAction()
         {
             // ActionReplay has been completely reworked to fit in with the new stateless mode.
-            // A game log can now simply be entered into the parameters area of the server screen, 
-            // and, on clicking 'Replay Game From Log', Chathub.UserClickedReplaySetup() 
+            // A game log can now simply be entered into the parameters area of the server screen,
+            // and, on clicking 'Replay Game From Log', Chathub.UserClickedReplaySetup()
             // will control the whole replay (this used to be done here, in ActionReplay).
             //
             // ActionReplay now only deals with stepping through a replayed game that was paused because of a PauseAfter value in the replayed log
@@ -65,7 +65,7 @@ namespace SevenStuds.Models
                         break;
                     }
                 }
-            }            
+            }
             else if ( replayMode == ReplayModeEnum.AdvanceOneStep ) {
                 // Move a paused replay forward one step
                 ResponseType = ActionResponseTypeEnum.PlayerCentricGameState; // All connected players will receive their own view of the updated game state
@@ -74,15 +74,15 @@ namespace SevenStuds.Models
                 GameLogAction gla = replayContext.actions[replayContext.indexOfLastReplayedAction];
                 actionSucceeded = await ActionReplay.ReplayAction(G.ParentRoom(), gla);
                 inconsistenciesFound += ( actionSucceeded ? 0 : 1);
-            }            
+            }
 
             if ( inconsistenciesFound > 0 ) {
                  System.Diagnostics.Debug.WriteLine("WARNING: " + inconsistenciesFound + " inconsistencies in results were identified ... please review the replay log");
             }
-           
+
             if ( replayContext.indexOfLastReplayedAction >= ( replayContext.actions.Count - 1 ) ) {
                 System.Diagnostics.Debug.WriteLine("Replayed game is no longer in replay mode and will continue under normal conditions from here");
-                G.SetReplayContext(null); 
+                G.SetReplayContext(null);
             }
         }
         public static async Task<bool> ReplayAction(Room replayRoom, GameLogAction gla) {
@@ -90,10 +90,10 @@ namespace SevenStuds.Models
             ActionEnum actionType = gla.ActionType;
             Action a = await ActionFactory.NewAction(
                 "", // Note that the lack of a connection id is also an indicator to the ActionFactory that the command is running in Replay mode
-                gla.ActionType, 
-                replayRoom.RoomId, 
+                gla.ActionType,
+                replayRoom.RoomId,
                 gla.UserName,
-                replayRoom.SavedCountOfLeavers.ToString(), 
+                replayRoom.SavedCountOfLeavers.ToString(),
                 gla.Parameters
             );
             System.Diagnostics.Debug.WriteLine(
@@ -107,7 +107,7 @@ namespace SevenStuds.Models
 
             System.Diagnostics.Debug.WriteLine("  Commentary from replay:");
             foreach ( string c in replayedGame.HandCommentary ) {
-                System.Diagnostics.Debug.WriteLine("    " + c);                    
+                System.Diagnostics.Debug.WriteLine("    " + c);
             }
             if ( replayedGame.StatusMessage != gla.StatusMessage ) {
                 resultsAreConsistent = false;
@@ -128,7 +128,7 @@ namespace SevenStuds.Models
         }
         private void FixCardOrderInDesererialisedDecks(GameLog replayContext) {
             // This is really ugly and needs to go somewhere else, probably in Deck itself
-            for ( int i = 0; i < replayContext.decks.Count; i++){ 
+            for ( int i = 0; i < replayContext.decks.Count; i++){
                 Deck d = replayContext.decks[i];
                 if ( d.CardList == "" ) {
                     // If the Deck has been deserialised from a source that does not yet have the CardList value, we have to do two things:
@@ -143,5 +143,5 @@ namespace SevenStuds.Models
                 }
             }
         }
-    }     
-}  
+    }
+}

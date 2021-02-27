@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json;
 
-namespace SevenStuds.Models
+namespace SocialPokerClub.Models
 {
     public class LobbyData
     {
@@ -20,7 +20,7 @@ namespace SevenStuds.Models
             //    PartOfMostRecentGame (in which case date is bankruptcy date and a more recent date ranks higher in tie-breaking)
             //    QueuingForNextGame (in which case date is joining date and an older date ranks higher in tie-breaking)
             //    Spectator (in which case date is joining date and an older date ranks higher in tie-breaking))
-        
+
             DateTimeOffset now = DateTimeOffset.UtcNow;
             List<LobbyDataCurrentGame> result = new List<LobbyDataCurrentGame>();
 
@@ -28,15 +28,15 @@ namespace SevenStuds.Models
             foreach ( Participant p in g.Participants ) {
                 if ( p.HasDisconnected == false ) {
                     result.Add(new LobbyDataCurrentGame(
-                        p.Name, 
+                        p.Name,
                         ( p.HasBeenActiveInCurrentGame ? PlayerStatusEnum.PartOfMostRecentGame : PlayerStatusEnum.QueuingForNextGame ),
-                        p.UncommittedChips, 
+                        p.UncommittedChips,
                         false, // has not left
                         // If player was already bankrupt at start of hand, use that date
                         // If they went bankrupt during the hand (by going all-in) use the date/time they went all in
                         // (i.e. on the principle that committing your last chip to the pot means that that was the time you exposed yourself to bankruptcy)
-                        ( p.TimeOfBankruptcy != DateTimeOffset.MinValue ? p.TimeOfBankruptcy 
-                        : ( ( p.UncommittedChips == 0 && p.AllInDateTime != DateTimeOffset.MinValue ) ? p.AllInDateTime : now )) // 'now' is catch-all for players not yet bankrupt       
+                        ( p.TimeOfBankruptcy != DateTimeOffset.MinValue ? p.TimeOfBankruptcy
+                        : ( ( p.UncommittedChips == 0 && p.AllInDateTime != DateTimeOffset.MinValue ) ? p.AllInDateTime : now )) // 'now' is catch-all for players not yet bankrupt
                     ));
                 }
             }
@@ -45,24 +45,24 @@ namespace SevenStuds.Models
             if ( g.LeaversLogForGame != null ) {
                 foreach ( LeavingRecord leaver in g.LeaversLogForGame ) {
                     result.Add(new LobbyDataCurrentGame(
-                        leaver.LeavingParticipantName, 
+                        leaver.LeavingParticipantName,
                         (
-                            leaver.WasSpectator 
-                            ? PlayerStatusEnum.Spectator 
+                            leaver.WasSpectator
+                            ? PlayerStatusEnum.Spectator
                             : ( leaver.HasBeenPartOfGame ? PlayerStatusEnum.PartOfMostRecentGame : PlayerStatusEnum.QueuingForNextGame )
                         ),
-                        leaver.ChipsAtEndOfGame, 
+                        leaver.ChipsAtEndOfGame,
                         true, // has left
                         leaver.EndOfRelevanceToGame_UTC));
                 }
             }
-            
+
             // Now add active spectators
             foreach ( Spectator p in g.Spectators ) {
                 result.Add(new LobbyDataCurrentGame(
-                    p.Name, 
+                    p.Name,
                     PlayerStatusEnum.Spectator,
-                    0, 
+                    0,
                     false, // has not left (not that spectators who have left are part of the leavers log)
                     now));
             }
@@ -72,7 +72,7 @@ namespace SevenStuds.Models
             //    Show spectators next (earliest joining date at top) (with 'spectator' indicator) (not including any who joined and then left)
             //    Finally show any players or spectators who have joined then left without ever being part of a game (earliest joining date at top)
             result.Sort(
-                delegate(LobbyDataCurrentGame x, LobbyDataCurrentGame y) 
+                delegate(LobbyDataCurrentGame x, LobbyDataCurrentGame y)
                 {
                     // See https://www.codeproject.com/Tips/761275/How-to-Sort-a-List
                     // Sort in various ways depending on the the players' part in the game
@@ -93,7 +93,7 @@ namespace SevenStuds.Models
 
                     // If both players are inseparable even on date, use their names as a random time breaker (ties will be recognised after sorting is complete)
                     if (a == 0)
-                        a = x.PlayerName.CompareTo(y.PlayerName);  
+                        a = x.PlayerName.CompareTo(y.PlayerName);
 
                     return a;
                 }
@@ -104,7 +104,7 @@ namespace SevenStuds.Models
                 if ( p.PriorityOrderForLobbyData == 5 ) {
                     // Player is on the leaderboard, their position will be as is unless their situation is identical to the player above them,
                     // in which case they will inherit that position (which may itself have been inherited in the case of multiple-way ties)
-                    p.LeaderBoardPosition = i+1; 
+                    p.LeaderBoardPosition = i+1;
                     if ( i > 0 ) {
                         if ( p.RemainingFunds == result[i-1].RemainingFunds && p.UTCTimeAsTieBreaker == result[i-1].UTCTimeAsTieBreaker ) {
                             // Player are tied on funds (but use bankruptcy date to ensure players with zero funds are not treated as ties)
@@ -116,6 +116,6 @@ namespace SevenStuds.Models
                 }
             }
             return result;
-        }    
+        }
     }
 }

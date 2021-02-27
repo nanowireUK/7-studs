@@ -1,14 +1,14 @@
 using Microsoft.AspNetCore.SignalR;
 using System.Threading.Tasks;
 
-namespace SevenStuds.Models
-{  
-    /// <summary>  
-    /// The 'ActionRejoin' Class  
-    /// </summary>  
+namespace SocialPokerClub.Models
+{
+    /// <summary>
+    /// The 'ActionRejoin' Class
+    /// </summary>
     public class ActionRejoin : Action
-    {  
-        public ActionRejoin(string connectionId, ActionEnum actionType, Game ourGame, string user, string leavers, string rejoinCode) 
+    {
+        public ActionRejoin(string connectionId, ActionEnum actionType, Game ourGame, string user, string leavers, string rejoinCode)
             : base(connectionId, actionType, ourGame, user, "-1", rejoinCode)
         {
         }
@@ -36,5 +36,5 @@ namespace SevenStuds.Models
 
             await Task.FromResult(0); // Just to work around compiler warning "This async method lacks 'await' operators and will run synchronously"
         }
-    }     
-}  
+    }
+}

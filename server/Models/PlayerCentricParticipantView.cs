@@ -3,7 +3,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System;
 
-namespace SevenStuds.Models
+namespace SocialPokerClub.Models
 {
     public class PlayerCentricParticipantView
     {
@@ -12,7 +12,7 @@ namespace SevenStuds.Models
         /// and which does not give any details of other players' hands
         /// </summary>
         /// <remarks>A player-specific view of the game state that is suitable for passing to the client as a deserialisable JSON string</remarks>
-  
+
         public string Name { get; set; }
         public int UncommittedChips { get; set; }
         public Boolean IsMe { get; set; }
@@ -46,30 +46,30 @@ namespace SevenStuds.Models
             IsMe = ( isSpectatorView == false && observedPlayersIndex == thisPlayersIndex );
             IsCurrentPlayer = ( observedPlayersIndex == g.IndexOfParticipantToTakeNextAction );
             IsDealer = ( observedPlayersIndex == g.IndexOfParticipantDealingThisHand ) ;
-            IsAdmin  = ( observedPlayersIndex == g.GetIndexOfAdministrator() );   
-            IsSharingHandDetails = observedPlayer.IsSharingHandDetails;   
-            HasJustSharedHandDetails = observedPlayer.HasJustSharedHandDetails;   
+            IsAdmin  = ( observedPlayersIndex == g.GetIndexOfAdministrator() );
+            IsSharingHandDetails = observedPlayer.IsSharingHandDetails;
+            HasJustSharedHandDetails = observedPlayer.HasJustSharedHandDetails;
             HasFolded = observedPlayer.HasFolded;
             HasCovered = observedPlayer.HasCovered;
-            IsOutOfThisGame = observedPlayer.StartedHandWithNoFunds; 
-            HasDisconnected = observedPlayer.HasDisconnected; 
+            IsOutOfThisGame = observedPlayer.StartedHandWithNoFunds;
+            HasDisconnected = observedPlayer.HasDisconnected;
             VisibleHandDescription = ( observedPlayer.Name != viewingPlayer.Name && observedPlayer.HasFolded && g.HideFoldedCards == true ) ? "" : observedPlayer._VisibleHandDescription;
             GainOrLossInLastHand = observedPlayer.GainOrLossInLastHand;
             HandsWon = observedPlayer.HandsWon;
             LastActionInThisHand = observedPlayer.LastActionInThisHand;
-            LastActionAmount = observedPlayer.LastActionAmount;  
-            RoundNumberOfLastAction = observedPlayer.RoundNumberOfLastAction;  
+            LastActionAmount = observedPlayer.LastActionAmount;
+            RoundNumberOfLastAction = observedPlayer.RoundNumberOfLastAction;
             IsPlayingBlindInCurrentHand = observedPlayer.IsPlayingBlindInCurrentHand;
             IntendsToPlayBlindInNextHand = observedPlayer.IntendsToPlayBlindInNextHand;
             HandStrength = 0;
-            IndexesOfCardsFormingHandInPresentationOrder = null; 
+            IndexesOfCardsFormingHandInPresentationOrder = null;
 
             // Add a list of this player's cards, substituting with '?' if the player receiving this data is not allowed to see this card
             // (which can include the player themselves if they are playing blind)
             Cards = new List<string>();
             for ( int i = 0; i < observedPlayer.Hand.Count; i++ ) {
-                if ( ( observedPlayer.Name != viewingPlayer.Name || isSpectatorView == true ) 
-                    && g.CardPositionIsVisible[i] == false 
+                if ( ( observedPlayer.Name != viewingPlayer.Name || isSpectatorView == true )
+                    && g.CardPositionIsVisible[i] == false
                     && observedPlayer.IsSharingHandDetails == false
                     ) {
                     // This is a view of a different player's cards and this card is currently face-down and they have not consented to reveal them (at hand end)
@@ -97,11 +97,11 @@ namespace SevenStuds.Models
             var options = new JsonSerializerOptions
             {
                 WriteIndented = true,
-                
+
             };
             options.Converters.Add(new JsonStringEnumConverter(null /*JsonNamingPolicy.CamelCase*/));
             string jsonString = JsonSerializer.Serialize(this, options);
             return jsonString;
-        }  
+        }
     }
 }

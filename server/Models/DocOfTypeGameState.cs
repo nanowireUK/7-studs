@@ -3,12 +3,12 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Collections.Generic;
 
-namespace SevenStuds.Models
+namespace SocialPokerClub.Models
 {
     public class DocOfTypeGameState : DatabaseGameItem
     {
         public Game gameState { get; set; }
- 
+
         public override string ToString()
         {
             var options = new JsonSerializerOptions

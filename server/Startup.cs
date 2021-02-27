@@ -8,9 +8,9 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using SevenStuds.Hubs;
+using SocialPokerClub.Hubs;
 
-namespace SevenStuds
+namespace SocialPokerClub
 {
     public class Startup
     {

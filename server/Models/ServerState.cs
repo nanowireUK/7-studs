@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace SevenStuds.Models
+namespace SocialPokerClub.Models
 {
     public static class ServerState
     {
@@ -31,7 +31,7 @@ namespace SevenStuds.Models
             DummyCard = new Card(CardEnum.Dummy, SuitEnum.Clubs);
             OurDB = new PokerDB();
             MetricsSummary = new MetricsSummary(); // Just an initial 'zero' summary, but still needs OurDB to have been instantiated
-            MetricsManager = new MetricsManager(); // Needs MetricsSummary to have been instantiated. This object will maintain and emit statistics            
+            MetricsManager = new MetricsManager(); // Needs MetricsSummary to have been instantiated. This object will maintain and emit statistics
             Console.WriteLine("Initalising MonitorTimer");
             while ( DateTimeOffset.UtcNow.Millisecond < 100 || DateTimeOffset.UtcNow.Millisecond > 900 ) {
                 Console.WriteLine("Waiting 200 milliseconds to ensure repeat timer does not fire close to a boundary between two seconds");
@@ -51,7 +51,7 @@ namespace SevenStuds.Models
         //     return RoomList.ContainsKey(roomId.ToLower());
         // }
         public static async Task<Room> FindOrCreateRoom(string RoomId) {
-            string roomIdToUse = RoomId; 
+            string roomIdToUse = RoomId;
             string lowercaseId = RoomId.ToLower();
             await Task.FromResult(0); // Just to work around compiler warning "This async method lacks 'await' operators and will run synchronously"
             if ( RoomList.ContainsKey(lowercaseId) ) {
@@ -66,7 +66,7 @@ namespace SevenStuds.Models
         }
         public static async Task<Game> LoadOrRecoverOrCreateGame(Room r) {
             Game g;
-            if ( OurDB.dbMode == DatabaseModeEnum.NoDatabase 
+            if ( OurDB.dbMode == DatabaseModeEnum.NoDatabase
                 || OurDB.dbStatus == DatabaseConnectionStatusEnum.ConnectionFailed ) {
                 // We are working without a DB so will use the 'cached' game (if there is one) or create a new one
                 // (this is more or less how it worked before stateless operation was implemented)
@@ -99,13 +99,13 @@ namespace SevenStuds.Models
                     // Use the returned game if the last action on it was less than an hour ago
                     g.AddToAccumulatedDbCost("Loading game in stateless mode", g.GameLoadDbCost); // Add the cost of reloading the game to its overall cost
                     return g;
-                }   
+                }
                 else {
                     Console.WriteLine("Game recovered successfully but is more than an hour old, so creating new game instead\n");
                     g = new Game(r.RoomId, 0);
                     g.InitialiseGame(null);
-                    return g;                       
-                }   
+                    return g;
+                }
             }
             else {
                 // Either this is a new room or there was an active game in this room but the server has been restarted and all state has been lost
@@ -132,7 +132,7 @@ namespace SevenStuds.Models
                     Console.WriteLine("Game recovered successfully but is more than an hour old, so creating new game instead\n");
                 }
             }
-            else { 
+            else {
                 // No previous games recorded for this room, so just create a new game
                 Console.WriteLine("No recent historical games found for room '{0}'. Creating new game.\n", r.RoomId);
             }
@@ -145,27 +145,27 @@ namespace SevenStuds.Models
             var options = new JsonSerializerOptions
             {
                 WriteIndented = true,
-                
+
             };
             options.Converters.Add(new JsonStringEnumConverter(null /*JsonNamingPolicy.CamelCase*/));
             string jsonString = JsonSerializer.Serialize(l, options);
             return jsonString;
-        }  
+        }
         public static void ClearConnectionMappings(Game g) {
             // Clear out the tester's current connection (and any other connections currently associated with the game)
             // Note that this is only expected to be called during a replay in a dev environment, not on the live server
-            ServerState.StatefulData.MapOfConnectionIdToParticipantSignalRGroupName.Clear(); 
-            ServerState.StatefulData.MapOfConnectionIdToSpectatorSignalRGroupName.Clear(); 
+            ServerState.StatefulData.MapOfConnectionIdToParticipantSignalRGroupName.Clear();
+            ServerState.StatefulData.MapOfConnectionIdToSpectatorSignalRGroupName.Clear();
         }
-        public static void LinkConnectionToParticipant(Game g, string connectionId, Participant p) 
+        public static void LinkConnectionToParticipant(Game g, string connectionId, Participant p)
         {
             ServerState.StatefulData.MapOfConnectionIdToParticipantSignalRGroupName.Add(connectionId, p.ParticipantSignalRGroupName);
         }
-        public static void LinkConnectionToSpectator(Game g, string connectionId, Spectator p) 
+        public static void LinkConnectionToSpectator(Game g, string connectionId, Spectator p)
         {
             ServerState.StatefulData.MapOfConnectionIdToSpectatorSignalRGroupName.Add(connectionId, p.SpectatorSignalRGroupName);
         }
-        public static Participant GetParticipantFromConnection(Game g, string connectionId) 
+        public static Participant GetParticipantFromConnection(Game g, string connectionId)
         {
             string groupName;
             if ( ServerState.StatefulData.MapOfConnectionIdToParticipantSignalRGroupName.TryGetValue(connectionId, out groupName) )
@@ -177,12 +177,12 @@ namespace SevenStuds.Models
                 }
                 return null;
             }
-            else 
+            else
             {
                 return null;
             }
         }
-        public static Spectator GetSpectatorFromConnection(Game g, string connectionId) 
+        public static Spectator GetSpectatorFromConnection(Game g, string connectionId)
         {
             string groupName;
             if ( ServerState.StatefulData.MapOfConnectionIdToSpectatorSignalRGroupName.TryGetValue(connectionId, out groupName) )
@@ -194,7 +194,7 @@ namespace SevenStuds.Models
                 }
                 return null;
             }
-            else 
+            else
             {
                 return null;
             }
@@ -211,7 +211,7 @@ namespace SevenStuds.Models
             return a;
         }
         public static bool TelemetryActive() {
-            string metricsKey = Environment.GetEnvironmentVariable("APPINSIGHTS_INSTRUMENTATIONKEY", EnvironmentVariableTarget.Process);   
+            string metricsKey = Environment.GetEnvironmentVariable("APPINSIGHTS_INSTRUMENTATIONKEY", EnvironmentVariableTarget.Process);
             return ( metricsKey != null );
         }
 

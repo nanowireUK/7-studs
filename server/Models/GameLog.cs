@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace SevenStuds.Models
+namespace SocialPokerClub.Models
 {
     public class GameLog
     {
@@ -11,12 +11,12 @@ namespace SevenStuds.Models
         public string roomId { get; set; } // Records room name
         public string administrator { get; set; } // Records name of administrator
         public int pauseAfter { get; set; } // Used only by ActionReplay ... enables user to request replayed game to be paused after a specific numbered action
-        public int indexOfLastReplayedAction { get; set; } 
+        public int indexOfLastReplayedAction { get; set; }
         public DateTimeOffset startTimeUtc { get; set; }
         public DateTimeOffset endTimeUtc { get; set; }
         public List<string> playersInOrderAtStartOfGame { get; set; } // Records player names in the order that the game was played
         public List<string> playersStartingBlind { get; set; }
-        public LobbySettings lobbySettings { get; set; }        
+        public LobbySettings lobbySettings { get; set; }
         public List<Deck> decks { get; set; } // Records start state of each deck used (so it can be redealt in the same order)
         public List<GameLogAction> actions { get; set; }
         public GameLog() {
@@ -25,12 +25,12 @@ namespace SevenStuds.Models
             this.playersStartingBlind = new List<string>();
             this.actions = new List<GameLogAction>();
             this.decks = new List<Deck>();
-            this.pauseAfter = 0; 
+            this.pauseAfter = 0;
             this.indexOfLastReplayedAction = -1; // means that next one will be 0
         }
         public void ListDecks() {
             foreach ( Deck d in decks ) {
-                Console.WriteLine("Deck #{0}: {1}", d.DeckNumber, d.ToString()); 
+                Console.WriteLine("Deck #{0}: {1}", d.DeckNumber, d.ToString());
             }
         }
         public async Task LogEndOfHand(Game g) {
@@ -50,6 +50,6 @@ namespace SevenStuds.Models
             };
             string jsonString = JsonSerializer.Serialize(this, options);
             return jsonString;
-        }  
+        }
     }
 }

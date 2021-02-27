@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace SevenStuds.Models
+namespace SocialPokerClub.Models
 {
     //
     // Shamelessly nicked from https://github.com/jessechunn/StandardPokerHandEvaluator to get us moving quickly
@@ -39,7 +39,7 @@ namespace SevenStuds.Models
             //list, and the order they are added below
             //for easy reference if needed. What that means is
             //that the list below is NOT in order of Best-to-Worst.
-            //It is ordered so that it can be easily (quickly) searched, 
+            //It is ordered so that it can be easily (quickly) searched,
             //then the "Rank" must be used to compare hands.
 
             // Note (JD): I realised you could use the same principle to value 1, 2, 3, or 4-card hands
@@ -48,7 +48,7 @@ namespace SevenStuds.Models
             // lists (because you are multiplying 1, 2, 3, 4 or 5 prime values respectively).
             // The 1-4 card lists do not need to consider straights or flushes.
 
-            // List for one-card hands 
+            // List for one-card hands
 
             EvalHands.Add(41, new EvalHand(41, 1, "Ace"));
             EvalHands.Add(37, new EvalHand(37, 2, "King"));
@@ -158,7 +158,7 @@ namespace SevenStuds.Models
             EvalHands.Add(10, new EvalHand(10, 90, "Four High with Two"));
             EvalHands.Add(6, new EvalHand(6, 91, "Three High with Two"));
 
-            // List for three-card hands    
+            // List for three-card hands
 
             EvalHands.Add(68921, new EvalHand(68921, 1, "Three Aces"));
             EvalHands.Add(50653, new EvalHand(50653, 2, "Three Kings"));
@@ -616,7 +616,7 @@ namespace SevenStuds.Models
             EvalHands.Add(42, new EvalHand(42, 454, "Five High with Three, Two"));
             EvalHands.Add(30, new EvalHand(30, 455, "Four High with Three, Two"));
 
-            // List for four-card hands  
+            // List for four-card hands
 
             EvalHands.Add(2825761, new EvalHand(2825761, 1, "Four Aces"));
             EvalHands.Add(1874161, new EvalHand(1874161, 2, "Four Kings"));
@@ -2437,7 +2437,7 @@ namespace SevenStuds.Models
             EvalHands.Add(770, new EvalHand(770, 1817, "Six High with Five, Four, Two"));
             EvalHands.Add(462, new EvalHand(462, 1818, "Six High with Five, Three, Two"));
             EvalHands.Add(330, new EvalHand(330, 1819, "Six High with Four, Three, Two"));
-            EvalHands.Add(210, new EvalHand(210, 1820, "Five High with Four, Three, Two")); 
+            EvalHands.Add(210, new EvalHand(210, 1820, "Five High with Four, Three, Two"));
 
             // Original list, for five-card hands
 

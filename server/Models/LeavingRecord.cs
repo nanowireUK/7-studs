@@ -1,6 +1,6 @@
 using System;
 
-namespace SevenStuds.Models
+namespace SocialPokerClub.Models
 {
     public class LeavingRecord
     {
@@ -10,12 +10,12 @@ namespace SevenStuds.Models
         public int ChipsAtEndOfGame { get; set; }
         public Boolean HasBeenPartOfGame { get; set; }
         public Boolean WasSpectator { get; set; }
-        public LeavingRecord( 
-            string argLeavingParticipantName, 
+        public LeavingRecord(
+            string argLeavingParticipantName,
             DateTimeOffset argEndOfRelevanceToGame_UTC,
-            string argGroupName, 
-            int argChipsAtEndOfGame, 
-            Boolean argHasBeenPartOfGame, 
+            string argGroupName,
+            int argChipsAtEndOfGame,
+            Boolean argHasBeenPartOfGame,
             Boolean argWasSpectator )
         {
             this.LeavingParticipantName = argLeavingParticipantName;

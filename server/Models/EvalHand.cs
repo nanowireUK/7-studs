@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace SevenStuds.Models
+namespace SocialPokerClub.Models
 {
     //
     // Shamelessly nicked from https://github.com/jessechunn/StandardPokerHandEvaluator to get us moving quickly
@@ -20,8 +20,8 @@ namespace SevenStuds.Models
         public int Key { get => key; }
         public int Rank { get => rank; }
         public string Name { get => name; }
-        public long HandValue { get => hand_value; }        
-        public List<int> PresentationOrder() { 
+        public long HandValue { get => hand_value; }
+        public List<int> PresentationOrder() {
             //Source https://www.physicsforums.com/threads/converting-integer-into-array-of-single-digits-in-c.558588/
             string po_string = this.presentation_order.ToString();
             char[] po_chars = po_string.ToCharArray();

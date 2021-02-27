@@ -1,13 +1,13 @@
 using System.Threading.Tasks;
 
-namespace SevenStuds.Models
-{  
-    /// <summary>  
-    /// The 'ActionCover' Class  
-    /// </summary>  
+namespace SocialPokerClub.Models
+{
+    /// <summary>
+    /// The 'ActionCover' Class
+    /// </summary>
     public class ActionCover : Action
-    {  
-        public ActionCover(string connectionId, ActionEnum actionType, Game ourGame, string user, string leavers) 
+    {
+        public ActionCover(string connectionId, ActionEnum actionType, Game ourGame, string user, string leavers)
             : base(connectionId, actionType, ourGame, user, leavers)
         {
         }
@@ -22,7 +22,7 @@ namespace SevenStuds.Models
             }
             else {
                 G.RecordLastEvent(UserName + " paid " + p.UncommittedChips + " to cover the pot");
-            }            
+            }
 
             // Implement the cover (has to be done pot-by-pot, and could involve splitting a pot)
             p.HasCovered = true;
@@ -31,9 +31,9 @@ namespace SevenStuds.Models
             G.Participants[PlayerIndex].LastActionInThisHand = this.ActionType;
             G.Participants[PlayerIndex].LastActionAmount = p.UncommittedChips;
             G.Participants[PlayerIndex].RoundNumberOfLastAction = G._CardsDealtIncludingCurrent;
-            
+
             // Find and set next player (could be no one if all players have now called or covered)
             await G.SetNextPlayerToActOrHandleEndOfHand(PlayerIndex, G.LastEvent);
         }
-    }     
-}  
+    }
+}

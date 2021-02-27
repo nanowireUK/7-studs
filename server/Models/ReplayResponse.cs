@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Text.Json;
 
-namespace SevenStuds.Models
+namespace SocialPokerClub.Models
 {
     public class ReplayResponse
     {
@@ -24,6 +24,6 @@ namespace SevenStuds.Models
             };
             string jsonString = JsonSerializer.Serialize(this, options);
             return jsonString;
-        }  
+        }
     }
 }

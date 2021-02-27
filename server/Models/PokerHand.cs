@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Text.Json;
 using System;
 
-namespace SevenStuds.Models
+namespace SocialPokerClub.Models
 {
     /// <summary>
     /// A five card poker hand.
     /// </summary>
-    /// <remarks>This class represents a five card poker hand. 
-    /// It implements the IComparable(Of PokerHand) interface, so 
+    /// <remarks>This class represents a five card poker hand.
+    /// It implements the IComparable(Of PokerHand) interface, so
     /// hands can be compared and sorted.</remarks>
     public class PokerHand : IComparable<PokerHand>
     {
@@ -74,7 +74,7 @@ namespace SevenStuds.Models
             if ( subLevel > 14 ) { throw new Exception("Hand value of "+mEvalHand.HandValue+" gives a strength sub-level of "+subLevel+" which is not in the expected range of 2-14"); }
             int result = ( ( level + 1 ) * 10 ) + ( subLevel > 5 ? subLevel - 5 : 0 ); // should return a strength value from 10 to 99
             return result;
-        } 
+        }
 
         /// <summary>
         /// The Key value of this hand.
@@ -257,4 +257,3 @@ namespace SevenStuds.Models
 }
 
 
-    

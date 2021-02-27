@@ -1,14 +1,14 @@
 using System.Threading.Tasks;
 
-namespace SevenStuds.Models
-{  
-    /// <summary>  
-    /// The 'ActionBlind' Class  
+namespace SocialPokerClub.Models
+{
+    /// <summary>
+    /// The 'ActionBlind' Class
     /// Allow a player to toggle their intent to play blind in the NEXT hand (does not directly affect any ongoing hand)
-    /// </summary>  
+    /// </summary>
     public class ActionBlindIntent : Action
-    {  
-        public ActionBlindIntent(string connectionId, ActionEnum actionType, Game ourGame, string user, string leavers) 
+    {
+        public ActionBlindIntent(string connectionId, ActionEnum actionType, Game ourGame, string user, string leavers)
             : base(connectionId, actionType, ourGame, user, leavers)
         {
         }
@@ -27,5 +27,5 @@ namespace SevenStuds.Models
             }
             await Task.FromResult(0); // Just to work around compiler warning "This async method lacks 'await' operators and will run synchronously"
         }
-    }     
-}  
+    }
+}

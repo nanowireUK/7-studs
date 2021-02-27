@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace SevenStuds.Models
+namespace SocialPokerClub.Models
 {
     public class ActionAvailability
     {

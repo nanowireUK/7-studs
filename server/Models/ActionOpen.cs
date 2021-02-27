@@ -1,13 +1,13 @@
 using System.Threading.Tasks;
 
-namespace SevenStuds.Models
-{  
-    /// <summary>  
-    /// The 'ActionOpen' Class: to return to the lobby at the end of a hand  
-    /// </summary>  
+namespace SocialPokerClub.Models
+{
+    /// <summary>
+    /// The 'ActionOpen' Class: to return to the lobby at the end of a hand
+    /// </summary>
     public class ActionOpen : Action
-    {  
-        public ActionOpen(string connectionId, ActionEnum actionType, Game ourGame, string user, string leavers) 
+    {
+        public ActionOpen(string connectionId, ActionEnum actionType, Game ourGame, string user, string leavers)
             : base(connectionId, actionType, ourGame, user, leavers)
         {
         }
@@ -24,5 +24,5 @@ namespace SevenStuds.Models
 
             await Task.FromResult(0); // Just to work around compiler warning "This async method lacks 'await' operators and will run synchronously"
         }
-    }     
-}  
+    }
+}

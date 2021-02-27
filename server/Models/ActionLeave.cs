@@ -2,14 +2,14 @@ using Microsoft.AspNetCore.SignalR;
 using System.Threading.Tasks;
 using System;
 
-namespace SevenStuds.Models
-{  
-    /// <summary>  
-    /// The 'ActionLeave' Class  
-    /// </summary>  
+namespace SocialPokerClub.Models
+{
+    /// <summary>
+    /// The 'ActionLeave' Class
+    /// </summary>
     public class ActionLeave : Action
-    {  
-        public ActionLeave(string connectionId, ActionEnum actionType, Game ourGame, string user, string leavers) 
+    {
+        public ActionLeave(string connectionId, ActionEnum actionType, Game ourGame, string user, string leavers)
             : base(connectionId, actionType, ourGame, user, leavers)
         {
         }
@@ -23,7 +23,7 @@ namespace SevenStuds.Models
                 // Remove the spectator from the game
                 // Set the response type that will trigger the player's client session to disconnect and everyone else's game state to be updated
                 SignalRGroupNameForAdditionalNotifications = G.Spectators[spectatorIndex].SpectatorSignalRGroupName;
-                ResponseType = ActionResponseTypeEnum.ConfirmToPlayerLeavingAndUpdateRemainingPlayers;   
+                ResponseType = ActionResponseTypeEnum.ConfirmToPlayerLeavingAndUpdateRemainingPlayers;
                 G.LeaversLogForGame.Add(new LeavingRecord(UserName, DateTimeOffset.UtcNow, SignalRGroupNameForAdditionalNotifications, 0, false, true));
                 G.Spectators.RemoveAt(spectatorIndex);
                 if ( G.GameMode == GameModeEnum.LobbyOpen ) {
@@ -42,8 +42,8 @@ namespace SevenStuds.Models
             //    6) If they were already out of the game (i.e. with zero funds) at the start of the hand, then:
             //       a) note the fact that they have left the game, and
             //       b) remove them when the hand ends
-            //    7) If they are still in the current hand: 
-            //       a) behave as if they had folded (regardless of whether or not it is their turn) and determine next player as usual 
+            //    7) If they are still in the current hand:
+            //       a) behave as if they had folded (regardless of whether or not it is their turn) and determine next player as usual
             //       b) remove them from the game completely when the hand ends
             //
             // To prevent clashes between leave actions and any other actions:
@@ -54,11 +54,11 @@ namespace SevenStuds.Models
 
             Participant p = G.Participants[PlayerIndex];
             p.HasDisconnected = true;
-            G.CountOfLeavers++; 
+            G.CountOfLeavers++;
 
             if ( G.Participants.Count > 1 ) {
                 // If there are any other players still connected to the game, we will have to allow for the effect of this player leaving
-                
+
                 string changeOfAdminMessage = "";
                 if ( p.IsGameAdministrator ) {
                     // Randomly nominate first available active player as administrator
@@ -83,22 +83,22 @@ namespace SevenStuds.Models
                     // Player was still in the game in some form, so we have to treat this as if they folded
                     p.HasFolded = true;
                     G.Participants[PlayerIndex].LastActionInThisHand = ActionEnum.Fold;
-                    G.Participants[PlayerIndex].LastActionAmount = 0;   
+                    G.Participants[PlayerIndex].LastActionAmount = 0;
                     G.Participants[PlayerIndex].RoundNumberOfLastAction = G._CardsDealtIncludingCurrent;
 
                     // Player is now bankrupt (their contributions to the pots will remain but any uncommitted funds will be discarded at the end of the hand)
                     G.LeaversLogForGame.Add(new LeavingRecord(
-                        p.Name, 
-                        ( p.TimeOfBankruptcy != DateTimeOffset.MinValue ? p.TimeOfBankruptcy 
-                            : ( p.AllInDateTime != DateTimeOffset.MinValue ? p.AllInDateTime : DateTimeOffset.UtcNow )), 
-                        p.ParticipantSignalRGroupName, 
-                        0, 
-                        true, 
+                        p.Name,
+                        ( p.TimeOfBankruptcy != DateTimeOffset.MinValue ? p.TimeOfBankruptcy
+                            : ( p.AllInDateTime != DateTimeOffset.MinValue ? p.AllInDateTime : DateTimeOffset.UtcNow )),
+                        p.ParticipantSignalRGroupName,
+                        0,
+                        true,
                         false));
                     if ( G.IndexOfParticipantToTakeNextAction == PlayerIndex ) {
                         // It was player's turn to move anyway, so implement the fold in the same way as if they had just folded in turn
                         G.RecordLastEvent(UserName + " has left the game and effectively folded"+ changeOfAdminMessage);
-                        await G.SetNextPlayerToActOrHandleEndOfHand(G.IndexOfParticipantToTakeNextAction, G.LastEvent);   
+                        await G.SetNextPlayerToActOrHandleEndOfHand(G.IndexOfParticipantToTakeNextAction, G.LastEvent);
                     }
                     else {
                         // They are leaving out of turn, so it will remain the turn of the current player unless the player leaving now means there is only one person left in
@@ -114,11 +114,11 @@ namespace SevenStuds.Models
                     // Player was already out of the hand so no consequence to game flow (we might even be back in the lobby)
                     G.LeaversLogForGame.Add(new LeavingRecord(
                         p.Name,
-                        ( p.TimeOfBankruptcy != DateTimeOffset.MinValue ? p.TimeOfBankruptcy 
-                            : ( p.AllInDateTime != DateTimeOffset.MinValue ? p.AllInDateTime : DateTimeOffset.UtcNow )),                      
-                        p.ParticipantSignalRGroupName, 
-                        p.UncommittedChips, 
-                        p.HasBeenActiveInCurrentGame, 
+                        ( p.TimeOfBankruptcy != DateTimeOffset.MinValue ? p.TimeOfBankruptcy
+                            : ( p.AllInDateTime != DateTimeOffset.MinValue ? p.AllInDateTime : DateTimeOffset.UtcNow )),
+                        p.ParticipantSignalRGroupName,
+                        p.UncommittedChips,
+                        p.HasBeenActiveInCurrentGame,
                         false));
                     G.RecordLastEvent(p.Name + " has left the game"+changeOfAdminMessage);
                 }
@@ -129,15 +129,15 @@ namespace SevenStuds.Models
                 }
             }
             else {
-                // If this was the last player still connected to the game, remove the game from the system 
-                // and notify the player via an exception that the game is now gone                
+                // If this was the last player still connected to the game, remove the game from the system
+                // and notify the player via an exception that the game is now gone
                 //ServerState.EraseGame(G.GameId);
                 //throw new HubException("You were the last player to leave the game so the game has now been deleted");
-            }  
+            }
 
             // Set the response type that will trigger the player's client session to disconnect and everyone else's game state to be updated
             SignalRGroupNameForAdditionalNotifications = p.ParticipantSignalRGroupName;
-            ResponseType = ActionResponseTypeEnum.ConfirmToPlayerLeavingAndUpdateRemainingPlayers;   
+            ResponseType = ActionResponseTypeEnum.ConfirmToPlayerLeavingAndUpdateRemainingPlayers;
         }
-    }     
-}  
+    }
+}

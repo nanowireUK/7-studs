@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Collections;
 using System;
 
-namespace SevenStuds.Models
+namespace SocialPokerClub.Models
 {
     public class Room
     {
@@ -18,7 +18,7 @@ namespace SevenStuds.Models
             RecoveryAlreadyAttempted = false;
             ActiveGame = null;
             ActiveGameId = null;
-            ReplayContext = null; // This will only be set for rooms created specifically to host a replayed game  
+            ReplayContext = null; // This will only be set for rooms created specifically to host a replayed game
             SavedCountOfLeavers = 0; // Again only used for rooms hosting a replayed game
         }
         public List<string> AdHocQueryResult() {

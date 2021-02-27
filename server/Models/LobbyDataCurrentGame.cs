@@ -3,27 +3,27 @@ using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace SevenStuds.Models
+namespace SocialPokerClub.Models
 {
     public class LobbyDataCurrentGame
     {
-        // Used to present the current status of a game 
-        public string PlayerName { get; set; } 
-        public PlayerStatusEnum Status { get; set; } 
-        public int RemainingFunds { get; set; } 
+        // Used to present the current status of a game
+        public string PlayerName { get; set; }
+        public PlayerStatusEnum Status { get; set; }
+        public int RemainingFunds { get; set; }
         public Boolean HasLeftRoom { get; set; } // Could be a player who was in the game or could even be a new joiner who has left again
-        public DateTimeOffset UTCTimeAsTieBreaker { get; set; } 
-        public int DateComparisonModifier { get; set; } 
-        public int PriorityOrderForLobbyData { get; set; } 
+        public DateTimeOffset UTCTimeAsTieBreaker { get; set; }
+        public int DateComparisonModifier { get; set; }
+        public int PriorityOrderForLobbyData { get; set; }
         public int LeaderBoardPosition { get; set; }
         public Boolean LeaderBoardPositionIsTied { get; set; }
         public LobbyDataCurrentGame (
-            string argPlayerName, 
+            string argPlayerName,
             PlayerStatusEnum argStatus,
-            int argRemainingFunds, 
-            Boolean argHasLeftRoom, 
+            int argRemainingFunds,
+            Boolean argHasLeftRoom,
             DateTimeOffset argUTCTimeAsTieBreaker
-        ) 
+        )
         {
             this.PlayerName = argPlayerName;
             this.Status = argStatus;
@@ -31,7 +31,7 @@ namespace SevenStuds.Models
             this.HasLeftRoom = argHasLeftRoom;
             this.UTCTimeAsTieBreaker = argUTCTimeAsTieBreaker;
             this.LeaderBoardPosition = Int32.MaxValue; // 1 = winner, 2/3/4etc. = places, MaxInt = not in game
-            this.LeaderBoardPositionIsTied = false; 
+            this.LeaderBoardPositionIsTied = false;
 
             // This is all so ugly but at least it's mostly in one place :-)
 

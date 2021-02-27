@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace SevenStuds.Models
+namespace SocialPokerClub.Models
 {
     public class StatefulGameData
     {
@@ -10,14 +10,14 @@ namespace SevenStuds.Models
 
         // We are not using Hashtable because it doesn't appear to be supported by the JSON serialiser.
 
-        public Dictionary<string, string> MapOfConnectionIdToParticipantSignalRGroupName { get; set; } 
-        public Dictionary<string, string> MapOfConnectionIdToSpectatorSignalRGroupName { get; set; } 
-        public Dictionary<string, double> MapOfGameIdToDbCosts { get; set; } 
+        public Dictionary<string, string> MapOfConnectionIdToParticipantSignalRGroupName { get; set; }
+        public Dictionary<string, string> MapOfConnectionIdToSpectatorSignalRGroupName { get; set; }
+        public Dictionary<string, double> MapOfGameIdToDbCosts { get; set; }
         public StatefulGameData()
         {
-            MapOfConnectionIdToParticipantSignalRGroupName = new Dictionary<string, string>(); 
-            MapOfConnectionIdToSpectatorSignalRGroupName = new Dictionary<string, string>(); 
-            MapOfGameIdToDbCosts = new Dictionary<string, double>(); 
+            MapOfConnectionIdToParticipantSignalRGroupName = new Dictionary<string, string>();
+            MapOfConnectionIdToSpectatorSignalRGroupName = new Dictionary<string, string>();
+            MapOfGameIdToDbCosts = new Dictionary<string, double>();
         }
     }
 }

@@ -1,11 +1,11 @@
 using Microsoft.AspNetCore.SignalR;
 using System.Threading.Tasks;
-using SevenStuds.Models;
+using SocialPokerClub.Models;
 using System.Collections.Generic;
 using System.Text.Json;
 using System;
 
-namespace SevenStuds.Hubs
+namespace SocialPokerClub.Hubs
 {
     public class ChatHub : Hub
     {
@@ -42,10 +42,10 @@ namespace SevenStuds.Hubs
 
         private async Task UserClickedGameRelatedActionButton(ActionEnum actionType, string roomId, string user, string leavers, string parameters)
         {
-            SevenStuds.Models.Action a = await ActionFactory.NewAction(Context.ConnectionId, actionType, roomId, user, leavers, parameters);
+            SocialPokerClub.Models.Action a = await ActionFactory.NewAction(Context.ConnectionId, actionType, roomId, user, leavers, parameters);
             Game g = await a.ProcessActionAndReturnGameReference();
             ServerState.TotalActionsProcessed++;
-         
+
             // New connections may have been linked to players, so link those connections to the relevant player groups in SignalR
             foreach ( Participant p in g.Participants ) {
                 List<string> conns = p.GetConnectionIds();
@@ -138,7 +138,7 @@ namespace SevenStuds.Hubs
                             }
                             notificationTasks.Add(Clients.Group(g.Spectators[i].SpectatorSignalRGroupName).SendAsync(targetMethod, resultAsJson));
                         }
-                    } 
+                    }
                     if ( a.ResponseType == ActionResponseTypeEnum.ConfirmToPlayerLeavingAndUpdateRemainingPlayers ) {
                         // Extra bit to notify all of the leaving player's connections that they have left
                         string leavingConfirmationAsJson = "{ \"ok\" }";
@@ -153,7 +153,7 @@ namespace SevenStuds.Hubs
         private async Task UserClickedReplaySetupButton(string gameLogToReplay)
         {
             // This is a non-standard action that does not require a game or a player as it automatically builds a room
-            // and a game that includes all the players from the replayed game. 
+            // and a game that includes all the players from the replayed game.
             // The response to the caller will just be a JSON doc containing a room id and a set of rejoin codes.
             // Note that you can pause the game at a specific action by including a 'pauseAfter' attribute in the game log
             // (the replay will be paused after any action with a number qual to or higher than the pauseAfter number)
@@ -172,7 +172,7 @@ namespace SevenStuds.Hubs
             // Add all the players (note that the replay log should not contain join actions for the players who joined at the start of the game)
             foreach ( string playerName in replayContext.playersInOrderAtStartOfGame ) {
                 Participant newPlayer = new Participant(playerName);
-                newPlayer.IsGameAdministrator = ( playerName == replayContext.administrator ); 
+                newPlayer.IsGameAdministrator = ( playerName == replayContext.administrator );
                 newPlayer.IntendsToPlayBlindInNextHand = replayContext.playersStartingBlind.Contains(playerName);
                 replayGame.Participants.Add(newPlayer);
             }
@@ -227,7 +227,7 @@ namespace SevenStuds.Hubs
                 string resultAsJson = gl.AsJson();
                 await Clients.Caller.SendAsync("ReceiveMyGameState", resultAsJson);
             }
-        }        
+        }
         private void AddRejoinCodes(Game g) {
             g.rejoinCodes = new List<string>();
             foreach ( Participant p in g.Participants ) {

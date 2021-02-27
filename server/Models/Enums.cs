@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SevenStuds.Models
+namespace SocialPokerClub.Models
 {
     /// <summary>
     /// GameModeEnum: Defines the mode that the game is currently in
@@ -14,8 +14,8 @@ namespace SevenStuds.Models
         LeavingGame = 2,
         LeftGame = 3,
         Spectator = 4
-    }    
-    
+    }
+
     /// <summary>
     /// GameModeEnum: Defines the mode that the game is currently in
     /// </summary>
@@ -25,7 +25,7 @@ namespace SevenStuds.Models
         HandInProgress = 1, // betting is still in progress
         HandsBeingRevealed = 2, // final betting is completed, players are in turn either revealing their hands or folding
         HandCompleted = 3 // the hand result is establishied, players are able to reveal hands if desired (for fun or effect)
-    }    
+    }
     /// <summary>
     /// ActionEnum: Enumeration values are used to communicate actions between client and server
     /// </summary>
@@ -74,7 +74,7 @@ namespace SevenStuds.Models
     }
 
     /// <summary>
-    /// ActionResponseAudienceEnum: 
+    /// ActionResponseAudienceEnum:
     /// </summary>
     public enum ActionResponseAudienceEnum : int
     {
@@ -82,7 +82,7 @@ namespace SevenStuds.Models
         CurrentPlayer = 1, // All of the clients that the current player has used to join the game (e.g. laptop AND phone)
         AllPlayers = 2, // All of the clients for all of the players who have joined the game
         Admin = 3 // The administrator (currently thinking this will be the first person to have joined the game)
-    }    
+    }
 
 
     /// <summary>
@@ -137,7 +137,7 @@ namespace SevenStuds.Models
         Stateless = 2       // Records game state on completion of an action and reloads game state from DB on processing next action
     }
 
-   
+
     /// <summary>
     /// Enumeration values are used to calculate hand rank keys
     /// </summary>
@@ -196,5 +196,5 @@ namespace SevenStuds.Models
         CompleteSmallBet = 1,
         SmallBet = 2,
         BigBet = 3
-    }    
+    }
 }

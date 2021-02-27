@@ -2,14 +2,14 @@ using Microsoft.AspNetCore.SignalR;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace SevenStuds.Models
-{  
-    /// <summary>  
-    /// The 'ActionJoin' Class  
-    /// </summary>  
+namespace SocialPokerClub.Models
+{
+    /// <summary>
+    /// The 'ActionJoin' Class
+    /// </summary>
     public class ActionJoin : Action
-    {  
-        public ActionJoin(string connectionId, ActionEnum actionType, Game ourGame, string user, string leavers, string joinOption) 
+    {
+        public ActionJoin(string connectionId, ActionEnum actionType, Game ourGame, string user, string leavers, string joinOption)
             : base(connectionId, actionType, ourGame, user, "-1", joinOption)
         {
         }
@@ -53,5 +53,5 @@ namespace SevenStuds.Models
 
             await Task.FromResult(0); // Just to work around compiler warning "This async method lacks 'await' operators and will run synchronously"
         }
-    }     
-}  
+    }
+}
