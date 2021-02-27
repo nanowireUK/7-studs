@@ -1,9 +1,4 @@
-import React, { useContext, useEffect } from 'react';
-
-import { Howl } from 'howler';
-
-import notificationSrc from '../assets/audio/notify.mp3';
-import airhornSrc from '../assets/audio/airhorn.mp3';
+import React, { useContext, useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -11,53 +6,29 @@ import {
     selectPlayers,
     leave,
     selectActionReference,
-    selectIsMyTurn
 } from '../redux/slices/game';
 
 import { selectRoomId, mute, unmute, selectMuted } from '../redux/slices/hub';
 
 import Player from '../components/Player';
-import { Box, Grid, Text, Button, ResponsiveContext } from 'grommet';
-import { Volume, VolumeMute } from 'grommet-icons';
+import { Box, Grid, Text, Button, ResponsiveContext, Tabs, Tab } from 'grommet';
+import { Menu, Volume, VolumeMute } from 'grommet-icons';
 import GameActions from '../GameActions';
 import Pot from '../components/Pot';
 import RejoinCode from '../components/RejoinCode';
+import { useNotifications } from '../utils/hooks';
+
+import Introduction from '../components/information/Introduction';
+import HowWePlay from '../components/information/HowWePlay';
+import HandRankings from '../components/information/HandRankings';
 
 function Game() {
     const players = useSelector(selectPlayers);
-    const roomId = useSelector(selectRoomId);
     const actionReference = useSelector(selectActionReference);
-    const isMyTurn = useSelector(selectIsMyTurn);
-    const isMuted = useSelector(selectMuted);
-    const dispatch = useDispatch();
 
     const mobileLayout = useContext(ResponsiveContext) === 'small';
 
-    const leaveGame = () => {
-        dispatch(leave());
-    }
-
-    useEffect(() => {
-        const notifySound = new Howl({
-            src: [notificationSrc],
-        });
-
-        const airhornSound = new Howl({
-            src: [airhornSrc],
-        });
-
-        const timeout = isMyTurn && !isMuted ? setTimeout(() => {
-            airhornSound.play();
-        }, 20000) : -1;
-
-        if (isMyTurn && !isMuted) notifySound.play();
-
-        return () => {
-            notifySound.pause();
-            airhornSound.pause();
-            clearTimeout(timeout);
-        }
-    }, [isMyTurn, isMuted]);
+    useNotifications();
 
     const numPlayers = players.length;
 
@@ -93,52 +64,134 @@ function Game() {
     const rows = mobileLayout ? Array(numPlayers + 1).fill('auto'): ['auto', 'auto', 'auto'];
 
     return (
-        <div style={{ height: '100vh' }}>
+        <Box fill>
             <Grid
-                fill={true}
+                fill
                 areas={[
-                    { name: 'gameStatus', start: [0, 0], end: [0, 0] },
-                    { name: 'gameArea', start: [0, 1], end: [0, 1] },
-                    { name: 'actions', start: [0, 2], end: [0, 2] },
+                    { name: 'gameArea', start: [0, 0], end: [0, 0] },
+                    { name: 'actions', start: [0, 1], end: [0, 1] },
                 ]}
                 columns={['fill']}
-                rows={['xsmall', 'auto', 'xsmall']}
+                rows={['auto', 'xsmall']}
             >
-                <Box pad="small" gridArea="gameStatus" background="brand" direction="row" fill justify="between">
-                    <Text basis="full" alignSelf="center" size="xxlarge">{roomId}</Text>
-                    <Box direction="row" align="center">
+                <Box gridArea="gameArea" fill pad="small">
+                    <Box fill round>
+                        <Grid
+                            fill
+                            areas={gridAreas}
+                            columns={columns}
+                            rows={rows}
+                        >
+                            {players.map(({ name, ...player }, position) => (
+                                <Box key={name} gridArea={playerAreas[position]}>
+                                    <Player name={name} position={position} {...player}></Player>
+                                </Box>
+                            ))}
 
-                        <Box justify="center">
-                            <RejoinCode />
-                            <Button onClick={leaveGame}>Leave</Button>
-                        </Box>
-                        <Box pad="small">{isMuted ? <VolumeMute onClick={() => dispatch(unmute())}/> : <Volume onClick={() => dispatch(mute())}/>}</Box>
+                            <Box gridArea="pot" pad={mobileLayout ? 'small' : null}>
+                                <Pot />
+                            </Box>
+                        </Grid>
                     </Box>
                 </Box>
-                <Grid
-                    gridArea="gameArea"
-                    fill={true}
-                    areas={gridAreas}
-                    columns={columns}
-                    rows={rows}
-                >
-                    {players.map(({ name, ...player }, position) => (
-                        <Box key={name} gridArea={playerAreas[position]}>
-                            <Player name={name} position={position} {...player}></Player>
-                        </Box>
-                    ))}
-
-                    <Box gridArea="pot" pad={mobileLayout ? 'small' : null}>
-                        <Pot />
-                    </Box>
-                </Grid>
-                <Box gridArea="actions" border direction="column" justify="between" pad="xsmall">
-                    <Box><Text size="xsmall" color="grey">{actionReference}</Text></Box>
+                <Box gridArea="actions" direction="column" justify="between" pad="xsmall">
+                    <Box><Text size="xsmall">{actionReference}</Text></Box>
                     <Box alignSelf="end"><GameActions /></Box>
                 </Box>
             </Grid>
-        </div>
+        </Box>
     );
 }
 
-export default Game;
+function Sidebar () {
+    const [activeIndex, setActiveIndex] = useState(2);
+
+    return <Box elevation="small" fill>
+        <Tabs onActive={setActiveIndex} activeIndex={activeIndex}>
+            <Tab title="Introduction">
+                <Box overflow="auto" fill pad={{ vertical: 'small', horizontal: 'small'}}>
+                    <Introduction />
+                </Box>
+            </Tab>
+            <Tab title="How We Play">
+                <Box overflow="auto" fill pad={{ vertical: 'small', horizontal: 'small'}}>
+                    <HowWePlay />
+                </Box>
+            </Tab>
+            <Tab title="Hand Rankings">
+                <Box overflow="auto" fill pad={{ vertical: 'small', horizontal: 'small'}}>
+                    <HandRankings />
+                </Box>
+            </Tab>
+        </Tabs>
+    </Box>
+}
+
+function GameContainer ({ drawerOpen }) {
+    return <Grid
+        fill={true}
+        areas={[
+            { name: 'sidebar', start: [0, 0], end: [0, 0] },
+            { name: 'content', start: [1, 0], end: [1, 0] },
+        ]}
+        columns={[`${drawerOpen ? 400 : 0}px`, 'auto']}
+        rows={['fill']}
+    >
+        <Box gridArea="sidebar">
+            {drawerOpen && <Sidebar />}
+        </Box>
+        <Box gridArea="content">
+            <Game />
+        </Box>
+    </Grid>
+}
+
+function Header ({ drawerOpen, setDrawerOpen }) {
+    const roomId = useSelector(selectRoomId);
+    const dispatch = useDispatch();
+
+    const isMuted = useSelector(selectMuted);
+
+    const leaveGame = () => {
+        dispatch(leave());
+    }
+
+    return <Box pad="small" direction="row" fill justify="between" elevation="small" background="brand">
+        <Box direction="row" align="center" gap="small" pad="small">
+            <Button plain icon={<Menu onClick={() => setDrawerOpen(!drawerOpen)} />} />
+            <Text alignSelf="start" size="xxlarge">{roomId}</Text>
+        </Box>
+        <Box direction="row" align="center" gap="small" pad="small">
+            <Box justify="center">
+                <RejoinCode />
+                <Button onClick={leaveGame}>Leave</Button>
+            </Box>
+            <Button plain icon={isMuted ? <VolumeMute /> : <Volume />} onClick={() => dispatch(isMuted ? unmute() : mute())} />
+        </Box>
+    </Box>
+}
+
+function MainContainer () {
+    const [drawerOpen, setDrawerOpen] = useState(false);
+
+    return <Box style={{ height: '100vh' }}>
+        <Grid
+            fill
+            areas={[
+                { name: 'header', start: [0, 0], end: [0, 0] },
+                { name: 'content', start: [0, 1], end: [0, 1] },
+            ]}
+            columns={['fill']}
+            rows={['xsmall', 'auto']}
+        >
+            <Box gridArea="header">
+                <Header drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} />
+            </Box>
+            <Box gridArea="content">
+                <GameContainer drawerOpen={drawerOpen} />
+            </Box>
+        </Grid>
+    </Box>
+}
+
+export default MainContainer;
