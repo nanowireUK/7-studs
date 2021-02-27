@@ -26,7 +26,7 @@ namespace SevenStuds.Models
                 throw new HubException(SpcExceptionCodes.RoomNotAcceptingNewPlayers.ToString());
             }
 
-            if ( ServerState.ActiveGames() > 2 ) {
+            if ( ServerState.ActiveGames() > 100 ) {
                 throw new HubException(SpcExceptionCodes.CurrentGameLimitExceeded.ToString()); // Protect our resources
             }
 
