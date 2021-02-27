@@ -74,7 +74,7 @@ function Player ({ name, chips, cards, isDealer, isCurrentPlayer, isMe, handDesc
     return (
         <Box pad="small" fill overflow="auto">
             <Stack fill interactiveChild="first">
-                <Box pad="xsmall" round={true} fill elevation={isCurrentPlayer ? 'medium': 'small'} border={isCurrentPlayer ? { color: 'accent-1', size: 'medium' } : { color: 'white', size: 'medium' }}>
+                <Box background="white" pad="xsmall" round={true} fill elevation={isCurrentPlayer ? 'medium': 'small'} border={isCurrentPlayer ? { color: 'accent-1', size: 'medium' } : { color: 'white', size: 'medium' }}>
                     <Box flex="grow" direction="row" justify="between">
                         <Box direction="row" gap="xsmall">
                             <Text size="xlarge" color={isMe ? 'brand' : null}>{name} {status}</Text>
