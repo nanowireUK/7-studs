@@ -53,5 +53,36 @@ export default {
                 top: "medium"
             }
         }
-    }
+    },
+    tabs: {
+        header: {
+            border: {
+                side: 'bottom',
+                color: '#20dcf9',
+                size: 'small',
+            },
+        },
+      },
+      tab: {
+        border: {
+            side: 'bottom',
+            color: '#20dcf9',
+        },
+        pad: {
+            vertical: 'small',
+            horizontal: '10px'
+        },
+        margin: {
+          // bring the overall tabs border behind invidual tab borders
+          vertical: '-2px',
+          horizontal: 'none',
+        },
+        active: {
+            border: {
+                side: 'bottom',
+                color: '#20dcf9'
+            }
+        },
+      },
+
 };

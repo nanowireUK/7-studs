@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import { Box, Button, Heading } from 'grommet';
 
 import { setCurrentView, Views } from '../redux/slices/views';
+import Introduction from '../components/information/Introduction';
 
 export default function Welcome() {
     const dispatch = useDispatch();
@@ -41,6 +42,8 @@ export default function Welcome() {
                 </Box>
             </Box>
         </Box>
-        <Box background="white" height="100vh"></Box>
+        <Box background="white" pad="large">
+            <Introduction />
+        </Box>
     </Box>
 }
