@@ -79,7 +79,10 @@ export const create = (roomId, username) => (dispatch, getState, connection) => 
 
             if (hubException === 'RoomAlreadyExists') dispatch(setJoinError('Room already exists, please try a different name'));
             if (hubException === 'CurrentGameLimitExceeded') dispatch(setJoinError('Too many games in progress, please try again later'));
-            else dispatch(setJoinError('Something went wrong'));
+            else {
+                console.log(error);
+                dispatch(setJoinError('Something went wrong'));
+            }
         });
 };
 
@@ -102,7 +105,10 @@ export const join = (roomId, username) => (dispatch, getState, connection) => {
             if (hubException === 'RoomNotAcceptingSpectators') dispatch(setJoinError('This room is currently private'));
             if (hubException === 'RoomIsFull') dispatch(setJoinError('This room is full, try spectating instead'));
             if (hubException === 'CannotJoinGameInProgress') dispatch(setJoinError('Game in progress, please try again later'));
-            else dispatch(setJoinError('Something went wrong'));
+            else {
+                console.log(error);
+                dispatch(setJoinError('Something went wrong'));
+            }
         });
 };
 
