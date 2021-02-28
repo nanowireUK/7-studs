@@ -66,6 +66,12 @@ namespace SocialPokerClub.Models
                     //         }
                     //     }
                     //     break;
+                    case "log-conns":
+                        // Lists all the currently mapped connection ids
+                        foreach ( string conn in ServerState.StatefulData.MapOfConnectionIdToParticipantSignalRGroupName.Keys ) {
+                            Console.WriteLine("Connection '{0}' is associated with SignalR group name '{1}'\n", conn, ServerState.StatefulData.MapOfConnectionIdToParticipantSignalRGroupName.GetValueOrDefault(conn));
+                        }                        
+                        break;                    
                     default:
                         throw new SystemException("Query type " + queryType + " not implemented");
                 }
