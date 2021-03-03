@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -11,22 +11,24 @@ import {
 import { selectRoomId, mute, unmute, selectMuted } from '../redux/slices/hub';
 
 import Player from '../components/Player';
-import { Box, Grid, Text, Button, ResponsiveContext, Tabs, Tab } from 'grommet';
+import { Box, Grid, Text, Button, Tabs, Tab } from 'grommet';
 import { Menu, Volume, VolumeMute } from 'grommet-icons';
 import GameActions from '../GameActions';
 import Pot from '../components/Pot';
 import RejoinCode from '../components/RejoinCode';
-import { useNotifications } from '../utils/hooks';
+import { useContainerDimensions, useNotifications } from '../utils/hooks';
 
 import Introduction from '../components/information/Introduction';
 import HowWePlay from '../components/information/HowWePlay';
 import HandRankings from '../components/information/HandRankings';
 
 function Game() {
+    const gameAreaRef = useRef(null);
     const players = useSelector(selectPlayers);
     const actionReference = useSelector(selectActionReference);
+    const size = useContainerDimensions(gameAreaRef);
 
-    const mobileLayout = useContext(ResponsiveContext) === 'small';
+    const mobileLayout = size.width < 800 || size.height < 700;
 
     useNotifications();
 
@@ -74,7 +76,7 @@ function Game() {
                 columns={['fill']}
                 rows={['auto', 'xsmall']}
             >
-                <Box gridArea="gameArea" fill pad="small">
+                <Box gridArea="gameArea" fill pad="small" ref={gameAreaRef}>
                     <Box fill round>
                         <Grid
                             fill
