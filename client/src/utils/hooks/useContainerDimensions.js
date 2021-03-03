@@ -1,26 +1,31 @@
 import { useState, useEffect } from 'react';
 
-export const useContainerDimensions = myRef => {
+export const useContainerDimensions = ref => {
     const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
     useEffect(() => {
         const getDimensions = () => ({
-            width: myRef.current.offsetWidth,
-            height: myRef.current.offsetHeight
+            width: ref.current.offsetWidth,
+            height: ref.current.offsetHeight
         });
 
         const handleResize = () => {
             setDimensions(getDimensions());
         }
 
-        if (myRef.current) handleResize()
+        const resizeObserver = new ResizeObserver(handleResize);
+        const currentRef = ref.current;
+
+        if (ref.current) handleResize()
 
         window.addEventListener("resize", handleResize);
+        resizeObserver.observe(currentRef);
 
         return () => {
             window.removeEventListener("resize", handleResize);
+            resizeObserver.unobserve(currentRef);
         }
-    }, [myRef]);
+    }, [ref]);
 
     return dimensions;
 };
