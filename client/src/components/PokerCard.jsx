@@ -62,7 +62,7 @@ function Suit ({ suit, invisibleToOthers = false }) {
 
 const AnimatedBox = animated(Box);
 
-export default function PokerCard ({ face, suit, invisibleToOthers = false, cardIndex, availableDimensions }) {
+export default function PokerCard ({ face, suit, invisibleToOthers = false, cardIndex = -1, availableDimensions }) {
     const cardRef = useRef(null);
     const { height } = useContainerDimensions(cardRef);
     const props = useSpring({
@@ -74,14 +74,14 @@ export default function PokerCard ({ face, suit, invisibleToOthers = false, card
 
     return <AnimatedBox style={props} fill="vertical" ref={cardRef}>
         {face === '?' || suit === '?' ? (
-            <Box fill="vertical" direction="row" title={`Hidden - ${cardIndex}`} elevation="xsmall" pad="xsmall" border round="xsmall" gap="xsmall" background={{
+            <Box fill="vertical" direction="row" title="Hidden" elevation="xsmall" pad="xsmall" border round="xsmall" gap="xsmall" background={{
                 image: `url(${CardBack})`,
                 size: "115%"
             }}>
                 <Box pad="xsmall" direction="column" align="center" justify="around" width={`${height + 2}px`} testborder={{ color: 'blue', style: 'dashed' }}></Box>
             </Box>
         ) : (
-            <Box fill="vertical" direction="row" title={`${generateTitle(suit, face)} - ${cardIndex}`} elevation="xsmall" pad="xsmall" border round="xsmall" gap="2px" background="white">
+            <Box fill="vertical" direction="row" title={generateTitle(suit, face)} elevation="xsmall" pad="xsmall" border round="xsmall" gap="2px" background="white">
                 <Box direction="column" align="center" justify="around" width={`${height/2}px`} testborder={{ color: 'blue', style: 'dashed' }}><Face invisibleToOthers={invisibleToOthers} face={face} suit={suit}/></Box>
                 <Box direction="column" align="center" justify="around" width={`${height/2}px`} testborder={{ color: 'red', style: 'dashed' }}><Suit invisibleToOthers={invisibleToOthers} suit={suit} /></Box>
             </Box>
