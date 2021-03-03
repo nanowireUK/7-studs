@@ -72,7 +72,7 @@ function Player ({ name, chips, cards, isDealer, isCurrentPlayer, isMe, handDesc
     if (isOutOfThisGame) status = outEmojis[(name.length * (handsWon + 1)) % outEmojis.length];
 
     return (
-        <Box pad="small" fill overflow="auto">
+        <Box pad="small" fill overflow="auto" height={{ min: '220px' }}>
             <Stack fill interactiveChild="first">
                 <Box background="white" pad="xsmall" round={true} fill elevation={isCurrentPlayer ? 'medium': 'small'} border={isCurrentPlayer ? { color: 'accent-1', size: 'medium' } : { color: 'white', size: 'medium' }}>
                     <Box flex="grow" direction="row" justify="between">
