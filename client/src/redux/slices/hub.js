@@ -51,6 +51,23 @@ export const {
     setJoinError,
 } = hubSlice.actions;
 
+export const setHubJoinError = (e) => (dispatch, getState, connection) => {
+    const [error, hubException = error] = e.toString().split('HubException: ');
+
+    if (e === null) dispatch(setJoinError(null));
+    else if (hubException === 'RoomAlreadyExists') dispatch(setJoinError('Room already exists, please try a different name'));
+    else if (hubException === 'CurrentGameLimitExceeded') dispatch(setJoinError('Too many games in progress, please try again later'));
+    else if (hubException === 'RoomDoesNotExist') dispatch(setJoinError('Couldn\'t find an existing room with that name'));
+    else if (hubException === 'RoomNotAcceptingNewPlayers') dispatch(setJoinError('This room is currently private'));
+    else if (hubException === 'RoomNotAcceptingSpectators') dispatch(setJoinError('This room is currently private'));
+    else if (hubException === 'RoomIsFull') dispatch(setJoinError('This room is full, try spectating instead'));
+    else if (hubException === 'CannotJoinGameInProgress') dispatch(setJoinError('Game in progress, please try again later'));
+    else {
+        console.log(error);
+        dispatch(setJoinError('Something went wrong'));
+    }
+}
+
 export const serverConnected = () => (dispatch, getState, connection) => {
     const { roomId, username, rejoinCode } = getState().hub;
 
@@ -75,14 +92,7 @@ export const create = (roomId, username) => (dispatch, getState, connection) => 
             dispatch(setJoinError(null));
         })
         .catch(e => {
-            const [error, hubException = error] = e.toString().split('HubException: ');
-
-            if (hubException === 'RoomAlreadyExists') dispatch(setJoinError('Room already exists, please try a different name'));
-            if (hubException === 'CurrentGameLimitExceeded') dispatch(setJoinError('Too many games in progress, please try again later'));
-            else {
-                console.log(error);
-                dispatch(setJoinError('Something went wrong'));
-            }
+            dispatch(setHubJoinError(e));
         });
 };
 
@@ -98,17 +108,7 @@ export const join = (roomId, username) => (dispatch, getState, connection) => {
             dispatch(setJoinError(null));
         })
         .catch(e => {
-            const [error, hubException = error] = e.toString().split('HubException: ');
-
-            if (hubException === 'RoomDoesNotExist') dispatch(setJoinError('Couldn\'t find an existing room with that name'));
-            if (hubException === 'RoomNotAcceptingNewPlayers') dispatch(setJoinError('This room is currently private'));
-            if (hubException === 'RoomNotAcceptingSpectators') dispatch(setJoinError('This room is currently private'));
-            if (hubException === 'RoomIsFull') dispatch(setJoinError('This room is full, try spectating instead'));
-            if (hubException === 'CannotJoinGameInProgress') dispatch(setJoinError('Game in progress, please try again later'));
-            else {
-                console.log(error);
-                dispatch(setJoinError('Something went wrong'));
-            }
+            dispatch(setHubJoinError(e));
         });
 };
 
@@ -124,13 +124,7 @@ export const spectate = (roomId, username) => (dispatch, getState, connection) =
             dispatch(setJoinError(null));
         })
         .catch(e => {
-            const [error, hubException = error] = e.toString().split('HubException: ');
-
-            if (hubException === 'RoomDoesNotExist') dispatch(setJoinError('Couldn\'t find an existing room with that name'));
-            else {
-                console.log(hubException);
-                dispatch(setJoinError('Something went wrong'));
-            };
+            dispatch(setHubJoinError(e));
         });
 };
 
