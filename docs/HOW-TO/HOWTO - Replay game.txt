@@ -32,3 +32,16 @@ To replay a game from Visual Studio Code using a saved GameLog from e.g. .\docs\
 		- Save the cleansed game log in the Game Logs area
 
         Server/- (6) Use the Replay action (from the server screen)
+
+When testing all the different database scenarios
+-------------------------------------------------
+
+Tests in most practical order:
+
+- No Cosmos DB emulation available
+	- NoDatabase (quickest test)
+	- Recoverability
+	- Stateless
+- Cosmos DB emulation started
+	- Stateless
+	- Recoverability
