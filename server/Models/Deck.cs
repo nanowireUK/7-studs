@@ -49,8 +49,9 @@ namespace SocialPokerClub.Models
             Random r = ServerState.ServerLevelRandomNumberGenerator;
             int startCard;
             int cardsToMove;
-            for (int i = 0; i < 100; i++) {
-                // Take random block of cards from anywhere in the pack and move it to the front (simulate manual shuffle action)
+            for (int i = 0; i < 200; i++) {
+                // Take random block of cards from anywhere in the pack and move it to the front
+                // (simulates manual shuffle action ... probably pointless but fun to know that it does it)
                 startCard = r.Next(2, 53); // returns value from 2 to 52 (not 53)
                 cardsToMove = r.Next(1, 52-startCard+1); // decide how many cards to move
                 string blockToMove = CardList.Substring((startCard-1)*2, cardsToMove*2);
