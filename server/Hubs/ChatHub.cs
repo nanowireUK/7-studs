@@ -46,31 +46,37 @@ namespace SocialPokerClub.Hubs
             Game g = await a.ProcessActionAndReturnGameReference();
             ServerState.TotalActionsProcessed++;
 
-            // New connections may have been linked to players, so link those connections to the relevant player groups in SignalR
-            foreach ( Participant p in g.Participants ) {
-                List<string> conns = p.GetConnectionIds();
-                for ( int i = 0; i < conns.Count; i++ ) {
-                    // If the game has not yet added this connection, then link it
-                    string conn = conns[i];
-                    if ( ServerState.GetParticipantFromConnection(g, conn) == null ) {
-                        ServerState.LinkConnectionToParticipant(g, conn, p);
-                        await Groups.AddToGroupAsync(conn, p.ParticipantSignalRGroupName);
-                    }
-                }
-            }
+            // If any new connections were noted, add them to the relevant SignalR groups
+            List<List<string>> connectionsToLink = ServerState.StatefulData.MarkUnlinkedConnectionsAsLinkedAndReturnList(g);
+            foreach ( List<string> connectionGroupPair in connectionsToLink) {
+                await Groups.AddToGroupAsync(connectionGroupPair[0], connectionGroupPair[1]);   
+            }                         
 
-            // New connections may have been linked to spectators, so link those connections to the relevant player groups in SignalR
-            foreach ( Spectator p in g.Spectators ) {
-                List<string> conns = p.GetConnectionIds();
-                for ( int i = 0; i < conns.Count; i++ ) {
-                    // If the game has not yet added this connection, then link it
-                    string conn = conns[i];
-                    if ( ServerState.GetSpectatorFromConnection(g, conn) == null ) {
-                        ServerState.LinkConnectionToSpectator(g, conn, p);
-                        await Groups.AddToGroupAsync(conn, p.SpectatorSignalRGroupName);
-                    }
-                }
-            }
+            // // The participant may have used a new connection, in which case add it to that player's SignalR group
+            // foreach ( Participant p in g.Participants ) {
+            //     List<string> conns = p.GetConnectionIds();
+            //     for ( int i = 0; i < conns.Count; i++ ) {
+            //         // If the game has not yet added this connection, then link it
+            //         string conn = conns[i];
+            //         if ( ServerState.StatefulData.GetParticipantNameFromConnection(g, conn) == null ) {
+            //             ServerState.StatefulData.LinkConnectionToGroup(g, conn, p);
+            //             await Groups.AddToGroupAsync(conn, p.ParticipantSignalRGroupName);
+            //         }
+            //     }
+            // }
+
+            // // New connections may have been linked to spectators, so link those connections to the relevant player groups in SignalR
+            // foreach ( Spectator p in g.Spectators ) {
+            //     List<string> conns = p.GetConnectionIds();
+            //     for ( int i = 0; i < conns.Count; i++ ) {
+            //         // If the game has not yet added this connection, then link it
+            //         string conn = conns[i];
+            //         if ( ServerState.StatefulData.GetSpectatorFromConnection(g, conn) == null ) {
+            //             ServerState.StatefulData.LinkConnectionToSpectator(g, conn, p);
+            //             await Groups.AddToGroupAsync(conn, p.SpectatorSignalRGroupName);
+            //         }
+            //     }
+            // }
 
             // Send the results of the action according to the ResponseType and ResponseAudience on the action object
 
@@ -156,7 +162,7 @@ namespace SocialPokerClub.Hubs
             // and a game that includes all the players from the replayed game.
             // The response to the caller will just be a JSON doc containing a room id and a set of rejoin codes.
             // Note that you can pause the game at a specific action by including a 'pauseAfter' attribute in the game log
-            // (the replay will be paused after any action with a number qual to or higher than the pauseAfter number)
+            // (the replay will be paused after any action with a number equal to or higher than the pauseAfter number)
             Room replayRoom = null;
             GameLog replayContext = JsonSerializer.Deserialize<GameLog>(gameLogToReplay);
             replayContext.ListDecks(); // Lists decks for info in debug console
@@ -170,6 +176,7 @@ namespace SocialPokerClub.Hubs
             }
             replayGame.InitialiseGame(replayContext); // Initialise the replayed game and also stores the game log statefully on the replay Room
             // Add all the players (note that the replay log should not contain join actions for the players who joined at the start of the game)
+            Console.WriteLine("Setting up {0} players for game id '{1}'\n", replayContext.playersInOrderAtStartOfGame.Count, replayGame.GameId);
             foreach ( string playerName in replayContext.playersInOrderAtStartOfGame ) {
                 Participant newPlayer = new Participant(playerName);
                 newPlayer.IsGameAdministrator = ( playerName == replayContext.administrator );

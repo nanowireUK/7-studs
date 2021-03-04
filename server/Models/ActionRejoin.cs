@@ -32,7 +32,8 @@ namespace SocialPokerClub.Models
             // For rejoin, do not change the last event or the next action
             //G.RecordLastEvent( "(" + this.UserName + " rejoined game) " + G.LastEvent); // Prepend the rejoin to the previous last event
 
-            p.NoteConnectionId(this.ConnectionId);
+            //p.NoteConnectionId(this.ConnectionId);
+            ServerState.StatefulData.LinkConnectionToGroup(this.G, this.ConnectionId, p);
 
             await Task.FromResult(0); // Just to work around compiler warning "This async method lacks 'await' operators and will run synchronously"
         }

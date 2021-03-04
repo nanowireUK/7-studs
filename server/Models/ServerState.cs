@@ -73,6 +73,7 @@ namespace SocialPokerClub.Models
                 if ( r.ActiveGame == null ) {
                     r.ActiveGame = new Game(r.RoomId, 0);
                     r.ActiveGame.InitialiseGame(null);
+                    Console.WriteLine("New game created and active game reference cached");
                 }
                 return r.ActiveGame;
             }
@@ -89,7 +90,7 @@ namespace SocialPokerClub.Models
                     return g;
                 }
             }
-            // Otherwise we are running Stateless
+            // If we get here we are running Stateless. There will be no game in the server memory but we know the game id in order to reload its state
             if ( r.RecoveryAlreadyAttempted ) {
                 // This is the normal situation where we are just reloading the game state that was saved at the end of the previous action
                 Console.WriteLine("Loading game state for game with id '{0}'.\n", r.ActiveGameId);
@@ -151,54 +152,7 @@ namespace SocialPokerClub.Models
             string jsonString = JsonSerializer.Serialize(l, options);
             return jsonString;
         }
-        public static void ClearConnectionMappings(Game g) {
-            // Clear out the tester's current connection (and any other connections currently associated with the game)
-            // Note that this is only expected to be called during a replay in a dev environment, not on the live server
-            ServerState.StatefulData.MapOfConnectionIdToParticipantSignalRGroupName.Clear();
-            ServerState.StatefulData.MapOfConnectionIdToSpectatorSignalRGroupName.Clear();
-        }
-        public static void LinkConnectionToParticipant(Game g, string connectionId, Participant p)
-        {
-            ServerState.StatefulData.MapOfConnectionIdToParticipantSignalRGroupName.Add(connectionId, p.ParticipantSignalRGroupName);
-        }
-        public static void LinkConnectionToSpectator(Game g, string connectionId, Spectator p)
-        {
-            ServerState.StatefulData.MapOfConnectionIdToSpectatorSignalRGroupName.Add(connectionId, p.SpectatorSignalRGroupName);
-        }
-        public static Participant GetParticipantFromConnection(Game g, string connectionId)
-        {
-            string groupName;
-            if ( ServerState.StatefulData.MapOfConnectionIdToParticipantSignalRGroupName.TryGetValue(connectionId, out groupName) )
-            {
-                foreach ( Participant p in g.Participants ) {
-                    if ( p.ParticipantSignalRGroupName == groupName ) {
-                        return p;
-                    }
-                }
-                return null;
-            }
-            else
-            {
-                return null;
-            }
-        }
-        public static Spectator GetSpectatorFromConnection(Game g, string connectionId)
-        {
-            string groupName;
-            if ( ServerState.StatefulData.MapOfConnectionIdToSpectatorSignalRGroupName.TryGetValue(connectionId, out groupName) )
-            {
-                foreach ( Spectator s in g.Spectators ) {
-                    if ( s.SpectatorSignalRGroupName == groupName ) {
-                        return s;
-                    }
-                }
-                return null;
-            }
-            else
-            {
-                return null;
-            }
-        }
+ 
         public static int ActiveGames() {
             int a = 0;
             foreach ( Room r in RoomList.Values ) {

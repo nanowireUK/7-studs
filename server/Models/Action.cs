@@ -76,14 +76,14 @@ namespace SocialPokerClub.Models
             }
 
             // Check that this connection is not being used by someone with a different user name
-            Participant p = ServerState.GetParticipantFromConnection(G, ConnectionId);
+            Participant p = ServerState.StatefulData.GetParticipantFromConnection(G, ConnectionId);
             if ( p != null ) {
                 if ( p.Name != this.UserName ) {
                     // This connection is already being used by someone else
                     throw new HubException("You attempted to "+ActionType.ToString().ToLower()+" (as user "+this.UserName+") from a connection that is already in use by "+p.Name); // client catches this as part of action method, i.e. no call to separate client method required
                 }
             }
-            Spectator s = ServerState.GetSpectatorFromConnection(G, ConnectionId);
+            Spectator s = ServerState.StatefulData.GetSpectatorFromConnection(G, ConnectionId);
             if ( s != null ) {
                 if ( s.Name != this.UserName ) {
                     // This connection is already being used by someone else
@@ -127,7 +127,8 @@ namespace SocialPokerClub.Models
                     // This is a new connection AND the player is currently locked out following a 'replay' action,
                     // so do an implicit Rejoin by linking the new connection to the current player
                     // (note the game will no longer be in test mode at this stage, so IsRunningInReplayMode() will show false even though this is as a result of testing)
-                    G.Participants[PlayerIndex].NoteConnectionId(this.ConnectionId);
+                    //G.Participants[PlayerIndex].NoteConnectionId(this.ConnectionId);
+                    ServerState.StatefulData.LinkConnectionToGroup(this.G, this.ConnectionId, G.Participants[PlayerIndex]);                    
                     G.Participants[PlayerIndex].IsLockedOutFollowingReplay = false;
                     // Can continue processing the command now
                 }

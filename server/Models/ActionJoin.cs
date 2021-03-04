@@ -45,7 +45,8 @@ namespace SocialPokerClub.Models
             {
                 p.IsGameAdministrator = true; // First player to join becomes the administrator (may find ways of changing this later)
             }
-            p.NoteConnectionId(this.ConnectionId);
+            //p.NoteConnectionId(this.ConnectionId);
+            ServerState.StatefulData.LinkConnectionToGroup(this.G, this.ConnectionId, p);
             G.RecordLastEvent(this.UserName + " joined game" + ( p.IsGameAdministrator ? " as administrator" : ""));
             G.NextAction = "Await new player or start the game";
 

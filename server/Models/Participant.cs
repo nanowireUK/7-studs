@@ -10,7 +10,7 @@ namespace SocialPokerClub.Models
             this.Name = PName;
             this.RejoinCode = GenerateRejoinCode();
             this.ParticipantSignalRGroupName = PName + '.' + Guid.NewGuid().ToString(); // Unique group id for this player (who may connect)
-            this._ConnectionIds = new List<string>(); // This user's connection ids will be recorded here
+            //this._ConnectionIds = new List<string>(); // This user's connection ids will be recorded here
             this.Hand = new List<Card>();
             this.IsLockedOutFollowingReplay = false;
             this.IsGameAdministrator = false;
@@ -44,7 +44,7 @@ namespace SocialPokerClub.Models
         public Boolean HasBeenActiveInCurrentGame { get; set; }
         public DateTimeOffset TimeOfBankruptcy { get; set; }
         public DateTimeOffset AllInDateTime{ get; set; } // note that this may not be the time they went bankrupt, i.e. they could win the hand
-        private List<string> _ConnectionIds { get; set; }
+        //private List<string> _ConnectionIds { get; set; }
         [Required]
         public int _VisibleHandRank { get; set; }
         public int _FullHandRank { get; set; }
@@ -71,15 +71,16 @@ namespace SocialPokerClub.Models
             }
             return code;
         }
-        public List<string> GetConnectionIds() {
-            return _ConnectionIds;
-        }
+        // public List<string> GetConnectionIds() {
+        //     return _ConnectionIds;
+        // }
 
-        public void NoteConnectionId(string connectionId) {
-            if ( ! _ConnectionIds.Contains(connectionId)) {
-                _ConnectionIds.Add(connectionId);
-            }
-        }
+        // public void NoteConnectionId(string connectionId) {
+        //     if ( ! _ConnectionIds.Contains(connectionId)) {
+        //          System.Diagnostics.Debug.WriteLine("Noting connection id '{0}' for player '{1} and group '{2}'", connectionId, this.Name, this.ParticipantSignalRGroupName);
+        //         _ConnectionIds.Add(connectionId);
+        //     }
+        // }
 
         public void StartNewHandForActivePlayer(Game g) {
             //this.ChipsCommittedToCurrentBettingRound = g.Ante;
