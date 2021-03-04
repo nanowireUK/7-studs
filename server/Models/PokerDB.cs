@@ -157,9 +157,14 @@ namespace SocialPokerClub.Models
         {
             // -------------------------------------------------------------------------------------------
             // Store the complete game state for the current game (overwriting any previous state for this game)
+            Console.WriteLine("PokerDB: UpsertGameState for game " + g.GameId);
 
             bool dbExists = await this.DatabaseConnectionHasBeenEstablished();
-            if ( dbExists == false ) { return 0; }
+            if ( dbExists == false ) { 
+                //Console.WriteLine("BOTCH: PokerDB: UpsertGameState -> no DB available, noting game reference onto Room.ActiveGame " + g.GameId);
+                g.ParentRoom().ActiveGame = g; // This is a botch to help fix replays when in Stateless mode and no DB is available
+                return 0;
+            }
 
             DocOfTypeGameState gameState = new DocOfTypeGameState
             {
@@ -187,6 +192,7 @@ namespace SocialPokerClub.Models
             // -------------------------------------------------------------------------------------------
             // Load the most-recently stored version of the game state for the game with the given id
             // Note that the game state has document id "GameState-0" and is overwritten with the latest game state at the end of each action.
+            Console.WriteLine("PokerDB: LoadGameState for game " + gameId);
 
             bool dbExists = await this.DatabaseConnectionHasBeenEstablished();
             if ( dbExists == false ) { return null; }
@@ -212,6 +218,8 @@ namespace SocialPokerClub.Models
         }
         public async Task<Game> LoadMostRecentGameState(string roomId)
         {
+            Console.WriteLine("PokerDB: LoadMostRecentGameState for room " + roomId);
+
             bool dbExists = await this.DatabaseConnectionHasBeenEstablished();
             if ( dbExists == false ) { return null; }
 
@@ -316,7 +324,10 @@ namespace SocialPokerClub.Models
             return rebuiltLog;
         }
         public async Task<bool> DatabaseConnectionHasBeenEstablished() {
-            if ( dbMode == DatabaseModeEnum.NoDatabase ) { return false; }; // Will never have a database connection
+            if ( dbMode == DatabaseModeEnum.NoDatabase ) { 
+                //Console.WriteLine("DatabaseConnectionHasBeenEstablished returns false as DB mode is NoDatabase");
+                return false; 
+            }; // Will never have a database connection
             if ( dbStatus == DatabaseConnectionStatusEnum.ConnectionNotAttempted ) {
                 try
                 {
@@ -326,6 +337,7 @@ namespace SocialPokerClub.Models
                     if ( EndpointUri == null ) {
                         System.Diagnostics.Debug.WriteLine("Env var SpcDbUri not found, server will continue with database functionality deactivated");
                         dbStatus = DatabaseConnectionStatusEnum.ConnectionFailed;
+                        //Console.WriteLine("DatabaseConnectionHasBeenEstablished returns false as first attempt failed (no SpcDbUri var found)");
                         return false;
                     }
                     else {
@@ -338,6 +350,7 @@ namespace SocialPokerClub.Models
                     if ( PrimaryKey == null ) {
                         System.Diagnostics.Debug.WriteLine("Env var SpcDbPrimaryKey not found, server will continue with database functionality deactivated");
                         dbStatus = DatabaseConnectionStatusEnum.ConnectionFailed;
+                        //Console.WriteLine("DatabaseConnectionHasBeenEstablished returns false as first attempt failed (no SpcDbPrimaryKey var found)");
                         return false;
                     }
                     else {
@@ -372,15 +385,26 @@ namespace SocialPokerClub.Models
                     ourGamesContainer = Cresp.Container;
 
                     dbStatus = DatabaseConnectionStatusEnum.ConnectionEstablished;
+                    //Console.WriteLine("DatabaseConnectionHasBeenEstablished returns true as first attempt was able to establish a connection");
+                    return true;
                 }
                 catch(Exception ex)
                 {
                     // Note that after creating the item, we can access the body of the item with the Resource property off the ItemResponse. We can also access the RequestCharge property to see the amount of RUs consumed on this request.
                     Console.WriteLine("Database connection could not be established. Continuing without database. Reported exception = {0}\n", ex.Message);
                     dbStatus = DatabaseConnectionStatusEnum.ConnectionFailed;
+                    //Console.WriteLine("DatabaseConnectionHasBeenEstablished returns false as first attempt to establish a connection failed");
+                    return false;                    
                 }
             }
-            return dbStatus == DatabaseConnectionStatusEnum.ConnectionEstablished;
+            if ( dbStatus == DatabaseConnectionStatusEnum.ConnectionEstablished ) {
+                //Console.WriteLine("DatabaseConnectionHasBeenEstablished returns true as connection was previously shown to work");
+                return true;
+            }
+            else {
+                //Console.WriteLine("DatabaseConnectionHasBeenEstablished returns false as connection was previously shown to have failed");
+                return false;
+            }
         }
     }
 }
