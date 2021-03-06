@@ -13,17 +13,17 @@ export const useContainerDimensions = ref => {
             setDimensions(getDimensions());
         }
 
-        const resizeObserver = new ResizeObserver(handleResize);
-        const currentRef = ref.current;
+        // const resizeObserver = new ResizeObserver(handleResize);
+        //const currentRef = ref.current;
 
         if (ref.current) handleResize()
 
         window.addEventListener("resize", handleResize);
-        resizeObserver.observe(currentRef);
+        //resizeObserver.observe(currentRef);
 
         return () => {
             window.removeEventListener("resize", handleResize);
-            resizeObserver.unobserve(currentRef);
+            //resizeObserver.unobserve(currentRef);
         }
     }, [ref]);
 
