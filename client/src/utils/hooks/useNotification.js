@@ -17,19 +17,20 @@ export const useNotifications = () => {
             src: [notificationSrc],
         });
 
-        const airhornSound = new Howl({
+        /* const airhornSound = new Howl({
             src: [airhornSrc],
         });
 
         const timeout = isMyTurn && !isMuted ? setTimeout(() => {
             airhornSound.play();
         }, 20000) : -1;
+        */
 
         if (isMyTurn && !isMuted) notifySound.play();
 
         return () => {
             notifySound.pause();
-            airhornSound.pause();
+            // airhornSound.pause();
             clearTimeout(timeout);
         }
     }, [isMyTurn, isMuted]);
