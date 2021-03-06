@@ -31,7 +31,7 @@ export const useNotifications = () => {
         return () => {
             notifySound.pause();
             // airhornSound.pause();
-            clearTimeout(timeout);
+            // clearTimeout(timeout);
         }
     }, [isMyTurn, isMuted]);
 }
