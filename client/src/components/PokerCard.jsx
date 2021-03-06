@@ -65,6 +65,8 @@ const AnimatedBox = animated(Box);
 export default function PokerCard ({ face, suit, invisibleToOthers = false, cardIndex = -1, availableDimensions }) {
     const cardRef = useRef(null);
     const { height } = useContainerDimensions(cardRef);
+
+    /*
     const props = useSpring({
         delay: cardIndex * 200,
         immediate: cardIndex === -1,
@@ -86,5 +88,22 @@ export default function PokerCard ({ face, suit, invisibleToOthers = false, card
                 <Box direction="column" align="center" justify="around" width={`${height/2}px`} testborder={{ color: 'red', style: 'dashed' }}><Suit invisibleToOthers={invisibleToOthers} suit={suit} /></Box>
             </Box>
         )}
-    </AnimatedBox>
+    </AnimatedBox>*/
+
+    return <Box fill="vertical" ref={cardRef}>
+        {face === '?' || suit === '?' ? (
+            <Box fill="vertical" direction="row" title="Hidden" elevation="xsmall" pad="xsmall" border round="xsmall" gap="xsmall" background={{
+                image: `url(${CardBack})`,
+                size: "115%"
+            }}>
+                <Box pad="xsmall" direction="column" align="center" justify="around" width={`${height + 2}px`} testborder={{ color: 'blue', style: 'dashed' }}></Box>
+            </Box>
+        ) : (
+            <Box fill="vertical" direction="row" title={generateTitle(suit, face)} elevation="xsmall" pad="xsmall" border round="xsmall" gap="2px" background="white">
+                <Box direction="column" align="center" justify="around" width={`${height/2}px`} testborder={{ color: 'blue', style: 'dashed' }}><Face invisibleToOthers={invisibleToOthers} face={face} suit={suit}/></Box>
+                <Box direction="column" align="center" justify="around" width={`${height/2}px`} testborder={{ color: 'red', style: 'dashed' }}><Suit invisibleToOthers={invisibleToOthers} suit={suit} /></Box>
+            </Box>
+        )}
+    </Box>
+
 }
