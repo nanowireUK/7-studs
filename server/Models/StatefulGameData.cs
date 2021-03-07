@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace SocialPokerClub.Models
@@ -38,7 +39,7 @@ namespace SocialPokerClub.Models
         }
         public void LinkConnectionToGroup(Game g, string connectionId, Participant p)
         {
-            System.Diagnostics.Debug.WriteLine(
+            Console.WriteLine(
                 "Room '{0}': Linking group '{1}' to connection id '{2}'", g.ParentRoom().RoomId, p.ParticipantSignalRGroupName, connectionId);
             Dictionary<string, Dictionary<string, bool>> roomLevelGroups = FindOrCreateRoomLevelGroupToConnectionMappings(g);
             // First find or create the dictionary of connections for this SignalR group name
@@ -55,7 +56,7 @@ namespace SocialPokerClub.Models
             // Might want to add something here to check that the connection was not previously associated with any other player
             // (think this is something for Join/Rejoin though)
             // if ( connsForThisGroup != p.ParticipantSignalRGroupName ) {
-            //     System.Diagnostics.Debug.WriteLine("Unexpected error: connection '{0}' is already linked to a different SignalR group '{1}'", connectionId, signalrGroup);
+            //     Console.WriteLine("Unexpected error: connection '{0}' is already linked to a different SignalR group '{1}'", connectionId, signalrGroup);
             // }
         }
         public Participant GetParticipantFromConnection(Game g, string connectionId)
@@ -106,7 +107,7 @@ namespace SocialPokerClub.Models
                         r.Add(connId);
                         r.Add(groupId);
                         results.Add(r);
-                        System.Diagnostics.Debug.WriteLine("Room '{0}' : Group '{1}' : Connection '{2}' will be added", roomId, groupId, connId);
+                        Console.WriteLine("Room '{0}' : Group '{1}' : Connection '{2}' will be added", roomId, groupId, connId);
                     }
                 }
             }

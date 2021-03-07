@@ -61,7 +61,7 @@ namespace SocialPokerClub.Models
                     inconsistenciesFound += ( actionSucceeded == true ? 0 : 1 );
                     if ( gla.ActionNumber >= advanceToActionNumber ) {
                         // We have reached (and processed) the requested target action
-                        System.Diagnostics.Debug.WriteLine("Replay has advanced to requested point and will pause again (if log not exhausted)");
+                        Console.WriteLine("Replay has advanced to requested point and will pause again (if log not exhausted)");
                         break;
                     }
                 }
@@ -77,11 +77,11 @@ namespace SocialPokerClub.Models
             }
 
             if ( inconsistenciesFound > 0 ) {
-                 System.Diagnostics.Debug.WriteLine("WARNING: " + inconsistenciesFound + " inconsistencies in results were identified ... please review the replay log");
+                 Console.WriteLine("WARNING: " + inconsistenciesFound + " inconsistencies in results were identified ... please review the replay log");
             }
 
             if ( replayContext.indexOfLastReplayedAction >= ( replayContext.actions.Count - 1 ) ) {
-                System.Diagnostics.Debug.WriteLine("Replayed game is no longer in replay mode and will continue under normal conditions from here");
+                Console.WriteLine("Replayed game is no longer in replay mode and will continue under normal conditions from here");
                 G.SetReplayContext(null);
             }
         }
@@ -96,32 +96,32 @@ namespace SocialPokerClub.Models
                 replayRoom.SavedCountOfLeavers.ToString(),
                 gla.Parameters
             );
-            System.Diagnostics.Debug.WriteLine(
+            Console.WriteLine(
                 "Replaying action "  + gla.ActionNumber + ": "
                 + gla.ActionType.ToString().ToLower() + " by " + gla.UserName);
 
             Game replayedGame = await a.ProcessActionAndReturnGameReference();
             replayRoom.SavedCountOfLeavers = replayedGame.CountOfLeavers; // preserve this in the same way that the client would
 
-            System.Diagnostics.Debug.WriteLine("  StatusMessage: " + replayedGame.StatusMessage);
+            Console.WriteLine("  StatusMessage: " + replayedGame.StatusMessage);
 
-            System.Diagnostics.Debug.WriteLine("  Commentary from replay:");
+            Console.WriteLine("  Commentary from replay:");
             foreach ( string c in replayedGame.HandCommentary ) {
-                System.Diagnostics.Debug.WriteLine("    " + c);
+                Console.WriteLine("    " + c);
             }
             if ( replayedGame.StatusMessage != gla.StatusMessage ) {
                 resultsAreConsistent = false;
-                System.Diagnostics.Debug.WriteLine("  Status Message is not consistent:");
-                System.Diagnostics.Debug.WriteLine("    ORIGINAL : " + gla.StatusMessage);
-                System.Diagnostics.Debug.WriteLine("    REPLAY   : " + replayedGame.StatusMessage);
+                Console.WriteLine("  Status Message is not consistent:");
+                Console.WriteLine("    ORIGINAL : " + gla.StatusMessage);
+                Console.WriteLine("    REPLAY   : " + replayedGame.StatusMessage);
             }
             if ( gla.PlayerSummaries != null && gla.PlayerSummaries != "" ) {
                 string new_ps = replayedGame.PlayerSummaries();
                 if ( new_ps != gla.PlayerSummaries ) {
                     resultsAreConsistent = false;
-                    System.Diagnostics.Debug.WriteLine("  Player Summaries are not consistent:");
-                    System.Diagnostics.Debug.WriteLine("    ORIGINAL : " + gla.PlayerSummaries);
-                    System.Diagnostics.Debug.WriteLine("    REPLAY   : " + new_ps);
+                    Console.WriteLine("  Player Summaries are not consistent:");
+                    Console.WriteLine("    ORIGINAL : " + gla.PlayerSummaries);
+                    Console.WriteLine("    REPLAY   : " + new_ps);
                 }
             }
             return resultsAreConsistent;

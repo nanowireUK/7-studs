@@ -175,7 +175,7 @@ namespace SocialPokerClub.Models
             else {
                 // We are running in test mode (i.e. under the control of an ActionReplay command) so set the original player order
                 // First remove any players who have not yet joined (allows for players joining between hands)
-                System.Diagnostics.Debug.WriteLine("Setting player order as per game log");
+                Console.WriteLine("Setting player order as per game log");
                 List<String> correctedPlayersInOrder = new List<String>(this.GetReplayContext().playersInOrderAtStartOfGame);
                 for ( int playerPos = correctedPlayersInOrder.Count - 1; playerPos >= 0; playerPos-- ) {
                     string playerName = correctedPlayersInOrder[playerPos];
@@ -188,7 +188,7 @@ namespace SocialPokerClub.Models
                     }
                     if ( participantExists == false) {
                         correctedPlayersInOrder.RemoveAt(playerPos);
-                        System.Diagnostics.Debug.WriteLine("Removing "+playerName+" from player order as they had not joined at this point");
+                        Console.WriteLine("Removing "+playerName+" from player order as they had not joined at this point");
                     }
                 }
                 for ( int requiredPos = 0; requiredPos < correctedPlayersInOrder.Count; requiredPos++ ) {
@@ -200,24 +200,24 @@ namespace SocialPokerClub.Models
                         Participant p = Participants[currentIndexOfPlayerToMove];
                         Participants.RemoveAt(currentIndexOfPlayerToMove); // Remove it from the current list
                         Participants.Insert(requiredPos, p);
-                        System.Diagnostics.Debug.WriteLine("Moved "+p.Name+" to position "+requiredPos);
+                        Console.WriteLine("Moved "+p.Name+" to position "+requiredPos);
                     }
                     else {
-                        //System.Diagnostics.Debug.WriteLine(Participants[requiredPos].Name+" was already at position "+requiredPos);
+                        //Console.WriteLine(Participants[requiredPos].Name+" was already at position "+requiredPos);
                     }
                 }
                 // Set the right player as the administrator
                 foreach ( Participant p in Participants) {
                     if ( p.IsGameAdministrator == false && p.Name == this.GetReplayContext().administrator) {
                         p.IsGameAdministrator = true;
-                        System.Diagnostics.Debug.WriteLine("Setting "+p.Name+" as administrator for the replay");
+                        Console.WriteLine("Setting "+p.Name+" as administrator for the replay");
                     }
                     if ( p.IsGameAdministrator == true && p.Name != this.GetReplayContext().administrator) {
                         p.IsGameAdministrator = false;
                     }
                     if ( this.GetReplayContext().playersStartingBlind.Contains(p.Name) ) {
                         p.IsPlayingBlindInCurrentHand = true;
-                        System.Diagnostics.Debug.WriteLine("Setting "+p.Name+" as blind player for this hand");
+                        Console.WriteLine("Setting "+p.Name+" as blind player for this hand");
                     }
                 }
             }
@@ -318,7 +318,7 @@ namespace SocialPokerClub.Models
             Task<double> addDeckTask = ServerState.OurDB.RecordDeck(this, newDeck);
             dbTasks.Add(addDeckTask);
 
-            //System.Diagnostics.Debug.WriteLine("Hand starting with this deck: " + CardPack.ToString() + "\n");
+            //Console.WriteLine("Hand starting with this deck: " + CardPack.ToString() + "\n");
 
             this.ClearHandDataBetweenHands();
 
@@ -1106,7 +1106,7 @@ namespace SocialPokerClub.Models
             // (2) On the game, which will be used as a backup if the server process has to restart (it will pick up the cost when it next reloads the game)
             if ( ServerState.StatefulData.MapOfGameIdToDbCosts.ContainsKey(this.GameId)) {
                 ServerState.StatefulData.MapOfGameIdToDbCosts[this.GameId] += increment; // normal scenario (i.e. hashtable entry already exists)
-            // System.Diagnostics.Debug.WriteLine("DB cost for game id '{0}' increased by {1} to {2} due to {3}\n",
+            // Console.WriteLine("DB cost for game id '{0}' increased by {1} to {2} due to {3}\n",
             //     this.GameId, increment, ServerState.StatefulData.MapOfGameIdToDbCosts[this.GameId], reason);
             }
             else {
@@ -1118,13 +1118,13 @@ namespace SocialPokerClub.Models
                     // Note that the total will not include the cost of saving the final game state before the server restarted
                     // (we could estimate a small allowance for this but it is likely to be no more than 50 - 200 RUs so not really worth the effort)
                     ServerState.StatefulData.MapOfGameIdToDbCosts.Add(this.GameId, this.AccumulatedDbCost + increment);
-                    System.Diagnostics.Debug.WriteLine("DB cost for game id '{0}' set to {1} via recovery from game, and increased by {2} to {3} due to {4}\n",
+                    Console.WriteLine("DB cost for game id '{0}' set to {1} via recovery from game, and increased by {2} to {3} due to {4}\n",
                         this.GameId, this.AccumulatedDbCost, increment, ServerState.StatefulData.MapOfGameIdToDbCosts[this.GameId], reason);
                 }
                 else {
                     // This is the first record of a database cost for this game
                     ServerState.StatefulData.MapOfGameIdToDbCosts.Add(this.GameId, increment);
-                    // System.Diagnostics.Debug.WriteLine("DB cost for game id '{0}' initialised to {1} due to {2}\n",
+                    // Console.WriteLine("DB cost for game id '{0}' initialised to {1} due to {2}\n",
                     //     this.GameId, ServerState.StatefulData.MapOfGameIdToDbCosts[this.GameId], reason);
                 }
             }

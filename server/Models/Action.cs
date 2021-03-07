@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.SignalR;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -48,8 +49,8 @@ namespace SocialPokerClub.Models
             bool triggeredByRealUser = ( connectionId != "" );
             if ( triggeredByRealUser && G.IsRunningInReplayMode() && ( this.ActionType != ActionEnum.Replay && this.ActionType != ActionEnum.Rejoin ) )
             {
-                System.Diagnostics.Debug.WriteLine("Game was in replay mode but a user triggered an action other than Replay or Rejoin");
-                System.Diagnostics.Debug.WriteLine("Game is being taken out of replay mode and will continue under normal conditions from here");
+                Console.WriteLine("Game was in replay mode but a user triggered an action other than Replay or Rejoin");
+                Console.WriteLine("Game is being taken out of replay mode and will continue under normal conditions from here");
                 G.SetReplayContext(null);
             }
 

@@ -20,15 +20,15 @@ namespace SocialPokerClub
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            System.Diagnostics.Debug.WriteLine("Getting env var SpcOrigin");
+            Console.WriteLine("Getting env var SpcOrigin");
             string originUrl = Environment.GetEnvironmentVariable("SpcOrigin", EnvironmentVariableTarget.Process);
             if ( originUrl == null ) {
                 originUrl = "http://localhost:3000"; // or the server URL
-                System.Diagnostics.Debug.WriteLine("Env var SpcOrigin not found, setting to default value, "+originUrl);
+                Console.WriteLine("Env var SpcOrigin not found, setting to default value, "+originUrl);
 
             }
             else {
-                System.Diagnostics.Debug.WriteLine("SpcOrigin="+originUrl);
+                Console.WriteLine("SpcOrigin="+originUrl);
             }
 
             services.AddCors(o => o.AddPolicy("CorsPolicy", builder =>

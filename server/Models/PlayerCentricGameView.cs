@@ -81,7 +81,7 @@ namespace SocialPokerClub.Models
             LobbySettings = new LobbySettings(g);
 
             GameStatistics = g.GameStatistics;
-            MetricsSummary = ServerState.MetricsSummary;
+            MetricsSummary = ServerState.MetricsManager.GetMetricsSummary(); // done this way to enable the summary to be locked during updates
             //LastHandResult = new List<List<string>>(g.LastHandResult); // This definitely needs to be a copy
             MostRecentHandResult = new List<List<PotResult>>(g.MostRecentHandResult); // This definitely needs to be a copy
             GameMode = g.GameMode.ToString();

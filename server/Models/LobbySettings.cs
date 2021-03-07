@@ -1,3 +1,5 @@
+using System;
+
 namespace SocialPokerClub.Models
 {
     public class LobbySettings
@@ -55,61 +57,61 @@ namespace SocialPokerClub.Models
             // Some changes may result in further changes.
             bool anythingChanged = false;
             if ( this.Ante != null && this.Ante != g.Ante ) {
-                System.Diagnostics.Debug.WriteLine("Changing Ante from "+g.Ante+" to "+this.Ante);
+                Console.WriteLine("Changing Ante from "+g.Ante+" to "+this.Ante);
                 g.Ante = (int) this.Ante;
                 anythingChanged = true;
             }
             if ( this.InitialChipQuantity != null && this.InitialChipQuantity != g.InitialChipQuantity ) {
-                System.Diagnostics.Debug.WriteLine("Changing InitialChipQuantity from "+g.InitialChipQuantity+" to "+this.InitialChipQuantity);
+                Console.WriteLine("Changing InitialChipQuantity from "+g.InitialChipQuantity+" to "+this.InitialChipQuantity);
                 g.InitialChipQuantity = (int) this.InitialChipQuantity;
                 if ( g._ContinueIsAvailable == true ) {
-                    System.Diagnostics.Debug.WriteLine("Disabling the Continue action"); /// Really only necessary if players have joined in the meantime
+                    Console.WriteLine("Disabling the Continue action"); /// Really only necessary if players have joined in the meantime
                     g._ContinueIsAvailable = false;
                 }
                 anythingChanged = true;
             }
             if ( this.AcceptNewPlayers != null && this.AcceptNewPlayers != g.AcceptNewPlayers ) {
-                System.Diagnostics.Debug.WriteLine("Changing AcceptNewPlayers from "+g.AcceptNewPlayers+" to "+this.AcceptNewPlayers);
+                Console.WriteLine("Changing AcceptNewPlayers from "+g.AcceptNewPlayers+" to "+this.AcceptNewPlayers);
                 g.AcceptNewPlayers = (bool) this.AcceptNewPlayers;
                 anythingChanged = true;
             }
             if ( this.AcceptNewSpectators != null && this.AcceptNewSpectators != g.AcceptNewSpectators ) {
-                System.Diagnostics.Debug.WriteLine("Changing AcceptNewSpectators from "+g.AcceptNewSpectators+" to "+this.AcceptNewSpectators);
+                Console.WriteLine("Changing AcceptNewSpectators from "+g.AcceptNewSpectators+" to "+this.AcceptNewSpectators);
                 g.AcceptNewSpectators = (bool) this.AcceptNewSpectators;
                 anythingChanged = true;
             }
             if ( this.LowestCardPlacesFirstBet != null && this.LowestCardPlacesFirstBet != g.LowestCardPlacesFirstBet ) {
-                System.Diagnostics.Debug.WriteLine("Changing LowestCardPlacesFirstBet from "+g.LowestCardPlacesFirstBet+" to "+this.LowestCardPlacesFirstBet);
+                Console.WriteLine("Changing LowestCardPlacesFirstBet from "+g.LowestCardPlacesFirstBet+" to "+this.LowestCardPlacesFirstBet);
                 g.LowestCardPlacesFirstBet = (bool) this.LowestCardPlacesFirstBet;
                 anythingChanged = true;
             }
             if ( this.IsLimitGame != null && this.IsLimitGame != g.IsLimitGame ) {
-                System.Diagnostics.Debug.WriteLine("Changing IsLimitGame from "+g.IsLimitGame+" to "+this.IsLimitGame);
+                Console.WriteLine("Changing IsLimitGame from "+g.IsLimitGame+" to "+this.IsLimitGame);
                 g.IsLimitGame = (bool) this.IsLimitGame;
                 anythingChanged = true;
             }
             if ( this.HideFoldedCards != null && this.HideFoldedCards != g.HideFoldedCards ) {
-                System.Diagnostics.Debug.WriteLine("Changing HideFoldedCards from "+g.HideFoldedCards+" to "+this.HideFoldedCards);
+                Console.WriteLine("Changing HideFoldedCards from "+g.HideFoldedCards+" to "+this.HideFoldedCards);
                 g.HideFoldedCards = (bool) this.HideFoldedCards;
                 anythingChanged = true;
             }
             if ( this.LimitGameBringInAmount != null && this.LimitGameBringInAmount != g.LimitGameBringInAmount ) {
-                System.Diagnostics.Debug.WriteLine("Changing LimitGameBringInAmount from "+g.LimitGameBringInAmount+" to "+this.LimitGameBringInAmount);
+                Console.WriteLine("Changing LimitGameBringInAmount from "+g.LimitGameBringInAmount+" to "+this.LimitGameBringInAmount);
                 g.LimitGameBringInAmount = (int) this.LimitGameBringInAmount;
                 anythingChanged = true;
             }
             if ( this.LimitGameSmallBet != null && this.LimitGameSmallBet != g.LimitGameSmallBet ) {
-                System.Diagnostics.Debug.WriteLine("Changing LimitGameSmallBet from "+g.LimitGameSmallBet+" to "+this.LimitGameSmallBet);
+                Console.WriteLine("Changing LimitGameSmallBet from "+g.LimitGameSmallBet+" to "+this.LimitGameSmallBet);
                 g.LimitGameSmallBet = (int) this.LimitGameSmallBet;
                 anythingChanged = true;
             }
             if ( this.LimitGameBigBet != null && this.LimitGameBigBet != g.LimitGameBigBet ) {
-                System.Diagnostics.Debug.WriteLine("Changing LimitGameBigBet from "+g.LimitGameBigBet+" to "+this.LimitGameBigBet);
+                Console.WriteLine("Changing LimitGameBigBet from "+g.LimitGameBigBet+" to "+this.LimitGameBigBet);
                 g.LimitGameBigBet = (int) this.LimitGameBigBet;
                 anythingChanged = true;
             }
             if ( this.LimitGameMaxRaises != null && this.LimitGameMaxRaises != g.LimitGameMaxRaises ) {
-                System.Diagnostics.Debug.WriteLine("Changing LimitGameMaxRaises from "+g.LimitGameMaxRaises+" to "+this.LimitGameMaxRaises);
+                Console.WriteLine("Changing LimitGameMaxRaises from "+g.LimitGameMaxRaises+" to "+this.LimitGameMaxRaises);
                 g.LimitGameMaxRaises = (int) this.LimitGameMaxRaises;
                 anythingChanged = true;
             }

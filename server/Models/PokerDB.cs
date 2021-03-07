@@ -28,20 +28,20 @@ namespace SocialPokerClub.Models
             if ( db_mode == null ) { db_mode = "Not Found"; }
             switch (db_mode) {
                 case "NoDatabase":
-                    System.Diagnostics.Debug.WriteLine("SpcDbMode=NoDatabase. Application will run without database operations.");
+                    Console.WriteLine("SpcDbMode=NoDatabase. Application will run without database operations.");
                     dbMode = DatabaseModeEnum.NoDatabase;
                     break;
                 case "Recoverability":
-                    System.Diagnostics.Debug.WriteLine("SpcDbMode=Recoverability. Application will record actions for logging and use in recovery.");
+                    Console.WriteLine("SpcDbMode=Recoverability. Application will record actions for logging and use in recovery.");
                     dbMode = DatabaseModeEnum.Recoverability;
                     break;
                 case "Stateless":
-                    System.Diagnostics.Debug.WriteLine("SpcDbMode=Stateless. Application will run in database-backed stateless mode.");
+                    Console.WriteLine("SpcDbMode=Stateless. Application will run in database-backed stateless mode.");
                     dbMode = DatabaseModeEnum.Stateless;
                     break;
                 default:
-                    System.Diagnostics.Debug.WriteLine("Env var 'SpcDbMode' has invalid value '"+db_mode+"', using default of 'NoDatabase'");
-                    System.Diagnostics.Debug.WriteLine("SpcDbMode=NoDatabase. Application will run without database operations.");
+                    Console.WriteLine("Env var 'SpcDbMode' has invalid value '"+db_mode+"', using default of 'NoDatabase'");
+                    Console.WriteLine("SpcDbMode=NoDatabase. Application will run without database operations.");
                     dbMode = DatabaseModeEnum.NoDatabase;
                     break;
             }
@@ -83,7 +83,7 @@ namespace SocialPokerClub.Models
                 new PartitionKey(gameHeader.docGameId));
 
             // Note that after creating the item, we can access the body of the item with the Resource property off the ItemResponse. We can also access the RequestCharge property to see the amount of RUs consumed on this request.
-            // System.Diagnostics.Debug.WriteLine("Created GameHeader in database with id: {0} Operation consumed {1} RUs. Game id = {2}.\n",
+            // Console.WriteLine("Created GameHeader in database with id: {0} Operation consumed {1} RUs. Game id = {2}.\n",
             //     dbResponse.Resource.id, dbResponse.RequestCharge, dbResponse.Resource.docGameId);
             this.ServerTotalConsumedRUs += dbResponse.RequestCharge; // Add this to our total
             return dbResponse.RequestCharge;
@@ -113,7 +113,7 @@ namespace SocialPokerClub.Models
                 new PartitionKey(gameLogAction.docGameId));
 
             // Note that after creating the item, we can access the body of the item with the Resource property off the ItemResponse. We can also access the RequestCharge property to see the amount of RUs consumed on this request.
-            // System.Diagnostics.Debug.WriteLine("Created GameLogAction item in database with id: {0} Operation consumed {1} RUs. Game id = {2}.\n",
+            // Console.WriteLine("Created GameLogAction item in database with id: {0} Operation consumed {1} RUs. Game id = {2}.\n",
             //     dbResponse.Resource.id, dbResponse.RequestCharge, dbResponse.Resource.docGameId);
             this.ServerTotalConsumedRUs += dbResponse.RequestCharge; // Add this to our total
             return dbResponse.RequestCharge;
@@ -148,7 +148,7 @@ namespace SocialPokerClub.Models
                 details,
                 new PartitionKey(details.docGameId));
             // Note that after creating the item, we can access the body of the item with the Resource property off the ItemResponse. We can also access the RequestCharge property to see the amount of RUs consumed on this request.
-            // System.Diagnostics.Debug.WriteLine("Created GameLogAction item in database with id: {0} Operation consumed {1} RUs. Game id = {2}.\n",
+            // Console.WriteLine("Created GameLogAction item in database with id: {0} Operation consumed {1} RUs. Game id = {2}.\n",
             //     dbResponse.Resource.id, dbResponse.RequestCharge, dbResponse.Resource.docGameId);
             this.ServerTotalConsumedRUs += dbResponse.RequestCharge; // Add this to our total
             return dbResponse.RequestCharge;
@@ -157,11 +157,11 @@ namespace SocialPokerClub.Models
         {
             // -------------------------------------------------------------------------------------------
             // Store the complete game state for the current game (overwriting any previous state for this game)
-            System.Diagnostics.Debug.WriteLine("PokerDB: UpsertGameState for game " + g.GameId);
+            Console.WriteLine("PokerDB: UpsertGameState for game " + g.GameId);
 
             bool dbExists = await this.DatabaseConnectionHasBeenEstablished();
             if ( dbExists == false ) { 
-                //System.Diagnostics.Debug.WriteLine("BOTCH: PokerDB: UpsertGameState -> no DB available, noting game reference onto Room.ActiveGame " + g.GameId);
+                //Console.WriteLine("BOTCH: PokerDB: UpsertGameState -> no DB available, noting game reference onto Room.ActiveGame " + g.GameId);
                 g.ParentRoom().ActiveGame = g; // This is a botch to help fix replays when in Stateless mode and no DB is available
                 return 0;
             }
@@ -182,7 +182,7 @@ namespace SocialPokerClub.Models
                 new PartitionKey(gameState.docGameId));
 
             // Note that after upserting the item, we can access the body of the item with the Resource property off the ItemResponse. We can also access the RequestCharge property to see the amount of RUs consumed on this request.
-            // System.Diagnostics.Debug.WriteLine("Upserted GameState item in database with id: {0} Operation consumed {1} RUs. Game id = {2}.\n",
+            // Console.WriteLine("Upserted GameState item in database with id: {0} Operation consumed {1} RUs. Game id = {2}.\n",
             //     dbResponse.Resource.id, dbResponse.RequestCharge, dbResponse.Resource.docGameId);
             this.ServerTotalConsumedRUs += dbResponse.RequestCharge; // Add this to our total
             return dbResponse.RequestCharge;
@@ -192,7 +192,7 @@ namespace SocialPokerClub.Models
             // -------------------------------------------------------------------------------------------
             // Load the most-recently stored version of the game state for the game with the given id
             // Note that the game state has document id "GameState-0" and is overwritten with the latest game state at the end of each action.
-            System.Diagnostics.Debug.WriteLine("PokerDB: LoadGameState for game " + gameId);
+            Console.WriteLine("PokerDB: LoadGameState for game " + gameId);
 
             bool dbExists = await this.DatabaseConnectionHasBeenEstablished();
             if ( dbExists == false ) { return null; }
@@ -202,7 +202,7 @@ namespace SocialPokerClub.Models
                 // Read the item. We can access the body of the item with the Resource property off the ItemResponse.
                 // We can also access the RequestCharge property to see the amount of RUs consumed on this request.
                 ItemResponse<DocOfTypeGameState> dbResponse = await this.ourGamesContainer.ReadItemAsync<DocOfTypeGameState>("GameState-0", new PartitionKey(gameId));
-                // System.Diagnostics.Debug.WriteLine("Game state for game with id '{0}' successfully loaded. Operation consumed {1} RUs.\n",
+                // Console.WriteLine("Game state for game with id '{0}' successfully loaded. Operation consumed {1} RUs.\n",
                 //     dbResponse.Resource.docGameId, dbResponse.RequestCharge);
                 this.ServerTotalConsumedRUs += dbResponse.RequestCharge; // Add this to our total
                 Game returnedGame = dbResponse.Resource.gameState;
@@ -212,19 +212,19 @@ namespace SocialPokerClub.Models
             }
             catch(CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
             {
-                System.Diagnostics.Debug.WriteLine("Game state for game with id '{0}' not found.\n", gameId);
+                Console.WriteLine("Game state for game with id '{0}' not found.\n", gameId);
                 return null;
             }
         }
         public async Task<Game> LoadMostRecentGameState(string roomId)
         {
-            System.Diagnostics.Debug.WriteLine("PokerDB: LoadMostRecentGameState for room " + roomId);
+            Console.WriteLine("PokerDB: LoadMostRecentGameState for room " + roomId);
 
             bool dbExists = await this.DatabaseConnectionHasBeenEstablished();
             if ( dbExists == false ) { return null; }
 
             var sqlQueryText = "SELECT TOP 1 * FROM c WHERE c.id = 'GameState-0' AND c.docRoomId = '"+roomId+"' ORDER BY c.docDateUtc DESC";
-            System.Diagnostics.Debug.WriteLine("Running query: {0}\n", sqlQueryText);
+            Console.WriteLine("Running query: {0}\n", sqlQueryText);
 
             QueryDefinition queryDefinition = new QueryDefinition(sqlQueryText);
             FeedIterator<DocOfTypeGameState> queryResultSetIterator = this.ourGamesContainer.GetItemQueryIterator<DocOfTypeGameState>(queryDefinition);
@@ -234,23 +234,23 @@ namespace SocialPokerClub.Models
             while (queryResultSetIterator.HasMoreResults)
             {
                 FeedResponse<DocOfTypeGameState> currentResultSet = await queryResultSetIterator.ReadNextAsync();
-                System.Diagnostics.Debug.WriteLine("Results loaded. Operation consumed {0} RUs.\n", currentResultSet.RequestCharge);
+                Console.WriteLine("Results loaded. Operation consumed {0} RUs.\n", currentResultSet.RequestCharge);
                 this.ServerTotalConsumedRUs += currentResultSet.RequestCharge; // Add this to our total
                 foreach (DocOfTypeGameState returnedDoc in currentResultSet)
                 {
                     //string gameAsJson = returnedGame.AsJson();  // for inspection when debugging
-                    System.Diagnostics.Debug.WriteLine("Most recent game has id '{0}'.\n", returnedDoc.docGameId);
+                    Console.WriteLine("Most recent game has id '{0}'.\n", returnedDoc.docGameId);
                     Game returnedGame = returnedDoc.gameState;
                     returnedGame.GameLoadDbCost = currentResultSet.RequestCharge;
                     return returnedGame; // Only need the first one, but left loop in as sample code
                 }
             }
-            System.Diagnostics.Debug.WriteLine("No recent historical games found for room '{0}'.\n", roomId);
+            Console.WriteLine("No recent historical games found for room '{0}'.\n", roomId);
             return null;
         }
         public async Task<GameLog> LoadGameLog(string gameId)
         {
-            System.Diagnostics.Debug.WriteLine("Attempting to load game log for game with id '{0}'\n", gameId);
+            Console.WriteLine("Attempting to load game log for game with id '{0}'\n", gameId);
 
             bool dbExists = await this.DatabaseConnectionHasBeenEstablished();
             if ( dbExists == false ) { return null; }
@@ -263,7 +263,7 @@ namespace SocialPokerClub.Models
                 // Read the item. We can access the body of the item with the Resource property off the ItemResponse.
                 // We can also access the RequestCharge property to see the amount of RUs consumed on this request.
                 ItemResponse<DocOfTypeGameHeader> dbResponse = await this.ourGamesContainer.ReadItemAsync<DocOfTypeGameHeader>("GameHeader-0", new PartitionKey(gameId));
-                System.Diagnostics.Debug.WriteLine("Game header for game with id '{0}' successfully loaded. Operation consumed {1} RUs.\n",
+                Console.WriteLine("Game header for game with id '{0}' successfully loaded. Operation consumed {1} RUs.\n",
                     dbResponse.Resource.docGameId, dbResponse.RequestCharge);
                 DocOfTypeGameHeader returnedDoc = dbResponse.Resource;
                 rebuiltLog.roomId = returnedDoc.docRoomId;
@@ -276,24 +276,24 @@ namespace SocialPokerClub.Models
             }
             catch(CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
             {
-                System.Diagnostics.Debug.WriteLine("Game header for game with id '{0}' not found.\n", gameId);
+                Console.WriteLine("Game header for game with id '{0}' not found.\n", gameId);
                 return null;
             }
 
             // (2) Load the decks used in the game
             var deckQueryText = "SELECT * FROM c WHERE c.docType = 'Deck' AND c.docGameId = '"+gameId+"' ORDER BY c.docSeq ASC";
-            System.Diagnostics.Debug.WriteLine("Running query: {0}\n", deckQueryText);
+            Console.WriteLine("Running query: {0}\n", deckQueryText);
             QueryDefinition deckQueryDefinition = new QueryDefinition(deckQueryText);
             FeedIterator<DocOfTypeDeck> deckIterator = this.ourGamesContainer.GetItemQueryIterator<DocOfTypeDeck>(deckQueryDefinition);
             List<DocOfTypeDeck> decks = new List<DocOfTypeDeck>();
             while (deckIterator.HasMoreResults)
             {
                 FeedResponse<DocOfTypeDeck> currentResultSet = await deckIterator.ReadNextAsync();
-                System.Diagnostics.Debug.WriteLine("Deck loaded. Operation consumed {0} RUs.\n", currentResultSet.RequestCharge);
+                Console.WriteLine("Deck loaded. Operation consumed {0} RUs.\n", currentResultSet.RequestCharge);
                 foreach (DocOfTypeDeck returnedDoc in currentResultSet)
                 {
                     Deck d = returnedDoc.deck;
-                    System.Diagnostics.Debug.WriteLine("Loaded deck {0}: {1}.\n", d.DeckNumber, d.CardList);
+                    Console.WriteLine("Loaded deck {0}: {1}.\n", d.DeckNumber, d.CardList);
                     d.Cards = null;
                     rebuiltLog.decks.Add(d);
                 }
@@ -301,60 +301,60 @@ namespace SocialPokerClub.Models
 
             // (3) Load the actions used in the game
             var actionQueryText = "SELECT * FROM c WHERE c.docType = 'Action' AND c.docGameId = '"+gameId+"' ORDER BY c.docSeq ASC";
-            System.Diagnostics.Debug.WriteLine("Running query: {0}\n", actionQueryText);
+            Console.WriteLine("Running query: {0}\n", actionQueryText);
             QueryDefinition actionQueryDefinition = new QueryDefinition(actionQueryText);
             FeedIterator<DocOfTypeGameLogAction> actionIterator = this.ourGamesContainer.GetItemQueryIterator<DocOfTypeGameLogAction>(actionQueryDefinition);
             List<DocOfTypeGameLogAction> actions = new List<DocOfTypeGameLogAction>();
             while (actionIterator.HasMoreResults)
             {
                 FeedResponse<DocOfTypeGameLogAction> currentResultSet = await actionIterator.ReadNextAsync();
-                System.Diagnostics.Debug.WriteLine("Action loaded. Operation consumed {0} RUs.\n", currentResultSet.RequestCharge);
+                Console.WriteLine("Action loaded. Operation consumed {0} RUs.\n", currentResultSet.RequestCharge);
                 foreach (DocOfTypeGameLogAction returnedDoc in currentResultSet)
                 {
                     GameLogAction a = returnedDoc.action;
-                    System.Diagnostics.Debug.WriteLine("Loaded action {0}: {1} by {2}.\n", a.ActionNumber, a.ActionType, a.UserName);
+                    Console.WriteLine("Loaded action {0}: {1} by {2}.\n", a.ActionNumber, a.ActionType, a.UserName);
                     rebuiltLog.actions.Add(a);
                     if ( returnedDoc.docDateUtc > rebuiltLog.endTimeUtc ) {
                         rebuiltLog.endTimeUtc= returnedDoc.docDateUtc;
                     }
                 }
             }
-            System.Diagnostics.Debug.WriteLine("Reload complete.\n");
+            Console.WriteLine("Reload complete.\n");
 
             return rebuiltLog;
         }
         public async Task<bool> DatabaseConnectionHasBeenEstablished() {
             if ( dbMode == DatabaseModeEnum.NoDatabase ) { 
-                //System.Diagnostics.Debug.WriteLine("DatabaseConnectionHasBeenEstablished returns false as DB mode is NoDatabase");
+                //Console.WriteLine("DatabaseConnectionHasBeenEstablished returns false as DB mode is NoDatabase");
                 return false; 
             }; // Will never have a database connection
             if ( dbStatus == DatabaseConnectionStatusEnum.ConnectionNotAttempted ) {
                 try
                 {
                     // Get the Cosmos DB URI from the relevant environment variable
-                    System.Diagnostics.Debug.WriteLine("Getting env var SpcDbUri");
+                    Console.WriteLine("Getting env var SpcDbUri");
                     EndpointUri = Environment.GetEnvironmentVariable("SpcDbUri", EnvironmentVariableTarget.Process);
                     if ( EndpointUri == null ) {
-                        System.Diagnostics.Debug.WriteLine("Env var SpcDbUri not found, server will continue with database functionality deactivated");
+                        Console.WriteLine("Env var SpcDbUri not found, server will continue with database functionality deactivated");
                         dbStatus = DatabaseConnectionStatusEnum.ConnectionFailed;
-                        //System.Diagnostics.Debug.WriteLine("DatabaseConnectionHasBeenEstablished returns false as first attempt failed (no SpcDbUri var found)");
+                        //Console.WriteLine("DatabaseConnectionHasBeenEstablished returns false as first attempt failed (no SpcDbUri var found)");
                         return false;
                     }
                     else {
-                        System.Diagnostics.Debug.WriteLine("SpcDbUri="+EndpointUri);
+                        Console.WriteLine("SpcDbUri="+EndpointUri);
                     }
 
                     // Get the Cosmos DB PrimaryKey from the relevant environment variable
-                    System.Diagnostics.Debug.WriteLine("Getting env var SpcDbPrimaryKey");
+                    Console.WriteLine("Getting env var SpcDbPrimaryKey");
                     PrimaryKey = Environment.GetEnvironmentVariable("SpcDbPrimaryKey", EnvironmentVariableTarget.Process);
                     if ( PrimaryKey == null ) {
-                        System.Diagnostics.Debug.WriteLine("Env var SpcDbPrimaryKey not found, server will continue with database functionality deactivated");
+                        Console.WriteLine("Env var SpcDbPrimaryKey not found, server will continue with database functionality deactivated");
                         dbStatus = DatabaseConnectionStatusEnum.ConnectionFailed;
-                        //System.Diagnostics.Debug.WriteLine("DatabaseConnectionHasBeenEstablished returns false as first attempt failed (no SpcDbPrimaryKey var found)");
+                        //Console.WriteLine("DatabaseConnectionHasBeenEstablished returns false as first attempt failed (no SpcDbPrimaryKey var found)");
                         return false;
                     }
                     else {
-                        System.Diagnostics.Debug.WriteLine("SpcDbPrimaryKey="+PrimaryKey);
+                        Console.WriteLine("SpcDbPrimaryKey="+PrimaryKey);
                     }
 
                     // Establish connection to the DB server
@@ -364,11 +364,11 @@ namespace SocialPokerClub.Models
                     DatabaseResponse DBresp = await this.cosmosClient.CreateDatabaseIfNotExistsAsync(databaseId);
                     if ( DBresp.StatusCode == HttpStatusCode.OK ) // Accepted??
                     {
-                        System.Diagnostics.Debug.WriteLine("Database '{0}' already exists\n", DBresp.Database.Id);
+                        Console.WriteLine("Database '{0}' already exists\n", DBresp.Database.Id);
                     }
                     else if ( DBresp.StatusCode == HttpStatusCode.Created )
                     {
-                        System.Diagnostics.Debug.WriteLine("Database '{0}' has been created\n", DBresp.Database.Id);
+                        Console.WriteLine("Database '{0}' has been created\n", DBresp.Database.Id);
                     }
                     ourDatabase = DBresp.Database;
 
@@ -376,33 +376,33 @@ namespace SocialPokerClub.Models
                     ContainerResponse Cresp = await ourDatabase.CreateContainerIfNotExistsAsync(gamesContainerId, "/docGameId", 400);
                     if ( Cresp.StatusCode == HttpStatusCode.OK )
                     {
-                        System.Diagnostics.Debug.WriteLine("Container '{0}' already exists\n", Cresp.Container.Id);
+                        Console.WriteLine("Container '{0}' already exists\n", Cresp.Container.Id);
                     }
                     else if ( Cresp.StatusCode == HttpStatusCode.Created )
                     {
-                        System.Diagnostics.Debug.WriteLine("Container '{0}' has been created\n", Cresp.Container.Id);
+                        Console.WriteLine("Container '{0}' has been created\n", Cresp.Container.Id);
                     }
                     ourGamesContainer = Cresp.Container;
 
                     dbStatus = DatabaseConnectionStatusEnum.ConnectionEstablished;
-                    //System.Diagnostics.Debug.WriteLine("DatabaseConnectionHasBeenEstablished returns true as first attempt was able to establish a connection");
+                    //Console.WriteLine("DatabaseConnectionHasBeenEstablished returns true as first attempt was able to establish a connection");
                     return true;
                 }
                 catch(Exception ex)
                 {
                     // Note that after creating the item, we can access the body of the item with the Resource property off the ItemResponse. We can also access the RequestCharge property to see the amount of RUs consumed on this request.
-                    System.Diagnostics.Debug.WriteLine("Database connection could not be established. Continuing without database. Reported exception = {0}\n", ex.Message);
+                    Console.WriteLine("Database connection could not be established. Continuing without database. Reported exception = {0}\n", ex.Message);
                     dbStatus = DatabaseConnectionStatusEnum.ConnectionFailed;
-                    //System.Diagnostics.Debug.WriteLine("DatabaseConnectionHasBeenEstablished returns false as first attempt to establish a connection failed");
+                    //Console.WriteLine("DatabaseConnectionHasBeenEstablished returns false as first attempt to establish a connection failed");
                     return false;                    
                 }
             }
             if ( dbStatus == DatabaseConnectionStatusEnum.ConnectionEstablished ) {
-                //System.Diagnostics.Debug.WriteLine("DatabaseConnectionHasBeenEstablished returns true as connection was previously shown to work");
+                //Console.WriteLine("DatabaseConnectionHasBeenEstablished returns true as connection was previously shown to work");
                 return true;
             }
             else {
-                //System.Diagnostics.Debug.WriteLine("DatabaseConnectionHasBeenEstablished returns false as connection was previously shown to have failed");
+                //Console.WriteLine("DatabaseConnectionHasBeenEstablished returns false as connection was previously shown to have failed");
                 return false;
             }
         }

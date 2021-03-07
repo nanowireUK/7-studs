@@ -68,14 +68,14 @@ namespace SocialPokerClub.Models
                     //     break;
                     case "log-conns":
                         // Lists all the currently mapped connection ids
-                        System.Diagnostics.Debug.WriteLine("Listing all connections for all games");
+                        Console.WriteLine("Listing all connections for all games");
                         foreach ( string roomId in ServerState.StatefulData.RoomLevelMapOfGroupToConnections.Keys ) {
                             Dictionary<string, Dictionary<string, bool>> groupData = ServerState.StatefulData.RoomLevelMapOfGroupToConnections[roomId];
                             foreach ( string groupId in groupData.Keys ) {
                                 Dictionary<string, bool> connData = groupData[groupId];
                                 foreach ( string connId in connData.Keys ) {
                                     bool isLinked = connData[connId];
-                                    System.Diagnostics.Debug.WriteLine("Room '{0}' : Group '{1}' : Connection '{2}' : Registered '{3}'", roomId, groupId, connId, isLinked);
+                                    Console.WriteLine("Room '{0}' : Group '{1}' : Connection '{2}' : Registered '{3}'", roomId, groupId, connId, isLinked);
                                 }
                             }  
                         }
@@ -110,7 +110,7 @@ namespace SocialPokerClub.Models
                 {
                     Card n = new Card(c, s);
                     cards.Add(n);
-                    System.Diagnostics.Debug.WriteLine("Added "+n.ToString(CardToStringFormatEnum.ShortCardName));
+                    Console.WriteLine("Added "+n.ToString(CardToStringFormatEnum.ShortCardName));
                 }
             }
             DateTimeOffset startStamp = DateTimeOffset.UtcNow;
@@ -125,7 +125,7 @@ namespace SocialPokerClub.Models
                 v1 = (int) c1.CardValue;
                 s1 = (int) c1.CardSuit;
                 if ( v1 == v0 ) { continue; }
-                System.Diagnostics.Debug.WriteLine("Testing hands starting with "+c1.ToString(CardToStringFormatEnum.ShortCardName));
+                Console.WriteLine("Testing hands starting with "+c1.ToString(CardToStringFormatEnum.ShortCardName));
                 foreach ( Card c2 in cards ) {
                     x2 = c2.ToString(CardToStringFormatEnum.ShortCardName);
                     v2 = (int) c2.CardValue;
@@ -163,7 +163,7 @@ namespace SocialPokerClub.Models
             DateTimeOffset endStamp = DateTimeOffset.UtcNow;
             double ms = ( endStamp - startStamp ).TotalMilliseconds;
             queryResults.Add(lookupCount + " lookups done, time taken was "+ ms + " milliseconds");
-            System.Diagnostics.Debug.WriteLine(lookupCount + " lookups done, time taken was "+ ms + " milliseconds");
+            Console.WriteLine(lookupCount + " lookups done, time taken was "+ ms + " milliseconds");
         }
     }
 }

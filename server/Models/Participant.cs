@@ -80,7 +80,7 @@ namespace SocialPokerClub.Models
 
         // public void NoteConnectionId(string connectionId) {
         //     if ( ! _ConnectionIds.Contains(connectionId)) {
-        //          System.Diagnostics.Debug.WriteLine("Noting connection id '{0}' for player '{1} and group '{2}'", connectionId, this.Name, this.ParticipantSignalRGroupName);
+        //          Console.WriteLine("Noting connection id '{0}' for player '{1} and group '{2}'", connectionId, this.Name, this.ParticipantSignalRGroupName);
         //         _ConnectionIds.Add(connectionId);
         //     }
         // }
@@ -323,7 +323,7 @@ namespace SocialPokerClub.Models
             else if ( this.Hand[2].CardSuit == SuitEnum.Diamonds ) { suitRanking = 2; }
             else if ( this.Hand[2].CardSuit == SuitEnum.Hearts )   { suitRanking = 3; }
             else if ( this.Hand[2].CardSuit == SuitEnum.Spades )   { suitRanking = 4; }
-            // System.Diagnostics.Debug.WriteLine(this.Name + " 3rd card is " + this.Hand[2].ToString(CardToStringFormatEnum.ShortCardName)
+            // Console.WriteLine(this.Name + " 3rd card is " + this.Hand[2].ToString(CardToStringFormatEnum.ShortCardName)
             //     + ", value ranked as " + valueRanking + ", suit ranked as " + suitRanking + ", " + (( valueRanking * 10 ) + suitRanking) + " overall");
             return ( valueRanking * 10 ) + suitRanking;
         }

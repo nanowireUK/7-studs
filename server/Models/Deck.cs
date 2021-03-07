@@ -76,7 +76,7 @@ namespace SocialPokerClub.Models
             CardList = CardList.Remove(0,2);
             Card popCard = Cards.Pop();
             if ( popCard.ToString(CardToStringFormatEnum.ShortCardName) != dealtCard) {
-                System.Diagnostics.Debug.WriteLine("Error: card dealt from stack '" + popCard.ToString(CardToStringFormatEnum.ShortCardName)
+                Console.WriteLine("Error: card dealt from stack '" + popCard.ToString(CardToStringFormatEnum.ShortCardName)
                     + "' does not match card dealt from string'"+dealtCard+"'");
             }
             return nextCard;

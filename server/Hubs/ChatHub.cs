@@ -168,15 +168,15 @@ namespace SocialPokerClub.Hubs
             replayContext.ListDecks(); // Lists decks for info in debug console
 
             // Now create a new Game which we will apply the previously-recorded actions to one step at a time
-            System.Diagnostics.Debug.WriteLine("Creating a new Room and Game in which to replay a game from supplied game log");
+            Console.WriteLine("Creating a new Room and Game in which to replay a game from supplied game log");
             replayRoom = await ServerState.FindOrCreateRoom("Replay-"+DateTimeOffset.UtcNow.ToString("yyyyMMdd-HHmmss"));
             Game replayGame = await ServerState.LoadOrRecoverOrCreateGame(replayRoom); // Should end up just creating it (no game exists in the room)
             if ( replayContext.lobbySettings != null && replayContext.lobbySettings.UpdateGameSettings(replayGame) ) {
-                System.Diagnostics.Debug.WriteLine("Lobby settings updated from supplied game log");
+                Console.WriteLine("Lobby settings updated from supplied game log");
             }
             replayGame.InitialiseGame(replayContext); // Initialise the replayed game and also stores the game log statefully on the replay Room
             // Add all the players (note that the replay log should not contain join actions for the players who joined at the start of the game)
-            System.Diagnostics.Debug.WriteLine("Setting up {0} players for game id '{1}'\n", replayContext.playersInOrderAtStartOfGame.Count, replayGame.GameId);
+            Console.WriteLine("Setting up {0} players for game id '{1}'\n", replayContext.playersInOrderAtStartOfGame.Count, replayGame.GameId);
             foreach ( string playerName in replayContext.playersInOrderAtStartOfGame ) {
                 Participant newPlayer = new Participant(playerName);
                 newPlayer.IsGameAdministrator = ( playerName == replayContext.administrator );
@@ -184,7 +184,7 @@ namespace SocialPokerClub.Hubs
                 replayGame.Participants.Add(newPlayer);
             }
             replayGame.SetActionAvailabilityBasedOnCurrentPlayer(); // Ensures the initial selection of available actions is set
-            System.Diagnostics.Debug.WriteLine("Replay is saving initial game state for replayed game id '{0}'\n", replayGame.GameId);
+            Console.WriteLine("Replay is saving initial game state for replayed game id '{0}'\n", replayGame.GameId);
             double dbCost = await ServerState.OurDB.UpsertGameState(replayGame); // Store the initial game state for the game that we are recreating (or note that no DB is being used)
             replayGame.AddToAccumulatedDbCost("Initial save of replayed game", dbCost);
 
@@ -199,7 +199,7 @@ namespace SocialPokerClub.Hubs
                 replayContext.indexOfLastReplayedAction = actionIndex;
                 if ( replayContext.pauseAfter > 0 && gla.ActionNumber >= replayContext.pauseAfter ) {
                     // The user asked us to pause after processing a given action (and to leave the replay in a paused state that can be stepped through)
-                    System.Diagnostics.Debug.WriteLine("Replay paused due to pauseAfter ("+replayContext.pauseAfter
+                    Console.WriteLine("Replay paused due to pauseAfter ("+replayContext.pauseAfter
                         +") request ... single step via Replay with no parameters or advance multiple steps by specifying target action number");
                     break;
                 }
@@ -208,8 +208,8 @@ namespace SocialPokerClub.Hubs
             foreach ( Participant p in replayGame.Participants ) {
                 p.IsLockedOutFollowingReplay = true;
             }
-            System.Diagnostics.Debug.WriteLine("Use the game state to find each player and rejoin each of them from a separate browser using their respective rejoin codes.\n");
-            System.Diagnostics.Debug.WriteLine("Replay room is '" + replayRoom.RoomId + "'\n");
+            Console.WriteLine("Use the game state to find each player and rejoin each of them from a separate browser using their respective rejoin codes.\n");
+            Console.WriteLine("Replay room is '" + replayRoom.RoomId + "'\n");
             // Send the results of the action according to the ResponseType and ResponseAudience on the action object
             ReplayResponse response = new ReplayResponse(replayGame);
             string resultAsJson = response.AsJson();
@@ -219,7 +219,7 @@ namespace SocialPokerClub.Hubs
         {
             // This is a non-standard action that does not require a game or a player as it just loads a historical game log from the database.
             // The response to the caller will just be a JSON doc containing the game log.
-            System.Diagnostics.Debug.WriteLine("Attempting to load historical game log for game with id {0}\n", gameId);
+            Console.WriteLine("Attempting to load historical game log for game with id {0}\n", gameId);
             GameLog gl = await ServerState.OurDB.LoadGameLog(gameId);
             if ( gl == null ) { return; }
             // Check that game is at least 15 minutes old (i.e. 15 mins from last move)
@@ -227,7 +227,7 @@ namespace SocialPokerClub.Hubs
             double lastMoveMinutesAgo = ( DateTimeOffset.UtcNow - gl.endTimeUtc ).TotalMinutes;
             if ( lastMoveMinutesAgo < minAge && ServerState.AllowTestFunctions() == false ) {
                 string msg = "Last move in game occurred "+lastMoveMinutesAgo+" minutes ago. Log is not available until "+minAge+" minutes after last move";
-                System.Diagnostics.Debug.WriteLine(msg+"\n");
+                Console.WriteLine(msg+"\n");
                 await Clients.Caller.SendAsync("ReceiveMyGameState", "{"+msg+"}");
             }
             else {
