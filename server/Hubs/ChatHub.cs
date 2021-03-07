@@ -176,7 +176,7 @@ namespace SocialPokerClub.Hubs
             }
             replayGame.InitialiseGame(replayContext); // Initialise the replayed game and also stores the game log statefully on the replay Room
             // Add all the players (note that the replay log should not contain join actions for the players who joined at the start of the game)
-            Console.WriteLine("Setting up {0} players for game id '{1}'\n", replayContext.playersInOrderAtStartOfGame.Count, replayGame.GameId);
+            System.Diagnostics.Debug.WriteLine("Setting up {0} players for game id '{1}'\n", replayContext.playersInOrderAtStartOfGame.Count, replayGame.GameId);
             foreach ( string playerName in replayContext.playersInOrderAtStartOfGame ) {
                 Participant newPlayer = new Participant(playerName);
                 newPlayer.IsGameAdministrator = ( playerName == replayContext.administrator );
@@ -184,7 +184,7 @@ namespace SocialPokerClub.Hubs
                 replayGame.Participants.Add(newPlayer);
             }
             replayGame.SetActionAvailabilityBasedOnCurrentPlayer(); // Ensures the initial selection of available actions is set
-            Console.WriteLine("Replay is saving initial game state for replayed game id '{0}'\n", replayGame.GameId);
+            System.Diagnostics.Debug.WriteLine("Replay is saving initial game state for replayed game id '{0}'\n", replayGame.GameId);
             double dbCost = await ServerState.OurDB.UpsertGameState(replayGame); // Store the initial game state for the game that we are recreating (or note that no DB is being used)
             replayGame.AddToAccumulatedDbCost("Initial save of replayed game", dbCost);
 

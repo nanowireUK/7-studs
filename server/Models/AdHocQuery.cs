@@ -68,14 +68,14 @@ namespace SocialPokerClub.Models
                     //     break;
                     case "log-conns":
                         // Lists all the currently mapped connection ids
-                        Console.WriteLine("Listing all connections for all games");
+                        System.Diagnostics.Debug.WriteLine("Listing all connections for all games");
                         foreach ( string roomId in ServerState.StatefulData.RoomLevelMapOfGroupToConnections.Keys ) {
                             Dictionary<string, Dictionary<string, bool>> groupData = ServerState.StatefulData.RoomLevelMapOfGroupToConnections[roomId];
                             foreach ( string groupId in groupData.Keys ) {
                                 Dictionary<string, bool> connData = groupData[groupId];
                                 foreach ( string connId in connData.Keys ) {
                                     bool isLinked = connData[connId];
-                                    Console.WriteLine("Room '{0}' : Group '{1}' : Connection '{2}' : Registered '{3}'", roomId, groupId, connId, isLinked);
+                                    System.Diagnostics.Debug.WriteLine("Room '{0}' : Group '{1}' : Connection '{2}' : Registered '{3}'", roomId, groupId, connId, isLinked);
                                 }
                             }  
                         }

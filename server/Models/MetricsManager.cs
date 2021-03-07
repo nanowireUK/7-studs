@@ -34,19 +34,19 @@ namespace SocialPokerClub.Models
             // Remove old entries
             int maxEntries = 60;
             if ( minutelyObservations.Count > maxEntries ) {
-                //Console.WriteLine("There are now {0} entries, removing the oldest", minutelyObservations.Count);
+                //System.Diagnostics.Debug.WriteLine("There are now {0} entries, removing the oldest", minutelyObservations.Count);
                 int doomed = minutelyObservations.Count - maxEntries;
                 for ( int i = 0; i < doomed; i++ ) {
                     minutelyObservations.RemoveAt(0); // Remove current oldest entry
                 }
-                //Console.WriteLine("There are now {0} entries", minutelyObservations.Count);
+                //System.Diagnostics.Debug.WriteLine("There are now {0} entries", minutelyObservations.Count);
             }
             EmitStatistics(eventTimeUtc, startOfNextMinute);
         }
         private void EmitStatistics(DateTimeOffset eventTimeUtc, DateTimeOffset ourExactMinute)  {
             // (1) Update the latest statistics on the server state object (also makes it available for the player's view)
             // Note cumulative changes since we last gathered statistics
-            //Console.WriteLine("Emitting statistics");
+            //System.Diagnostics.Debug.WriteLine("Emitting statistics");
             ServerState.MetricsSummary.ReadingTimestamp = ourExactMinute; // This is mainly for Azure Monitor
             ServerState.MetricsSummary.RUsOverall = ServerState.OurDB.ServerTotalConsumedRUs;
             MetricsSnapshot obs_n = minutelyObservations[minutelyObservations.Count-1]; // The most recent measurement in the list (could be 0, i.e. same as first)
@@ -60,11 +60,11 @@ namespace SocialPokerClub.Models
             ServerState.MetricsSummary.MovesInLastMinute = obs_n.TotalActionsProcessed - obs_n_minus_1.TotalActionsProcessed;
 
             // (2) Print them as one line to the debug log
-            Console.WriteLine("{0:HH:mm:ss.fff}: {1}", eventTimeUtc, ServerState.MetricsSummary.AsJson());
+            System.Diagnostics.Debug.WriteLine("{0:HH:mm:ss.fff}: {1}", eventTimeUtc, ServerState.MetricsSummary.AsJson());
 
             // (3) Emit them to the Azure Monitor service
             // if ( ServerState.TelemetryActive() ) {
-            //     Console.WriteLine("Azure Monitor is active");
+            //     System.Diagnostics.Debug.WriteLine("Azure Monitor is active");
             //     telemetry.TrackMetric(new MetricTelemetry(
             //         "ActiveRooms", // name
             //         1, // count
@@ -83,7 +83,7 @@ namespace SocialPokerClub.Models
             //     ));
             // }
             // else {
-            //     //Console.WriteLine("Azure Monitor is not active");
+            //     //System.Diagnostics.Debug.WriteLine("Azure Monitor is not active");
             // }
         }
     }

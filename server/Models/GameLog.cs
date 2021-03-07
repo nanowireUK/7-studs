@@ -30,7 +30,7 @@ namespace SocialPokerClub.Models
         }
         public void ListDecks() {
             foreach ( Deck d in decks ) {
-                Console.WriteLine("Deck #{0}: {1}", d.DeckNumber, d.ToString());
+                System.Diagnostics.Debug.WriteLine("Deck #{0}: {1}", d.DeckNumber, d.ToString());
             }
         }
         public async Task LogEndOfHand(Game g) {
