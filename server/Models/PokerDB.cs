@@ -157,7 +157,7 @@ namespace SocialPokerClub.Models
         {
             // -------------------------------------------------------------------------------------------
             // Store the complete game state for the current game (overwriting any previous state for this game)
-            Console.WriteLine("PokerDB: UpsertGameState for game " + g.GameId);
+            //Console.WriteLine("PokerDB: UpsertGameState for game " + g.GameId);
 
             bool dbExists = await this.DatabaseConnectionHasBeenEstablished();
             if ( dbExists == false ) { 
@@ -192,7 +192,7 @@ namespace SocialPokerClub.Models
             // -------------------------------------------------------------------------------------------
             // Load the most-recently stored version of the game state for the game with the given id
             // Note that the game state has document id "GameState-0" and is overwritten with the latest game state at the end of each action.
-            Console.WriteLine("PokerDB: LoadGameState for game " + gameId);
+            //Console.WriteLine("PokerDB: LoadGameState for game " + gameId);
 
             bool dbExists = await this.DatabaseConnectionHasBeenEstablished();
             if ( dbExists == false ) { return null; }
@@ -218,7 +218,7 @@ namespace SocialPokerClub.Models
         }
         public async Task<Game> LoadMostRecentGameState(string roomId)
         {
-            Console.WriteLine("PokerDB: LoadMostRecentGameState for room " + roomId);
+            //Console.WriteLine("PokerDB: LoadMostRecentGameState for room " + roomId);
 
             bool dbExists = await this.DatabaseConnectionHasBeenEstablished();
             if ( dbExists == false ) { return null; }

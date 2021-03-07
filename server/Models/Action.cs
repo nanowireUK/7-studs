@@ -155,6 +155,7 @@ namespace SocialPokerClub.Models
         public virtual async Task<Game> ProcessActionAndReturnGameReference()
         {
             await this.ProcessAction(); // Use the subclass to implement the specifics of the action
+            ServerState.TotalActionsProcessed++;
 
             // Set a status message that combines the last event with the next action
             // (noting that NextAction may not have changed as a result of the current action)

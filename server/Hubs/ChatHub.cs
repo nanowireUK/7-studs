@@ -44,7 +44,6 @@ namespace SocialPokerClub.Hubs
         {
             SocialPokerClub.Models.Action a = await ActionFactory.NewAction(Context.ConnectionId, actionType, roomId, user, leavers, parameters);
             Game g = await a.ProcessActionAndReturnGameReference();
-            ServerState.TotalActionsProcessed++;
 
             // If any new connections were noted, add them to the relevant SignalR groups
             List<List<string>> connectionsToLink = ServerState.StatefulData.MarkUnlinkedConnectionsAsLinkedAndReturnList(g);

@@ -10,6 +10,7 @@ namespace SocialPokerClub.Models
         public bool RecoveryAlreadyAttempted { get; set; }
         public Game ActiveGame { get; set; } // Only used when operating without a database
         public string ActiveGameId { get; set; } // Used when operating in database-backed stateless mode
+        public DateTimeOffset LastGameAction { get; set; }
         public string AdHocQueryType { get; set; }
         public GameLog ReplayContext { get; set; }
         public int SavedCountOfLeavers { get; set; }
@@ -18,6 +19,7 @@ namespace SocialPokerClub.Models
             RecoveryAlreadyAttempted = false;
             ActiveGame = null;
             ActiveGameId = null;
+            LastGameAction = DateTimeOffset.UtcNow;
             ReplayContext = null; // This will only be set for rooms created specifically to host a replayed game
             SavedCountOfLeavers = 0; // Again only used for rooms hosting a replayed game
         }

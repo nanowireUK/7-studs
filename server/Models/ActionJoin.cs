@@ -26,7 +26,7 @@ namespace SocialPokerClub.Models
                 throw new HubException(SpcExceptionCodes.RoomNotAcceptingNewPlayers.ToString());
             }
 
-            if ( ServerState.ActiveGames() > 100 ) {
+            if ( ServerState.RoomsWithActivityInLastHour() > 100 ) {
                 throw new HubException(SpcExceptionCodes.CurrentGameLimitExceeded.ToString()); // Protect our resources
             }
 

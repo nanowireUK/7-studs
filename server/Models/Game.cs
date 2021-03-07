@@ -105,6 +105,7 @@ namespace SocialPokerClub.Models
         {
             GameMode = GameModeEnum.LobbyOpen;
             LastSuccessfulAction = DateTimeOffset.UtcNow; // This will be updated as the game progresses but need to set a baseline here
+            this.ParentRoom().LastGameAction = LastSuccessfulAction; // Also log this on the room
             StartTimeUTC = DateTimeOffset.UtcNow; // At this point the time just represents the time the game was created
             ResetGameId(StartTimeUTC);
             SetReplayContext(replayContext);
@@ -1142,6 +1143,7 @@ namespace SocialPokerClub.Models
                 );
             //this._GameLog.actions.Add(gla);
             this.LastSuccessfulAction = DateTimeOffset.UtcNow;
+            this.ParentRoom().LastGameAction = LastSuccessfulAction; // Also log this on the room
             // Log the action to the DB
             double dbCost = await ServerState.OurDB.RecordGameLogAction(this, gla);
             return dbCost;

@@ -55,21 +55,21 @@ namespace SocialPokerClub.Models
         private void UpdateStatistics(DateTimeOffset eventTimeUtc, DateTimeOffset ourExactMinute)  {
             // Update the latest statistics on the server state object (also makes it available for the player's view)
             // Note cumulative changes since we last gathered statistics
-            Console.WriteLine("Updating statistics");
+            //Console.WriteLine("Updating statistics");
             ServerState.MetricsSummary.ReadingTimestamp = ourExactMinute; // This is mainly for Azure Monitor
             ServerState.MetricsSummary.RUsOverall = ServerState.OurDB.ServerTotalConsumedRUs;
             MetricsSnapshot obs_n = minutelyObservations[minutelyObservations.Count-1]; // The most recent measurement in the list (could be 0, i.e. same as first)
             MetricsSnapshot obs_n_minus_1 = minutelyObservations[minutelyObservations.Count-2]; // penultimate entry in the list
             MetricsSnapshot obs_0 = minutelyObservations[0]; // oldest measurement in the list (noting that anything older than an hour has already been removed)
-            ServerState.MetricsSummary.ActiveRooms = obs_n.ActiveGames;
+            ServerState.MetricsSummary.RoomsActiveInLastHr = obs_n.RoomsWithActivityInLastHour;
             ServerState.MetricsSummary.MovesOverall = obs_n.TotalActionsProcessed;
-            ServerState.MetricsSummary.RUsInLastHour = (long) (obs_n.ServerTotalConsumedRUs - obs_0.ServerTotalConsumedRUs);
-            ServerState.MetricsSummary.MovesInLastHour = obs_n.TotalActionsProcessed - obs_0.TotalActionsProcessed;
-            ServerState.MetricsSummary.RUsInLastMinute   = (long) (obs_n.ServerTotalConsumedRUs - obs_n_minus_1.ServerTotalConsumedRUs);
-            ServerState.MetricsSummary.MovesInLastMinute = obs_n.TotalActionsProcessed - obs_n_minus_1.TotalActionsProcessed;
+            ServerState.MetricsSummary.RUsInLastHr = (long) (obs_n.ServerTotalConsumedRUs - obs_0.ServerTotalConsumedRUs);
+            ServerState.MetricsSummary.MovesInLastHr = obs_n.TotalActionsProcessed - obs_0.TotalActionsProcessed;
+            ServerState.MetricsSummary.RUsInLastMin   = (long) (obs_n.ServerTotalConsumedRUs - obs_n_minus_1.ServerTotalConsumedRUs);
+            ServerState.MetricsSummary.MovesInLastMin = obs_n.TotalActionsProcessed - obs_n_minus_1.TotalActionsProcessed;
         }
         private void EmitStatistics(DateTimeOffset eventTimeUtc, DateTimeOffset ourExactMinute)  {
-            Console.WriteLine("Emitting statistics");
+            //Console.WriteLine("Emitting statistics");
 
             // (1) Print them as one line to the debug log
             Console.WriteLine("{0:HH:mm:ss.fff}: {1}", eventTimeUtc, ServerState.MetricsSummary.AsJson());
@@ -78,11 +78,11 @@ namespace SocialPokerClub.Models
             // if ( ServerState.TelemetryActive() ) {
             //     Console.WriteLine("Azure Monitor is active");
             //     telemetry.TrackMetric(new MetricTelemetry(
-            //         "ActiveRooms", // name
+            //         "RoomsWithActivityInLastHour", // name
             //         1, // count
-            //         ServerState.MetricsSummary.ActiveRooms, // sum
-            //         ServerState.MetricsSummary.ActiveRooms, // min
-            //         ServerState.MetricsSummary.ActiveRooms, // max
+            //         ServerState.MetricsSummary.RoomsWithActivityInLastHour, // sum
+            //         ServerState.MetricsSummary.RoomsWithActivityInLastHour, // min
+            //         ServerState.MetricsSummary.RoomsWithActivityInLastHour, // max
             //         0 //standardDeviation
             //     ));
             //     telemetry.TrackMetric(new MetricTelemetry(

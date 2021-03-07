@@ -93,7 +93,7 @@ namespace SocialPokerClub.Models
             // If we get here we are running Stateless. There will be no game in the server memory but we know the game id in order to reload its state
             if ( r.RecoveryAlreadyAttempted ) {
                 // This is the normal situation where we are just reloading the game state that was saved at the end of the previous action
-                Console.WriteLine("Loading game state for game with id '{0}'", r.ActiveGameId);
+                //Console.WriteLine("Loading game state for game with id '{0}'", r.ActiveGameId);
                 g = await OurDB.LoadGameState(r.ActiveGameId);
                 double lastMoveMinutesAgo = ( DateTimeOffset.UtcNow - g.LastSuccessfulAction ).TotalMinutes;
                 if ( lastMoveMinutesAgo <= 60 ) {
@@ -152,14 +152,11 @@ namespace SocialPokerClub.Models
             string jsonString = JsonSerializer.Serialize(l, options);
             return jsonString;
         }
- 
-        public static int ActiveGames() {
+        public static int RoomsWithActivityInLastHour() {
             int a = 0;
             foreach ( Room r in RoomList.Values ) {
-                if ( r.ActiveGame != null ) {
-                    if ( ( DateTimeOffset.UtcNow - r.ActiveGame.LastSuccessfulAction ).TotalMinutes < 60 ) {
-                        a++;
-                    }
+                if ( ( DateTimeOffset.UtcNow - r.LastGameAction ).TotalMinutes < 60 ) {
+                    a++;
                 }
             }
             return a;
