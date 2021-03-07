@@ -53,12 +53,15 @@ namespace SocialPokerClub.Models
         public string _VisibleHandSummary { get; set; }
         public string _HandSummary { get; set; }
         public int GainOrLossInLastHand { get; set; }
-        private PokerHand _PokerHand { get; set; }
-        private PokerHand _PresentablePokerHand { get; set; }
         public List<int> _CardIndexesInPresentationOrder { get; set; }
+        public int _HandStrength { get; set; }
         public Boolean IsLockedOutFollowingReplay { get; set; }
         public Boolean IsGameAdministrator { get; set; }
         public List<Card> Hand { get; set; }
+        // Note that these two fields are private (and therefore not persisted to the database in stateless mode)
+        // They do not need to be persisted/restored because anything that derives from them is persisted in other fields 
+        private PokerHand _PokerHand { get; set; }
+        private PokerHand _PresentablePokerHand { get; set; }
         // public Boolean IsAllIn() {
         //     return UncommittedChips == 0 & ChipsCommittedToCurrentBettingRound > 0;
         // }
@@ -189,6 +192,7 @@ namespace SocialPokerClub.Models
                         }
                     }
                     _CardIndexesInPresentationOrder = GetCardIndexesInPresentationOrder(chosenCombo);
+                    _HandStrength = _PokerHand.Strength();
                 }
                 else {
                     // All 7 have been dealt
@@ -200,9 +204,9 @@ namespace SocialPokerClub.Models
                     combos.Add(new List<int>(){0, 1, 2, 3, 6});
                     combos.Add(new List<int>(){0, 1, 2, 4, 5});
                     combos.Add(new List<int>(){0, 1, 2, 4, 6});
+                    combos.Add(new List<int>(){0, 1, 2, 5, 6});
                     combos.Add(new List<int>(){0, 1, 3, 4, 5});
                     combos.Add(new List<int>(){0, 1, 3, 4, 6});
-                    combos.Add(new List<int>(){0, 1, 2, 5, 6});
                     combos.Add(new List<int>(){0, 1, 3, 5, 6});
                     combos.Add(new List<int>(){0, 1, 4, 5, 6});
                     combos.Add(new List<int>(){0, 2, 3, 4, 5});
@@ -238,6 +242,7 @@ namespace SocialPokerClub.Models
                         }
                     }
                     _CardIndexesInPresentationOrder = GetCardIndexesInPresentationOrder(chosenCombo);
+                    _HandStrength = _PokerHand.Strength();
                 }
                 this._FullHandDescription = /*_PokerHand.ToString(HandToStringFormatEnum.ShortCardsHeld) + ": " + */ _PokerHand.ToString(HandToStringFormatEnum.HandDescription);
                 this._FullHandRank = _PokerHand.Rank;
@@ -321,9 +326,6 @@ namespace SocialPokerClub.Models
             // System.Diagnostics.Debug.WriteLine(this.Name + " 3rd card is " + this.Hand[2].ToString(CardToStringFormatEnum.ShortCardName)
             //     + ", value ranked as " + valueRanking + ", suit ranked as " + suitRanking + ", " + (( valueRanking * 10 ) + suitRanking) + " overall");
             return ( valueRanking * 10 ) + suitRanking;
-        }
-        public int HandStrength() {
-            return this._PokerHand.Strength();
         }
     }
 }

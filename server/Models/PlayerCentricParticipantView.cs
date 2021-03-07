@@ -89,7 +89,7 @@ namespace SocialPokerClub.Models
             }
             if ( observedPlayer.IsSharingHandDetails == true ) {
                 IndexesOfCardsFormingHandInPresentationOrder = observedPlayer._CardIndexesInPresentationOrder;
-                HandStrength = observedPlayer.HandStrength();
+                HandStrength = observedPlayer._HandStrength;
             }
         }
         public string AsJson()
