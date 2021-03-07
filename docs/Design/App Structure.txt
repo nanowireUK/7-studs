@@ -1,4 +1,12 @@
+Program.cs - starts everything off and sets up the dependency injections
 
+Startup.cs - 
+	-	ConfigureServices(IServiceCollection services) -> is called by runtime to configure services
+		-	services.AddRazorPages();
+    	-	services.AddSignalR(o =>
+	-	Configure(IApplicationBuilder app, IWebHostEnvironment env) -> is called by runtime after ConfigureServices?
+		-	endpoints.MapRazorPages();
+        -	endpoints.MapHub<ChatHub>("/chathub");
 
 ChatHub.cs   - server-side code  (in \server\Hubs)               
                 - implements ProcessActionAndSendUpdatedGameState, which sends RPC (e.g. "ReceiveUpdatedGameState") to one or more clients
@@ -9,6 +17,7 @@ chat.js      - client-side code (in \server\wwwroot\js)
                 
 index.cshtml - client-side HTML (in \server\pages)
 
+ServerState.cs - static class that seems to get instantiated when ChatHub process first action
 
 Creating a new Action 'XXX':
 
@@ -21,7 +30,6 @@ Creating a new Action 'XXX':
 \server\Models\Game.cs -> will almost certainly need loads of changes for any new command, especially:
 	- SetActionAvailabilityBasedOnCurrentPlayer
 
-
 Rebuild game from current log
 
 (reopened|started the game|started next hand|joined|continued)
@@ -32,8 +40,6 @@ Room
 	RoomId
 Action
 	Room level, can drill to game if necessary
-
-
 
 \[.*\n.*{.*\n.*"CardValue":
 
