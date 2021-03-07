@@ -109,7 +109,12 @@ namespace SocialPokerClub.Models
                         System.Diagnostics.Debug.WriteLine("Room '{0}' : Group '{1}' : Connection '{2}' will be added", roomId, groupId, connId);
                     }
                 }
-            }  
+            }
+            // Now clear the flag on the new connections so that ChatHub (which actually adds the connections) doesn't add them repeatedly 
+            // (note that we can't change the flag whilst iterating through the dictionary level as this throws a runtime error)
+            foreach ( List<string> r in results ) {
+                ServerState.StatefulData.RoomLevelMapOfGroupToConnections[roomId][r[1]][r[0]] = true;
+            }
             return results;
         }
     }
