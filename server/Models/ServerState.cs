@@ -93,8 +93,11 @@ namespace SocialPokerClub.Models
             // If we get here we are running Stateless. There will be no game in the server memory but we know the game id in order to reload its state
             if ( r.RecoveryAlreadyAttempted ) {
                 // This is the normal situation where we are just reloading the game state that was saved at the end of the previous action
-                //Console.WriteLine("Loading game state for game with id '{0}'", r.ActiveGameId);
+                Console.WriteLine("Loading game state for game with id '{0}'", r.ActiveGameId);
                 g = await OurDB.LoadGameState(r.ActiveGameId);
+                if ( g is null ) {
+                    Console.WriteLine("Game unexpectedly not found");
+                }
                 double lastMoveMinutesAgo = ( DateTimeOffset.UtcNow - g.LastSuccessfulAction ).TotalMinutes;
                 if ( lastMoveMinutesAgo <= 60 ) {
                     // Use the returned game if the last action on it was less than an hour ago

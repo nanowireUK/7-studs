@@ -192,7 +192,7 @@ namespace SocialPokerClub.Models
             // -------------------------------------------------------------------------------------------
             // Load the most-recently stored version of the game state for the game with the given id
             // Note that the game state has document id "GameState-0" and is overwritten with the latest game state at the end of each action.
-            //Console.WriteLine("PokerDB: LoadGameState for game " + gameId);
+            Console.WriteLine("PokerDB: LoadGameState for game " + gameId);
 
             bool dbExists = await this.DatabaseConnectionHasBeenEstablished();
             if ( dbExists == false ) { return null; }
