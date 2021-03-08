@@ -26,23 +26,32 @@ namespace SocialPokerClub.Models
                     //     envVars.Sort();
                     //     queryResults.Add(ServerState.StringArrayAsJson(envVars));
                     //     break;
-                    // case "list-games":
-                    //     // List rooms with active games
-                    //     List<string> games = new List<string>();
-                    //     foreach (DictionaryEntry pair in ServerState.RoomList )
-                    //     {
-                    //         Room r = (Room) pair.Value;
-                    //         Game g = r.ActiveGame;
-                    //         games.Add(
-                    //             "Room:" + pair.Key
-                    //             + ", Participants:" + g.Participants.Count
-                    //             + ", Hands:" + g.HandsPlayedIncludingCurrent
-                    //             + ", Last Action:" + g.LastSuccessfulAction.ToString("yyyy-MM-dd HH:mm")
-                    //             + " (" + g.MinutesSinceLastAction()+" Minutes Ago)"
-                    //             );
-                    //     }
-                    //     queryResults.Add(ServerState.StringArrayAsJson(games));
-                    //     break;
+                    case "list-games":
+                        // List rooms with active games
+                        List<string> games = new List<string>();
+                        foreach (DictionaryEntry pair in ServerState.RoomList )
+                        {
+                            Room r = (Room) pair.Value;
+                            if ( ServerState.OurDB.dbMode == DatabaseModeEnum.Stateless ) {
+                                // In Stateless mode we don't have a game in storage
+                                games.Add(
+                                    "Room:" + pair.Key
+                                    + ", Last Action:" + r.LastGameAction.ToString("yyyy-MM-dd HH:mm")
+                                    );
+                            }
+                            else {
+                                Game g = r.ActiveGame;
+                                games.Add(
+                                    "Room:" + pair.Key
+                                    + ", Participants:" + g.Participants.Count
+                                    + ", Hands:" + g.HandsPlayedIncludingCurrent
+                                    + ", Last Action:" + r.LastGameAction.ToString("yyyy-MM-dd HH:mm")
+                                    + " (" + g.MinutesSinceLastAction()+" Minutes Ago)"
+                                    );
+                            }
+                        }
+                        queryResults.Add(ServerState.StringArrayAsJson(games));
+                        break;
                     case "list-env":
                         // Check if running on public server
                         if ( ServerState.AllowTestFunctions() ) {
