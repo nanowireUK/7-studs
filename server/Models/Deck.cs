@@ -23,13 +23,16 @@ namespace SocialPokerClub.Models
         public string CardList { get; set; }
         public int DeckNumber { get; set; }
         public Stack<Card> Cards { get; set; }
+        private bool WasInitialisedFromStack { get; set; }
         public Deck() // parameterless constructor is required for the JSON deserialiser
         {
             CardList = "";
             Cards = new Stack<Card>();
+            WasInitialisedFromStack = false; // Assume we were initialised the proper way
         }
         public Deck(int deckNo, bool shuffle = true)
         {
+            WasInitialisedFromStack = false; // Assume we were initialised the proper way
             CardList = "2c3c4c5c6c7c8c9cTcJcQcKcAc2d3d4d5d6d7d8d9dTdJdQdKdAd2h3h4h5h6h7h8h9hThJhQhKhAh2s3s4s5s6s7s8s9sTsJsQsKsAs";
             DeckNumber = deckNo;
             if (shuffle)
@@ -40,6 +43,7 @@ namespace SocialPokerClub.Models
         }
         public Deck(int deckNo, string sourceDeck)
         {
+            WasInitialisedFromStack = false; // Assume we were initialised the proper way
             DeckNumber = deckNo;
             CardList = sourceDeck;
             Cards = NewCardStackFromCardList(); // This deck was created from a string of cards ... create an equivalent stack of cards
@@ -74,10 +78,12 @@ namespace SocialPokerClub.Models
             string dealtCard = CardList.Substring(0,2); // First card in card list
             Card nextCard = new Card(dealtCard);
             CardList = CardList.Remove(0,2);
-            Card popCard = Cards.Pop();
-            if ( popCard.ToString(CardToStringFormatEnum.ShortCardName) != dealtCard) {
-                Console.WriteLine("Error: card dealt from stack '" + popCard.ToString(CardToStringFormatEnum.ShortCardName)
-                    + "' does not match card dealt from string'"+dealtCard+"'");
+            if ( WasInitialisedFromStack ) {
+                Card popCard = Cards.Pop();
+                if ( popCard.ToString(CardToStringFormatEnum.ShortCardName) != dealtCard) {
+                    Console.WriteLine("Error: card dealt from stack '" + popCard.ToString(CardToStringFormatEnum.ShortCardName)
+                        + "' does not match card dealt from string'"+dealtCard+"'");
+                }
             }
             return nextCard;
         }
@@ -87,6 +93,7 @@ namespace SocialPokerClub.Models
             if ( this.CardList != "" ) {
                 return;
             }
+            WasInitialisedFromStack = true;
             Card[] cardsAsArray = this.Cards.ToArray();
             for ( int i = 0; i < cardsAsArray.Length; i++ ) {
                 CardList += cardsAsArray[i].ToString(CardToStringFormatEnum.ShortCardName);
