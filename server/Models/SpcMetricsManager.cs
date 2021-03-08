@@ -1,29 +1,32 @@
 using System;
-using System.Collections;
+
 using System.Collections.Generic;
-// using Microsoft.ApplicationInsights;
-// using Microsoft.ApplicationInsights.Extensibility;
-// using Microsoft.ApplicationInsights.DataContracts;
+using Microsoft.ApplicationInsights;
+using Microsoft.ApplicationInsights.Extensibility;
+using Microsoft.ApplicationInsights.DataContracts;
+using Microsoft.ApplicationInsights.Metrics;
 
 namespace SocialPokerClub.Models
 {
-    public class MetricsManager
+    public class SpcMetricsManager
     {
         // An object that maintains up-to-date server statistics, with automatic updates every minute
         private readonly object metricsLock = new object();
         public DateTimeOffset sessionStart;
-        private List<MetricsSnapshot> minutelyObservations = new List<MetricsSnapshot>();
+        private List<SpcMetricsSnapshot> minutelyObservations = new List<SpcMetricsSnapshot>();
         public double ServerTotalConsumedRUs;
-        //private TelemetryClient telemetry;
-        public MetricsManager()
+        private TelemetryClient telemetry;
+        //private readonly MetricManager manager;
+        public SpcMetricsManager()
         {
             sessionStart = DateTimeOffset.UtcNow;
             ServerTotalConsumedRUs = 0;
-            // if ( ServerState.TelemetryActive() ) {
-            //     telemetry = new TelemetryClient(TelemetryConfiguration.CreateDefault());
-            // }
+            if ( ServerState.TelemetryActive() ) {
+                Console.WriteLine("Activating Azure Monitor Telemetry Client");
+                telemetry = new TelemetryClient(TelemetryConfiguration.CreateDefault());
+            }
         }
-        public MetricsSummary GetMetricsSummary() {
+        public SpcMetricsSummary GetMetricsSummary() {
             lock ( metricsLock ) {
                 return ServerState.MetricsSummary; // ensures that any consumers will wait while statistics are being update
             }
@@ -35,9 +38,9 @@ namespace SocialPokerClub.Models
             lock ( metricsLock )
             {
                 if ( minutelyObservations.Count == 0 ) {
-                    minutelyObservations.Add(new MetricsSnapshot(0)); // Set up a dummy starting entry to establish a zero baseline
+                    minutelyObservations.Add(new SpcMetricsSnapshot(0)); // Set up a dummy starting entry to establish a zero baseline
                 }
-                minutelyObservations.Add(new MetricsSnapshot()); // Add a real snapshot
+                minutelyObservations.Add(new SpcMetricsSnapshot()); // Add a real snapshot
                 // Remove old entries
                 int maxEntries = 60;
                 if ( minutelyObservations.Count > maxEntries ) {
@@ -58,9 +61,9 @@ namespace SocialPokerClub.Models
             //Console.WriteLine("Updating statistics");
             ServerState.MetricsSummary.ReadingTimestamp = ourExactMinute; // This is mainly for Azure Monitor
             ServerState.MetricsSummary.RUsOverall = ServerState.OurDB.ServerTotalConsumedRUs;
-            MetricsSnapshot obs_n = minutelyObservations[minutelyObservations.Count-1]; // The most recent measurement in the list (could be 0, i.e. same as first)
-            MetricsSnapshot obs_n_minus_1 = minutelyObservations[minutelyObservations.Count-2]; // penultimate entry in the list
-            MetricsSnapshot obs_0 = minutelyObservations[0]; // oldest measurement in the list (noting that anything older than an hour has already been removed)
+            SpcMetricsSnapshot obs_n = minutelyObservations[minutelyObservations.Count-1]; // The most recent measurement in the list (could be 0, i.e. same as first)
+            SpcMetricsSnapshot obs_n_minus_1 = minutelyObservations[minutelyObservations.Count-2]; // penultimate entry in the list
+            SpcMetricsSnapshot obs_0 = minutelyObservations[0]; // oldest measurement in the list (noting that anything older than an hour has already been removed)
             ServerState.MetricsSummary.RoomsActiveInLastHr = obs_n.RoomsWithActivityInLastHour;
             ServerState.MetricsSummary.MovesOverall = obs_n.TotalActionsProcessed;
             ServerState.MetricsSummary.RUsInLastHr = (long) (obs_n.ServerTotalConsumedRUs - obs_0.ServerTotalConsumedRUs);
@@ -75,28 +78,25 @@ namespace SocialPokerClub.Models
             Console.WriteLine("{0:HH:mm:ss.fff}: {1}", eventTimeUtc, ServerState.MetricsSummary.AsJson());
 
             // (2) Emit them to the Azure Monitor service
-            // if ( ServerState.TelemetryActive() ) {
-            //     Console.WriteLine("Azure Monitor is active");
-            //     telemetry.TrackMetric(new MetricTelemetry(
-            //         "RoomsWithActivityInLastHour", // name
-            //         1, // count
-            //         ServerState.MetricsSummary.RoomsWithActivityInLastHour, // sum
-            //         ServerState.MetricsSummary.RoomsWithActivityInLastHour, // min
-            //         ServerState.MetricsSummary.RoomsWithActivityInLastHour, // max
-            //         0 //standardDeviation
-            //     ));
-            //     telemetry.TrackMetric(new MetricTelemetry(
-            //         "RUsInLastMinute", // name
-            //         1, // count
-            //         ServerState.MetricsSummary.RUsInLastMinute, // sum
-            //         ServerState.MetricsSummary.RUsInLastMinute, // min
-            //         ServerState.MetricsSummary.RUsInLastMinute, // max
-            //         0 //standardDeviation
-            //     ));
-            // }
-            // else {
-            //     //Console.WriteLine("Azure Monitor is not active");
-            // }
+            if ( ServerState.TelemetryActive() ) {
+                TrackSingleMetric("RoomsActiveInLastHr", ServerState.MetricsSummary.RoomsActiveInLastHr);
+                TrackSingleMetric("RUsInLastMin", ServerState.MetricsSummary.RUsInLastMin);
+                TrackSingleMetric("RUsInLastHr", ServerState.MetricsSummary.RUsInLastHr);
+                TrackSingleMetric("RUsOverall", ServerState.MetricsSummary.RUsOverall);
+                TrackSingleMetric("MovesInLastMin", ServerState.MetricsSummary.MovesInLastMin);
+                TrackSingleMetric("MovesInLastHr", ServerState.MetricsSummary.MovesInLastHr);
+                TrackSingleMetric("MovesOverall", ServerState.MetricsSummary.MovesOverall);
+            }
         }
+        private void TrackSingleMetric(string CustomMetricName, double CustomMetricValue)  {
+            telemetry.Track(new MetricTelemetry(
+                CustomMetricName, // name
+                1, // count
+                CustomMetricValue, // sum
+                CustomMetricValue, // min
+                CustomMetricValue, // max
+                0 //standardDeviation
+            ));
+        }        
     }
 }

@@ -3,7 +3,7 @@ using System.Text.Json;
 
 namespace SocialPokerClub.Models
 {
-    public class MetricsSummary
+    public class SpcMetricsSummary
     {
         // A data structure that represents the most recent set of statistics (used for Azure monitor and for presentation to the players)
         public DateTimeOffset ReadingTimestamp { get; set; }
@@ -15,7 +15,7 @@ namespace SocialPokerClub.Models
         public int MovesInLastHr { get; set; }
         public int MovesOverall { get; set; }
 
-        public MetricsSummary()
+        public SpcMetricsSummary()
         {
         }
         public string AsJson()

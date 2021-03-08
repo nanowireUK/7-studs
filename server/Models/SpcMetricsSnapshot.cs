@@ -3,19 +3,19 @@ using System.Collections.Generic;
 
 namespace SocialPokerClub.Models
 {
-    public class MetricsSnapshot
+    public class SpcMetricsSnapshot
     {
         // An object that represents the state of the server at the end of a given minute
         public double ServerTotalConsumedRUs;
         public int RoomsWithActivityInLastHour;
         public int TotalActionsProcessed;
-        public MetricsSnapshot()
+        public SpcMetricsSnapshot()
         {
             ServerTotalConsumedRUs = ServerState.OurDB.ServerTotalConsumedRUs;
             RoomsWithActivityInLastHour = ServerState.RoomsWithActivityInLastHour();
             TotalActionsProcessed = ServerState.TotalActionsProcessed;
         }
-        public MetricsSnapshot(int initAmt)
+        public SpcMetricsSnapshot(int initAmt)
         {
             ServerTotalConsumedRUs = initAmt;
             RoomsWithActivityInLastHour = initAmt;

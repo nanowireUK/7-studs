@@ -18,9 +18,9 @@ namespace SocialPokerClub.Models
         public static PokerHandRankingTable RankingTable; // Only need one of these
         public static Card DummyCard;
         public static PokerDB OurDB;
-        public static MetricsSummary MetricsSummary;
+        public static SpcMetricsSummary MetricsSummary;
         public static System.Timers.Timer MonitorTimer;
-        public static MetricsManager MetricsManager;
+        public static SpcMetricsManager MetricsManager;
         public static int TotalActionsProcessed = 0;
         static ServerState() {
             // Static constructor, runs initialisations in the order we require
@@ -30,8 +30,8 @@ namespace SocialPokerClub.Models
             RankingTable = new PokerHandRankingTable(); // Only need one of these
             DummyCard = new Card(CardEnum.Dummy, SuitEnum.Clubs);
             OurDB = new PokerDB();
-            MetricsSummary = new MetricsSummary(); // Just an initial 'zero' summary, but still needs OurDB to have been instantiated
-            MetricsManager = new MetricsManager(); // Needs MetricsSummary to have been instantiated. This object will maintain and emit statistics
+            MetricsSummary = new SpcMetricsSummary(); // Just an initial 'zero' summary, but still needs OurDB to have been instantiated
+            MetricsManager = new SpcMetricsManager(); // Needs MetricsSummary to have been instantiated. This object will maintain and emit statistics
             Console.WriteLine("Initalising MonitorTimer");
             while ( DateTimeOffset.UtcNow.Millisecond < 100 || DateTimeOffset.UtcNow.Millisecond > 900 ) {
                 Console.WriteLine("Waiting 200 milliseconds to ensure repeat timer does not fire close to a boundary between two seconds");

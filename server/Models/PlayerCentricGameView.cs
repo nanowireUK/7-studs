@@ -50,7 +50,7 @@ namespace SocialPokerClub.Models
         public LobbySettings LobbySettings { get; set; }
         public List<Boolean> CardPositionIsVisible { get; set; }
         public List<List<PotResult>> MostRecentHandResult { get; set; }
-        public MetricsSummary MetricsSummary { get; set; }
+        public SpcMetricsSummary MetricsSummary { get; set; }
         public PlayerCentricGameView(Game g, int requestedPlayerIndex, int spectatorIndex) {
             // Build up this player's view of the game
             // (note that if player index = -1 it means we're building a view for a spectator and the dealer will be the first player shown)
