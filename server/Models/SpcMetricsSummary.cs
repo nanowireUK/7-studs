@@ -10,7 +10,7 @@ namespace SocialPokerClub.Models
         public int RoomsActiveInLastHr { get; set; }
         public long RUsInLastMin { get; set; }
         public long RUsInLastHr { get; set; }
-        public double RUsOverall = ServerState.OurDB.ServerTotalConsumedRUs;
+        public long RUsOverall { get; set; }
         public int MovesInLastMin { get; set; }
         public int MovesInLastHr { get; set; }
         public int MovesOverall { get; set; }

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.ApplicationInsights.DataContracts;
-using Microsoft.ApplicationInsights.Metrics;
 
 namespace SocialPokerClub.Models
 {
@@ -60,11 +59,11 @@ namespace SocialPokerClub.Models
             // Note cumulative changes since we last gathered statistics
             //Console.WriteLine("Updating statistics");
             ServerState.MetricsSummary.ReadingTimestamp = ourExactMinute; // This is mainly for Azure Monitor
-            ServerState.MetricsSummary.RUsOverall = ServerState.OurDB.ServerTotalConsumedRUs;
             SpcMetricsSnapshot obs_n = minutelyObservations[minutelyObservations.Count-1]; // The most recent measurement in the list (could be 0, i.e. same as first)
             SpcMetricsSnapshot obs_n_minus_1 = minutelyObservations[minutelyObservations.Count-2]; // penultimate entry in the list
             SpcMetricsSnapshot obs_0 = minutelyObservations[0]; // oldest measurement in the list (noting that anything older than an hour has already been removed)
             ServerState.MetricsSummary.RoomsActiveInLastHr = obs_n.RoomsWithActivityInLastHour;
+            ServerState.MetricsSummary.RUsOverall = (long) ServerState.OurDB.ServerTotalConsumedRUs;
             ServerState.MetricsSummary.MovesOverall = obs_n.TotalActionsProcessed;
             ServerState.MetricsSummary.RUsInLastHr = (long) (obs_n.ServerTotalConsumedRUs - obs_0.ServerTotalConsumedRUs);
             ServerState.MetricsSummary.MovesInLastHr = obs_n.TotalActionsProcessed - obs_0.TotalActionsProcessed;

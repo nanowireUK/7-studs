@@ -1143,7 +1143,9 @@ namespace SocialPokerClub.Models
                 );
             //this._GameLog.actions.Add(gla);
             this.LastSuccessfulAction = DateTimeOffset.UtcNow;
-            this.ParentRoom().LastGameAction = LastSuccessfulAction; // Also log this on the room
+            if ( this.GameMode == GameModeEnum.LobbyOpen ) {
+                this.ParentRoom().LastGameAction = LastSuccessfulAction; // Also log this on the room
+            }
             // Log the action to the DB
             double dbCost = await ServerState.OurDB.RecordGameLogAction(this, gla);
             return dbCost;

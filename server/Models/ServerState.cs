@@ -22,6 +22,8 @@ namespace SocialPokerClub.Models
         public static System.Timers.Timer MonitorTimer;
         public static SpcMetricsManager MetricsManager;
         public static int TotalActionsProcessed = 0;
+        public static int ActiveGameAgeLimitInMinutes = 24 * 60; // keep active games (i.e. not in the lobby) open for a whole day
+        public static int InactiveGameAgeLimitInMinutes = 1 * 60; // keep inactive games (i.e. those still - or back - in the lobby) open for 1 hour only
         static ServerState() {
             // Static constructor, runs initialisations in the order we require
             Console.WriteLine("ServerState static constructor running at at {0:HH:mm:ss.fff}", DateTimeOffset.UtcNow);
@@ -99,13 +101,18 @@ namespace SocialPokerClub.Models
                     Console.WriteLine("Game unexpectedly not found");
                 }
                 double lastMoveMinutesAgo = ( DateTimeOffset.UtcNow - g.LastSuccessfulAction ).TotalMinutes;
-                if ( lastMoveMinutesAgo <= 60 ) {
+                if ( g.GameMode == GameModeEnum.LobbyOpen && lastMoveMinutesAgo <= InactiveGameAgeLimitInMinutes ) {
+                    g.AddToAccumulatedDbCost("Loading inactive game in stateless mode", g.GameLoadDbCost); // Add the cost of reloading the game to its overall cost
+                    return g;
+                }
+                else if ( lastMoveMinutesAgo <= ActiveGameAgeLimitInMinutes ) {
                     // Use the returned game if the last action on it was less than an hour ago
-                    g.AddToAccumulatedDbCost("Loading game in stateless mode", g.GameLoadDbCost); // Add the cost of reloading the game to its overall cost
+                    g.AddToAccumulatedDbCost("Loading active game in stateless mode", g.GameLoadDbCost); // Add the cost of reloading the game to its overall cost
                     return g;
                 }
                 else {
-                    Console.WriteLine("Game recovered successfully but is more than an hour old, so creating new game instead\n");
+                    Console.WriteLine("Game recovered successfully but is {0} minutes old, which is longer than allowed for game mode '{1}', so creating new game instead\n", 
+                        lastMoveMinutesAgo, g.GameMode.ToString());
                     g = new Game(r.RoomId, 0);
                     g.InitialiseGame(null);
                     return g;
