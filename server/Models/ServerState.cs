@@ -12,7 +12,7 @@ namespace SocialPokerClub.Models
     {
         // Maintains a registry of games which enables a game object to be found from its ID.
         // Also provides other room-level functions (where a room may have hosted a whole series of games)
-
+        public static bool IsInitialised = false;
         public static Hashtable RoomList; // Server-level list of Rooms
         public static StatefulGameData StatefulData; // Server-level list of connections
         public static PokerHandRankingTable RankingTable; // Only need one of these
@@ -26,7 +26,7 @@ namespace SocialPokerClub.Models
         public static int InactiveGameAgeLimitInMinutes = 1 * 60; // keep inactive games (i.e. those still - or back - in the lobby) open for 1 hour only
         static ServerState() {
             // Static constructor, runs initialisations in the order we require
-            Console.WriteLine("ServerState static constructor running at at {0:HH:mm:ss.fff}", DateTimeOffset.UtcNow);
+            Console.WriteLine("ServerState static constructor running at {0:HH:mm:ss.fff}", DateTimeOffset.UtcNow);
             RoomList = new Hashtable(); // Server-level list of Rooms
             StatefulData = new StatefulGameData(); // Server-level list of connections
             RankingTable = new PokerHandRankingTable(); // Only need one of these
@@ -42,6 +42,8 @@ namespace SocialPokerClub.Models
             MonitorTimer = new System.Timers.Timer(60000);
             MonitorTimer.Elapsed+=MonitorStatistics;
             MonitorTimer.Enabled=true;
+            IsInitialised = true;
+            Console.WriteLine("ServerState fully initialised at {0:HH:mm:ss.fff}", DateTimeOffset.UtcNow);
         }
         public static Boolean AllowTestFunctions() {
             string env_value = Environment.GetEnvironmentVariable("SpcAllowTestFunctions");
@@ -53,6 +55,10 @@ namespace SocialPokerClub.Models
         //     return RoomList.ContainsKey(roomId.ToLower());
         // }
         public static async Task<Room> FindOrCreateRoom(string RoomId) {
+            while ( ServerState.IsInitialised == false ) {
+                Console.WriteLine("FindOrCreateRoom waiting 0.1 secs for ServerState to initialise (time now {0:HH:mm:ss.fff})", DateTimeOffset.UtcNow);
+                System.Threading.Thread.Sleep(100); // wait for a 10th of a second
+            }
             string roomIdToUse = RoomId;
             string lowercaseId = RoomId.ToLower();
             await Task.FromResult(0); // Just to work around compiler warning "This async method lacks 'await' operators and will run synchronously"
