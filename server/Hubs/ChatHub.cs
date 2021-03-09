@@ -4,14 +4,16 @@ using SocialPokerClub.Models;
 using System.Collections.Generic;
 using System.Text.Json;
 using System;
+using System.Threading;
 
 namespace SocialPokerClub.Hubs
 {
     public class ChatHub : Hub
     {
+        private Dictionary<string, SemaphoreSlim> roomLocks = new Dictionary<string, SemaphoreSlim>();
+
         // --------------------------------------------------------------------------------------------------
         // This is the server-side code that is called directly by the client
-
         public async Task UserClickedCreateAndJoinRoom(string roomId, string user) { await UserClickedGameRelatedActionButton(ActionEnum.Join, roomId,  user, "-1", "RoomCannotExist"); }
         public async Task UserClickedJoinExistingRoom(string roomId, string user) { await UserClickedGameRelatedActionButton(ActionEnum.Join, roomId,  user, "-1", "RoomMustExist"); }
         public async Task UserClickedJoin(string roomId, string user) { await UserClickedGameRelatedActionButton(ActionEnum.Join, roomId,  user, "-1",  "RoomCanExist"); }
@@ -42,8 +44,24 @@ namespace SocialPokerClub.Hubs
 
         private async Task UserClickedGameRelatedActionButton(ActionEnum actionType, string roomId, string user, string leavers, string parameters)
         {
-            SocialPokerClub.Models.Action a = await ActionFactory.NewAction(Context.ConnectionId, actionType, roomId, user, leavers, parameters);
-            Game g = await a.ProcessActionAndReturnGameReference();
+            if ( roomLocks.ContainsKey(roomId) == false ) {
+                roomLocks.Add(roomId.ToLower(), new SemaphoreSlim(1));
+            }
+
+            //Console.WriteLine("Taking exclusive lock on room '{0}'", roomId.ToLower());
+
+            await roomLocks[roomId.ToLower()].WaitAsync().ConfigureAwait(false);
+            SocialPokerClub.Models.Action a;
+            Game g;
+            try {
+                // Don't allow any other process to find/create rooms until we have done so 
+                a = await ActionFactory.NewAction(Context.ConnectionId, actionType, roomId, user, leavers, parameters);
+                g = await a.ProcessActionAndReturnGameReference();
+            }
+            finally {
+                //Console.WriteLine("Releasing exclusive lock on room '{0}'", roomId.ToLower());
+                roomLocks[roomId.ToLower()].Release();
+            } 
 
             // If any new connections were noted, add them to the relevant SignalR groups
             List<List<string>> connectionsToLink = ServerState.StatefulData.MarkUnlinkedConnectionsAsLinkedAndReturnList(g);

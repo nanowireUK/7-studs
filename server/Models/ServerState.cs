@@ -5,6 +5,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace SocialPokerClub.Models
 {
@@ -24,10 +25,12 @@ namespace SocialPokerClub.Models
         public static int TotalActionsProcessed = 0;
         public static int ActiveGameAgeLimitInMinutes = 24 * 60; // keep active games (i.e. not in the lobby) open for a whole day
         public static int InactiveGameAgeLimitInMinutes = 1 * 60; // keep inactive games (i.e. those still - or back - in the lobby) open for 1 hour only
+        public static SemaphoreSlim ServerWideLock;
         static ServerState() {
             // Static constructor, runs initialisations in the order we require
             Console.WriteLine("ServerState static constructor running at {0:HH:mm:ss.fff}", DateTimeOffset.UtcNow);
             RoomList = new Hashtable(); // Server-level list of Rooms
+            ServerWideLock = new SemaphoreSlim(1,1); // For use where only one task can be active
             StatefulData = new StatefulGameData(); // Server-level list of connections
             RankingTable = new PokerHandRankingTable(); // Only need one of these
             DummyCard = new Card(CardEnum.Dummy, SuitEnum.Clubs);
