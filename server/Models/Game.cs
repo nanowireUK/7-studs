@@ -1119,8 +1119,8 @@ namespace SocialPokerClub.Models
                     // Note that the total will not include the cost of saving the final game state before the server restarted
                     // (we could estimate a small allowance for this but it is likely to be no more than 50 - 200 RUs so not really worth the effort)
                     ServerState.StatefulData.MapOfGameIdToDbCosts.Add(this.GameId, this.AccumulatedDbCost + increment);
-                    Console.WriteLine("DB cost for game id '{0}' set to {1} via recovery from game, and increased by {2} to {3} due to {4}",
-                        this.GameId, this.AccumulatedDbCost, increment, ServerState.StatefulData.MapOfGameIdToDbCosts[this.GameId], reason);
+                    // Console.WriteLine("DB cost for game id '{0}' set to {1} via recovery from game, and increased by {2} to {3} due to {4}",
+                    //     this.GameId, this.AccumulatedDbCost, increment, ServerState.StatefulData.MapOfGameIdToDbCosts[this.GameId], reason);
                 }
                 else {
                     // This is the first record of a database cost for this game
