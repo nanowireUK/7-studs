@@ -319,7 +319,7 @@ namespace SocialPokerClub.Models
             Task<double> addDeckTask = ServerState.OurDB.RecordDeck(this, newDeck);
             dbTasks.Add(addDeckTask);
 
-            //Console.WriteLine("Hand starting with this deck: " + CardPack.ToString() + "\n");
+            //Console.WriteLine("Hand starting with this deck: " + CardPack.ToString() + "");
 
             this.ClearHandDataBetweenHands();
 
@@ -1107,7 +1107,7 @@ namespace SocialPokerClub.Models
             // (2) On the game, which will be used as a backup if the server process has to restart (it will pick up the cost when it next reloads the game)
             if ( ServerState.StatefulData.MapOfGameIdToDbCosts.ContainsKey(this.GameId)) {
                 ServerState.StatefulData.MapOfGameIdToDbCosts[this.GameId] += increment; // normal scenario (i.e. hashtable entry already exists)
-            // Console.WriteLine("DB cost for game id '{0}' increased by {1} to {2} due to {3}\n",
+            // Console.WriteLine("DB cost for game id '{0}' increased by {1} to {2} due to {3}",
             //     this.GameId, increment, ServerState.StatefulData.MapOfGameIdToDbCosts[this.GameId], reason);
             }
             else {
@@ -1119,13 +1119,13 @@ namespace SocialPokerClub.Models
                     // Note that the total will not include the cost of saving the final game state before the server restarted
                     // (we could estimate a small allowance for this but it is likely to be no more than 50 - 200 RUs so not really worth the effort)
                     ServerState.StatefulData.MapOfGameIdToDbCosts.Add(this.GameId, this.AccumulatedDbCost + increment);
-                    Console.WriteLine("DB cost for game id '{0}' set to {1} via recovery from game, and increased by {2} to {3} due to {4}\n",
+                    Console.WriteLine("DB cost for game id '{0}' set to {1} via recovery from game, and increased by {2} to {3} due to {4}",
                         this.GameId, this.AccumulatedDbCost, increment, ServerState.StatefulData.MapOfGameIdToDbCosts[this.GameId], reason);
                 }
                 else {
                     // This is the first record of a database cost for this game
                     ServerState.StatefulData.MapOfGameIdToDbCosts.Add(this.GameId, increment);
-                    // Console.WriteLine("DB cost for game id '{0}' initialised to {1} due to {2}\n",
+                    // Console.WriteLine("DB cost for game id '{0}' initialised to {1} due to {2}",
                     //     this.GameId, ServerState.StatefulData.MapOfGameIdToDbCosts[this.GameId], reason);
                 }
             }

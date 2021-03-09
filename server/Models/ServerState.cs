@@ -106,7 +106,7 @@ namespace SocialPokerClub.Models
                 g = await RecoverOrCreateGame(r);
                 r.RecoveryAlreadyAttempted = true; // make sure we don't try this again (for this room) during the life of this server process
                 r.ActiveGameId = g.GameId;
-                Console.WriteLine("Active game id noted as '{0}'.\n", r.ActiveGameId);
+                Console.WriteLine("Active game id noted as '{0}'.", r.ActiveGameId);
                 return g;
             }
             else {
@@ -127,7 +127,7 @@ namespace SocialPokerClub.Models
                     return g;
                 }
                 else {
-                    Console.WriteLine("Game recovered successfully but is {0} minutes old, which is longer than allowed for game mode '{1}', so creating new game instead\n", 
+                    Console.WriteLine("Game recovered successfully but is {0} minutes old, which is longer than allowed for game mode '{1}', so creating new game instead", 
                         lastMoveMinutesAgo, g.GameMode.ToString());
                     g = new Game(r.RoomId, 0);
                     g.InitialiseGame(null);
@@ -138,7 +138,7 @@ namespace SocialPokerClub.Models
         public static async Task<Game> RecoverOrCreateGame(Room r) {
             // Either this is a new room or there was an active game in this room but the server has been restarted and all state has been lost
             Game g;
-            Console.WriteLine("Attempting recovery of most recent game associated with room '{0}'.\n", r.RoomId);
+            Console.WriteLine("Attempting recovery of most recent game associated with room '{0}'.", r.RoomId);
             g = await OurDB.LoadMostRecentGameState(r.RoomId); // If there is an existing game for this room then load it
             if ( g != null ) {
                 double lastMoveMinutesAgo = ( DateTimeOffset.UtcNow - g.LastSuccessfulAction ).TotalMinutes;
@@ -148,12 +148,12 @@ namespace SocialPokerClub.Models
                     return g;
                 }
                 else {
-                    Console.WriteLine("Game recovered successfully but is more than an hour old, so creating new game instead\n");
+                    Console.WriteLine("Game recovered successfully but is more than an hour old, so creating new game instead");
                 }
             }
             else {
                 // No previous games recorded for this room, so just create a new game
-                Console.WriteLine("No recent historical games found for room '{0}'. Creating new game.\n", r.RoomId);
+                Console.WriteLine("No recent historical games found for room '{0}'. Creating new game.", r.RoomId);
             }
             g = new Game(r.RoomId, 0);
             g.InitialiseGame(null);

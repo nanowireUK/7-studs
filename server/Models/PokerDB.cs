@@ -85,7 +85,7 @@ namespace SocialPokerClub.Models
                 new PartitionKey(gameHeader.docGameId));
 
             // Note that after creating the item, we can access the body of the item with the Resource property off the ItemResponse. We can also access the RequestCharge property to see the amount of RUs consumed on this request.
-            // Console.WriteLine("Created GameHeader in database with id: {0} Operation consumed {1} RUs. Game id = {2}.\n",
+            // Console.WriteLine("Created GameHeader in database with id: {0} Operation consumed {1} RUs. Game id = {2}.",
             //     dbResponse.Resource.id, dbResponse.RequestCharge, dbResponse.Resource.docGameId);
             this.ServerTotalConsumedRUs += dbResponse.RequestCharge; // Add this to our total
             return dbResponse.RequestCharge;
@@ -115,7 +115,7 @@ namespace SocialPokerClub.Models
                 new PartitionKey(gameLogAction.docGameId));
 
             // Note that after creating the item, we can access the body of the item with the Resource property off the ItemResponse. We can also access the RequestCharge property to see the amount of RUs consumed on this request.
-            // Console.WriteLine("Created GameLogAction item in database with id: {0} Operation consumed {1} RUs. Game id = {2}.\n",
+            // Console.WriteLine("Created GameLogAction item in database with id: {0} Operation consumed {1} RUs. Game id = {2}.",
             //     dbResponse.Resource.id, dbResponse.RequestCharge, dbResponse.Resource.docGameId);
             this.ServerTotalConsumedRUs += dbResponse.RequestCharge; // Add this to our total
             return dbResponse.RequestCharge;
@@ -150,7 +150,7 @@ namespace SocialPokerClub.Models
                 details,
                 new PartitionKey(details.docGameId));
             // Note that after creating the item, we can access the body of the item with the Resource property off the ItemResponse. We can also access the RequestCharge property to see the amount of RUs consumed on this request.
-            // Console.WriteLine("Created GameLogAction item in database with id: {0} Operation consumed {1} RUs. Game id = {2}.\n",
+            // Console.WriteLine("Created GameLogAction item in database with id: {0} Operation consumed {1} RUs. Game id = {2}.",
             //     dbResponse.Resource.id, dbResponse.RequestCharge, dbResponse.Resource.docGameId);
             this.ServerTotalConsumedRUs += dbResponse.RequestCharge; // Add this to our total
             return dbResponse.RequestCharge;
@@ -184,7 +184,7 @@ namespace SocialPokerClub.Models
                 new PartitionKey(gameState.docGameId));
 
             // Note that after upserting the item, we can access the body of the item with the Resource property off the ItemResponse. We can also access the RequestCharge property to see the amount of RUs consumed on this request.
-            // Console.WriteLine("Upserted GameState item in database with id: {0} Operation consumed {1} RUs. Game id = {2}.\n",
+            // Console.WriteLine("Upserted GameState item in database with id: {0} Operation consumed {1} RUs. Game id = {2}.",
             //     dbResponse.Resource.id, dbResponse.RequestCharge, dbResponse.Resource.docGameId);
             this.ServerTotalConsumedRUs += dbResponse.RequestCharge; // Add this to our total
             return dbResponse.RequestCharge;
@@ -204,7 +204,7 @@ namespace SocialPokerClub.Models
                 // Read the item. We can access the body of the item with the Resource property off the ItemResponse.
                 // We can also access the RequestCharge property to see the amount of RUs consumed on this request.
                 ItemResponse<DocOfTypeGameState> dbResponse = await this.ourGamesContainer.ReadItemAsync<DocOfTypeGameState>("GameState-0", new PartitionKey(gameId));
-                // Console.WriteLine("Game state for game with id '{0}' successfully loaded. Operation consumed {1} RUs.\n",
+                // Console.WriteLine("Game state for game with id '{0}' successfully loaded. Operation consumed {1} RUs.",
                 //     dbResponse.Resource.docGameId, dbResponse.RequestCharge);
                 this.ServerTotalConsumedRUs += dbResponse.RequestCharge; // Add this to our total
                 Game returnedGame = dbResponse.Resource.gameState;
@@ -214,7 +214,7 @@ namespace SocialPokerClub.Models
             }
             catch(CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
             {
-                Console.WriteLine("Game state for game with id '{0}' not found.\n", gameId);
+                Console.WriteLine("Game state for game with id '{0}' not found.", gameId);
                 return null;
             }
         }
@@ -226,7 +226,7 @@ namespace SocialPokerClub.Models
             if ( dbExists == false ) { return null; }
 
             var sqlQueryText = "SELECT TOP 1 * FROM c WHERE c.id = 'GameState-0' AND c.docRoomId = '"+roomId+"' ORDER BY c.docDateUtc DESC";
-            Console.WriteLine("Running query: {0}\n", sqlQueryText);
+            Console.WriteLine("Running query: {0}", sqlQueryText);
 
             QueryDefinition queryDefinition = new QueryDefinition(sqlQueryText);
             FeedIterator<DocOfTypeGameState> queryResultSetIterator = this.ourGamesContainer.GetItemQueryIterator<DocOfTypeGameState>(queryDefinition);
@@ -236,23 +236,23 @@ namespace SocialPokerClub.Models
             while (queryResultSetIterator.HasMoreResults)
             {
                 FeedResponse<DocOfTypeGameState> currentResultSet = await queryResultSetIterator.ReadNextAsync();
-                Console.WriteLine("Results loaded. Operation consumed {0} RUs.\n", currentResultSet.RequestCharge);
+                Console.WriteLine("Results loaded. Operation consumed {0} RUs.", currentResultSet.RequestCharge);
                 this.ServerTotalConsumedRUs += currentResultSet.RequestCharge; // Add this to our total
                 foreach (DocOfTypeGameState returnedDoc in currentResultSet)
                 {
                     //string gameAsJson = returnedGame.AsJson();  // for inspection when debugging
-                    Console.WriteLine("Most recent game has id '{0}'.\n", returnedDoc.docGameId);
+                    Console.WriteLine("Most recent game has id '{0}'.", returnedDoc.docGameId);
                     Game returnedGame = returnedDoc.gameState;
                     returnedGame.GameLoadDbCost = currentResultSet.RequestCharge;
                     return returnedGame; // Only need the first one, but left loop in as sample code
                 }
             }
-            Console.WriteLine("No recent historical games found for room '{0}'.\n", roomId);
+            Console.WriteLine("No recent historical games found for room '{0}'.", roomId);
             return null;
         }
         public async Task<GameLog> LoadGameLog(string gameId)
         {
-            Console.WriteLine("Attempting to load game log for game with id '{0}'\n", gameId);
+            Console.WriteLine("Attempting to load game log for game with id '{0}'", gameId);
 
             bool dbExists = await this.DatabaseConnectionHasBeenEstablished();
             if ( dbExists == false ) { return null; }
@@ -265,7 +265,7 @@ namespace SocialPokerClub.Models
                 // Read the item. We can access the body of the item with the Resource property off the ItemResponse.
                 // We can also access the RequestCharge property to see the amount of RUs consumed on this request.
                 ItemResponse<DocOfTypeGameHeader> dbResponse = await this.ourGamesContainer.ReadItemAsync<DocOfTypeGameHeader>("GameHeader-0", new PartitionKey(gameId));
-                Console.WriteLine("Game header for game with id '{0}' successfully loaded. Operation consumed {1} RUs.\n",
+                Console.WriteLine("Game header for game with id '{0}' successfully loaded. Operation consumed {1} RUs.",
                     dbResponse.Resource.docGameId, dbResponse.RequestCharge);
                 DocOfTypeGameHeader returnedDoc = dbResponse.Resource;
                 rebuiltLog.roomId = returnedDoc.docRoomId;
@@ -278,24 +278,24 @@ namespace SocialPokerClub.Models
             }
             catch(CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
             {
-                Console.WriteLine("Game header for game with id '{0}' not found.\n", gameId);
+                Console.WriteLine("Game header for game with id '{0}' not found.", gameId);
                 return null;
             }
 
             // (2) Load the decks used in the game
             var deckQueryText = "SELECT * FROM c WHERE c.docType = 'Deck' AND c.docGameId = '"+gameId+"' ORDER BY c.docSeq ASC";
-            Console.WriteLine("Running query: {0}\n", deckQueryText);
+            Console.WriteLine("Running query: {0}", deckQueryText);
             QueryDefinition deckQueryDefinition = new QueryDefinition(deckQueryText);
             FeedIterator<DocOfTypeDeck> deckIterator = this.ourGamesContainer.GetItemQueryIterator<DocOfTypeDeck>(deckQueryDefinition);
             List<DocOfTypeDeck> decks = new List<DocOfTypeDeck>();
             while (deckIterator.HasMoreResults)
             {
                 FeedResponse<DocOfTypeDeck> currentResultSet = await deckIterator.ReadNextAsync();
-                Console.WriteLine("Deck loaded. Operation consumed {0} RUs.\n", currentResultSet.RequestCharge);
+                Console.WriteLine("Deck loaded. Operation consumed {0} RUs.", currentResultSet.RequestCharge);
                 foreach (DocOfTypeDeck returnedDoc in currentResultSet)
                 {
                     Deck d = returnedDoc.deck;
-                    Console.WriteLine("Loaded deck {0}: {1}.\n", d.DeckNumber, d.CardList);
+                    Console.WriteLine("Loaded deck {0}: {1}.", d.DeckNumber, d.CardList);
                     d.Cards = null;
                     rebuiltLog.decks.Add(d);
                 }
@@ -303,25 +303,25 @@ namespace SocialPokerClub.Models
 
             // (3) Load the actions used in the game
             var actionQueryText = "SELECT * FROM c WHERE c.docType = 'Action' AND c.docGameId = '"+gameId+"' ORDER BY c.docSeq ASC";
-            Console.WriteLine("Running query: {0}\n", actionQueryText);
+            Console.WriteLine("Running query: {0}", actionQueryText);
             QueryDefinition actionQueryDefinition = new QueryDefinition(actionQueryText);
             FeedIterator<DocOfTypeGameLogAction> actionIterator = this.ourGamesContainer.GetItemQueryIterator<DocOfTypeGameLogAction>(actionQueryDefinition);
             List<DocOfTypeGameLogAction> actions = new List<DocOfTypeGameLogAction>();
             while (actionIterator.HasMoreResults)
             {
                 FeedResponse<DocOfTypeGameLogAction> currentResultSet = await actionIterator.ReadNextAsync();
-                Console.WriteLine("Action loaded. Operation consumed {0} RUs.\n", currentResultSet.RequestCharge);
+                Console.WriteLine("Action loaded. Operation consumed {0} RUs.", currentResultSet.RequestCharge);
                 foreach (DocOfTypeGameLogAction returnedDoc in currentResultSet)
                 {
                     GameLogAction a = returnedDoc.action;
-                    Console.WriteLine("Loaded action {0}: {1} by {2}.\n", a.ActionNumber, a.ActionType, a.UserName);
+                    Console.WriteLine("Loaded action {0}: {1} by {2}.", a.ActionNumber, a.ActionType, a.UserName);
                     rebuiltLog.actions.Add(a);
                     if ( returnedDoc.docDateUtc > rebuiltLog.endTimeUtc ) {
                         rebuiltLog.endTimeUtc= returnedDoc.docDateUtc;
                     }
                 }
             }
-            Console.WriteLine("Reload complete.\n");
+            Console.WriteLine("Reload complete.");
 
             return rebuiltLog;
         }
@@ -374,11 +374,11 @@ namespace SocialPokerClub.Models
                         DatabaseResponse DBresp = await this.cosmosClient.CreateDatabaseIfNotExistsAsync(databaseId);
                         if ( DBresp.StatusCode == HttpStatusCode.OK ) // Accepted??
                         {
-                            Console.WriteLine("Database '{0}' already exists\n", DBresp.Database.Id);
+                            Console.WriteLine("Database '{0}' already exists", DBresp.Database.Id);
                         }
                         else if ( DBresp.StatusCode == HttpStatusCode.Created )
                         {
-                            Console.WriteLine("Database '{0}' has been created\n", DBresp.Database.Id);
+                            Console.WriteLine("Database '{0}' has been created", DBresp.Database.Id);
                         }
                         ourDatabase = DBresp.Database;
 
@@ -386,11 +386,11 @@ namespace SocialPokerClub.Models
                         ContainerResponse Cresp = await ourDatabase.CreateContainerIfNotExistsAsync(gamesContainerId, "/docGameId", 400);
                         if ( Cresp.StatusCode == HttpStatusCode.OK )
                         {
-                            Console.WriteLine("Container '{0}' already exists\n", Cresp.Container.Id);
+                            Console.WriteLine("Container '{0}' already exists", Cresp.Container.Id);
                         }
                         else if ( Cresp.StatusCode == HttpStatusCode.Created )
                         {
-                            Console.WriteLine("Container '{0}' has been created\n", Cresp.Container.Id);
+                            Console.WriteLine("Container '{0}' has been created", Cresp.Container.Id);
                         }
                         ourGamesContainer = Cresp.Container;
 
@@ -401,7 +401,7 @@ namespace SocialPokerClub.Models
                     catch(Exception ex)
                     {
                         // Note that after creating the item, we can access the body of the item with the Resource property off the ItemResponse. We can also access the RequestCharge property to see the amount of RUs consumed on this request.
-                        Console.WriteLine("Database connection could not be established. Continuing without database. Reported exception = {0}\n", ex.Message);
+                        Console.WriteLine("Database connection could not be established. Continuing without database. Reported exception = {0}", ex.Message);
                         dbStatus = DatabaseConnectionStatusEnum.ConnectionFailed;
                         //Console.WriteLine("DatabaseConnectionHasBeenEstablished returns false as first attempt to establish a connection failed");
                         return false;                    
