@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Net;
@@ -12,6 +13,7 @@ namespace SocialPokerClub.Models
     {
         public DatabaseModeEnum dbMode;
         public DatabaseConnectionStatusEnum dbStatus = DatabaseConnectionStatusEnum.ConnectionNotAttempted;
+        private SemaphoreSlim databaseLock = new SemaphoreSlim(1,1000);
         public double ServerTotalConsumedRUs = 0;
         private string EndpointUri;
         //private readonly string EndpointUri = ConfigurationManager.AppSettings["EndPointUri"]; // CosmosDB endpoint
@@ -326,85 +328,98 @@ namespace SocialPokerClub.Models
         public async Task<bool> DatabaseConnectionHasBeenEstablished() {
             if ( dbMode == DatabaseModeEnum.NoDatabase ) { 
                 //Console.WriteLine("DatabaseConnectionHasBeenEstablished returns false as DB mode is NoDatabase");
-                return false; 
-            }; // Will never have a database connection
+                return false; // This will never have a database connection  
+            };           
+            await databaseLock.WaitAsync().ConfigureAwait(false);
+            int semaphoresToReleaseOnCompletion = 1; // Default unless we are the first task to use the semaphore
             if ( dbStatus == DatabaseConnectionStatusEnum.ConnectionNotAttempted ) {
-                try
-                {
-                    // Get the Cosmos DB URI from the relevant environment variable
-                    Console.WriteLine("Getting env var SpcDbUri");
-                    EndpointUri = Environment.GetEnvironmentVariable("SpcDbUri", EnvironmentVariableTarget.Process);
-                    if ( EndpointUri == null ) {
-                        Console.WriteLine("Env var SpcDbUri not found, server will continue with database functionality deactivated");
+                // This IS the first run through this method
+                Console.WriteLine("DatabaseConnectionHasBeenEstablished called for first time (protected by semaphore)");
+                semaphoresToReleaseOnCompletion = 1000;
+            }
+            try {
+                if ( dbStatus == DatabaseConnectionStatusEnum.ConnectionNotAttempted ) {
+                    try
+                    {
+                        // Get the Cosmos DB URI from the relevant environment variable
+                        Console.WriteLine("Getting env var SpcDbUri");
+                        EndpointUri = Environment.GetEnvironmentVariable("SpcDbUri", EnvironmentVariableTarget.Process);
+                        if ( EndpointUri == null ) {
+                            Console.WriteLine("Env var SpcDbUri not found, server will continue with database functionality deactivated");
+                            dbStatus = DatabaseConnectionStatusEnum.ConnectionFailed;
+                            //Console.WriteLine("DatabaseConnectionHasBeenEstablished returns false as first attempt failed (no SpcDbUri var found)");
+                            return false;
+                        }
+                        else {
+                            Console.WriteLine("SpcDbUri="+EndpointUri);
+                        }
+
+                        // Get the Cosmos DB PrimaryKey from the relevant environment variable
+                        Console.WriteLine("Getting env var SpcDbPrimaryKey");
+                        PrimaryKey = Environment.GetEnvironmentVariable("SpcDbPrimaryKey", EnvironmentVariableTarget.Process);
+                        if ( PrimaryKey == null ) {
+                            Console.WriteLine("Env var SpcDbPrimaryKey not found, server will continue with database functionality deactivated");
+                            dbStatus = DatabaseConnectionStatusEnum.ConnectionFailed;
+                            //Console.WriteLine("DatabaseConnectionHasBeenEstablished returns false as first attempt failed (no SpcDbPrimaryKey var found)");
+                            return false;
+                        }
+                        else {
+                            Console.WriteLine("SpcDbPrimaryKey="+PrimaryKey);
+                        }
+
+                        // Establish connection to the DB server
+                        this.cosmosClient = new CosmosClient(EndpointUri, PrimaryKey, new CosmosClientOptions() { ApplicationName = "SevenStuds" });
+
+                        // Get a link to the SevenStuds database (creating it first if necessary)
+                        DatabaseResponse DBresp = await this.cosmosClient.CreateDatabaseIfNotExistsAsync(databaseId);
+                        if ( DBresp.StatusCode == HttpStatusCode.OK ) // Accepted??
+                        {
+                            Console.WriteLine("Database '{0}' already exists\n", DBresp.Database.Id);
+                        }
+                        else if ( DBresp.StatusCode == HttpStatusCode.Created )
+                        {
+                            Console.WriteLine("Database '{0}' has been created\n", DBresp.Database.Id);
+                        }
+                        ourDatabase = DBresp.Database;
+
+                        // Get a link to the Games container (creating it first if necessary)
+                        ContainerResponse Cresp = await ourDatabase.CreateContainerIfNotExistsAsync(gamesContainerId, "/docGameId", 400);
+                        if ( Cresp.StatusCode == HttpStatusCode.OK )
+                        {
+                            Console.WriteLine("Container '{0}' already exists\n", Cresp.Container.Id);
+                        }
+                        else if ( Cresp.StatusCode == HttpStatusCode.Created )
+                        {
+                            Console.WriteLine("Container '{0}' has been created\n", Cresp.Container.Id);
+                        }
+                        ourGamesContainer = Cresp.Container;
+
+                        dbStatus = DatabaseConnectionStatusEnum.ConnectionEstablished;
+                        //Console.WriteLine("DatabaseConnectionHasBeenEstablished returns true as first attempt was able to establish a connection");
+                        return true;
+                    }
+                    catch(Exception ex)
+                    {
+                        // Note that after creating the item, we can access the body of the item with the Resource property off the ItemResponse. We can also access the RequestCharge property to see the amount of RUs consumed on this request.
+                        Console.WriteLine("Database connection could not be established. Continuing without database. Reported exception = {0}\n", ex.Message);
                         dbStatus = DatabaseConnectionStatusEnum.ConnectionFailed;
-                        //Console.WriteLine("DatabaseConnectionHasBeenEstablished returns false as first attempt failed (no SpcDbUri var found)");
-                        return false;
+                        //Console.WriteLine("DatabaseConnectionHasBeenEstablished returns false as first attempt to establish a connection failed");
+                        return false;                    
                     }
-                    else {
-                        Console.WriteLine("SpcDbUri="+EndpointUri);
-                    }
-
-                    // Get the Cosmos DB PrimaryKey from the relevant environment variable
-                    Console.WriteLine("Getting env var SpcDbPrimaryKey");
-                    PrimaryKey = Environment.GetEnvironmentVariable("SpcDbPrimaryKey", EnvironmentVariableTarget.Process);
-                    if ( PrimaryKey == null ) {
-                        Console.WriteLine("Env var SpcDbPrimaryKey not found, server will continue with database functionality deactivated");
-                        dbStatus = DatabaseConnectionStatusEnum.ConnectionFailed;
-                        //Console.WriteLine("DatabaseConnectionHasBeenEstablished returns false as first attempt failed (no SpcDbPrimaryKey var found)");
-                        return false;
-                    }
-                    else {
-                        Console.WriteLine("SpcDbPrimaryKey="+PrimaryKey);
-                    }
-
-                    // Establish connection to the DB server
-                    this.cosmosClient = new CosmosClient(EndpointUri, PrimaryKey, new CosmosClientOptions() { ApplicationName = "SevenStuds" });
-
-                    // Get a link to the SevenStuds database (creating it first if necessary)
-                    DatabaseResponse DBresp = await this.cosmosClient.CreateDatabaseIfNotExistsAsync(databaseId);
-                    if ( DBresp.StatusCode == HttpStatusCode.OK ) // Accepted??
-                    {
-                        Console.WriteLine("Database '{0}' already exists\n", DBresp.Database.Id);
-                    }
-                    else if ( DBresp.StatusCode == HttpStatusCode.Created )
-                    {
-                        Console.WriteLine("Database '{0}' has been created\n", DBresp.Database.Id);
-                    }
-                    ourDatabase = DBresp.Database;
-
-                    // Get a link to the Games container  (creating it first if necessary)
-                    ContainerResponse Cresp = await ourDatabase.CreateContainerIfNotExistsAsync(gamesContainerId, "/docGameId", 400);
-                    if ( Cresp.StatusCode == HttpStatusCode.OK )
-                    {
-                        Console.WriteLine("Container '{0}' already exists\n", Cresp.Container.Id);
-                    }
-                    else if ( Cresp.StatusCode == HttpStatusCode.Created )
-                    {
-                        Console.WriteLine("Container '{0}' has been created\n", Cresp.Container.Id);
-                    }
-                    ourGamesContainer = Cresp.Container;
-
-                    dbStatus = DatabaseConnectionStatusEnum.ConnectionEstablished;
-                    //Console.WriteLine("DatabaseConnectionHasBeenEstablished returns true as first attempt was able to establish a connection");
+                }
+                if ( dbStatus == DatabaseConnectionStatusEnum.ConnectionEstablished ) {
+                    //Console.WriteLine("DatabaseConnectionHasBeenEstablished returns true as connection was previously shown to work");
                     return true;
                 }
-                catch(Exception ex)
-                {
-                    // Note that after creating the item, we can access the body of the item with the Resource property off the ItemResponse. We can also access the RequestCharge property to see the amount of RUs consumed on this request.
-                    Console.WriteLine("Database connection could not be established. Continuing without database. Reported exception = {0}\n", ex.Message);
-                    dbStatus = DatabaseConnectionStatusEnum.ConnectionFailed;
-                    //Console.WriteLine("DatabaseConnectionHasBeenEstablished returns false as first attempt to establish a connection failed");
-                    return false;                    
+                else {
+                    //Console.WriteLine("DatabaseConnectionHasBeenEstablished returns false as connection was previously shown to have failed");
+                    return false;
                 }
             }
-            if ( dbStatus == DatabaseConnectionStatusEnum.ConnectionEstablished ) {
-                //Console.WriteLine("DatabaseConnectionHasBeenEstablished returns true as connection was previously shown to work");
-                return true;
-            }
-            else {
-                //Console.WriteLine("DatabaseConnectionHasBeenEstablished returns false as connection was previously shown to have failed");
-                return false;
-            }
+            finally
+            {
+                databaseLock.Release(semaphoresToReleaseOnCompletion);
+            }                
         }
     }
 }
