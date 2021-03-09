@@ -98,10 +98,20 @@ namespace SocialPokerClub.Models
                     return g;
                 }
             }
-            // If we get here we are running Stateless. There will be no game in the server memory but we know the game id in order to reload its state
-            if ( r.RecoveryAlreadyAttempted ) {
+            // If we get here we are running Stateless, so there will be no game in the server memory.
+            // If the server has just restarted, we will need to recover the game and record the game id on the room.
+            // Otherwise (in normal stateless operation) we use the game id that we recorded on the room to go to the DB to reload the game state
+            if ( r.RecoveryAlreadyAttempted == false ) {
+                // Either this is a new room or there was an active game in this room but the server has been restarted and all state has been lost
+                g = await RecoverOrCreateGame(r);
+                r.RecoveryAlreadyAttempted = true; // make sure we don't try this again (for this room) during the life of this server process
+                r.ActiveGameId = g.GameId;
+                Console.WriteLine("Active game id noted as '{0}'.\n", r.ActiveGameId);
+                return g;
+            }
+            else {
                 // This is the normal situation where we are just reloading the game state that was saved at the end of the previous action
-                Console.WriteLine("Loading game state for game with id '{0}'", r.ActiveGameId);
+                Console.WriteLine("Reloading game state for game with id '{0}'", r.ActiveGameId);
                 g = await OurDB.LoadGameState(r.ActiveGameId);
                 if ( g is null ) {
                     Console.WriteLine("Game unexpectedly not found");
@@ -123,14 +133,6 @@ namespace SocialPokerClub.Models
                     g.InitialiseGame(null);
                     return g;
                 }
-            }
-            else {
-                // Either this is a new room or there was an active game in this room but the server has been restarted and all state has been lost
-                g = await RecoverOrCreateGame(r);
-                r.RecoveryAlreadyAttempted = true; // make sure we don't try this again (for this room) during the life of this server process
-                r.ActiveGameId = g.GameId;
-                Console.WriteLine("Active game id noted as '{0}'.\n", r.ActiveGameId);
-                return g;
             }
         }
         public static async Task<Game> RecoverOrCreateGame(Room r) {
