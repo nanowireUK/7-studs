@@ -47,7 +47,7 @@ Remove extras after game 2
 
 To recreate a single game from a game log that contains multiple games
 
-1) Copy the complete log to a new file in e.g. C:\Users\johnr\OneDrive - derbyshireuk\$CLOUD\7-Studs Poker\Poker Evenings\2020-11-14
+1) Copy the complete log to a new file
 	- e.g. "2020-11-14 game 1.json"
 
 (reopened|started the game|started next hand|joined|continued|folded=)
