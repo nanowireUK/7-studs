@@ -187,6 +187,15 @@ namespace SocialPokerClub.Models
             return ( metricsKey != null );
         }
 
+        public static string TelemetryApiKey() {
+            string apiKey = Environment.GetEnvironmentVariable("SpcApiKey", EnvironmentVariableTarget.Process);
+            if ( apiKey == null ) {
+                Console.WriteLine("Env var SpcApiKey not found, server will run without Application Insights API Key");
+                return "";
+            } 
+            return apiKey;           
+        }        
+
         private static void MonitorStatistics(Object source, ElapsedEventArgs e)
         {
             DateTimeOffset eventTimeUtc = new DateTimeOffset(e.SignalTime.ToUniversalTime());

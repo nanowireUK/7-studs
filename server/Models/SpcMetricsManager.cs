@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.ApplicationInsights.DataContracts;
+using Microsoft.ApplicationInsights.Extensibility.PerfCounterCollector.QuickPulse;
 
 namespace SocialPokerClub.Models
 {
@@ -15,14 +16,35 @@ namespace SocialPokerClub.Models
         private List<SpcMetricsSnapshot> minutelyObservations = new List<SpcMetricsSnapshot>();
         public double ServerTotalConsumedRUs;
         private TelemetryClient telemetry;
-        //private readonly MetricManager manager;
         public SpcMetricsManager()
         {
+            TelemetryConfiguration config = null;
+            QuickPulseTelemetryProcessor quickPulseProcessor = null;
             sessionStart = DateTimeOffset.UtcNow;
             ServerTotalConsumedRUs = 0;
             if ( ServerState.TelemetryActive() ) {
                 Console.WriteLine("Activating Azure Monitor Telemetry Client");
-                telemetry = new TelemetryClient(TelemetryConfiguration.CreateDefault());
+                config = TelemetryConfiguration.CreateDefault();
+                config.DefaultTelemetrySink.TelemetryProcessorChainBuilder
+                    .Use((next) =>
+                    {
+                        quickPulseProcessor = new QuickPulseTelemetryProcessor(next);
+                        return quickPulseProcessor;
+                    })
+                    .Build();
+
+                var quickPulseModule = new QuickPulseTelemetryModule();
+
+                // Secure the control channel.
+                string apiKey = ServerState.TelemetryApiKey();
+                if ( apiKey != "" ) {
+                    // This is optional, but recommended.
+                    quickPulseModule.AuthenticationApiKey = apiKey;
+                    quickPulseModule.Initialize(config);
+                    quickPulseModule.RegisterTelemetryProcessor(quickPulseProcessor);   
+                } 
+                
+                telemetry = new TelemetryClient(config);
             }
         }
         public SpcMetricsSummary GetMetricsSummary() {
