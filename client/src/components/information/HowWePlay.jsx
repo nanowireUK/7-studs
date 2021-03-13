@@ -26,13 +26,16 @@ export default function HowWePlay () {
         <ul>
             <li><Text>The game supports a maximum of eight players in any one game</Text></li>
             <li><Text>We have had up to ten players taking part in a session with one or two players sitting out for each game</Text></li>
-            <li><Text>If there are not enough cards left to fully deal the final round, each player's seventh card will be a shared community card</Text></li>
         </ul>
+        <Heading margin="none" level={2}>Community Card</Heading>
+        <ul>
+            <li><Text>If there are not enough cards left to fully deal the final round, each player's seventh card will be a shared community card</Text></li>
+        </ul>        
 
         <Heading margin="none" level={2}>Lucky-dip</Heading>
         <ul>
             <li><Text>We've also tried lucky-dip games where everyone goes all-in straight away and the best hand wins</Text></li>
-            <li><Text>We use these for quick wins at the end of an evening or to 'draw straws' see who sits out for a round</Text></li>
+            <li><Text>We use these for quick wins at the end of an evening or to 'draw straws' see who sits out the next round</Text></li>
         </ul>
 
         <Heading margin="none" level={2}>Limit game</Heading>
