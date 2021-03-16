@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { Text, Box, Button, Heading, Grid, Tip, Header, Card, CardHeader, CardBody, CardFooter } from 'grommet';
-import { Configure, FormView, Hide } from 'grommet-icons';
+import { Configure, FormView, Hide, Run } from 'grommet-icons';
 
 import RejoinCode from '../components/RejoinCode';
 import { selectPlayers, selectCanDoAction, start, proceed, leave, PlayerActions, selectCurrentGameStandings, selectIsAdmin, selectAdminName, selectIntendsToPlayBlind, goBlind } from '../redux/slices/game';
 import { selectUsername, selectRoomId } from '../redux/slices/hub';
 import LobbySettings from '../components/LobbySettings';
+import Trophies from '../components/Trophies';
 
 
 function ordinal(i) {
@@ -18,7 +19,7 @@ function ordinal(i) {
     return i + "th";
 }
 
-function Player ({ name, hasLeftRoom, remainingFunds, status, position }) {
+function LobbyPlayer ({ name, hasLeftRoom, remainingFunds, status, leaderboardPosition, leaderboardPositionIsTied, trophiesWon }) {
     const username = useSelector(selectUsername);
     const isMe = username === name;
 
@@ -29,10 +30,9 @@ function Player ({ name, hasLeftRoom, remainingFunds, status, position }) {
         return <Box
             direction="row"
             gap="xsmall"
-            round="xsmall"
             justify="start"
         >
-            <Text color={textColor}>{inMostRecentGame ? `${ordinal(position + 1)}:` : '-'}</Text>
+            <Text color={textColor}>{inMostRecentGame ? `${leaderboardPositionIsTied ? '= ' : ''}${ordinal(leaderboardPosition)}:` : '-'}</Text>
             <Text color={textColor} weight={isMe ? 600 : 'normal'}>{name}</Text>
             <Text color={textColor}>
                 {(() => {
@@ -41,6 +41,9 @@ function Player ({ name, hasLeftRoom, remainingFunds, status, position }) {
                     return '';
                 })()}
             </Text>
+            <Trophies trophyCount={trophiesWon} color={isMe ? 'brand' : null}/>
+            {hasLeftRoom?<Run></Run>:null}
+            
         </Box>
 }
 
@@ -84,10 +87,9 @@ function Lobby () {
         dispatch(leave());
     }
 
-    const playerList = currentGameStandings.length ?
-        currentGameStandings.map(({ name, ...player }, position) => (
-            <Player key={name} name={name} {...player} position={position} />
-        )) : players.map(({ name }) => <Text key={name} weight={name === username ? 600 : 'normal'}>{name}</Text>);
+    const playerList = currentGameStandings.map(({ name, ...player }) => (
+        <LobbyPlayer key={name} name={name} {...player} />
+    ));
 
     return <Box background="brand" style={{ height: '100vh' }}>
         <Grid

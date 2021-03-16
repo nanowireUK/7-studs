@@ -37,12 +37,18 @@ export const selectCurrentGameStandings = (state) =>
             PlayerName: name,
             HasLeftRoom: hasLeftRoom,
             Status: status,
-            RemainingFunds: remainingFunds
+            RemainingFunds: remainingFunds,
+            LeaderBoardPosition: leaderboardPosition,
+            LeaderBoardPositionIsTied: leaderboardPositionIsTied,
+            TrophiesWon: trophiesWon
         }) => ({
             name,
             hasLeftRoom,
             status,
-            remainingFunds
+            remainingFunds,
+            leaderboardPosition,
+            leaderboardPositionIsTied,
+            trophiesWon
         })
     );
 

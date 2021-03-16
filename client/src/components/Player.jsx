@@ -1,6 +1,6 @@
 import React, { useRef, useState, useMemo } from 'react';
 import { Box, Button, Stack, Text, Tip } from 'grommet';
-import { Hide, Trophy } from 'grommet-icons';
+import { Hide } from 'grommet-icons';
 
 import {ReactComponent as Chip} from '../assets/images/poker-chip.svg';
 import { selectHandCompleted, selectMyHandDescription, selectPots, PlayerActions, revealBlind, selectCanDoAction, selectHandId } from '../redux/slices/game';
@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useContainerDimensions } from '../utils/hooks';
 
 import PokerCard from './PokerCard';
+import Trophies from './Trophies';
 
 import theme from '../theme';
 
@@ -78,10 +79,7 @@ function Player ({ name, chips, cards, isDealer, isCurrentPlayer, isMe, handDesc
                     <Box flex="grow" direction="row" justify="between">
                         <Box direction="row" gap="xsmall">
                             <Text size="xlarge" color={isMe ? 'brand' : null}>{name} {status}</Text>
-                            {handsWon ? (<Box direction="row" gap="xxsmall">
-                                <Text size="10px" color={isMe ? 'brand' : null}>{handsWon}</Text>
-                                <Trophy size="small" color={isMe ? 'brand' : null}/>
-                            </Box>) : null}
+                            <Trophies trophyCount={handsWon} color={isMe ? 'brand' : null}/>
                         </Box>
                         <Box direction="row" align="center" >
                             <Box direction="row" onMouseOver={() => setShowPotContribution(true)} onMouseOut={() => setShowPotContribution(false)}>
