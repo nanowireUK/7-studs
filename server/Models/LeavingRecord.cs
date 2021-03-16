@@ -10,13 +10,15 @@ namespace SocialPokerClub.Models
         public int ChipsAtEndOfGame { get; set; }
         public Boolean HasBeenPartOfGame { get; set; }
         public Boolean WasSpectator { get; set; }
+        public int HandsWon { get; set; }
         public LeavingRecord(
             string argLeavingParticipantName,
             DateTimeOffset argEndOfRelevanceToGame_UTC,
             string argGroupName,
             int argChipsAtEndOfGame,
             Boolean argHasBeenPartOfGame,
-            Boolean argWasSpectator )
+            Boolean argWasSpectator,
+            int argHandsWon )
         {
             this.LeavingParticipantName = argLeavingParticipantName;
             this.EndOfRelevanceToGame_UTC = argEndOfRelevanceToGame_UTC;
@@ -24,6 +26,7 @@ namespace SocialPokerClub.Models
             this.ChipsAtEndOfGame = argChipsAtEndOfGame;
             this.HasBeenPartOfGame = argHasBeenPartOfGame;
             this.WasSpectator = argWasSpectator;
+            this.HandsWon = argHandsWon;
         }
     }
 }

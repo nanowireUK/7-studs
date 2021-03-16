@@ -24,7 +24,7 @@ namespace SocialPokerClub.Models
                 // Set the response type that will trigger the player's client session to disconnect and everyone else's game state to be updated
                 SignalRGroupNameForAdditionalNotifications = G.Spectators[spectatorIndex].SpectatorSignalRGroupName;
                 ResponseType = ActionResponseTypeEnum.ConfirmToPlayerLeavingAndUpdateRemainingPlayers;
-                G.LeaversLogForGame.Add(new LeavingRecord(UserName, DateTimeOffset.UtcNow, SignalRGroupNameForAdditionalNotifications, 0, false, true));
+                G.LeaversLogForGame.Add(new LeavingRecord(UserName, DateTimeOffset.UtcNow, SignalRGroupNameForAdditionalNotifications, 0, false, true, 0));
                 G.Spectators.RemoveAt(spectatorIndex);
                 if ( G.GameMode == GameModeEnum.LobbyOpen ) {
                     G.LobbyData = new LobbyData(G); // Update the lobby data
@@ -94,7 +94,8 @@ namespace SocialPokerClub.Models
                         p.ParticipantSignalRGroupName,
                         0,
                         true,
-                        false));
+                        false,
+                        p.HandsWon));
                     if ( G.IndexOfParticipantToTakeNextAction == PlayerIndex ) {
                         // It was player's turn to move anyway, so implement the fold in the same way as if they had just folded in turn
                         G.RecordLastEvent(UserName + " has left the game and effectively folded"+ changeOfAdminMessage);
@@ -119,7 +120,8 @@ namespace SocialPokerClub.Models
                         p.ParticipantSignalRGroupName,
                         p.UncommittedChips,
                         p.HasBeenActiveInCurrentGame,
-                        false));
+                        false,
+                        p.HandsWon));
                     G.RecordLastEvent(p.Name + " has left the game"+changeOfAdminMessage);
                 }
 

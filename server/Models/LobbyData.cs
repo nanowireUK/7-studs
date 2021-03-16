@@ -36,7 +36,8 @@ namespace SocialPokerClub.Models
                         // If they went bankrupt during the hand (by going all-in) use the date/time they went all in
                         // (i.e. on the principle that committing your last chip to the pot means that that was the time you exposed yourself to bankruptcy)
                         ( p.TimeOfBankruptcy != DateTimeOffset.MinValue ? p.TimeOfBankruptcy
-                        : ( ( p.UncommittedChips == 0 && p.AllInDateTime != DateTimeOffset.MinValue ) ? p.AllInDateTime : now )) // 'now' is catch-all for players not yet bankrupt
+                        : ( ( p.UncommittedChips == 0 && p.AllInDateTime != DateTimeOffset.MinValue ) ? p.AllInDateTime : now )), // 'now' is catch-all for players not yet bankrupt
+                        p.HandsWon
                     ));
                 }
             }
@@ -53,7 +54,8 @@ namespace SocialPokerClub.Models
                         ),
                         leaver.ChipsAtEndOfGame,
                         true, // has left
-                        leaver.EndOfRelevanceToGame_UTC));
+                        leaver.EndOfRelevanceToGame_UTC,
+                        leaver.HandsWon));
                 }
             }
 
@@ -64,7 +66,8 @@ namespace SocialPokerClub.Models
                     PlayerStatusEnum.Spectator,
                     0,
                     false, // has not left (not that spectators who have left are part of the leavers log)
-                    now));
+                    now,
+                    0));
             }
             // Now sort the array as follows
             //    Show all 'PartOfMostRecentGame' players first (with 'left' indicator) (in descending order of funds, then bankruptcy date (latest first), then name) (includes any who have left in the meantime)

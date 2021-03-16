@@ -17,12 +17,14 @@ namespace SocialPokerClub.Models
         public int PriorityOrderForLobbyData { get; set; }
         public int LeaderBoardPosition { get; set; }
         public Boolean LeaderBoardPositionIsTied { get; set; }
+        public int TrophiesWon { get; set; }
         public LobbyDataCurrentGame (
             string argPlayerName,
             PlayerStatusEnum argStatus,
             int argRemainingFunds,
             Boolean argHasLeftRoom,
-            DateTimeOffset argUTCTimeAsTieBreaker
+            DateTimeOffset argUTCTimeAsTieBreaker,
+            int argTrophiesWon
         )
         {
             this.PlayerName = argPlayerName;
@@ -32,6 +34,7 @@ namespace SocialPokerClub.Models
             this.UTCTimeAsTieBreaker = argUTCTimeAsTieBreaker;
             this.LeaderBoardPosition = Int32.MaxValue; // 1 = winner, 2/3/4etc. = places, MaxInt = not in game
             this.LeaderBoardPositionIsTied = false;
+            this.TrophiesWon = argTrophiesWon;
 
             // This is all so ugly but at least it's mostly in one place :-)
 
