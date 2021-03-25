@@ -21,16 +21,16 @@ function App() {
     if (connectionState === ConnectionState.DISCONNECTED) return <Disconnected />;
     if (game === null) {
         switch (currentView) {
-            case Views.WELCOME:
-                return <WelcomeView />;
-            case Views.CREATE_ROOM:
-                return <CreateRoomView />;
-            case Views.JOIN_ROOM:
-                return <JoinRoomView />;
-            default:
+        case Views.WELCOME:
+            return <WelcomeView />;
+        case Views.CREATE_ROOM:
+            return <CreateRoomView />;
+        case Views.JOIN_ROOM:
+            return <JoinRoomView />;
+        default:
         }
     }
-    if (inLobby) return <Lobby />
+    if (inLobby) return <Lobby />;
     return <Game />;
 }
 

@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
 
-import { TextInput, Button, Box, Heading, Text, Card, CardHeader, CardBody, CardFooter } from 'grommet';
+import {
+    TextInput, Button, Box, Heading, Text, Card, CardHeader, CardBody, CardFooter,
+} from 'grommet';
 
-import { join, rejoin, spectate, selectJoinError, setJoinError } from '../redux/slices/hub';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectRoomId, selectUsername } from '../redux/slices/hub';
+import {
+    join, rejoin, spectate, selectJoinError, setJoinError,
+    selectRoomId, selectUsername,
+} from '../redux/slices/hub';
+
 import BackToWelcome from '../components/BackToWelcome';
 
 function Welcome() {
@@ -25,7 +30,7 @@ function Welcome() {
                 dispatch(rejoin(roomId, playerName, rejoinCode));
             }
         }
-    }
+    };
 
     const submitSpectate = () => {
         if (!isInvalid) {
@@ -35,11 +40,11 @@ function Welcome() {
                 dispatch(rejoin(roomId, playerName, rejoinCode));
             }
         }
-    }
+    };
 
     const onKeyPress = (e) => {
         if (e.key === 'Enter') submitJoin();
-    }
+    };
 
     return (
         <Box background="brand" height="100vh">
@@ -57,9 +62,10 @@ function Welcome() {
                         <Text margin="small" alignSelf="center">Room</Text>
                         <Box>
                             <TextInput
-                                placeholder="Room Name" value={roomId}
+                                placeholder="Room Name"
+                                value={roomId}
                                 onKeyPress={onKeyPress}
-                                onChange={event => {
+                                onChange={(event) => {
                                     setRoomId(event.target.value);
                                     dispatch(setJoinError(null));
                                 }}
@@ -73,7 +79,7 @@ function Welcome() {
                                 placeholder="Player Name"
                                 value={playerName}
                                 onKeyPress={onKeyPress}
-                                onChange={event => {
+                                onChange={(event) => {
                                     setPlayerName(event.target.value);
                                     dispatch(setJoinError(null));
                                 }}
@@ -87,7 +93,7 @@ function Welcome() {
                                 placeholder="Rejoin Code (optional)"
                                 value={rejoinCode}
                                 onKeyPress={onKeyPress}
-                                onChange={event => {
+                                onChange={(event) => {
                                     setRejoinCode(event.target.value);
                                     dispatch(setJoinError(null));
                                 }}
@@ -97,8 +103,8 @@ function Welcome() {
                     {joinError ? <Text textAlign="end" color="error" size="small">{joinError}</Text> : null}
                 </CardBody>
                 <CardFooter direction="row" gap="xsmall" justify="end">
-                    <Button primary label="Join" onClick={submitJoin} disabled={isInvalid}/>
-                    <Button secondary label="Spectate" onClick={submitSpectate} disabled={isInvalid}/>
+                    <Button primary label="Join" onClick={submitJoin} disabled={isInvalid} />
+                    <Button secondary label="Spectate" onClick={submitSpectate} disabled={isInvalid} />
                 </CardFooter>
             </Card>
         </Box>

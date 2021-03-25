@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
 
-import { TextInput, Button, Box, Heading, Text, Card, CardHeader, CardBody, CardFooter } from 'grommet';
+import {
+    TextInput, Button, Box, Heading, Text, Card, CardHeader, CardBody, CardFooter,
+} from 'grommet';
 
-import { create, selectJoinError, setJoinError } from '../redux/slices/hub';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectRoomId, selectUsername } from '../redux/slices/hub';
+import {
+    create, selectJoinError, setJoinError, selectRoomId, selectUsername,
+} from '../redux/slices/hub';
+
 import BackToWelcome from '../components/BackToWelcome';
 
 function Welcome() {
@@ -20,11 +24,11 @@ function Welcome() {
         if (!isInvalid) {
             dispatch(create(roomId, playerName));
         }
-    }
+    };
 
     const onKeyPress = (e) => {
         if (e.key === 'Enter') submitCreate();
-    }
+    };
 
     return (
         <Box background="brand" height="100vh">
@@ -43,13 +47,14 @@ function Welcome() {
                             <Text margin="small" alignSelf="center" color={joinError ? 'error' : ''}>Room</Text>
                             <Box>
                                 <TextInput
-                                    placeholder="Room Name" value={roomId}
+                                    placeholder="Room Name"
+                                    value={roomId}
                                     onKeyPress={onKeyPress}
-                                    onChange={event => {
+                                    onChange={(event) => {
                                         setRoomId(event.target.value);
                                         dispatch(setJoinError(null));
                                     }}
-                                    style={joinError ? { border: '1px solid #f93d20'} : {}}
+                                    style={joinError ? { border: '1px solid #f93d20' } : {}}
                                 />
                             </Box>
                         </Box>
@@ -62,13 +67,13 @@ function Welcome() {
                                 placeholder="Player Name"
                                 value={playerName}
                                 onKeyPress={onKeyPress}
-                                onChange={event => setPlayerName(event.target.value)}
+                                onChange={(event) => setPlayerName(event.target.value)}
                             />
                         </Box>
                     </Box>
                 </CardBody>
                 <CardFooter direction="column" gap="xsmall">
-                    <Button link fill primary label="Create" onClick={submitCreate} disabled={isInvalid}/>
+                    <Button link fill primary label="Create" onClick={submitCreate} disabled={isInvalid} />
                 </CardFooter>
             </Card>
         </Box>

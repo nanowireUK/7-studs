@@ -32,9 +32,9 @@ export const hubSlice = createSlice({
         setRoomId: (state, { payload }) => ({ ...state, roomId: payload }),
         setRejoinCode: (state, { payload }) => ({ ...state, rejoinCode: payload }),
         setLeaverCount: (state, { payload }) => ({ ...state, leaverCount: payload }),
-        awaitingResponse: (state, { payload } ) => ({ ...state, awaitingResponse: payload}),
-        setMuted: (state, { payload} ) => ({ ...state, muted: payload }),
-        setJoinError: (state, { payload} ) => ({ ...state, joinError: payload }),
+        awaitingResponse: (state, { payload }) => ({ ...state, awaitingResponse: payload }),
+        setMuted: (state, { payload }) => ({ ...state, muted: payload }),
+        setJoinError: (state, { payload }) => ({ ...state, joinError: payload }),
     },
 });
 
@@ -66,7 +66,7 @@ export const setHubJoinError = (e) => (dispatch, getState, connection) => {
         console.log(error);
         dispatch(setJoinError('Something went wrong'));
     }
-}
+};
 
 export const serverConnected = () => (dispatch, getState, connection) => {
     const { roomId, username, rejoinCode } = getState().hub;
@@ -76,22 +76,22 @@ export const serverConnected = () => (dispatch, getState, connection) => {
     if (roomId !== null && username !== null && rejoinCode !== null) {
         dispatch(rejoin(roomId, username, rejoinCode));
     } else {
-        console.log(roomId, username, rejoinCode)
+        console.log(roomId, username, rejoinCode);
     }
-}
+};
 
 export const create = (roomId, username) => (dispatch, getState, connection) => {
     dispatch(awaitingResponse(true));
     connection
         .invoke('UserClickedCreateAndJoinRoom', roomId, username)
         .then(() => {
-            window.history.pushState(null, '', window.encodeURIComponent(roomId))
+            window.history.pushState(null, '', window.encodeURIComponent(roomId));
             localStorage.setItem('roomId', roomId);
             localStorage.setItem('username', username);
             dispatch(setUsername(username));
             dispatch(setJoinError(null));
         })
-        .catch(e => {
+        .catch((e) => {
             dispatch(setHubJoinError(e));
         });
 };
@@ -107,7 +107,7 @@ export const join = (roomId, username) => (dispatch, getState, connection) => {
             dispatch(setUsername(username));
             dispatch(setJoinError(null));
         })
-        .catch(e => {
+        .catch((e) => {
             dispatch(setHubJoinError(e));
         });
 };
@@ -123,7 +123,7 @@ export const spectate = (roomId, username) => (dispatch, getState, connection) =
             dispatch(setUsername(username));
             dispatch(setJoinError(null));
         })
-        .catch(e => {
+        .catch((e) => {
             dispatch(setHubJoinError(e));
         });
 };
@@ -133,7 +133,7 @@ export const rejoin = (roomId, username, rejoinCode) => (dispatch, getState, con
     connection
         .invoke('UserClickedRejoin', roomId, username, rejoinCode)
         .then(() => {
-            window.history.pushState(null, '', window.encodeURIComponent(roomId))
+            window.history.pushState(null, '', window.encodeURIComponent(roomId));
             localStorage.setItem('roomId', roomId);
             localStorage.setItem('username', username);
             localStorage.setItem('rejoinCode', rejoinCode);
@@ -149,12 +149,12 @@ export const sendServerAction = (serverMethod, ...args) => (dispatch, getState, 
         .invoke(serverMethod, roomId, username, ...args)
         .then(console.log)
         .catch(console.log);
-}
+};
 
 export const sendServerActionWithLeaverCount = (serverMethod, ...args) => (dispatch, getState) => {
     const { leaverCount } = getState().hub;
     dispatch(sendServerAction(serverMethod, leaverCount.toString(), ...args));
-}
+};
 
 export const selectRoomId = (state) => state.hub.roomId;
 
@@ -171,11 +171,11 @@ export const selectJoinError = (state) => state.hub.joinError;
 export const mute = () => (dispatch) => {
     localStorage.setItem('muted', true);
     dispatch(setMuted(true));
-}
+};
 
 export const unmute = () => (dispatch) => {
     localStorage.setItem('muted', false);
     dispatch(setMuted(false));
-}
+};
 
 export default hubSlice.reducer;

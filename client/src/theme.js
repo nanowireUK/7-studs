@@ -4,10 +4,10 @@ export default {
             brand: '#037d50',
             focus: '#20dcf9',
             'accent-1': '#20dcf9',
-            error: '#f93d20'
+            error: '#f93d20',
         },
         font: {
-            family: `'Quicksand', sans-serif`,
+            family: '\'Quicksand\', sans-serif',
             size: '18px',
             height: '20px',
         },
@@ -19,40 +19,40 @@ export default {
         content: {
             background: '#eee',
             width: {
-                max: '200px'
+                max: '200px',
             },
-            align: 'center'
-        }
+            align: 'center',
+        },
     },
     button: {
         default: {
-            background: 'brand'
+            background: 'brand',
         },
         primary: {
-            background: 'brand'
-        }
+            background: 'brand',
+        },
     },
     card: {
         container: {
             background: 'white',
-            round: "small",
-            pad: "medium",
+            round: 'small',
+            pad: 'medium',
             border: {
                 color: '#444',
-                size: '3px'
+                size: '3px',
             },
-            elevation: null
+            elevation: null,
         },
         header: {
             pad: {
-                bottom: "medium"
-            }
+                bottom: 'medium',
+            },
         },
         footer: {
             pad: {
-                top: "medium"
-            }
-        }
+                top: 'medium',
+            },
+        },
     },
     tabs: {
         header: {
@@ -62,27 +62,27 @@ export default {
                 size: 'small',
             },
         },
-      },
-      tab: {
+    },
+    tab: {
         border: {
             side: 'bottom',
             color: '#20dcf9',
         },
         pad: {
             vertical: 'small',
-            horizontal: '10px'
+            horizontal: '10px',
         },
         margin: {
-          // bring the overall tabs border behind invidual tab borders
-          vertical: '-2px',
-          horizontal: 'none',
+            // bring the overall tabs border behind invidual tab borders
+            vertical: '-2px',
+            horizontal: 'none',
         },
         active: {
             border: {
                 side: 'bottom',
-                color: '#20dcf9'
-            }
+                color: '#20dcf9',
+            },
         },
-      },
+    },
 
 };

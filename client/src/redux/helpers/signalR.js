@@ -20,7 +20,7 @@ import {
 } from '../slices/hub';
 
 import {
-    serverUrl
+    serverUrl,
 } from '../../config';
 import { setLobbySettings } from '../slices/lobby';
 
@@ -37,7 +37,9 @@ export const connection = new HubConnectionBuilder()
 export default (store) => {
     connection.on('ReceiveMyGameState', (msg) => {
         const game = JSON.parse(msg);
-        const { MyRejoinCode, CountOfLeavers, RoomId, LobbySettings } = game;
+        const {
+            MyRejoinCode, CountOfLeavers, RoomId, LobbySettings,
+        } = game;
 
         localStorage.setItem('rejoinCode', MyRejoinCode);
 

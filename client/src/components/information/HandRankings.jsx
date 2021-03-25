@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { Box, Heading, Text } from "grommet";
+import { Box, Heading, Text } from 'grommet';
 import PokerCard from '../PokerCard';
 
 const handRankingsData = [
@@ -15,25 +15,29 @@ const handRankingsData = [
     { handName: 'High Card', probability: '17.4', exampleCards: ['2D', '5S', '6S', 'JH', 'AC'] },
 ];
 
-function Ranking ({ handName, probability, exampleCards }) {
-    return <Box direction="column" gap="small">
-        <Box direction="row" justify="between">
-            <Text>{handName}</Text>
-            <Text>{probability}%</Text>
+function Ranking({ handName, probability, exampleCards }) {
+    return (
+        <Box direction="column" gap="small">
+            <Box direction="row" justify="between">
+                <Text>{handName}</Text>
+                <Text>{probability}%</Text>
+            </Box>
+            <Box height="35px" gap="xxsmall" direction="row">
+                {exampleCards.map(([face, suit], index) => <PokerCard key={index} face={face} suit={suit} />)}
+            </Box>
         </Box>
-        <Box height="35px" gap="xxsmall" direction="row">
-            {exampleCards.map(([face, suit], index) => <PokerCard key={index} face={face} suit={suit} />)}
-        </Box>
-    </Box>
+    );
 }
 
-function HandRankings () {
-    return <Box gap="small">
-        <Heading margin="none" level={2}>Hand Rankings</Heading>
-        {handRankingsData.map(({ handName, probability, exampleCards }) => (
-            <Ranking key={handName} handName={handName} probability={probability} exampleCards={exampleCards} />
-        ))}
-    </Box>
+function HandRankings() {
+    return (
+        <Box gap="small">
+            <Heading margin="none" level={2}>Hand Rankings</Heading>
+            {handRankingsData.map(({ handName, probability, exampleCards }) => (
+                <Ranking key={handName} handName={handName} probability={probability} exampleCards={exampleCards} />
+            ))}
+        </Box>
+    );
 }
 
 export default memo(HandRankings);

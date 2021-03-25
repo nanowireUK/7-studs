@@ -31,44 +31,36 @@ export const selectGame = (state) => state.game;
 
 export const selectMyHandDescription = (state) => state.game.MyHandDescription;
 
-export const selectCurrentGameStandings = (state) =>
-    (state.game !== null ? state.game.LobbyData.CurrentGameStandings : []).map(
-        ({
-            PlayerName: name,
-            HasLeftRoom: hasLeftRoom,
-            Status: status,
-            RemainingFunds: remainingFunds,
-            LeaderBoardPosition: leaderboardPosition,
-            LeaderBoardPositionIsTied: leaderboardPositionIsTied,
-            TrophiesWon: trophiesWon
-        }) => ({
-            name,
-            hasLeftRoom,
-            status,
-            remainingFunds,
-            leaderboardPosition,
-            leaderboardPositionIsTied,
-            trophiesWon
-        })
-    );
+export const selectCurrentGameStandings = (state) => (state.game !== null ? state.game.LobbyData.CurrentGameStandings : []).map(
+    ({
+        PlayerName: name,
+        HasLeftRoom: hasLeftRoom,
+        Status: status,
+        RemainingFunds: remainingFunds,
+        LeaderBoardPosition: leaderboardPosition,
+        LeaderBoardPositionIsTied: leaderboardPositionIsTied,
+        TrophiesWon: trophiesWon,
+    }) => ({
+        name,
+        hasLeftRoom,
+        status,
+        remainingFunds,
+        leaderboardPosition,
+        leaderboardPositionIsTied,
+        trophiesWon,
+    }),
+);
 
-export const selectInLobby = (state) =>
-    state.game !== null && state.game.GameMode === 'LobbyOpen';
-export const selectHandInProgress = (state) =>
-    state.game !== null && state.game.GameMode === 'HandInProgress';
-export const selectHandsBeingRevealed = (state) =>
-    state.game !== null && state.game.GameMode === 'HandsBeingRevealed';
-export const selectHandCompleted = (state) =>
-    state.game !== null && state.game.GameMode === 'HandCompleted';
+export const selectInLobby = (state) => state.game !== null && state.game.GameMode === 'LobbyOpen';
+export const selectHandInProgress = (state) => state.game !== null && state.game.GameMode === 'HandInProgress';
+export const selectHandsBeingRevealed = (state) => state.game !== null && state.game.GameMode === 'HandsBeingRevealed';
+export const selectHandCompleted = (state) => state.game !== null && state.game.GameMode === 'HandCompleted';
 
-export const selectIsAdmin = (state) =>
-    state.game !== null && state.game.IAmAdministrator;
+export const selectIsAdmin = (state) => state.game !== null && state.game.IAmAdministrator;
 
-export const selectIntendsToPlayBlind = (state) =>
-    state.game !== null && state.game.IIntendToPlayBlindInNextHand;
+export const selectIntendsToPlayBlind = (state) => state.game !== null && state.game.IIntendToPlayBlindInNextHand;
 
-export const selectPlayingBlind = (state) =>
-    state.game !== null && state.game.IAmPlayingBlindInCurrentHand;
+export const selectPlayingBlind = (state) => state.game !== null && state.game.IAmPlayingBlindInCurrentHand;
 
 export const selectRaiseOptions = (state) => state.game !== null && state.game.MyRaiseOptions;
 
@@ -100,21 +92,19 @@ export const selectPlayers = (state) => {
                 LastActionAmount: lastActionAmount,
                 RoundNumberOfLastAction: roundNumberOfLastAction,
                 IsPlayingBlindInCurrentHand: isPlayingBlind,
-             },
-             playerIndex,
+            },
+            playerIndex,
         ) => {
             const dealIndex = (playerIndex - dealerIndex + numPlayersInRound - 1) % numPlayersInRound;
 
             return {
                 name,
                 chips,
-                cards: cards.map(([value, suit], index) => {
-                    return {
-                        value,
-                        suit,
-                        cardIndex: roundNumber === -1 || (roundNumber > 3 && (1 + index) < roundNumber) ? -1 : dealIndex + ((roundNumber === 3) ? index : (index - roundNumber + 1)) * numPlayersInRound,
-                    };
-                }),
+                cards: cards.map(([value, suit], index) => ({
+                    value,
+                    suit,
+                    cardIndex: roundNumber === -1 || (roundNumber > 3 && (1 + index) < roundNumber) ? -1 : dealIndex + ((roundNumber === 3) ? index : (index - roundNumber + 1)) * numPlayersInRound,
+                })),
                 handDescription,
                 isMe,
                 isCurrentPlayer,
@@ -127,18 +117,18 @@ export const selectPlayers = (state) => {
                 handsWon,
                 lastActionInHand: roundNumberOfLastAction === state.game.RoundNumber ? lastActionInHand : '',
                 lastActionAmount: roundNumberOfLastAction === state.game.RoundNumber ? lastActionAmount : 0,
-                isPlayingBlind
-            }
-        }
+                isPlayingBlind,
+            };
+        },
     );
-}
+};
 
 export const selectAdminName = (state) => selectPlayers(state).find(({ isAdmin }) => isAdmin).name;
 
 export const selectPots = (state) => state.game.Pots;
 
 export const selectLastHandResult = (state) => (state.game.MostRecentHandResult || [])
-    .map(potResult => potResult.map(({
+    .map((potResult) => potResult.map(({
         AmountWonOrLost: takeaway,
         PlayerName: name,
         Result: resultDescription,
@@ -147,13 +137,12 @@ export const selectLastHandResult = (state) => (state.game.MostRecentHandResult 
         name,
         resultDescription,
         takeaway,
-        stake
+        stake,
     })));
 
 export const selectGameStatus = (state) => state.game.StatusMessage;
 
-export const selectCanDoAction = (action) => (state) =>
-    state.game !== null && state.game.AvailableActions.includes(action);
+export const selectCanDoAction = (action) => (state) => state.game !== null && state.game.AvailableActions.includes(action);
 
 export const selectAnte = (state) => state.game.Ante;
 

@@ -9,7 +9,7 @@ export const lobbySlice = createSlice({
 });
 
 export const {
-    setLobbySettings
+    setLobbySettings,
 } = lobbySlice.actions;
 
 const updateLobbySettings = (newSettings) => (dispatch, getState, connection) => {
@@ -18,7 +18,7 @@ const updateLobbySettings = (newSettings) => (dispatch, getState, connection) =>
     console.log({
         ...lobby,
         ...newSettings,
-    })
+    });
 
     connection
         .invoke('UserClickedUpdateLobbySettings', roomId, username, JSON.stringify({
@@ -27,17 +27,19 @@ const updateLobbySettings = (newSettings) => (dispatch, getState, connection) =>
         }))
         .then(console.log)
         .catch(console.log);
-}
+};
 
 export const updateAcceptNewPlayers = (AcceptNewPlayers) => updateLobbySettings({ AcceptNewPlayers });
 export const updateAllowSpectators = (AcceptNewSpectators) => updateLobbySettings({ AcceptNewSpectators });
 export const updateAnte = (Ante) => updateLobbySettings({ Ante });
 export const updateInitialChipQuantity = (InitialChipQuantity) => updateLobbySettings({ InitialChipQuantity });
-export const updateIsLimitGame = (IsLimitGame) => updateLobbySettings({ IsLimitGame, LimitGameBringInAmount: 2, LimitGameSmallBet: 5, LimitGameBigBet: 10, LimitGameMaxRaises: 4 });
+export const updateIsLimitGame = (IsLimitGame) => updateLobbySettings({
+    IsLimitGame, LimitGameBringInAmount: 2, LimitGameSmallBet: 5, LimitGameBigBet: 10, LimitGameMaxRaises: 4,
+});
 export const updateLowestCardPlacesFirstBet = (LowestCardPlacesFirstBet) => updateLobbySettings({ LowestCardPlacesFirstBet });
 export const updateHideFoldedCards = (HideFoldedCards) => updateLobbySettings({ HideFoldedCards });
 
-export const selectAcceptNewPlayers = (state) => state.lobby.AcceptNewPlayers
+export const selectAcceptNewPlayers = (state) => state.lobby.AcceptNewPlayers;
 export const selectAllowSpectators = (state) => state.lobby.AcceptNewSpectators;
 export const selectAnte = (state) => state.lobby.Ante;
 export const selectInitialChipQuantiy = (state) => state.lobby.InitialChipQuantity;

@@ -6,19 +6,21 @@ import { useDispatch } from 'react-redux';
 import { setCurrentView, Views } from '../redux/slices/views';
 import { setJoinError } from '../redux/slices/hub';
 
-export default function BackToWelcome () {
+export default function BackToWelcome() {
     const dispatch = useDispatch();
 
-    return <Box fill direction="row" gap="none">
-        <Button
-            gap="xsmall"
-            label="Back"
-            plain
-            icon={<LinkPrevious size="small"/>}
-            onClick={() => {
-                dispatch(setCurrentView(Views.WELCOME));
-                dispatch(setJoinError(null));
-            }}
-        />
-    </Box>
+    return (
+        <Box fill direction="row" gap="none">
+            <Button
+                gap="xsmall"
+                label="Back"
+                plain
+                icon={<LinkPrevious size="small" />}
+                onClick={() => {
+                    dispatch(setCurrentView(Views.WELCOME));
+                    dispatch(setJoinError(null));
+                }}
+            />
+        </Box>
+    );
 }
