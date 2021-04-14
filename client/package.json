@@ -5,6 +5,7 @@
     "dependencies": {
         "@aspnet/signalr": "^1.1.4",
         "@microsoft/signalr": "^3.1.7",
+        "@react-hook/resize-observer": "^1.2.0",
         "@reduxjs/toolkit": "^1.5.0",
         "@testing-library/jest-dom": "^4.2.4",
         "@testing-library/react": "^9.5.0",
