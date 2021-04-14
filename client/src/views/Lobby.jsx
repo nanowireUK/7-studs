@@ -10,7 +10,7 @@ import {
 
 import RejoinCode from '../components/RejoinCode';
 import {
-    selectPlayers, selectCanDoAction, start, proceed, leave, PlayerActions, selectCurrentGameStandings, selectIsAdmin, selectAdminName, selectIntendsToPlayBlind, goBlind,
+    selectCanDoAction, start, proceed, leave, PlayerActions, selectCurrentGameStandings, selectIsAdmin, selectAdminName, selectIntendsToPlayBlind, goBlind,
 } from '../redux/slices/game';
 import { selectUsername, selectRoomId } from '../redux/slices/hub';
 import LobbySettings from '../components/LobbySettings';
@@ -71,10 +71,8 @@ function ToggleBlind() {
 }
 
 function Lobby() {
-    const players = useSelector(selectPlayers);
     const roomId = useSelector(selectRoomId);
 
-    const username = useSelector(selectUsername);
     const canStart = useSelector(selectCanDoAction(PlayerActions.START));
     const canContinue = useSelector(selectCanDoAction(PlayerActions.CONINUE));
     const isAdmin = useSelector(selectIsAdmin);
