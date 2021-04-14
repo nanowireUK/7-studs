@@ -1,0 +1,631 @@
+{
+	"roomId": "1501",
+	"notes": "16 Jan 2021 lucky dip. Log extracted from DB and replayed/validated successfully 20 Jan",
+	"administrator": "John",
+	"pauseAfter": 0,
+	"indexOfLastReplayedAction": -1,
+	"startTimeUtc": "2021-01-16T00:01:30.8056539+00:00",
+	"endTimeUtc": "2021-01-16T00:07:20.6879058+00:00",
+	"lobbySettings": { "InitialChipQuantity": 1000, "Ante": 1, "AcceptNewPlayers": true, "AcceptNewSpectators": true, "LowestCardPlacesFirstBet": false},"playersInOrderAtStartOfGame": [
+		"Andrew",
+		"Paul",
+		"Fabrice",
+		"Dan",
+		"John",
+		"Nigel",
+		"Robert"
+	],
+	"playersStartingBlind": [
+		"Dan"
+	],
+	"decks": [
+		{
+			"CardList": "9h4s4h6d9dJdJc8c3c7s6c9sThQc8hJhAs4d7d9c5c8s2h7hQsKs2c2sKdJsQh5dAd6hTcKhKc6sQdAh4cTs8d7c5sAc3s3d3h5h2dTd",
+			"DeckNumber": 1,
+			"Cards": null
+		}
+	],
+	"actions": [
+		{
+			"ActionNumber": 1,
+			"ActionType": 4,
+			"UserName": "John",
+			"Parameters": null,
+			"StatusMessage": "John started the game (player order now randomised). Paul to bet",
+			"PlayerSummaries": "A[D]999(1)4h P[]999(1)Jd F[]999(1)3c D[]999(1)9s J[]999(1)8h N[]999(1)4d R[]999(1)5c ",
+			"HandCommentary": []
+		},
+		{
+			"ActionNumber": 2,
+			"ActionType": 10,
+			"UserName": "Paul",
+			"Parameters": null,
+			"StatusMessage": "Paul checked. Fabrice to bet",
+			"PlayerSummaries": "A[D]999(1)4h P[]999(1)Jd F[]999(1)3c D[]999(1)9s J[]999(1)8h N[]999(1)4d R[]999(1)5c ",
+			"HandCommentary": [
+				"Paul checked",
+				"Fabrice to bet"
+			]
+		},
+		{
+			"ActionNumber": 3,
+			"ActionType": 10,
+			"UserName": "Fabrice",
+			"Parameters": null,
+			"StatusMessage": "Fabrice checked. Dan to bet",
+			"PlayerSummaries": "A[D]999(1)4h P[]999(1)Jd F[]999(1)3c D[]999(1)9s J[]999(1)8h N[]999(1)4d R[]999(1)5c ",
+			"HandCommentary": [
+				"Fabrice checked",
+				"Dan to bet"
+			]
+		},
+		{
+			"ActionNumber": 4,
+			"ActionType": 10,
+			"UserName": "Dan",
+			"Parameters": null,
+			"StatusMessage": "Dan checked. John to bet",
+			"PlayerSummaries": "A[D]999(1)4h P[]999(1)Jd F[]999(1)3c D[]999(1)9s J[]999(1)8h N[]999(1)4d R[]999(1)5c ",
+			"HandCommentary": [
+				"Dan checked",
+				"John to bet"
+			]
+		},
+		{
+			"ActionNumber": 5,
+			"ActionType": 12,
+			"UserName": "John",
+			"Parameters": "999",
+			"StatusMessage": "John raised by 999. Nigel to bet",
+			"PlayerSummaries": "A[D]999(1)4h P[]999(1)Jd F[]999(1)3c D[]999(1)9s J[]0(1000)8h N[]999(1)4d R[]999(1)5c ",
+			"HandCommentary": [
+				"John raised by 999",
+				"Nigel to bet"
+			]
+		},
+		{
+			"ActionNumber": 6,
+			"ActionType": 11,
+			"UserName": "Nigel",
+			"Parameters": null,
+			"StatusMessage": "Nigel paid 999 to call. Robert to bet",
+			"PlayerSummaries": "A[D]999(1)4h P[]999(1)Jd F[]999(1)3c D[]999(1)9s J[]0(1000)8h N[]0(1000)4d R[]999(1)5c ",
+			"HandCommentary": [
+				"Nigel paid 999 to call",
+				"Robert to bet"
+			]
+		},
+		{
+			"ActionNumber": 7,
+			"ActionType": 11,
+			"UserName": "Robert",
+			"Parameters": null,
+			"StatusMessage": "Robert paid 999 to call. Andrew to bet",
+			"PlayerSummaries": "A[D]999(1)4h P[]999(1)Jd F[]999(1)3c D[]999(1)9s J[]0(1000)8h N[]0(1000)4d R[]0(1000)5c ",
+			"HandCommentary": [
+				"Robert paid 999 to call",
+				"Andrew to bet"
+			]
+		},
+		{
+			"ActionNumber": 8,
+			"ActionType": 11,
+			"UserName": "Andrew",
+			"Parameters": null,
+			"StatusMessage": "Andrew paid 999 to call. Paul to bet",
+			"PlayerSummaries": "A[D]0(1000)4h P[]999(1)Jd F[]999(1)3c D[]999(1)9s J[]0(1000)8h N[]0(1000)4d R[]0(1000)5c ",
+			"HandCommentary": [
+				"Andrew paid 999 to call",
+				"Paul to bet"
+			]
+		},
+		{
+			"ActionNumber": 9,
+			"ActionType": 11,
+			"UserName": "Paul",
+			"Parameters": null,
+			"StatusMessage": "Paul paid 999 to call. Fabrice to bet",
+			"PlayerSummaries": "A[D]0(1000)4h P[]0(1000)Jd F[]999(1)3c D[]999(1)9s J[]0(1000)8h N[]0(1000)4d R[]0(1000)5c ",
+			"HandCommentary": [
+				"Paul paid 999 to call",
+				"Fabrice to bet"
+			]
+		},
+		{
+			"ActionNumber": 10,
+			"ActionType": 11,
+			"UserName": "Fabrice",
+			"Parameters": null,
+			"StatusMessage": "Fabrice paid 999 to call. Dan to bet",
+			"PlayerSummaries": "A[D]0(1000)4h P[]0(1000)Jd F[]0(1000)3c D[]999(1)9s J[]0(1000)8h N[]0(1000)4d R[]0(1000)5c ",
+			"HandCommentary": [
+				"Fabrice paid 999 to call",
+				"Dan to bet"
+			]
+		},
+		{
+			"ActionNumber": 11,
+			"ActionType": 11,
+			"UserName": "Dan",
+			"Parameters": null,
+			"StatusMessage": "Dan paid 999 to call. Started next round, John to bet",
+			"PlayerSummaries": "A[D]0(1000)4h8s P[]0(1000)Jd2h F[]0(1000)3c7h D[]0(1000)9sQs J[]0(1000)8hKs N[]0(1000)4d2c R[]0(1000)5c2s ",
+			"HandCommentary": [
+				"Dan paid 999 to call",
+				"Started next round, John to bet"
+			]
+		},
+		{
+			"ActionNumber": 12,
+			"ActionType": 10,
+			"UserName": "John",
+			"Parameters": null,
+			"StatusMessage": "John checked. Nigel to bet",
+			"PlayerSummaries": "A[D]0(1000)4h8s P[]0(1000)Jd2h F[]0(1000)3c7h D[]0(1000)9sQs J[]0(1000)8hKs N[]0(1000)4d2c R[]0(1000)5c2s ",
+			"HandCommentary": [
+				"John checked",
+				"Nigel to bet"
+			]
+		},
+		{
+			"ActionNumber": 13,
+			"ActionType": 10,
+			"UserName": "Nigel",
+			"Parameters": null,
+			"StatusMessage": "Nigel checked. Robert to bet",
+			"PlayerSummaries": "A[D]0(1000)4h8s P[]0(1000)Jd2h F[]0(1000)3c7h D[]0(1000)9sQs J[]0(1000)8hKs N[]0(1000)4d2c R[]0(1000)5c2s ",
+			"HandCommentary": [
+				"Nigel checked",
+				"Robert to bet"
+			]
+		},
+		{
+			"ActionNumber": 14,
+			"ActionType": 10,
+			"UserName": "Robert",
+			"Parameters": null,
+			"StatusMessage": "Robert checked. Andrew to bet",
+			"PlayerSummaries": "A[D]0(1000)4h8s P[]0(1000)Jd2h F[]0(1000)3c7h D[]0(1000)9sQs J[]0(1000)8hKs N[]0(1000)4d2c R[]0(1000)5c2s ",
+			"HandCommentary": [
+				"Robert checked",
+				"Andrew to bet"
+			]
+		},
+		{
+			"ActionNumber": 15,
+			"ActionType": 10,
+			"UserName": "Andrew",
+			"Parameters": null,
+			"StatusMessage": "Andrew checked. Paul to bet",
+			"PlayerSummaries": "A[D]0(1000)4h8s P[]0(1000)Jd2h F[]0(1000)3c7h D[]0(1000)9sQs J[]0(1000)8hKs N[]0(1000)4d2c R[]0(1000)5c2s ",
+			"HandCommentary": [
+				"Andrew checked",
+				"Paul to bet"
+			]
+		},
+		{
+			"ActionNumber": 16,
+			"ActionType": 10,
+			"UserName": "Paul",
+			"Parameters": null,
+			"StatusMessage": "Paul checked. Fabrice to bet",
+			"PlayerSummaries": "A[D]0(1000)4h8s P[]0(1000)Jd2h F[]0(1000)3c7h D[]0(1000)9sQs J[]0(1000)8hKs N[]0(1000)4d2c R[]0(1000)5c2s ",
+			"HandCommentary": [
+				"Paul checked",
+				"Fabrice to bet"
+			]
+		},
+		{
+			"ActionNumber": 17,
+			"ActionType": 10,
+			"UserName": "Fabrice",
+			"Parameters": null,
+			"StatusMessage": "Fabrice checked. Dan to bet",
+			"PlayerSummaries": "A[D]0(1000)4h8s P[]0(1000)Jd2h F[]0(1000)3c7h D[]0(1000)9sQs J[]0(1000)8hKs N[]0(1000)4d2c R[]0(1000)5c2s ",
+			"HandCommentary": [
+				"Fabrice checked",
+				"Dan to bet"
+			]
+		},
+		{
+			"ActionNumber": 18,
+			"ActionType": 10,
+			"UserName": "Dan",
+			"Parameters": null,
+			"StatusMessage": "Dan checked. Started next round, Paul to bet",
+			"PlayerSummaries": "A[D]0(1000)4h8sKd P[]0(1000)Jd2hJs F[]0(1000)3c7hQh D[]0(1000)9sQs5d J[]0(1000)8hKsAd N[]0(1000)4d2c6h R[]0(1000)5c2sTc ",
+			"HandCommentary": [
+				"Dan checked",
+				"Started next round, Paul to bet"
+			]
+		},
+		{
+			"ActionNumber": 19,
+			"ActionType": 10,
+			"UserName": "Paul",
+			"Parameters": null,
+			"StatusMessage": "Paul checked. Fabrice to bet",
+			"PlayerSummaries": "A[D]0(1000)4h8sKd P[]0(1000)Jd2hJs F[]0(1000)3c7hQh D[]0(1000)9sQs5d J[]0(1000)8hKsAd N[]0(1000)4d2c6h R[]0(1000)5c2sTc ",
+			"HandCommentary": [
+				"Paul checked",
+				"Fabrice to bet"
+			]
+		},
+		{
+			"ActionNumber": 20,
+			"ActionType": 10,
+			"UserName": "Fabrice",
+			"Parameters": null,
+			"StatusMessage": "Fabrice checked. Dan to bet",
+			"PlayerSummaries": "A[D]0(1000)4h8sKd P[]0(1000)Jd2hJs F[]0(1000)3c7hQh D[]0(1000)9sQs5d J[]0(1000)8hKsAd N[]0(1000)4d2c6h R[]0(1000)5c2sTc ",
+			"HandCommentary": [
+				"Fabrice checked",
+				"Dan to bet"
+			]
+		},
+		{
+			"ActionNumber": 21,
+			"ActionType": 10,
+			"UserName": "Dan",
+			"Parameters": null,
+			"StatusMessage": "Dan checked. John to bet",
+			"PlayerSummaries": "A[D]0(1000)4h8sKd P[]0(1000)Jd2hJs F[]0(1000)3c7hQh D[]0(1000)9sQs5d J[]0(1000)8hKsAd N[]0(1000)4d2c6h R[]0(1000)5c2sTc ",
+			"HandCommentary": [
+				"Dan checked",
+				"John to bet"
+			]
+		},
+		{
+			"ActionNumber": 22,
+			"ActionType": 10,
+			"UserName": "John",
+			"Parameters": null,
+			"StatusMessage": "John checked. Nigel to bet",
+			"PlayerSummaries": "A[D]0(1000)4h8sKd P[]0(1000)Jd2hJs F[]0(1000)3c7hQh D[]0(1000)9sQs5d J[]0(1000)8hKsAd N[]0(1000)4d2c6h R[]0(1000)5c2sTc ",
+			"HandCommentary": [
+				"John checked",
+				"Nigel to bet"
+			]
+		},
+		{
+			"ActionNumber": 23,
+			"ActionType": 10,
+			"UserName": "Nigel",
+			"Parameters": null,
+			"StatusMessage": "Nigel checked. Robert to bet",
+			"PlayerSummaries": "A[D]0(1000)4h8sKd P[]0(1000)Jd2hJs F[]0(1000)3c7hQh D[]0(1000)9sQs5d J[]0(1000)8hKsAd N[]0(1000)4d2c6h R[]0(1000)5c2sTc ",
+			"HandCommentary": [
+				"Nigel checked",
+				"Robert to bet"
+			]
+		},
+		{
+			"ActionNumber": 24,
+			"ActionType": 10,
+			"UserName": "Robert",
+			"Parameters": null,
+			"StatusMessage": "Robert checked. Andrew to bet",
+			"PlayerSummaries": "A[D]0(1000)4h8sKd P[]0(1000)Jd2hJs F[]0(1000)3c7hQh D[]0(1000)9sQs5d J[]0(1000)8hKsAd N[]0(1000)4d2c6h R[]0(1000)5c2sTc ",
+			"HandCommentary": [
+				"Robert checked",
+				"Andrew to bet"
+			]
+		},
+		{
+			"ActionNumber": 25,
+			"ActionType": 10,
+			"UserName": "Andrew",
+			"Parameters": null,
+			"StatusMessage": "Andrew checked. Started next round, John to bet",
+			"PlayerSummaries": "A[D]0(1000)4h8sKdKh P[]0(1000)Jd2hJsKc F[]0(1000)3c7hQh6s D[]0(1000)9sQs5dQd J[]0(1000)8hKsAdAh N[]0(1000)4d2c6h4c R[]0(1000)5c2sTcTs ",
+			"HandCommentary": [
+				"Andrew checked",
+				"Started next round, John to bet"
+			]
+		},
+		{
+			"ActionNumber": 26,
+			"ActionType": 10,
+			"UserName": "John",
+			"Parameters": null,
+			"StatusMessage": "John checked. Nigel to bet",
+			"PlayerSummaries": "A[D]0(1000)4h8sKdKh P[]0(1000)Jd2hJsKc F[]0(1000)3c7hQh6s D[]0(1000)9sQs5dQd J[]0(1000)8hKsAdAh N[]0(1000)4d2c6h4c R[]0(1000)5c2sTcTs ",
+			"HandCommentary": [
+				"John checked",
+				"Nigel to bet"
+			]
+		},
+		{
+			"ActionNumber": 27,
+			"ActionType": 10,
+			"UserName": "Nigel",
+			"Parameters": null,
+			"StatusMessage": "Nigel checked. Robert to bet",
+			"PlayerSummaries": "A[D]0(1000)4h8sKdKh P[]0(1000)Jd2hJsKc F[]0(1000)3c7hQh6s D[]0(1000)9sQs5dQd J[]0(1000)8hKsAdAh N[]0(1000)4d2c6h4c R[]0(1000)5c2sTcTs ",
+			"HandCommentary": [
+				"Nigel checked",
+				"Robert to bet"
+			]
+		},
+		{
+			"ActionNumber": 28,
+			"ActionType": 10,
+			"UserName": "Robert",
+			"Parameters": null,
+			"StatusMessage": "Robert checked. Andrew to bet",
+			"PlayerSummaries": "A[D]0(1000)4h8sKdKh P[]0(1000)Jd2hJsKc F[]0(1000)3c7hQh6s D[]0(1000)9sQs5dQd J[]0(1000)8hKsAdAh N[]0(1000)4d2c6h4c R[]0(1000)5c2sTcTs ",
+			"HandCommentary": [
+				"Robert checked",
+				"Andrew to bet"
+			]
+		},
+		{
+			"ActionNumber": 29,
+			"ActionType": 10,
+			"UserName": "Andrew",
+			"Parameters": null,
+			"StatusMessage": "Andrew checked. Paul to bet",
+			"PlayerSummaries": "A[D]0(1000)4h8sKdKh P[]0(1000)Jd2hJsKc F[]0(1000)3c7hQh6s D[]0(1000)9sQs5dQd J[]0(1000)8hKsAdAh N[]0(1000)4d2c6h4c R[]0(1000)5c2sTcTs ",
+			"HandCommentary": [
+				"Andrew checked",
+				"Paul to bet"
+			]
+		},
+		{
+			"ActionNumber": 30,
+			"ActionType": 10,
+			"UserName": "Paul",
+			"Parameters": null,
+			"StatusMessage": "Paul checked. Fabrice to bet",
+			"PlayerSummaries": "A[D]0(1000)4h8sKdKh P[]0(1000)Jd2hJsKc F[]0(1000)3c7hQh6s D[]0(1000)9sQs5dQd J[]0(1000)8hKsAdAh N[]0(1000)4d2c6h4c R[]0(1000)5c2sTcTs ",
+			"HandCommentary": [
+				"Paul checked",
+				"Fabrice to bet"
+			]
+		},
+		{
+			"ActionNumber": 31,
+			"ActionType": 10,
+			"UserName": "Fabrice",
+			"Parameters": null,
+			"StatusMessage": "Fabrice checked. Dan to bet",
+			"PlayerSummaries": "A[D]0(1000)4h8sKdKh P[]0(1000)Jd2hJsKc F[]0(1000)3c7hQh6s D[]0(1000)9sQs5dQd J[]0(1000)8hKsAdAh N[]0(1000)4d2c6h4c R[]0(1000)5c2sTcTs ",
+			"HandCommentary": [
+				"Fabrice checked",
+				"Dan to bet"
+			]
+		},
+		{
+			"ActionNumber": 32,
+			"ActionType": 10,
+			"UserName": "Dan",
+			"Parameters": null,
+			"StatusMessage": "Dan checked. Started next round, John to bet",
+			"PlayerSummaries": "A[D]0(1000)4h8sKdKh P[]0(1000)Jd2hJsKc F[]0(1000)3c7hQh6s D[]0(1000)9sQs5dQd J[]0(1000)8hKsAdAh N[]0(1000)4d2c6h4c R[]0(1000)5c2sTcTs ",
+			"HandCommentary": [
+				"Dan checked",
+				"Started next round, John to bet"
+			]
+		},
+		{
+			"ActionNumber": 33,
+			"ActionType": 10,
+			"UserName": "John",
+			"Parameters": null,
+			"StatusMessage": "John checked. Nigel to bet",
+			"PlayerSummaries": "A[D]0(1000)4h8sKdKh P[]0(1000)Jd2hJsKc F[]0(1000)3c7hQh6s D[]0(1000)9sQs5dQd J[]0(1000)8hKsAdAh N[]0(1000)4d2c6h4c R[]0(1000)5c2sTcTs ",
+			"HandCommentary": [
+				"John checked",
+				"Nigel to bet"
+			]
+		},
+		{
+			"ActionNumber": 34,
+			"ActionType": 10,
+			"UserName": "Nigel",
+			"Parameters": null,
+			"StatusMessage": "Nigel checked. Robert to bet",
+			"PlayerSummaries": "A[D]0(1000)4h8sKdKh P[]0(1000)Jd2hJsKc F[]0(1000)3c7hQh6s D[]0(1000)9sQs5dQd J[]0(1000)8hKsAdAh N[]0(1000)4d2c6h4c R[]0(1000)5c2sTcTs ",
+			"HandCommentary": [
+				"Nigel checked",
+				"Robert to bet"
+			]
+		},
+		{
+			"ActionNumber": 35,
+			"ActionType": 10,
+			"UserName": "Robert",
+			"Parameters": null,
+			"StatusMessage": "Robert checked. Andrew to bet",
+			"PlayerSummaries": "A[D]0(1000)4h8sKdKh P[]0(1000)Jd2hJsKc F[]0(1000)3c7hQh6s D[]0(1000)9sQs5dQd J[]0(1000)8hKsAdAh N[]0(1000)4d2c6h4c R[]0(1000)5c2sTcTs ",
+			"HandCommentary": [
+				"Robert checked",
+				"Andrew to bet"
+			]
+		},
+		{
+			"ActionNumber": 36,
+			"ActionType": 10,
+			"UserName": "Andrew",
+			"Parameters": null,
+			"StatusMessage": "Andrew checked. Paul to bet",
+			"PlayerSummaries": "A[D]0(1000)4h8sKdKh P[]0(1000)Jd2hJsKc F[]0(1000)3c7hQh6s D[]0(1000)9sQs5dQd J[]0(1000)8hKsAdAh N[]0(1000)4d2c6h4c R[]0(1000)5c2sTcTs ",
+			"HandCommentary": [
+				"Andrew checked",
+				"Paul to bet"
+			]
+		},
+		{
+			"ActionNumber": 37,
+			"ActionType": 10,
+			"UserName": "Paul",
+			"Parameters": null,
+			"StatusMessage": "Paul checked. Fabrice to bet",
+			"PlayerSummaries": "A[D]0(1000)4h8sKdKh P[]0(1000)Jd2hJsKc F[]0(1000)3c7hQh6s D[]0(1000)9sQs5dQd J[]0(1000)8hKsAdAh N[]0(1000)4d2c6h4c R[]0(1000)5c2sTcTs ",
+			"HandCommentary": [
+				"Paul checked",
+				"Fabrice to bet"
+			]
+		},
+		{
+			"ActionNumber": 38,
+			"ActionType": 10,
+			"UserName": "Fabrice",
+			"Parameters": null,
+			"StatusMessage": "Fabrice checked. Dan to bet",
+			"PlayerSummaries": "A[D]0(1000)4h8sKdKh P[]0(1000)Jd2hJsKc F[]0(1000)3c7hQh6s D[]0(1000)9sQs5dQd J[]0(1000)8hKsAdAh N[]0(1000)4d2c6h4c R[]0(1000)5c2sTcTs ",
+			"HandCommentary": [
+				"Fabrice checked",
+				"Dan to bet"
+			]
+		},
+		{
+			"ActionNumber": 39,
+			"ActionType": 9,
+			"UserName": "Dan",
+			"Parameters": null,
+			"StatusMessage": "Dan is no longer playing blind. Dan to bet",
+			"PlayerSummaries": "A[D]0(1000)4h8sKdKh P[]0(1000)Jd2hJsKc F[]0(1000)3c7hQh6s D[]0(1000)9sQs5dQd J[]0(1000)8hKsAdAh N[]0(1000)4d2c6h4c R[]0(1000)5c2sTcTs ",
+			"HandCommentary": [
+				"Dan is no longer playing blind"
+			]
+		},
+		{
+			"ActionNumber": 40,
+			"ActionType": 10,
+			"UserName": "Dan",
+			"Parameters": null,
+			"StatusMessage": "Dan checked. Betting completed, proceeding to hand reveal stage, John to reveal (or fold)",
+			"PlayerSummaries": "A[D]0(1000)4h8sKdKh P[]0(1000)Jd2hJsKc F[]0(1000)3c7hQh6s D[]0(1000)9sQs5dQd J[]0(1000)8hKsAdAh N[]0(1000)4d2c6h4c R[]0(1000)5c2sTcTs ",
+			"HandCommentary": [
+				"Dan checked",
+				"Betting completed, proceeding to hand reveal stage, John to reveal (or fold)"
+			]
+		},
+		{
+			"ActionNumber": 41,
+			"ActionType": 6,
+			"UserName": "John",
+			"Parameters": null,
+			"StatusMessage": "John revealed their hand details. Nigel to reveal (or fold)",
+			"PlayerSummaries": "A[D]0(1000)4h8sKdKh P[]0(1000)Jd2hJsKc F[]0(1000)3c7hQh6s D[]0(1000)9sQs5dQd J[]0(1000)8hKsAdAh N[]0(1000)4d2c6h4c R[]0(1000)5c2sTcTs ",
+			"HandCommentary": [
+				"John revealed their hand details",
+				"Nigel to reveal (or fold)"
+			]
+		},
+		{
+			"ActionNumber": 42,
+			"ActionType": 6,
+			"UserName": "Nigel",
+			"Parameters": null,
+			"StatusMessage": "Nigel revealed their hand details. Robert to reveal (or fold)",
+			"PlayerSummaries": "A[D]0(1000)4h8sKdKh P[]0(1000)Jd2hJsKc F[]0(1000)3c7hQh6s D[]0(1000)9sQs5dQd J[]0(1000)8hKsAdAh N[]0(1000)4d2c6h4c R[]0(1000)5c2sTcTs ",
+			"HandCommentary": [
+				"Nigel revealed their hand details",
+				"Robert to reveal (or fold)"
+			]
+		},
+		{
+			"ActionNumber": 43,
+			"ActionType": 6,
+			"UserName": "Robert",
+			"Parameters": null,
+			"StatusMessage": "Robert revealed their hand details. Andrew to reveal (or fold)",
+			"PlayerSummaries": "A[D]0(1000)4h8sKdKh P[]0(1000)Jd2hJsKc F[]0(1000)3c7hQh6s D[]0(1000)9sQs5dQd J[]0(1000)8hKsAdAh N[]0(1000)4d2c6h4c R[]0(1000)5c2sTcTs ",
+			"HandCommentary": [
+				"Robert revealed their hand details",
+				"Andrew to reveal (or fold)"
+			]
+		},
+		{
+			"ActionNumber": 44,
+			"ActionType": 6,
+			"UserName": "Andrew",
+			"Parameters": null,
+			"StatusMessage": "Andrew revealed their hand details. Paul to reveal (or fold)",
+			"PlayerSummaries": "A[D]0(1000)4h8sKdKh P[]0(1000)Jd2hJsKc F[]0(1000)3c7hQh6s D[]0(1000)9sQs5dQd J[]0(1000)8hKsAdAh N[]0(1000)4d2c6h4c R[]0(1000)5c2sTcTs ",
+			"HandCommentary": [
+				"Andrew revealed their hand details",
+				"Paul to reveal (or fold)"
+			]
+		},
+		{
+			"ActionNumber": 45,
+			"ActionType": 6,
+			"UserName": "Paul",
+			"Parameters": null,
+			"StatusMessage": "Paul revealed their hand details. Fabrice to reveal (or fold)",
+			"PlayerSummaries": "A[D]0(1000)4h8sKdKh P[]0(1000)Jd2hJsKc F[]0(1000)3c7hQh6s D[]0(1000)9sQs5dQd J[]0(1000)8hKsAdAh N[]0(1000)4d2c6h4c R[]0(1000)5c2sTcTs ",
+			"HandCommentary": [
+				"Paul revealed their hand details",
+				"Fabrice to reveal (or fold)"
+			]
+		},
+		{
+			"ActionNumber": 46,
+			"ActionType": 6,
+			"UserName": "Fabrice",
+			"Parameters": null,
+			"StatusMessage": "Fabrice revealed their hand details. Dan to reveal (or fold)",
+			"PlayerSummaries": "A[D]0(1000)4h8sKdKh P[]0(1000)Jd2hJsKc F[]0(1000)3c7hQh6s D[]0(1000)9sQs5dQd J[]0(1000)8hKsAdAh N[]0(1000)4d2c6h4c R[]0(1000)5c2sTcTs ",
+			"HandCommentary": [
+				"Fabrice revealed their hand details",
+				"Dan to reveal (or fold)"
+			]
+		},
+		{
+			"ActionNumber": 47,
+			"ActionType": 6,
+			"UserName": "Dan",
+			"Parameters": null,
+			"StatusMessage": "Dan revealed their hand details. You are the last player in the game, please either reopen the lobby or leave the game",
+			"PlayerSummaries": "A[D]7000(0)4h8sKdKh P[]0(0)Jd2hJsKc F[]0(0)3c7hQh6s D[]0(0)9sQs5dQd J[]0(0)8hKsAdAh N[]0(0)4d2c6h4c R[]0(0)5c2sTcTs ",
+			"HandCommentary": [
+				"Dan revealed their hand details",
+				"Dan revealed their hand details, all hands revealed, hand ended",
+				"Pot 0: Andrew won 6000 with Kings and Eights",
+				"Pot 0: Paul lost 1000 with Pair of Jacks",
+				"Pot 0: Fabrice lost 1000 with Queen High",
+				"Pot 0: Dan lost 1000 with Pair of Queens",
+				"Pot 0: John lost 1000 with Pair of Aces",
+				"Pot 0: Nigel lost 1000 with Pair of Fours",
+				"Pot 0: Robert lost 1000 with Pair of Tens",
+				"Waiting for administrator to start next hand.",
+				"You are the last player in the game, please either reopen the lobby or leave the game"
+			]
+		},
+		{
+			"ActionNumber": 48,
+			"ActionType": 8,
+			"UserName": "Robert",
+			"Parameters": null,
+			"StatusMessage": "Dan revealed their hand details. You are the last player in the game, please either reopen the lobby or leave the game",
+			"PlayerSummaries": "A[D]7000(0)4h8sKdKh P[]0(0)Jd2hJsKc F[]0(0)3c7hQh6s D[]0(0)9sQs5dQd J[]0(0)8hKsAdAh N[]0(0)4d2c6h4c R[]0(0)5c2sTcTs ",
+			"HandCommentary": [
+				"Dan revealed their hand details",
+				"Dan revealed their hand details, all hands revealed, hand ended",
+				"Pot 0: Andrew won 6000 with Kings and Eights",
+				"Pot 0: Paul lost 1000 with Pair of Jacks",
+				"Pot 0: Fabrice lost 1000 with Queen High",
+				"Pot 0: Dan lost 1000 with Pair of Queens",
+				"Pot 0: John lost 1000 with Pair of Aces",
+				"Pot 0: Nigel lost 1000 with Pair of Fours",
+				"Pot 0: Robert lost 1000 with Pair of Tens",
+				"Waiting for administrator to start next hand.",
+				"You are the last player in the game, please either reopen the lobby or leave the game"
+			]
+		},
+		{
+			"ActionNumber": 49,
+			"ActionType": 3,
+			"UserName": "Robert",
+			"Parameters": null,
+			"StatusMessage": "Robert has left the game and effectively folded out of turn. You are the last player in the game, please either reopen the lobby or leave the game",
+			"PlayerSummaries": "A[D]7000(0)4h8sKdKh P[]0(0)Jd2hJsKc F[]0(0)3c7hQh6s D[]0(0)9sQs5dQd J[]0(0)8hKsAdAh N[]0(0)4d2c6h4c R[FX]0(0)5c2sTcTs ",
+			"HandCommentary": [
+				"Robert has left the game and effectively folded out of turn"
+			]
+		}
+	]
+}

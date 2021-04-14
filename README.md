@@ -1,12 +1,10 @@
-# Seven Studs Poker Project
+# socialpoker.club - 7 Stud Poker
 
-Repo for the 7 Stud Poker project
+Repo for socialpoker.club
 
 ## Current hosts for testing
 
-[Web App](https://7studsclient.azurewebsites.net)
-
-[Server Backend](https://7studsserver.azurewebsites.net)
+[Web App](https://socialpoker.club)
 
 ## Devops Status
 

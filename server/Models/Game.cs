@@ -4,294 +4,521 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System;
 using Microsoft.AspNetCore.SignalR;
+using System.Threading.Tasks;
 
-namespace SevenStuds.Models
+namespace SocialPokerClub.Models
 {
     public class Game
     {
-        [Required]
         // Fixed game properties
-        public string GameId { get; }
+        public string RoomId { get; set; }
+        public string GameId { get; set; }
+        public int GameNumber { get; set; }
+        public int HandsPlayedIncludingCurrent { get; set; } // 0 = game not yet started
+        public int ActionNumber { get; set; }
+        public List<string> rejoinCodes { get; set; }
         public GameModeEnum GameMode { get; set; }
+        // Lobby settings
         public int InitialChipQuantity { get; set; }
         public int Ante { get; set; }
-        // Game state 
+        public bool AcceptNewPlayers { get; set; }
+        public bool AcceptNewSpectators { get; set; }
+        public bool LowestCardPlacesFirstBet { get; set; }
+        public bool IsLimitGame { get; set; }
+        public int LimitGameBringInAmount { get; set; }
+        public int LimitGameSmallBet { get; set; }
+        public int LimitGameBigBet { get; set; }
+        public int LimitGameMaxRaises { get; set; }
+        public bool HideFoldedCards { get; set; }
+        // Game state
         public string StatusMessage { get; set; }
         public string LastEvent { get; set; }
         public string NextAction { get; set; }
         public List<string> HandCommentary { get; set; }
-        public int HandsPlayedIncludingCurrent { get; set; } // 0 = game not yet started
+        public List<List<PotResult>> MostRecentHandResult { get; set; } // New way of doing this
         public int IndexOfParticipantDealingThisHand { get; set; } // Rotates from player 0
         public int IndexOfParticipantToTakeNextAction { get; set; } // Determined by cards showing (at start of round) then on player order
+        public int CallAmountForParticipantToTakeNextAction { get; set; } // So that client doesn't need to work this out
         public int MaxRaiseForParticipantToTakeNextAction { get; set; } // So that client doesn't need to work this out
+        public bool ParticipantToTakeNextActionIsObligedToPostTheBringIn { get; set; }
+        public int RoundNumberIfCardsJustDealt { get; set; } // So that client know it can animate the deal
+        public int RoundNumber { get; set; }
         public int _CardsDealtIncludingCurrent { get; set; } // 0 = hand not started
-        public int _IndexOfLastPlayerToRaise { get; set; } 
-        public int _IndexOfLastPlayerToStartChecking { get; set; } 
+        public int _IndexOfLastPlayerToRaise { get; set; }
+        public int _IndexOfLastPlayerToStartChecking { get; set; }
         public bool _CheckIsAvailable { get; set; }
-        protected GameLog _GameLog { get; set; }
-        protected GameLog _TestContext { get; set; }
-        private Dictionary<string, Participant> _ConnectionToParticipantMap { get; set; } // Can't be public as JSON serialiser can't handle it
+        public bool _ContinueIsAvailable { get; set; } // Won't be allowed after changing some lobby settings
+        public bool _BringInBetHasBeenMade { get; set; }
+        public int _NumberOfRaisesInThisRound { get; set; }
+        public bool _SmallRaiseStillAllowable { get; set; }
+        public bool _SmallBetHasBeenCompleted { get; set; }
+        public List<int> _AllowedRaiseAmounts { get; set; }
+        public List<LimitGameRaiseOptions> _AllowedRaiseOptions { get; set; }
+        public int CountOfLeavers { get; set; }
+        public Card CommunityCard { get; set; }
+        public DateTimeOffset StartTimeUTC { get; set; }
+        public DateTimeOffset LastSuccessfulAction { get; set; }
+        public List<LeavingRecord> LeaversLogForGame { get; set; }
         public List<List<int>> Pots { get; set; } // pot(s) built up in the current hand (over multiple rounds of betting)
         public List<Participant> Participants { get; set; } // ordered list of participants (order represents order around the table)
-        //public List<Event> Events { get; set; } // ordered list of events associated with the game
-        private Dictionary<ActionEnum, ActionAvailability> _ActionAvailability { get; set; } // Can't be public as JSON serialiser can't handle it
-        public List<ActionAvailability> ActionAvailabilityList { get; set; } // This list contains references to the same objects as in the Dictionary       
-        public List<Boolean> CardPositionIsVisible { get; } = new List<Boolean>{false, false, true, true, true, true, false};
-        private Deck CardPack { get; set; }
-
-        public Game(string gameId) {
-            GameId = gameId;
-            //this.GameLevelSignalRGroupName = GameId + '.' + Guid.NewGuid().ToString(); // Unique SignalRgroup name for all players associated with this game
-            this.InitialiseGame(null);
+        public List<Spectator> Spectators { get; set; } // ordered list of spectators (no representation around the table)
+        public ActionAvailabilityMap Permissions { get; set; }
+        public List<Boolean> CardPositionIsVisible { get; set; }
+        public LobbyData LobbyData { get; set; }
+        public GameStatistics GameStatistics { get; set; }
+        public double AccumulatedDbCost { get; set; } // This is the total game cost that the game is aware of prior to it being persisted (at further, unknown cost)
+        public double GameLoadDbCost { get; set; } // The is the cost of loading the game back in from the DB
+        public Deck CardPack { get; set; } // Starts as a full shuffled deck but is depleted as cards are dealt from it
+        public Game() {
+            // Be aware that this parameterless constructor is called both on saving to and reloading from the database
+            // This is why I moved 'InitialiseGame' out of the main constructor
+            int a = 3; // Just for breakpoints
+            a++;
         }
-
-        public void InitialiseGame(GameLog testContext)
-        {
-            GameMode = GameModeEnum.LobbyOpen;
-            SetTestContext(testContext);
-            Participants = new List<Participant>(); // start with empty list of participants
+        public Game(string roomId, int gameNumber) {
+            this.RoomId = roomId;
+            this.GameNumber = gameNumber;
+            // These are the default game settings.
+            // They can be overridden from the lobby using an ActionUpdateLobbySettings command.
+            // An ActionReplay command can also override one or more of them from its LobbySettings section.
             InitialChipQuantity = 1000;
             Ante = 1;
-            HandsPlayedIncludingCurrent = 0;
-            CardPack = new Deck(true);
+            AcceptNewPlayers = true;
+            AcceptNewSpectators = true;
+            LowestCardPlacesFirstBet = true; // New as of 3-Jan-21 (all historical games have been changed to have this set to false)
+            HideFoldedCards = false;
+            IsLimitGame = false; // New as of 7-Jan-21 (all historical games have been changed to have this set to false)
+            if ( IsLimitGame) {
+                InitialChipQuantity = 100; // Smaller amount just while testing
+                LimitGameBringInAmount = Ante * 2;
+                LimitGameSmallBet = Ante * 5;
+                LimitGameBigBet = Ante * 10;
+                LimitGameMaxRaises = 4;
+            }
+        }
+
+        public Room ParentRoom() {
+            return (Room) ServerState.RoomList[this.RoomId.ToLower()];
+        }
+
+        public void InitialiseGame(GameLog replayContext)
+        {
+            GameMode = GameModeEnum.LobbyOpen;
+            LastSuccessfulAction = DateTimeOffset.UtcNow; // This will be updated as the game progresses but need to set a baseline here
+            this.ParentRoom().LastGameAction = LastSuccessfulAction; // Also log this on the room
+            StartTimeUTC = DateTimeOffset.UtcNow; // At this point the time just represents the time the game was created
+            ResetGameId(StartTimeUTC);
+            SetReplayContext(replayContext);
+            InitialiseAccumulatedDbCost(0);
+            GameLoadDbCost = 0; // in case no load costs incurred as not working via DB connection
+            Participants = new List<Participant>(); // start with empty list of participants
+            Spectators = new List<Spectator>(); // start with empty list of spectators
+
+            //CardPack = new Deck(true);
             HandCommentary = new List<string>();
-            _ConnectionToParticipantMap = new Dictionary<string, Participant>(); 
-            _ActionAvailability = new Dictionary<ActionEnum, ActionAvailability>();
-            ActionAvailabilityList = new List<ActionAvailability>();
+            //LastHandResult = new List<List<string>>();
+            MostRecentHandResult = new List<List<PotResult>>();
+            GameStatistics = new GameStatistics(this); // initialise the game stats
+            Permissions = new ActionAvailabilityMap();
+            HandsPlayedIncludingCurrent = 0;
+            LeaversLogForGame = new List<LeavingRecord>();
+            CountOfLeavers = 0;
+            ActionNumber = 0;
+            CardPositionIsVisible = new List<Boolean>{false, false, true, true, true, true, false};
             SetActionAvailabilityBasedOnCurrentPlayer(); // Ensures the initial section of available actions is set
-            this._GameLog = new GameLog(); // Initially empty, will be added to as game actions take place
+            //StartNewGameLog(); // This sets up a dummy log that will just capture joins ahead of any actual games
         }
-        public static Game FindOrCreateGame(string gameId) {
-            if ( SevenStuds.Models.ServerState.GameList.ContainsKey(gameId) ) {
-                return (Game) SevenStuds.Models.ServerState.GameList[gameId];
-            }
-            else {
-                Game newGame = new Game(gameId);
-                SevenStuds.Models.ServerState.GameList.Add(gameId, newGame);
-                return newGame;
-            }
+        public void ResetGameId(DateTimeOffset startTime) {
+            this.GameId = startTime.ToString("u") + " " + this.RoomId;
+            this.ParentRoom().ActiveGameId = this.GameId;
         }
-
-        public void SetTestContext(GameLog testContext)
+        public void SetReplayContext(GameLog replayContext)
         {
-            _TestContext = testContext; // Note: this affects some system behaviour ... need to search for IsRunningInTestMode() to see where
+            this.ParentRoom().ReplayContext = replayContext; // Note: this affects some system behaviour ... need to search for IsRunningInReplayMode() to see where
         }
-        public bool IsRunningInTestMode() {
-            return this._TestContext != null;
-        }
-
-
-
-
-        // public bool ActionIsAvailableToThisPlayerAtThisPoint( ActionEnum ac, int playerIndex ) 
-        // {
-        //     return true;
-        // }
-
-        public void LinkConnectionToParticipant(string connectionId, Participant p) 
+        public GameLog GetReplayContext()
         {
-            _ConnectionToParticipantMap.Add(connectionId, p);
+            return this.ParentRoom().ReplayContext;
         }
-
-        public Participant GetParticipantFromConnection(string connectionId) 
+        public bool IsRunningInReplayMode() {
+            return this.ParentRoom().ReplayContext != null;
+        }
+        public async Task StartNewGame()
         {
-            Participant p;
-            if ( _ConnectionToParticipantMap.TryGetValue(connectionId, out p) )
-            {
-                return p;
+            GameNumber++;
+            StartTimeUTC = DateTimeOffset.UtcNow;
+            if ( this.IsRunningInReplayMode() == false ) {
+                ResetGameId(StartTimeUTC);
             }
-            else 
-            {
-                return null;
-            }
-        }
+            HandsPlayedIncludingCurrent = 0;
+            ActionNumber = 0;
+            CountOfLeavers = 0;
+            CommunityCard = null;
+            CardPositionIsVisible[6] = false;
 
-        public void StartGame()
-        {
+            RemoveDisconnectedPlayersFromGameState();
             foreach ( Participant p in Participants )
             {
                 p.UncommittedChips = this.InitialChipQuantity;
+                p.HandsWon = 0;
             }
-            if ( this.IsRunningInTestMode() == false ) {
+            LeaversLogForGame = new List<LeavingRecord>();
+            if ( this.IsRunningInReplayMode() == false ) {
                 // Normal game, so randomise player order by picking a random player, deleting and moving to front, repeating a few times
-                for (int player = 0; player < Participants.Count; player++) {
-                    Participant p = Participants[player]; // Get reference to player to be moved
-                    Participants.RemoveAt(player); // Remove it from the current list
+                Random r = ServerState.ServerLevelRandomNumberGenerator;
+                for (int i = 0; i < 20; i++) {
+                    int randomPlayerIndex = r.Next(0, Participants.Count - 1); // Note: include player 0 to ensure randomness even when only two players
+                    Participant p = Participants[randomPlayerIndex]; // Get reference to player to be moved
+                    Participants.RemoveAt(randomPlayerIndex); // Remove it from the current list
                     Participants.Insert(0, p); // Move to front of the queue
                 }
             }
             else {
-                // We are running in test mode (i.e. under the control of an ActionReply command) so set the original player order
-                for ( int requiredPos = 0; requiredPos < this._TestContext.playersInOrder.Count; requiredPos++ ) {
+                // We are running in test mode (i.e. under the control of an ActionReplay command) so set the original player order
+                // First remove any players who have not yet joined (allows for players joining between hands)
+                Console.WriteLine("Setting player order as per game log");
+                List<String> correctedPlayersInOrder = new List<String>(this.GetReplayContext().playersInOrderAtStartOfGame);
+                for ( int playerPos = correctedPlayersInOrder.Count - 1; playerPos >= 0; playerPos-- ) {
+                    string playerName = correctedPlayersInOrder[playerPos];
+                    bool participantExists = false;
+                    foreach ( Participant p in Participants) {
+                        if ( p.Name == playerName) {
+                            participantExists = true;
+                            break;
+                        }
+                    }
+                    if ( participantExists == false) {
+                        correctedPlayersInOrder.RemoveAt(playerPos);
+                        Console.WriteLine("Removing "+playerName+" from player order as they had not joined at this point");
+                    }
+                }
+                for ( int requiredPos = 0; requiredPos < correctedPlayersInOrder.Count; requiredPos++ ) {
                     // Find that player who should be at this position and move them to it
-                    string playerToMove = this._TestContext.playersInOrder[requiredPos];
+                    string playerToMove = correctedPlayersInOrder[requiredPos];
                     int currentIndexOfPlayerToMove = PlayerIndexFromName(playerToMove);
                     if ( requiredPos != currentIndexOfPlayerToMove ) {
                         // We need to remove them from current pos and reinsert them at the required pos
                         Participant p = Participants[currentIndexOfPlayerToMove];
                         Participants.RemoveAt(currentIndexOfPlayerToMove); // Remove it from the current list
                         Participants.Insert(requiredPos, p);
+                        Console.WriteLine("Moved "+p.Name+" to position "+requiredPos);
+                    }
+                    else {
+                        //Console.WriteLine(Participants[requiredPos].Name+" was already at position "+requiredPos);
+                    }
+                }
+                // Set the right player as the administrator
+                foreach ( Participant p in Participants) {
+                    if ( p.IsGameAdministrator == false && p.Name == this.GetReplayContext().administrator) {
+                        p.IsGameAdministrator = true;
+                        Console.WriteLine("Setting "+p.Name+" as administrator for the replay");
+                    }
+                    if ( p.IsGameAdministrator == true && p.Name != this.GetReplayContext().administrator) {
+                        p.IsGameAdministrator = false;
+                    }
+                    if ( this.GetReplayContext().playersStartingBlind.Contains(p.Name) ) {
+                        p.IsPlayingBlindInCurrentHand = true;
+                        Console.WriteLine("Setting "+p.Name+" as blind player for this hand");
+                    }
+                }
+            }
+            //StartNewGameLog(); // start a new log for this game
+            double dbCost = await ServerState.OurDB.RecordGameStart(this);
+            AddToAccumulatedDbCost("Start new game", dbCost);
+        }
+
+        public void RemoveDisconnectedPlayersFromGameState() {
+            // Remove any player(s) that disconnected during the last hand
+            for (int player = Participants.Count - 1; player > 0; player--) {
+                // Starting from the end of the player array, remove any players that have disconnected during the last hand
+                if ( Participants[player].HasDisconnected == true ) {
+                    if ( Participants[player].HasBeenActiveInCurrentGame == true ) {
+                        for (int i = 0; i < Pots.Count; i++) {
+                            Pots[i].RemoveAt(player); // Remove this player's slot from the pot array (the pot should be empty at this point anyway)
+                        }
+                        if ( player == IndexOfParticipantDealingThisHand ) {
+                            // Removed player was the dealer, so notionally move the 'dealership' back one slot (and allow for wraparound)
+                            IndexOfParticipantDealingThisHand = (
+                                IndexOfParticipantDealingThisHand > 0
+                                ? IndexOfParticipantDealingThisHand - 1 // go back one slot
+                                : Participants.Count - 1 // wraparound to last player in the list
+                            )  ;
+                        }
+                    }
+                    Participants.RemoveAt(player);
+                }
+            }
+        }
+        public void ClearRemnantsFromLastGame() {
+            // Clear the pots
+            ClearHandDataBetweenHands();
+        }
+        public bool PotsAreEmpty() {
+            //
+            if ( this.Pots == null ){
+                return true;
+            }
+            return this.Pots[0].Count == 0;
+        }
+        public void InitialisePots() {
+            // Reset the pots (one pot only and everyone has 0 until the next hand starts)
+            this.Pots = new List<List<int>>();
+            this.Pots.Add(new List<int>());
+            foreach (Participant p in Participants)
+            {
+                this.Pots[0].Add(0);
+            }
+        }
+        public void ClearHandDataBetweenHands() {
+            this.InitialisePots();
+            // foreach (Participant p in Participants)
+            // {
+            //     p.Hand = new List<Card>();
+            // }
+        }
+
+        public async Task StartNextHand()
+        {
+            // First remove any player(s) that disconnected during the last hand
+            RemoveDisconnectedPlayersFromGameState(); // Shouldn't really be necessary here ... happens mainly on Join, Continue or Open
+
+            HandsPlayedIncludingCurrent++;
+
+            // Change the dealer to be the next player in turn
+            if ( HandsPlayedIncludingCurrent == 1) {
+                IndexOfParticipantDealingThisHand = 0; // First dealer is first player in the list
+            }
+            else {
+                for (int i = 0; i < Participants.Count; i++) {
+                    int nextCandidateForDealer = ( i + IndexOfParticipantDealingThisHand + 1 ) % Participants.Count;
+                    if ( Participants[nextCandidateForDealer].HasDisconnected == false ) {
+                        IndexOfParticipantDealingThisHand = nextCandidateForDealer;
+                        break;
                     }
                 }
             }
 
-            this.LogPlayers(); // record the modified player order
-        }
-
-        public void StartNextHand()
-        {
-            HandsPlayedIncludingCurrent++;
-            IndexOfParticipantDealingThisHand = (HandsPlayedIncludingCurrent - 1) % Participants.Count; // client could work this out too
-
             this.ClearCommentary();
-            // Set up the pack again
 
-            if ( this.IsRunningInTestMode() == false ) {
-                CardPack.Shuffle(); // refreshes the pack and shuffles it
+            // Set up the pack again
+            int newDeckNo = HandsPlayedIncludingCurrent;
+            if ( this.IsRunningInReplayMode() == false ) {
+                // In normal mode, just create a new deck
+                CardPack = new Deck(newDeckNo, true );
             }
             else {
                 // Need to replace the pack with the next one from the historical game log
-                CardPack = this._TestContext.decks[HandsPlayedIncludingCurrent - 1].Clone();
+                CardPack = this.GetReplayContext().decks[HandsPlayedIncludingCurrent - 1].Clone(newDeckNo);
             }
 
-            this.LogSnapshotOfGameDeck();
+            //this.TakeSnapshotOfNewDeck();
+            Deck newDeck = this.CardPack.Clone();
+            //this._GameLog.LogNewDeck(newDeck);
 
-            this.Pots = new List<List<int>>();
-            this.Pots.Add(new List<int>());
+            var dbTasks = new List<Task<double>>();
+            Task<double> addDeckTask = ServerState.OurDB.RecordDeck(this, newDeck);
+            dbTasks.Add(addDeckTask);
 
+            //Console.WriteLine("Hand starting with this deck: " + CardPack.ToString() + "");
+
+            this.ClearHandDataBetweenHands();
+
+            CommunityCard = null;
+            CardPositionIsVisible[6] = false;
+
+            this.GameStatistics.UpdateStatistics(this);
+
+            // Temporarily moved from ClearHandDataBetweenHands
             foreach (Participant p in Participants)
             {
+                p.Hand = new List<Card>();
+            }
+
+            for (int i = 0; i < Participants.Count; i++ )
+            {
+                Participant p = Participants[i];
                 p.IsSharingHandDetails = false;
+                p.HasBeenActiveInCurrentGame = true;
+                p.AllInDateTime = DateTimeOffset.MinValue;
+                p.LastActionInThisHand = ActionEnum.Undefined;
+                p.LastActionAmount = 0;
                 if ( p.UncommittedChips > 0 ) {
                     p.StartNewHandForActivePlayer(this);
-                    this.Pots[0].Add(this.Ante); 
+                    this.Pots[0][i] = this.Ante;
                 }
                 else {
                     p.StartNewHandForBankruptPlayer(this);
-                    this.Pots[0].Add(0); // record their place in the pot, but with a zero contribution
+                    this.Pots[0][i] = 0; // Should already be 0 but setting it explicity to be clear
                 }
             }
-            this.IndexOfParticipantToTakeNextAction = GetIndexOfPlayerToBetFirst();
             _IndexOfLastPlayerToRaise = -1;
-            _IndexOfLastPlayerToStartChecking = -1; 
+            _IndexOfLastPlayerToStartChecking = -1;
             _CheckIsAvailable = true;
+            _ContinueIsAvailable = true;
             _CardsDealtIncludingCurrent = MaxCardsDealtSoFar();
-         }
-        public void SetActionAvailability(ActionEnum ac, AvailabilityEnum av) 
-        {
-            ActionAvailability aa;
-            if ( _ActionAvailability.TryGetValue(ac, out aa) )
-            {
-                aa.Availability = av;
+            RoundNumberIfCardsJustDealt = _CardsDealtIncludingCurrent; // Will be cleared as soon as next action comes in
+            RoundNumber = _CardsDealtIncludingCurrent; // Kept for entire round
+            _NumberOfRaisesInThisRound = -1; // This means the first 'raise' (which is really just making the first full bet) will be ignored
+            _BringInBetHasBeenMade = false;
+            _SmallRaiseStillAllowable = true;
+            _SmallBetHasBeenCompleted = false;
+            _AllowedRaiseAmounts = new List<int>();
+            this.IndexOfParticipantToTakeNextAction = GetIndexOfPlayerToBetFirst();
+            await Task.WhenAll(dbTasks); // Wait until all DB tasks have completed
+            foreach (Task<double> t in dbTasks) {
+                this.AddToAccumulatedDbCost("Record deck", t.Result);
             }
-            else 
-            {
-                aa = new ActionAvailability(ac, av);
-                _ActionAvailability.Add(ac, aa); // Note we are adding the ActionAvailability object as the value
-                ActionAvailabilityList.Add(aa); // Also add it to the list that is in included in the JSON export 
-
-            }
-        }         
-
-        public void SetActionAvailabilityBasedOnCurrentPlayer() 
+        }
+        public void SetActionAvailabilityBasedOnCurrentPlayer()
         {
             // This should be called at the end of any action
 
             // First make all commands unavailable
             foreach (ActionEnum e in Enum.GetValues(typeof(ActionEnum)))
             {
-                SetActionAvailability(e, AvailabilityEnum.NotAvailable); // All commands initially unavailable
+                Permissions.SetAvailability(e, AvailabilityEnum.NotAvailable); // All commands initially unavailable
             }
 
             // Set any commands that are always available
-            SetActionAvailability(ActionEnum.Rejoin, AvailabilityEnum.AnyRegisteredPlayer); // Open up REJOIN to anyone who previously joined
-            SetActionAvailability(ActionEnum.GetState, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who previously joined
-            SetActionAvailability(ActionEnum.GetLog, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who previously joined
-            SetActionAvailability(ActionEnum.Replay, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who previously joined            
+            // To registered players
+            Permissions.SetAvailability(ActionEnum.Rejoin, AvailabilityEnum.AnyRegisteredPlayer); // Open up REJOIN to anyone who previously joined
+            Permissions.SetAvailability(ActionEnum.Leave, AvailabilityEnum.AnyRegisteredPlayer); // Open up LEAVE to anyone who has joined
+            Permissions.SetAvailability(ActionEnum.BlindIntent, AvailabilityEnum.AnyRegisteredPlayer); // Allow any registered player to toggle their intent to play blind
+            Permissions.SetAvailability(ActionEnum.AdHocQuery, AvailabilityEnum.AnyRegisteredPlayer);
+            Permissions.SetAvailability(ActionEnum.Replay, AvailabilityEnum.AnyRegisteredPlayer); // Note: these are the 'stepping' Replay actions (main Replay is handled separately)
 
-            // Set different actions based on current game mode
+            // To not-yet-registered players
+            Permissions.SetAvailability(ActionEnum.Spectate, AvailabilityEnum.AnyUnregisteredPlayer); // Open up SPECTATE at any time to anyone who has not yet joined
+
+            // Add any additional commands that are only available when we are not on the public server (i.e. test features)
+            if ( ServerState.AllowTestFunctions() ) {
+                Permissions.SetAvailability(ActionEnum.GetState, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who previously joined
+                Permissions.SetAvailability(ActionEnum.GetLog, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who previously joined
+                Permissions.SetAvailability(ActionEnum.GetMyState, AvailabilityEnum.AnyRegisteredPlayer); // Open up test functions to anyone who previously joined
+            }
+
+            // Add any additional commands based on current game mode
             if ( GameMode == GameModeEnum.LobbyOpen ) {
-                SetActionAvailability(ActionEnum.Join, AvailabilityEnum.AnyUnregisteredPlayer); // Open up JOIN to anyone who has not yet joined
-                SetActionAvailability(ActionEnum.Open, AvailabilityEnum.NotAvailable); // OPEN is no longer possible as lobby is already open
-                SetActionAvailability(ActionEnum.Start, ( this.Participants.Count >= 2 ) ? AvailabilityEnum.AdministratorOnly : AvailabilityEnum.NotAvailable ); 
+                Permissions.SetAvailability(ActionEnum.Join, AvailabilityEnum.AnyUnregisteredPlayer); // Open up JOIN to anyone who has not yet joined (including spectators)
+                Permissions.SetAvailability(ActionEnum.Spectate, AvailabilityEnum.AnyUnregisteredPlayer); // Open up SPECTATE to anyone who has not yet joined
+                Permissions.SetAvailability(ActionEnum.Open, AvailabilityEnum.NotAvailable); // OPEN is no longer possible as lobby is already open
+                Permissions.SetAvailability(ActionEnum.Start, ( this.Participants.Count >= 2 ) ? AvailabilityEnum.AdministratorOnly : AvailabilityEnum.NotAvailable );
+                Permissions.SetAvailability(ActionEnum.Continue,
+                    ( this.Participants.Count >= 2 && this.HandsPlayedIncludingCurrent > 0 && _ContinueIsAvailable )
+                    ? AvailabilityEnum.AdministratorOnly
+                    : AvailabilityEnum.NotAvailable );
+                Permissions.SetAvailability(ActionEnum.UpdateLobbySettings, AvailabilityEnum.AdministratorOnly);
             }
             else if ( GameMode == GameModeEnum.HandsBeingRevealed ) {
                 // Player can only fold or reveal in this phase
-                SetActionAvailability(ActionEnum.Fold, AvailabilityEnum.ActivePlayerOnly); 
-                SetActionAvailability(ActionEnum.Reveal, AvailabilityEnum.ActivePlayerOnly); 
+                Permissions.SetAvailability(ActionEnum.Fold, AvailabilityEnum.ActivePlayerOnly);
+                Permissions.SetAvailability(ActionEnum.Reveal, AvailabilityEnum.ActivePlayerOnly);
 
             }
             else if ( GameMode == GameModeEnum.HandCompleted ) {
-                SetActionAvailability(ActionEnum.Open, AvailabilityEnum.AdministratorOnly); // Admin can choose to reopen lobby at this point
-                SetActionAvailability(ActionEnum.Reveal, AvailabilityEnum.AnyRegisteredPlayer); // Players may voluntarily reveal their hands at the end of a hand
-                SetActionAvailability(ActionEnum.Start, AvailabilityEnum.AdministratorOnly); // Make it possible for the administrator to start the next hand            
+                Permissions.SetAvailability(ActionEnum.Open, AvailabilityEnum.AdministratorOnly); // Admin can choose to reopen lobby at this point
+                Permissions.SetAvailability(ActionEnum.Reveal, AvailabilityEnum.AnyUnrevealedRegisteredPlayer); // Players may voluntarily reveal their hands at the end of a hand
+                Permissions.SetAvailability(ActionEnum.Continue, AvailabilityEnum.AdministratorOnly); // Admin can choose to continue with the next hand
 
             }
             else if ( GameMode == GameModeEnum.HandInProgress ) {
-                int playerIndex = this.IndexOfParticipantToTakeNextAction;            
+                int playerIndex = this.IndexOfParticipantToTakeNextAction;
                 Participant p = this.Participants[playerIndex];
                 // Decide whether the player can fold at this stage
                 // (actually always available as player becomes inactive on folding and so will never be current player)
-                SetActionAvailability(ActionEnum.Fold, AvailabilityEnum.ActivePlayerOnly); 
+                Permissions.SetAvailability(ActionEnum.Fold, AvailabilityEnum.ActivePlayerOnly);
+
+                // Decide whether player can call, raise or cover at this stage
+                // (depends on their uncommitted funds, how much they need to match the pot and other people's funds)
+                int catchupAmount = MaxChipsInAllPotsForAnyPlayer() - ChipsInAllPotsForSpecifiedPlayer(playerIndex);
+                CallAmountForParticipantToTakeNextAction = catchupAmount;
+                MaxRaiseForParticipantToTakeNextAction = MaxRaiseInContextOfOtherPlayersFunds(playerIndex, catchupAmount);
+
+                // To raise they need more than the matching amount and at least one person has to be able to call or cover following the raise
+                Permissions.SetAvailability(
+                    ActionEnum.Raise,
+                    MaxRaiseForParticipantToTakeNextAction > 0 ? AvailabilityEnum.ActivePlayerOnly: AvailabilityEnum.NotAvailable);
+                // To call the matching amount needs to be more than zero and they need at least the matching amount
+                Permissions.SetAvailability(
+                    ActionEnum.Call,
+                    ( catchupAmount > 0 & p.UncommittedChips >= catchupAmount ) ? AvailabilityEnum.ActivePlayerOnly: AvailabilityEnum.NotAvailable);
+                // To cover they need less than the matching amount
+                Permissions.SetAvailability(
+                    ActionEnum.Cover,
+                    p.UncommittedChips < catchupAmount ? AvailabilityEnum.ActivePlayerOnly: AvailabilityEnum.NotAvailable);
+
+                // If we're playing a limit game, set the specific amounts that the player can raise by
+                SetAllowableRaiseAmounts(p);
+                if ( IsLimitGame && _AllowedRaiseOptions.Contains(LimitGameRaiseOptions.BringIn) ) {
+                    _CheckIsAvailable = false; // Player cannot check if they can afford at least the bring amount
+                }
 
                 // Decide whether the player can check at this stage
-                // (possible until someone does something other than checking)
-                SetActionAvailability(
-                    ActionEnum.Check, 
+                // (possible until someone does something other than checking, or unless the player is obliged to play the bring in)
+                Permissions.SetAvailability(
+                    ActionEnum.Check,
                     _CheckIsAvailable ? AvailabilityEnum.ActivePlayerOnly: AvailabilityEnum.NotAvailable
-                );                 
-                // Decide whether player can call, raise or cover at this stage
-                // (depends on their uncommitted funds vs how much they need to match the pot)
-                int catchupAmount = MaxChipsInAllPotsForAnyPlayer() - ChipsInAllPotsForSpecifiedPlayer(playerIndex);
-                // To raise they need more than the matching amount
-                SetActionAvailability(
-                    ActionEnum.Raise, 
-                    p.UncommittedChips > catchupAmount ? AvailabilityEnum.ActivePlayerOnly: AvailabilityEnum.NotAvailable);
-                MaxRaiseForParticipantToTakeNextAction = p.UncommittedChips > catchupAmount ? p.UncommittedChips - catchupAmount: 0;
-                // To call the matching amount needs to be more than zero and they need at least the matching amount
-                SetActionAvailability(
-                    ActionEnum.Call, 
-                    ( catchupAmount > 0 & p.UncommittedChips >= catchupAmount ) ? AvailabilityEnum.ActivePlayerOnly: AvailabilityEnum.NotAvailable); 
-                // To cover they need less than the matching amount
-                SetActionAvailability(
-                    ActionEnum.Cover, 
-                    p.UncommittedChips < catchupAmount ? AvailabilityEnum.ActivePlayerOnly: AvailabilityEnum.NotAvailable); 
+                );
+
+                // To reveal their blind cards to themselves, they need to have been playing blind up to this point
+                Permissions.SetAvailability(
+                    ActionEnum.BlindReveal,
+                    p.IsPlayingBlindInCurrentHand ? AvailabilityEnum.ActivePlayerOnly: AvailabilityEnum.NotAvailable);
             }
         }
         public bool ActionIsAvailableToPlayer(ActionEnum actionType, int playerIndex) {
             // Check whether specified player is entitled to take this action at this stage (only valid during a started game)
-            ActionAvailability aa = this._ActionAvailability.GetValueOrDefault(actionType);
-            if ( aa.Availability == AvailabilityEnum.NotAvailable ) {
+            // First determine what the availability is for a given action
+            AvailabilityEnum availabilityForRequestedAction = Permissions.GetAvailability(actionType);
+
+            if ( availabilityForRequestedAction == AvailabilityEnum.NotAvailable ) {
                 return false;
             }
-            else if ( aa.Availability == AvailabilityEnum.AnyUnregisteredPlayer & playerIndex == -1 ) { 
-                return true;
-            }               
-            else if ( aa.Availability == AvailabilityEnum.AnyRegisteredPlayer & playerIndex != -1 ) {
+            else if ( availabilityForRequestedAction == AvailabilityEnum.AnyUnregisteredPlayer & playerIndex == -1 ) {
                 return true;
             }
-            else if ( aa.Availability == AvailabilityEnum.AdministratorOnly & playerIndex != -1 
-                && this.Participants[playerIndex].IsGameAdministrator ) {
+            else if ( availabilityForRequestedAction == AvailabilityEnum.AnyRegisteredPlayer & playerIndex != -1 ) {
                 return true;
             }
-            else if ( aa.Availability == AvailabilityEnum.ActivePlayerOnly 
-                & playerIndex == IndexOfParticipantToTakeNextAction
-                & playerIndex != -1 ) 
-            { 
+            else if ( availabilityForRequestedAction == AvailabilityEnum.AdministratorOnly & playerIndex != -1 & this.Participants[playerIndex].IsGameAdministrator ) {
+                return true;
+            }
+            else if ( availabilityForRequestedAction == AvailabilityEnum.ActivePlayerOnly & playerIndex != -1 & playerIndex == IndexOfParticipantToTakeNextAction ) {
+                return true;
+            }
+            else if ( availabilityForRequestedAction == AvailabilityEnum.AnyUnrevealedRegisteredPlayer & playerIndex != -1 & ! Participants[playerIndex].IsSharingHandDetails ) {
                 return true;
             }
             return false;
         }
+        public bool ActionIsAvailableToSpectator(ActionEnum actionType, int spectatorIndex) {
+            // Check whether specified spectator is entitled to take this action at this stage
+            return actionType == ActionEnum.Leave; // The only thing a spectator can do is leave
+        }
         public void DealNextRound()
         {
             _CardsDealtIncludingCurrent += 1;
+            _NumberOfRaisesInThisRound = -1; // This means the first 'raise' (which is really just making the first full bet) will be ignored
+            _BringInBetHasBeenMade = false;
+            _SmallRaiseStillAllowable = true;
+            _SmallBetHasBeenCompleted = false;
+            _AllowedRaiseAmounts = new List<int>();
+            RoundNumberIfCardsJustDealt = _CardsDealtIncludingCurrent; // Will be cleared as soon as next action comes in
+            RoundNumber = _CardsDealtIncludingCurrent; // Kept for entire round
+            CommunityCard = null;
+            CardPositionIsVisible[6] = false;
+            if ( _CardsDealtIncludingCurrent == 7 && CountOfPlayersLeftInHand() > CardPack.Cards.Count ) {
+                // Edge case: we don't have enough cards to deal to all players (can only happen in round 7 if nearly everyone stayed in up to that point)
+                CommunityCard = DealCard(); // Random card that will be dealt to all players
+                CardPositionIsVisible[6] = true;
+            }
             foreach (Participant p in Participants)
             {
                 p.PrepareForNextBettingRound(this, _CardsDealtIncludingCurrent);
             }
             this.IndexOfParticipantToTakeNextAction = GetIndexOfPlayerToBetFirst();
             _IndexOfLastPlayerToRaise = -1;
-            _IndexOfLastPlayerToStartChecking = -1;             
+            _IndexOfLastPlayerToStartChecking = -1;
             _CheckIsAvailable = true;
         }
 
@@ -301,9 +528,9 @@ namespace SevenStuds.Models
             {
                 if ( p.Hand.Count > maxCardsDealtSoFar ) {
                     maxCardsDealtSoFar = p.Hand.Count;
-                }  
-            }   
-            return maxCardsDealtSoFar  ;      
+                }
+            }
+            return maxCardsDealtSoFar  ;
         }
         int GetIndexOfPlayerToBetFirst()
         {
@@ -311,59 +538,77 @@ namespace SevenStuds.Models
             // Don't assume this is the start of the hand, i.e. this could be after first three cards, or fourth through to seventh.
             // Start to left of dealer and check everyone (who is still in, and including dealer) for highest visible hand
             // Assumption: a player is still in if they have money in the pot and have not folded.
-            // Assumption: someone else other than the dealer must still be in otherwise the hand has ended. 
+            // Assumption: someone else other than the dealer must still be in otherwise the hand has ended.
             // Note: the dealer could be out too.
-            //int ZbiLeftOfDealer = (this.IndexOfParticipantDealingThisHand + 1) % Participants.Count;
-            int ZbiOfFirstToBet = -1;
-            for (int i = 0; i < Participants.Count; i++) 
+            // Note: lower hand ranking values are better
+            // The first round (after three cards) can also be configured to make the lowest card start (including suit c/d/h/s)
+            //int IndexLeftOfDealer = (this.IndexOfParticipantDealingThisHand + 1) % Participants.Count;
+            int IndexOfFirstToBet = -1;
+            int HandRankOfFirstToBet = Int32.MaxValue;
+            for (int i = 0; i < Participants.Count; i++)
             {
-                int ZbiOfNextPlayerToInspect = (this.IndexOfParticipantDealingThisHand + 1 + i) % Participants.Count; // starts one to left of dealer
+                int IndexOfNextPlayerToInspect = (this.IndexOfParticipantDealingThisHand + 1 + i) % Participants.Count; // starts one to left of dealer
                 if (
-                    Participants[ZbiOfNextPlayerToInspect].HasFolded == false // i.e. player has not folded out of this hand
-                    && Participants[ZbiOfNextPlayerToInspect].HasCovered == false // i.e. player has not covered the pot 
-                    && Participants[ZbiOfNextPlayerToInspect].IsOutOfThisGame == false // i.e. player was in the hand to start off with
-                    //&& this.ChipsInAllPotsForSpecifiedPlayer(ZbiOfNextPlayerToInspect) > 0 // i.e. player was in the hand to start off with
-                    && 
-                    ( // players hand is the first to be checked or is better than any checked so far
-                        ZbiOfFirstToBet == -1
-                        || Participants[ZbiOfNextPlayerToInspect]._VisibleHandRank < Participants[ZbiOfFirstToBet]._VisibleHandRank
-                    )
+                    Participants[IndexOfNextPlayerToInspect].HasFolded == false // i.e. player has not folded out of this hand
+                    && Participants[IndexOfNextPlayerToInspect].HasCovered == false // i.e. player has not covered the pot
+                    && Participants[IndexOfNextPlayerToInspect].StartedHandWithNoFunds == false // i.e. player was in the hand to start off with
                 )
                 {
-                    ZbiOfFirstToBet = ZbiOfNextPlayerToInspect; // This player is still in and has a better hand 
+                    int rankOfHandBeingTested = Participants[IndexOfNextPlayerToInspect]._VisibleHandRank; // normal situation (highest hand wins)
+                    if ( LowestCardPlacesFirstBet && RoundNumber == 3 ) {
+                        // Low cards naturally get a low ranking here, which means they
+                        rankOfHandBeingTested = Participants[IndexOfNextPlayerToInspect].GetRankingOfThirdCard();
+                    }
+                    if ( rankOfHandBeingTested < HandRankOfFirstToBet ) {
+                        // Hand is the first to be checked or is better than any checked so far (where better is a lower value ranking)
+                        IndexOfFirstToBet = IndexOfNextPlayerToInspect; // This player is still in and has a better hand (or is the first we have checked)
+                        HandRankOfFirstToBet = rankOfHandBeingTested;
+                    }
                 }
             }
-            return ZbiOfFirstToBet;
-        } 
-
-        public int CountOfPlayersLeftIn() {
+            if ( HandRankOfFirstToBet == Int32.MaxValue) {
+                // If this is the case, there is no one left in with a valid reason to bet. Not sure it can happen, but allowed for anyway.
+                return -1;
+            }
+            return IndexOfFirstToBet;
+        }
+        public int CountOfPlayersLeftInHand() {
            // Count how many players were in the round in the first place and have not folded in the meantime
             int stillIn = 0;
-            for (int i = 0; i < Participants.Count; i++) 
+            for (int i = 0; i < Participants.Count; i++)
             {
-                 if ( 
+                 if (
                     Participants[i].HasFolded == false // i.e. player has not folded out of this hand
-                    && Participants[i].IsOutOfThisGame == false // i.e. player has not yet lost all of their funds
+                    && Participants[i].StartedHandWithNoFunds == false // i.e. player has not yet lost all of their funds
                     && this.ChipsInAllPotsForSpecifiedPlayer(i) > 0 // i.e. player was in the hand to start off with
                 )
                 {
-                    stillIn += 1; // This player is still in (even if they are no longer able to bet because of covering a pot)
+                    stillIn += 1; // This player is still in (includes situation where they are no longer able to bet because of covering a pot)
                 }
             }
             return stillIn;
         }
-
-
+        public int CountOfPlayersLeftInGame() {
+           // Count how many players still have funds (this is intended for use after a hand completes)
+            int stillIn = 0;
+            for (int i = 0; i < Participants.Count; i++)
+            {
+                 if ( Participants[i].UncommittedChips > 0 ) {
+                    stillIn += 1;
+                }
+            }
+            return stillIn;
+        }
         public int ChipsInAllPotsForSpecifiedPlayer (int PlayerIndex ) {
             int totalCommitted = 0;
             foreach ( List<int> pot in this.Pots ) {
                 totalCommitted += pot[PlayerIndex];
             }
             return totalCommitted;
-        }   
+        }
         public int ChipsInSpecifiedPotForSpecifiedPlayer (int PotIndex, int PlayerIndex ) {
             return this.Pots[PotIndex][PlayerIndex];
-        }           
+        }
 
         public int MaxChipsInAllPotsForAnyPlayer () {
             int currentMax = 0;
@@ -377,7 +622,7 @@ namespace SevenStuds.Models
                 }
             }
             return currentMax;
-        }  
+        }
 
         public int MaxChipsInSpecifiedPotForAnyPlayer (int pot) {
             int currentMax = 0;
@@ -388,60 +633,175 @@ namespace SevenStuds.Models
                 }
             }
             return currentMax;
-        }  
+        }
+        public int MaxRaiseInContextOfOtherPlayersFunds(int playerIndex, int catchupAmount) {
+            // Find the maximum level of funds available to any active player other than the specified player.
+            // This will be the absolute limit of what the specified player could put into the current hand,
+            // but we will then have to look at their own funds and what they have already contributed, as well
+            // as what they would have to pay (if any) in order to call, to then determine the maximum raise.
+            int maxAvailableToOtherActivePlayers = 0;
+            Participant p;
+            for (int i = 0; i < this.Participants.Count; i++) {
+                p = this.Participants[i];
+                if ( i != playerIndex
+                    && p.HasCovered == false
+                    && p.HasFolded == false
+                    && p.StartedHandWithNoFunds == false
+                ) {
+                    int thisPlayersCommittedChips = ChipsInAllPotsForSpecifiedPlayer(i);
+                    if ( ( p.UncommittedChips + thisPlayersCommittedChips ) > maxAvailableToOtherActivePlayers ) {
+                        maxAvailableToOtherActivePlayers = p.UncommittedChips + thisPlayersCommittedChips;
+                    }
+                }
+            }
+            p = this.Participants[playerIndex];
+            int currentPlayersCommittedChips = ChipsInAllPotsForSpecifiedPlayer(playerIndex);
+
+            if ( p.UncommittedChips <= catchupAmount ) {
+                // We can't raise at all because we don't have more than we need to just catch up
+                return 0;
+            }
+            else if ( ( currentPlayersCommittedChips + p.UncommittedChips ) > maxAvailableToOtherActivePlayers ) {
+                // We have more funds than anyone else so any raise is capped (possibly at zero)
+                return maxAvailableToOtherActivePlayers - ( currentPlayersCommittedChips + catchupAmount);
+            }
+            else {
+                // We have less committed + uncommitted funds than other players, so we can raise up to our total (after catching up)
+                return p.UncommittedChips - catchupAmount;
+            }
+        }
+        public void SetAllowableRaiseAmounts(Participant p) {
+            // If the game is a limit game, define the raises that will be available to the next player if they choose to raise
+
+            _AllowedRaiseAmounts = new List<int>();
+            _AllowedRaiseOptions = new List<LimitGameRaiseOptions>();
+
+            // In a limit game we need to set strict limits on what a player can bet
+            if ( IsLimitGame == true
+                && MaxRaiseForParticipantToTakeNextAction > 0
+                && _NumberOfRaisesInThisRound < LimitGameMaxRaises
+            ) {
+                if (
+                    this.RoundNumber == 3
+                    && _BringInBetHasBeenMade == false
+                    && p.UncommittedChips >= LimitGameBringInAmount
+                    && MaxRaiseForParticipantToTakeNextAction >= LimitGameBringInAmount
+                ) {
+                    _AllowedRaiseOptions.Add(LimitGameRaiseOptions.BringIn);
+                    _AllowedRaiseAmounts.Add(LimitGameBringInAmount);
+                }
+                if (
+                    this.RoundNumber == 3
+                    && _BringInBetHasBeenMade == true
+                    && _SmallBetHasBeenCompleted == false
+                    && p.UncommittedChips >= ( LimitGameSmallBet - LimitGameBringInAmount )
+                    && MaxRaiseForParticipantToTakeNextAction >= ( LimitGameSmallBet - LimitGameBringInAmount )
+                ) {
+                    _AllowedRaiseOptions.Add(LimitGameRaiseOptions.CompleteSmallBet);
+                    _AllowedRaiseAmounts.Add( ( LimitGameSmallBet - LimitGameBringInAmount ) );
+                }
+                else if (
+                    ( this.RoundNumber == 3 || this.RoundNumber == 4 )
+                    && p.UncommittedChips >= LimitGameSmallBet
+                    && MaxRaiseForParticipantToTakeNextAction >= LimitGameSmallBet
+                    && _SmallRaiseStillAllowable == true
+                ) {
+                    _AllowedRaiseOptions.Add(LimitGameRaiseOptions.SmallBet);
+                    _AllowedRaiseAmounts.Add(LimitGameSmallBet);
+                }
+                if (
+                    ( this.RoundNumber >= 5 || ( this.RoundNumber == 4 && SomeoneHasAPairShowing() ) )
+                    && p.UncommittedChips >= LimitGameBigBet
+                    && MaxRaiseForParticipantToTakeNextAction >= LimitGameBigBet
+                ) {
+                    _AllowedRaiseOptions.Add(LimitGameRaiseOptions.BigBet);
+                    _AllowedRaiseAmounts.Add(LimitGameBigBet);
+                }
+            }
+        }
+        public bool SomeoneHasAPairShowing () {
+            foreach ( Participant p in Participants ) {
+                if ( p._VisibleHandDescription.Contains("Pair") ) { return true; }
+            }
+            return false;
+        }
         public int TotalInSpecifiedPot (int pot) {
             int totalPot = 0;
             for (int player = 0; player < this.Participants.Count; player++) {
                 totalPot += this.Pots[pot][player];
             }
             return totalPot;
-        }    
+        }
         public void MoveAmountToPotForSpecifiedPlayer  (int playerIndex, int amt) {
             // Add amount to pots, filling up earlier pots before adding to open one,
             // and splitting the pot automatically if player comes up short of total pot so far
             int amountLeftToAdd = amt;
             this.Participants[playerIndex].UncommittedChips -= amt; // Reduce the player's pile of chips before adding them to the various pots
-            AddCommentary(amountLeftToAdd +" is to be added to the pot (or pots)");
+            if ( this.Participants[playerIndex].UncommittedChips == 0 && amt > 0 ) {
+                // Note the time this player went all in, i.e. when their uncommitted chips first drops to zero
+                // (as it can make a difference to the player rankings at the end)
+                this.Participants[playerIndex].AllInDateTime = DateTimeOffset.UtcNow;
+            }
             for ( int pot = 0; pot < Pots.Count; pot++) {
-                if ( amountLeftToAdd > 0) {
-                    int maxContributionToThisPotByAnyPlayer = MaxChipsInSpecifiedPotForAnyPlayer(pot);
-                    AddCommentary("Max chips currently in pot " + (pot+1) + " = " + maxContributionToThisPotByAnyPlayer);
-                    int myExistingContributionToThisPot = ChipsInSpecifiedPotForSpecifiedPlayer (pot, playerIndex);
-                    if ( pot == Pots.Count - 1) {
-                        // This is the open pot
-                        if ( amountLeftToAdd >= ( maxContributionToThisPotByAnyPlayer - myExistingContributionToThisPot ) ) {
-                            // Player is calling or raising
-                            AddCommentary("Adding "+ amountLeftToAdd +" to open pot");
-                            this.Pots[pot][playerIndex] += amountLeftToAdd;
-                            amountLeftToAdd = 0;
-                        }
-                        else {
-                            // User is short of the amount required to stay in and is covering the pot
-                            AddCommentary("Adding "+ amountLeftToAdd +" to open pot (should be as a result of covering the pot)");
-                            this.Pots[pot][playerIndex] += amountLeftToAdd;
-                            amountLeftToAdd = 0;
-                            SplitPotAbovePlayersAmount(pot,  playerIndex); // Will change pot structure but this loop will end anyway as nothing left to add
-                        }                        
+                int myExistingContributionToThisPot = ChipsInSpecifiedPotForSpecifiedPlayer (pot, playerIndex);
+                AddCommentary("Own current contribution to pot #" + (pot+1) + " = " + myExistingContributionToThisPot);
+                int maxContributionToThisPotByAnyPlayer = MaxChipsInSpecifiedPotForAnyPlayer(pot);
+                AddCommentary("Highest current contribution to pot #" + (pot+1) + " = " + maxContributionToThisPotByAnyPlayer);
+                if ( pot == Pots.Count - 1) {
+                    // This is the open pot
+                    if ( amountLeftToAdd >= ( maxContributionToThisPotByAnyPlayer - myExistingContributionToThisPot ) ) {
+                        // Player is calling or raising
+                        AddCommentary("Adding "+ amountLeftToAdd +" to pot #" + (pot+1) + " (the open pot)");
+                        this.Pots[pot][playerIndex] += amountLeftToAdd;
+                        break; // Loop would end here anyway as there are no more pots to process, but putting this in for clarity
                     }
                     else {
-                        // We are currently filling pots that have already been superseded by the open pot
-                        int shortfallForThisPot = ( maxContributionToThisPotByAnyPlayer - myExistingContributionToThisPot );
-                        if ( shortfallForThisPot == 0 ) {
-                            AddCommentary("Player is already fully paid in to pot #" + (pot+1));
+                        // User is short of the amount required to stay in and is covering the pot
+                        if ( amountLeftToAdd > 0 ) {
+                            AddCommentary("Adding "+ amountLeftToAdd +" to cover pot #" + (pot+1) + " (the open pot)");
                         }
-                        else if ( amountLeftToAdd >= shortfallForThisPot ) {
-                            // Player has at least enough to complete his commitment to this pot
-                            AddCommentary("Adding "+ shortfallForThisPot +" to complete commitment to pot #" + (pot+1));
-                            this.Pots[pot][playerIndex] += shortfallForThisPot;
-                            amountLeftToAdd -= shortfallForThisPot;
+                        this.Pots[pot][playerIndex] += amountLeftToAdd;
+                        SplitPotAbovePlayersAmount(pot,  playerIndex); // This will change the pot structure but we'll break out of this loop now so not a problem
+                        break;
+                    }
+                }
+                else {
+                    // We are currently filling pots that have already been superseded by the open pot
+                    int shortfallForThisPot = ( maxContributionToThisPotByAnyPlayer - myExistingContributionToThisPot );
+                    if ( shortfallForThisPot == 0 ) {
+                        AddCommentary("Player is already fully paid in to pot #" + (pot+1) + " (with " + myExistingContributionToThisPot + " chips)");
+                    }
+                    else if ( amountLeftToAdd >= shortfallForThisPot ) {
+                        // Player has at least enough to complete his commitment to this pot
+                        AddCommentary("Adding "+ shortfallForThisPot +" to complete commitment to pot #" + (pot+1));
+                        this.Pots[pot][playerIndex] += shortfallForThisPot;
+                        amountLeftToAdd -= shortfallForThisPot;
+                        // Stop here if player has nothing left to add
+                        if ( amountLeftToAdd == 0 ) {
+                            AddCommentary("Player has nothing left to add, all relevant pots successfully covered");
+                            break;
+                        }
+                    }
+                    else if ( amountLeftToAdd == 0 ) {
+                        // Can only get here if someone has raised beyond your all-in amount and you now need to cover
+                        if ( myExistingContributionToThisPot == 0) {
+                            AddCommentary("Player is not invested in this pot and has nothing left to add to it");
+                            AddCommentary("Covering was completed with the covering of pot #" + (pot+1-1));
+                            break;
                         }
                         else {
-                            // Player does not have enough to complete their contribution to this pot
-                            AddCommentary("Adding "+ amountLeftToAdd +" to partially satisfy commitment to pot #" + (pot+1));
-                            this.Pots[pot][playerIndex] += amountLeftToAdd;
-                            amountLeftToAdd = 0;
-                            SplitPotAbovePlayersAmount(pot,  playerIndex); // Will change pot structure but this loop will end anyway as nothing left to add
+                            AddCommentary("Covering pot #" + (pot+1));
+                            SplitPotAbovePlayersAmount(pot,  playerIndex); // This will change the pot structure but we'll break out of this loop now so not a problem
+                            break;
                         }
+                    }
+                    else {
+                        // Player does not have enough to complete their contribution to this pot
+                        AddCommentary("Adding "+ amountLeftToAdd +" to partially satisfy commitment to pot #" + (pot+1));
+                        this.Pots[pot][playerIndex] += amountLeftToAdd;
+                        amountLeftToAdd = 0;
+                        SplitPotAbovePlayersAmount(pot,  playerIndex); // This will change the pot structure but we'll break out of this loop now so not a problem
+                        break;
                     }
                 }
             }
@@ -450,7 +810,7 @@ namespace SevenStuds.Models
         public void SplitPotAbovePlayersAmount(int potIndex, int playerIndex) {
             // Find out how much the given player has in the given pot, and split the pot so that higher contributions are moved to a new pot
             int potLimit = ChipsInSpecifiedPotForSpecifiedPlayer(potIndex, playerIndex);
-            AddCommentary("Splitting pot " + (potIndex+1) + " with contribution cap of " + potLimit);
+            AddCommentary("Splitting pot #" + (potIndex+1) + " with contribution cap of " + potLimit);
             Pots.Insert(potIndex+1, new List<int>());
             for ( int player = 0; player < Pots[potIndex].Count; player++) {
                 // Move any surplus amounts from old pot to new for each player
@@ -463,25 +823,14 @@ namespace SevenStuds.Models
                 }
             }
         }
-
         public Card DealCard() {
-            return this.CardPack.NextCard(); 
+            return this.CardPack.NextCard();
         }
-
-        // private string PickRandomCardFromDeck() {
-        //     int cardCount = this.UndealtCards.Count;
-        //     Random r = new Random();
-        //     int rInt = r.Next(0, cardCount - 1); //for ints
-        //     string selectedCard = this.UndealtCards[rInt];
-        //     this.UndealtCards.RemoveAt(rInt);
-        //     return selectedCard;
-        // }
-
-        public void SetNextPlayerToActOrHandleEndOfHand(int currentPlayerIndex, string Trigger) {
+        public async Task SetNextPlayerToActOrHandleEndOfHand(int currentPlayerIndex, string Trigger) {
             // Check for scenario where only one active player is left
-            if ( CountOfPlayersLeftIn() == 1 ) {
+            if ( CountOfPlayersLeftInHand() == 1 ) {
                 // Everyone has folded except one player
-                NextAction = ProcessEndOfHand(Trigger + ", only one player left in, hand ended"); // will also update commentary with hand results
+                NextAction = await ProcessEndOfHand(Trigger + ", only one player left in, hand ended"); // will also update commentary with hand results
                 AddCommentary(NextAction);
                 return;
             }
@@ -489,13 +838,13 @@ namespace SevenStuds.Models
                 // Find and set next player (could be no one if all players have now called or folded)
                 IndexOfParticipantToTakeNextAction = GetIndexOfPlayerToBetNext(currentPlayerIndex);
                 if ( IndexOfParticipantToTakeNextAction > -1 ){
-                    NextAction = Participants[IndexOfParticipantToTakeNextAction].Name + " to bet"; 
+                    NextAction = Participants[IndexOfParticipantToTakeNextAction].Name + " to bet";
                     AddCommentary(NextAction);
                     return;
                 }
                 else if ( _CardsDealtIncludingCurrent < 7 ) {
                     DealNextRound();
-                    NextAction = "Started next round, " + Participants[IndexOfParticipantToTakeNextAction].Name + " to bet"; 
+                    NextAction = "Started next round, " + Participants[IndexOfParticipantToTakeNextAction].Name + " to bet";
                     AddCommentary(NextAction);
                     return;
                 }
@@ -503,8 +852,8 @@ namespace SevenStuds.Models
                     // All 7 cards have now been bet on, so betting is completed and we now need players to reveal their hands in turn
                     GameMode = GameModeEnum.HandsBeingRevealed;
                     IndexOfParticipantToTakeNextAction  = ( _CheckIsAvailable ? _IndexOfLastPlayerToStartChecking : _IndexOfLastPlayerToRaise );
-                    NextAction = Trigger + ", betting completed, proceeding to hand reveal stage, " 
-                        + Participants[IndexOfParticipantToTakeNextAction].Name + " to reveal (or fold)"; 
+                    NextAction = /* Trigger + ", " + */ "Betting completed, proceeding to hand reveal stage, "
+                        + Participants[IndexOfParticipantToTakeNextAction].Name + " to reveal (or fold)";
                     AddCommentary(NextAction);
                     return;
                 }
@@ -513,41 +862,41 @@ namespace SevenStuds.Models
                 // Find and set next player to reveal their hand (or fold)
                 int firstToReveal = ( _CheckIsAvailable ? _IndexOfLastPlayerToStartChecking : _IndexOfLastPlayerToRaise );
                 for ( int i = 0; i < Participants.Count; i++ ) {
-                    int ZbiOfNextPlayerToInspect = (firstToReveal + i) % Participants.Count;
-                    if ( Participants[ZbiOfNextPlayerToInspect].IsSharingHandDetails == false
-                        && Participants[ZbiOfNextPlayerToInspect].HasFolded == false // i.e. player has not folded out of this hand
-                        && Participants[ZbiOfNextPlayerToInspect].IsOutOfThisGame == false // i.e. player has not yet lost all of their funds
+                    int IndexOfNextPlayerToInspect = (firstToReveal + i) % Participants.Count;
+                    if ( Participants[IndexOfNextPlayerToInspect].IsSharingHandDetails == false
+                        && Participants[IndexOfNextPlayerToInspect].HasFolded == false // i.e. player has not folded out of this hand
+                        && Participants[IndexOfNextPlayerToInspect].StartedHandWithNoFunds == false // i.e. player has not yet lost all of their funds
                     ) {
-                        IndexOfParticipantToTakeNextAction = ZbiOfNextPlayerToInspect;
-                        NextAction = Trigger + ", " + Participants[IndexOfParticipantToTakeNextAction].Name + " to reveal (or fold)"; 
+                        IndexOfParticipantToTakeNextAction = IndexOfNextPlayerToInspect;
+                        NextAction = /*Trigger + ", " +*/ Participants[IndexOfParticipantToTakeNextAction].Name + " to reveal (or fold)";
                         AddCommentary(NextAction);
                         return;
                     }
                 }
                 // If we get here there were no further people to reveal their cards, so it's time to determine the winner
-                ProcessEndOfHand(Trigger + ", all hands revealed, hand ended"); // will also update commentary with hand results
+                await ProcessEndOfHand(Trigger + ", all hands revealed, hand ended"); // will also update commentary with hand results
                 AddCommentary(NextAction);
             }
         }
-        
+
         public int GetIndexOfPlayerToBetNext(int currentPlayer)
         {
             // Determine who is next to bet after current player (may be -1 if no players left who can bet, i.e. end of round)
             for (int i = 0; i < Participants.Count - 1 ; i++) // Check all except current player
-            { 
+            {
                 // Check for a complete round of checking
-                int ZbiOfNextPlayerToInspect = (currentPlayer + 1 + i) % Participants.Count;
-                if ( ZbiOfNextPlayerToInspect == _IndexOfLastPlayerToRaise 
-                    || ( this._CheckIsAvailable && ZbiOfNextPlayerToInspect == _IndexOfLastPlayerToStartChecking ) ) 
+                int IndexOfNextPlayerToInspect = (currentPlayer + 1 + i) % Participants.Count;
+                if ( IndexOfNextPlayerToInspect == _IndexOfLastPlayerToRaise
+                    || ( this._CheckIsAvailable && IndexOfNextPlayerToInspect == _IndexOfLastPlayerToStartChecking ) )
                 {
-                    // Have got back round to last player who raised or started a round of checking, so this is the end of the round 
-                    return -1; 
+                    // Have got back round to last player who raised or started a round of checking, so this is the end of the round
+                    return -1;
                 }
-                if ( Participants[ZbiOfNextPlayerToInspect].HasFolded == false // i.e. player has not folded out of this hand
-                    && Participants[ZbiOfNextPlayerToInspect].HasCovered == false // i.e. player has not covered the pot
-                    && Participants[ZbiOfNextPlayerToInspect].IsOutOfThisGame == false // i.e. player has not yet lost all of their funds
+                if ( Participants[IndexOfNextPlayerToInspect].HasFolded == false // i.e. player has not folded out of this hand
+                    && Participants[IndexOfNextPlayerToInspect].HasCovered == false // i.e. player has not covered the pot
+                    && Participants[IndexOfNextPlayerToInspect].StartedHandWithNoFunds == false // i.e. player has not yet lost all of their funds
                 ) {
-                    return ZbiOfNextPlayerToInspect;
+                    return IndexOfNextPlayerToInspect;
                 }
             }
             return -1;
@@ -561,19 +910,28 @@ namespace SevenStuds.Models
                 }
             }
             return -1; // shouldn't be possible as long as we pass admnistratorship on if the current admin leaves the game
-            // (could consider returning 0 here and forcing a random player to be admin!)
-        } 
-
-        public string ProcessEndOfHand(string Trigger) {
-            // Something has triggered the end of the game. Distribute each pot according to winner(s) of that pot.
-            // Start with oldest pot and work forwards. 
+        }
+        public async Task<string> ProcessEndOfHand(string Trigger) {
+            // Something has triggered the end of the hand. Distribute each pot according to winner(s) of that pot.
+            // Start with oldest pot and work forwards.
             // Only players who have contributed to a pot and have not folded are to be considered
             AddCommentary(Trigger);
+            //await _GameLog.LogEndOfHand(this);
+            await Task.FromResult(0); // Just to work around compiler warning "This async method lacks 'await' operators and will run synchronously"
+
+            ClearResultDetails();
+
+            foreach ( Participant p in Participants ) {
+                p.GainOrLossInLastHand = 0;
+                p.WonSomethingInCurrentHand = false;
+            }
+
+            int numberOfPotentialWinners = CountOfPlayersLeftInHand();
+
             List<int> currentWinners = new List<int>();
             for (int pot = 0; pot < Pots.Count ; pot++) {
                 // Identify the player or players who is/are winning this pot
                 int winningPlayersHandRank = int.MaxValue; // Low values will win so this is guaranteed to be beaten
-                AddCommentary("Determining winner(s) of pot #"+ (pot+1));
                 for (int player = 0; player < Participants.Count ; player++) {
                     if ( Participants[player].HasFolded == false && ChipsInSpecifiedPotForSpecifiedPlayer(pot, player) > 0 ) {
                         if ( currentWinners.Count == 0 ) {
@@ -600,9 +958,18 @@ namespace SevenStuds.Models
                         // Give them their share of this pot
                         int tp = TotalInSpecifiedPot(pot);
                         int share = tp / currentWinners.Count; // Discards any fractional winnings ... not sure how else to handle this
-                        p.UncommittedChips += share;
                         int inPot = ChipsInSpecifiedPotForSpecifiedPlayer(pot, player);
-                        AddCommentary(p.Name + " won " + ( share - inPot ) + " with " + p._HandSummary + " (" + p._FullHandDescription + ")");
+                        p.UncommittedChips += share;
+                        p.GainOrLossInLastHand += ( share - inPot );
+                        p.WonSomethingInCurrentHand = true;
+                        if ( numberOfPotentialWinners == 1 ) {
+                            AddCommentaryAndResultDetail(pot, p.Name, inPot, ( share - inPot ), PotResultReasonEnum.NoOneElseLeft, p._FullHandDescription, p.Hand,
+                                p.Name + " won " + ( share - inPot ) + " as everyone else folded");
+                        }
+                        else {
+                            AddCommentaryAndResultDetail(pot, p.Name, inPot, ( share - inPot ), PotResultReasonEnum.ViaHandComparisons, p._FullHandDescription, p.Hand,
+                                p.Name + " won " + ( share - inPot ) + " with " + p._FullHandDescription);
+                        }
                     }
                 }
                 for (int player = 0; player < Participants.Count ; player++) {
@@ -610,22 +977,63 @@ namespace SevenStuds.Models
                     if ( ! currentWinners.Contains(player) ) {
                         // Record the loss of their investment
                         int inPot = ChipsInSpecifiedPotForSpecifiedPlayer(pot, player);
+                        p.GainOrLossInLastHand -= inPot;
                         if ( inPot == 0 ) {
-                            AddCommentary(p.Name + " had nothing in this pot");
+                            AddCommentaryAndResultDetail(pot, p.Name, inPot, 0, PotResultReasonEnum.PlayerWasNotInThisPot, p._FullHandDescription, p.Hand,
+                                p.Name + " had nothing in this pot");
                         }
                         else if ( p.HasFolded ) {
-                            AddCommentary(p.Name + " lost " + ( inPot ) + " after folding");
+                            AddCommentaryAndResultDetail(pot, p.Name, inPot, - inPot, PotResultReasonEnum.PlayerFolded, p._FullHandDescription, p.Hand,
+                                p.Name + " lost " + ( inPot ) + " after folding");
                         }
                         else {
-                            AddCommentary(p.Name + " lost " + ( inPot ) + " with " + p._HandSummary + " [rank=" + p._FullHandRank + "] (" + p._FullHandDescription + ")");
+                            AddCommentaryAndResultDetail(pot, p.Name, inPot, - inPot, PotResultReasonEnum.ViaHandComparisons, p._FullHandDescription, p.Hand,
+                                p.Name + " lost " + ( inPot ) + " with " + p._FullHandDescription);
                         }
                     }
-                }                
+                }
             }
-            
+
+            ClearRemnantsFromLastGame(); // Ensures that player summaries will not show anything still in the pots
+
+            // Identify anyone who became backrupt during the hand.
+            for (int p = 0; p < Participants.Count ; p++) {
+                //DateTimeOffset now = DateTimeOffset.UtcNow;
+                if ( Participants[p].UncommittedChips == 0 && Participants[p].StartedHandWithNoFunds == false ) {
+                    // Player is now bankrupt having been in this hand with some funds at the beginning of the hand
+                    Participants[p].TimeOfBankruptcy = Participants[p].AllInDateTime; // This is the time they committed their last chip to the pot
+                }
+            }
+
+            // Work through each of the players and note/set various things
+            int unrevealedHands = 0;
+            for (int p = 0; p < Participants.Count ; p++) {
+                if ( Participants[p].IsSharingHandDetails == false && Participants[p].HasDisconnected == false) {
+                    // Check for anyone who has not disconnected and not yet revealed their cards
+                    unrevealedHands++;
+                }
+                if ( Participants[p].WonSomethingInCurrentHand == true) {
+                    // Update the player's win count if they won anything in this hand
+                    Participants[p].HandsWon++;
+                }
+            }
+
+            // Clear the 'next player' setting as it's undefined now until the next hand starts
+            IndexOfParticipantToTakeNextAction = -1;
+
             AddCommentary("Waiting for administrator to start next hand.");
-            NextAction = "Reveal hands if desired, or administrator to start next hand (or reopen lobby)";
-            GameMode = GameModeEnum.HandCompleted; 
+
+            if ( CountOfPlayersLeftInGame() == 1 ) {
+                NextAction = "You are the last player in the game, please either reopen the lobby or leave the game";
+            }
+            else if ( unrevealedHands > 0 ) {
+                NextAction = "Reveal hands if desired, or administrator to start next hand (or reopen lobby)";
+            }
+            else {
+                NextAction = "Administrator to start next hand (or reopen lobby)";
+            }
+
+            GameMode = GameModeEnum.HandCompleted;
             return NextAction;
         }
 
@@ -637,61 +1045,151 @@ namespace SevenStuds.Models
             }
             return -1;
         }
+        public int SpectatorIndexFromName(string SearchName) {
+            for (int spectator = 0; spectator < Spectators.Count ; spectator++) {
+                if ( Spectators[spectator].Name == SearchName ) {
+                    return spectator;
+                }
+            }
+            return -1;
+        }
         public void RecordLastEvent(string a){
             LastEvent = a;
-            ClearCommentary(); 
+            ClearCommentary();
             AddCommentary(a);
         }
         public void AddCommentary (string c){
             this.HandCommentary.Add(c);
         }
-
         public void ClearCommentary (){
             this.HandCommentary.Clear();
+        }
+        public void AddCommentaryAndResultDetail (int pot, string player, int stake, int gain, PotResultReasonEnum reason, string handDesc, List<Card> hand, string c){
+            this.AddCommentary("Pot "+pot+": "+c);
+            this.AddResultDetail(pot, player, stake, gain, reason, handDesc, hand, c);
+        }
+        public void AddResultDetail (int pot, string player, int stake, int gain, PotResultReasonEnum reason, string handDesc, List<Card> hand, string c){
+            if ( this.MostRecentHandResult.Count < ( pot + 1 ) ) {
+                //this.LastHandResult.Add(new List<string>());
+                this.MostRecentHandResult.Add(new List<PotResult>());
+            }
+            //this.LastHandResult[pot].Add(c);
+            this.MostRecentHandResult[pot].Add(new PotResult(player, stake, gain, reason, handDesc, hand, c));
+        }
+        public void ClearResultDetails () {
+            //this.LastHandResult = new List<List<string>>();
+            this.MostRecentHandResult = new List<List<PotResult>>();
         }
         public string AsJson()
         {
             var options = new JsonSerializerOptions
             {
                 WriteIndented = true,
-                
             };
-            options.Converters.Add(new JsonStringEnumConverter(null /*JsonNamingPolicy.CamelCase*/));
+            //options.Converters.Add(new JsonStringEnumConverter(null /*JsonNamingPolicy.CamelCase*/));
             string jsonString = JsonSerializer.Serialize(this, options);
             return jsonString;
-        }  
-
-        public void LogPlayers(){
-            foreach ( Participant p in this.Participants ) {
-                this._GameLog.playersInOrder.Add(p.Name);
-            }
-        } 
-
-        public void LogSnapshotOfGameDeck(){
-            this._GameLog.decks.Add(this.CardPack.Clone());
-        } 
-
-        public void LogActionWithResults(Action a) {
-
-            this._GameLog.actions.Add(new GameLogAction(a, this.LastEvent, this.NextAction, this.HandCommentary, this.HandSummaries()));
         }
 
-        public List<string> HandSummaries()
-        {
-            List<string> r = new List<string>();
-            foreach ( Participant p in this.Participants ) {
-                r.Add(
-                    p.Name 
-                    + " Folded=" + p.HasFolded
-                    + " Covered=" + p.HasCovered
-                    + " Out=" + p.IsOutOfThisGame
-                    + " Cards=" + p._HandSummary
+        public void InitialiseAccumulatedDbCost(double initialValue) {
+
+            if ( ServerState.StatefulData.MapOfGameIdToDbCosts.ContainsKey(this.GameId)) {
+                ServerState.StatefulData.MapOfGameIdToDbCosts[this.GameId] = initialValue;
+            }
+            else {
+                ServerState.StatefulData.MapOfGameIdToDbCosts.Add(this.GameId, initialValue);
+            }
+            this.AccumulatedDbCost = ServerState.StatefulData.MapOfGameIdToDbCosts[this.GameId]; // Get the updated value
+        }
+        public void AddToAccumulatedDbCost(string reason, double increment) {
+            // Update the total DB costs incurred by this game. Note that the cost is recorded in two places:
+            // (1) In a hashtable on the server, which will be the definitive source as long as the server process remains active
+            // (2) On the game, which will be used as a backup if the server process has to restart (it will pick up the cost when it next reloads the game)
+            if ( ServerState.StatefulData.MapOfGameIdToDbCosts.ContainsKey(this.GameId)) {
+                ServerState.StatefulData.MapOfGameIdToDbCosts[this.GameId] += increment; // normal scenario (i.e. hashtable entry already exists)
+            // Console.WriteLine("DB cost for game id '{0}' increased by {1} to {2} due to {3}",
+            //     this.GameId, increment, ServerState.StatefulData.MapOfGameIdToDbCosts[this.GameId], reason);
+            }
+            else {
+                if ( this.AccumulatedDbCost > 0 ) {
+                    // The server doesn't have a record of any costs but the game itself does.
+                    // The only way this should be able to happen is if the server has been restarted for some reason
+                    // and the game we have just reloaded from the database has the old cumulative total recorded against it.
+                    // In that specific case, we will take the game total as being the best-available starting point for continuing the total.
+                    // Note that the total will not include the cost of saving the final game state before the server restarted
+                    // (we could estimate a small allowance for this but it is likely to be no more than 50 - 200 RUs so not really worth the effort)
+                    ServerState.StatefulData.MapOfGameIdToDbCosts.Add(this.GameId, this.AccumulatedDbCost + increment);
+                    // Console.WriteLine("DB cost for game id '{0}' set to {1} via recovery from game, and increased by {2} to {3} due to {4}",
+                    //     this.GameId, this.AccumulatedDbCost, increment, ServerState.StatefulData.MapOfGameIdToDbCosts[this.GameId], reason);
+                }
+                else {
+                    // This is the first record of a database cost for this game
+                    ServerState.StatefulData.MapOfGameIdToDbCosts.Add(this.GameId, increment);
+                    // Console.WriteLine("DB cost for game id '{0}' initialised to {1} due to {2}",
+                    //     this.GameId, ServerState.StatefulData.MapOfGameIdToDbCosts[this.GameId], reason);
+                }
+            }
+            // Finally, ensure that the new total recorded on the server is reflected back on the game
+            this.AccumulatedDbCost = ServerState.StatefulData.MapOfGameIdToDbCosts[this.GameId]; // Get the updated value
+        }
+        public async Task<double> LogActionWithResults(Action a) {
+            this.ActionNumber++;
+            GameLogAction gla = new GameLogAction(
+                a,
+                this.ActionNumber,
+                this.StatusMessage,
+                this.PlayerSummaries(),
+                this.HandCommentary
                 );
+            //this._GameLog.actions.Add(gla);
+            this.LastSuccessfulAction = DateTimeOffset.UtcNow;
+            if ( this.GameMode == GameModeEnum.LobbyOpen ) {
+                this.ParentRoom().LastGameAction = LastSuccessfulAction; // Also log this on the room
+            }
+            // Log the action to the DB
+            double dbCost = await ServerState.OurDB.RecordGameLogAction(this, gla);
+            return dbCost;
+        }
+
+        public string PlayerSummaries()
+        {
+            string r = "";
+            for ( int i = 0; i < Participants.Count; i++ ) {
+                Participant p = Participants[i];
+                r +=
+                    p.Name.Substring(0,1)
+                    + "["
+                    + ( p.StartedHandWithNoFunds ? "O" : "" )
+                    + ( p.HasFolded ? "F" : "" )
+                    + ( p.HasCovered ? "C" : "" )
+                    + ( p.IsPlayingBlindInCurrentHand ? "B" : "" )
+                    + ( p.IntendsToPlayBlindInNextHand ? "I" : "" )
+                    + ( i == IndexOfParticipantDealingThisHand ? "D" : "" )
+                    + ( p.HasDisconnected ? "X" : "" )
+                    + "]"+ p.UncommittedChips + PlayersPotContributions(i)
+                    + ( p._VisibleHandSummary == null ? "" : p._VisibleHandSummary.Replace(" ","") )
+                    + ( i < Participants.Count ? " " : "" )
+                ;
             }
             return r;
         }
-        public string GameLogAsJson() {
-            return this._GameLog.AsJson();
+        public string PlayersPotContributions(int player_no) {
+            if ( PotsAreEmpty() ) {
+                return "";
+            }
+            string r = "(";
+            for ( int pot_no = 0; pot_no < Pots.Count; pot_no++ ){
+                r += Pots[pot_no][player_no];
+                r += ( ( pot_no + 1 < Pots.Count ) ? "," : "" );
+            }
+            r += ")";
+            return r;
+        }
+        // public string GameLogAsJson() {
+        //     return this._GameLog.AsJson();
+        // }
+        public int MinutesSinceLastAction() {
+            return Convert.ToInt32( (DateTimeOffset.UtcNow - this.LastSuccessfulAction).TotalMinutes);
         }
     }
 }

@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 
-namespace SevenStuds.Pages
+namespace SocialPokerClub.Pages
 {
     public class IndexModel : PageModel
     {

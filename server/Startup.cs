@@ -1,16 +1,12 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using SevenStuds.Hubs; // new
+using SocialPokerClub.Hubs;
 
-namespace SevenStuds
+namespace SocialPokerClub
 {
     public class Startup
     {
@@ -24,15 +20,15 @@ namespace SevenStuds
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            System.Diagnostics.Debug.WriteLine("Getting env var SevenStudsOrigin");
-            string originUrl = Environment.GetEnvironmentVariable("SevenStudsOrigin", EnvironmentVariableTarget.Process);
+            Console.WriteLine("Getting env var SpcOrigin");
+            string originUrl = Environment.GetEnvironmentVariable("SpcOrigin", EnvironmentVariableTarget.Process);
             if ( originUrl == null ) {
-                originUrl = "http://localhost:3000"; // or e.g. "https://7studsserver.azurewebsites.net/"                
-                System.Diagnostics.Debug.WriteLine("Env var SevenStudsOrigin not found, setting to default value, "+originUrl);
+                originUrl = "http://localhost:3000"; // or the server URL
+                Console.WriteLine("Env var SpcOrigin not found, setting to default value, "+originUrl);
 
             }
             else {
-                System.Diagnostics.Debug.WriteLine("SevenStudsOrigin="+originUrl);
+                Console.WriteLine("SpcOrigin="+originUrl);
             }
 
             services.AddCors(o => o.AddPolicy("CorsPolicy", builder =>

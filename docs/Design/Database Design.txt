@@ -1,0 +1,88 @@
+Database structure etc.
+
+Azure Cosmos DB Emulator: https://localhost:8081/_explorer/index.html
+- Database name: SocialPokerClub (throughput 400 ... or not specified for Serverless live DB)
+- Container: Games
+  - Partition Key: /docGameId (made up of docRoomId + startTimeUtc with '-' separator) (note: cannot contain special characters)
+  - No specific Unique Key but system automatically includes an 'id' field which is the unique document id within the container
+    - /id (the application will build this from docType + docSeq with no spaces and in following combinations):
+      - GameState-<0>
+      - Gameheader-<0>
+      - Action-<n>       ... n = sequential action number for current game (i.e. across multiple hands)
+      - Deck-<n>         ... n = sequential hand number for current game (i.e. across multiple hands)
+  - All documents should also have /docDateUtc as this needs to be indexed
+  - Use Settings to change the indexing policy
+
+- Document id can be specified or a guid will be generated
+- Item ID + the partition key are unique 
+- Compressing the JSON reduced e.g. 156k down to 107k
+- GameId = e.g. <startdatetime>-Poker1212
+
+- https://docs.microsoft.com/en-us/azure/cosmos-db/index-overview#from-trees-to-property-paths
+  - Range indexes can be used on scalar values (string or number)
+  - Spatial indices enable efficient queries on geospatial objects such as - points, lines, polygons, and multipolygon
+  - Composite indices increase the efficiency when you are performing operations on multiple fields
+- https://docs.microsoft.com/en-us/azure/cosmos-db/index-policy
+  - In Azure Cosmos DB, every container has an indexing policy that dictates how the container's items should be indexed
+  - You can customize a container's indexing policy by setting its indexing mode, and include or exclude property paths.
+  INDEXING MODES
+  - Azure Cosmos DB supports two indexing modes:
+    - Consistent: The index is updated synchronously as you create, update or delete items. 
+      This means that the consistency of your read queries will be the consistency configured for the account.
+    - None: Indexing is disabled on the container. 
+      This is commonly used when a container is used as a pure key-value store without the need for secondary indexes. 
+  INDEXING POLICY
+  - By default, indexing policy is set to automatic. It's achieved by setting the automatic property in the indexing policy to true.
+  - A custom indexing policy can specify property paths that are explicitly included or excluded from indexing
+
+A custom indexing policy can specify property paths that are explicitly included or excluded from indexing
+- a path leading to a scalar value (string or number) ends with /?
+- elements from an array are addressed together through the /[] notation (instead of /0, /1 etc.)
+- the /* wildcard can be used to match any elements below the node
+
+Changing to the following policy reduced a game's worth of logs from 5865 RUs to 3607 RUs
+[note that 1,000,000 RUs cost 21p, so one game costs approx. 0.07p, or approx 13 games for 1p]
+
+Make sure to click SAVE after updating the indexing policy with the following:
+
+{
+    "indexingMode": "consistent",
+    "automatic": true,
+    "includedPaths": [
+        {
+            "path": "/docRoomId/?"
+        },
+        {
+            "path": "/docType/?"
+        },
+        {
+            "path": "/docSeq/?"
+        },
+        {
+            "path": "/docDateUtc/?"
+        }
+
+    ],
+    "excludedPaths": [
+        {
+            "path": "/*"
+        },
+        {
+            "path": "/\"_etag\"/?"
+        }
+    ]
+}
+
+UNIQUE KEYS
+- https://docs.microsoft.com/en-us/azure/cosmos-db/unique-keys
+- You can define unique keys only when you create an Azure Cosmos container (you have to delete/redefine to change unique keys)
+- null is like any other value (you can't have multiple nulls)
+
+ENVIRONMENT VARIABLES
+- SpcDbPrimaryKey
+- SpcDbUri
+- SpcAllowTestFunctions: yes/no
+- SpcDbMode:
+    - NoDatabase: does not attempt to establish a DB connection and operates in-memory only
+    - Recoverability: records game state on completion of an action and can recover from a server crash/restart
+    - Stateless: records game state on completion of an action and reloads game state from DB on processing next action

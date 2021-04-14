@@ -1,9 +1,42 @@
------------------------------------------ TO DO (higher priority first) ---------------------------------
-* Add a new StatusMessage field which summarises LastEvent and NextAction
-* Remove card details from the HandCommentary
-* Handle the section at the end of a hand where players reveal their hands (or folder) in turn
+----------------------------------------- SERVER-SIDE TO DO (higher priority first) ---------------------------------
+DONE
+- Community card fixes: clear at end of hand; expose everyone's 7th card; include 7th card in visible hand evaluation; clear 7th card visibility for next hand
+- Playing blind fix: record who starts the first hand of a game playing blind so that this can be allowed for in replays
+- Lobby data fix: retain details of when people went bankrupt for use in sorting lobby data; also return leader board position, allowing for ties
+- Database cost recording: now recorded on the game (includes everything except the cost of the latest save of the game state)
+- Don't allow actions on game more than 1 hour old
+
+TO DO
+- remove unused code e.g. User.cs (or expand this idea further)
+- test latest changes re recording DB cost per game
+- need fanfare or colour change on end-of-hand ... not currently obvious ... perhaps colour change on beize and for winning player(s)
+- allow player to change their name
+- allow players to download a log of a game (perhaps personalised from their perspective) ... as HTML, or even PDF?
+- klaxon by majority vote (if enough players click on that player)? needs server involvement ... could be different message to game state 
+- klaxon for fastest bet placed?
+- 'all in' button?
+- shuffle more? (not sure necessary ... decks looked well scrambled)
+- settings on lobby screen (ante, start amount, rule variations etc.)
+- document versioning ... standard approaches to ensure old-format data can still be loaded
+- analyse game costs
+- record running game RU cost on the game (record on game state even if one move behind)
+- all card lists as simple strings
+- recovery should only be possible for 10 mins or so?
+- game number should be within session ... but what defines a session?
+- clear out any obviously unnecessary fields/objects
+- clear community card once hand finished (probably done)
+
+* Allow admin to reject a player prior to starting or continuing a game
+* Allow admin to forcibly remove an inactive player (like an involuntary leave)
+* Protect ad hoc query further ... can we use config to provide a secret prefix for the request number? I.e. nothing visible in GitHub
+* Is a simple spectator mode possible?
+    - Join as anonymous Spectator (just adds the connection to a list of spectators for the game)
+    - Spectator mode would have to hide all players' down cards. Start with player 0.
+    - Once registered, any Spectator would receive all updates  
+* Extend lobby data to include game event summary ... timings, # of hands played, joiners, order in which people went to zero chips, chips for those left in
+* Database to preserve/restore game status
+* Why does setting the admin sometimes not work (as part of leave game)?
 * Think about whether any hands should be automatically revealed, e.g. in hand order
-* Tidy up hand commentary (remove references to cards)
 * Handle Admin activities (remove player, ...). What if admin is themselves disconnected/indisposed?
 * Add some parameters to game lobby (ante, stash, checkboxes for rule options e.g. randomise on restart)
 * Show hands in a clear way (e.g. full house as 333AA not A33A3)
@@ -12,10 +45,35 @@
 * Handle end of overall game (time limit, number of rounds, less than 'n' players left in)
 * Split hand description out into two parts: main bit e.g. "Ace High" and countback e.g. "with King ..."
 * Game name to be pulled from URL
-* Record game logs in a database
-* Automatically clear a game if there is no activity for n hours
 * Allow a player to play blind (?)
+----------------------------------------- CLIENT-SIDE THOUGHTS ---------------------------------
+* Make it possible to toggle to a vertical view (with players stacked on top to enable a skinny side-panel view)
 ----------------------------------------- DONE (most recent first) ---------------------------------------
+DONE * Add game time, hands played, etc.
+DONE * Maintain a log of results of previous games against each room
+DONE * Allow for players joining from the lobby mid-game (ensure they get funds etc.)
+DONE * Fix double commentary
+DONE * Automatically reset a game that has been inactive for more than 120 mins
+DONE * Made AdHocQuery slight less open in that callers have to know the 'commands' it supports (not just a number from 1 to n)
+DONE * For non-existent games, only allow Join. All other commands are controlled by game and player state.
+DONE * Block access to test features when running on the public web server
+DONE * Add an AdHocQuery action as framework for quick test features
+DONE * Don't allow more than 8 people into a game 
+DONE * Fixed (I hope) a bug in MaxRaise (when a less well-funded opponent has already gone all in)
+DONE * 'Join' and 'Open' action both now call 'ReceiveLobbyData' on client (not 'ReceiveMyGameState')
+DONE * Record bankruptcy events throughout all hands of a game
+DONE * Added 'GetMyState' action (to help on server web page only)
+DONE * Added 'ReceiveLobbyData' to client (chat.js only)
+DONE * Added 'Continue' action (to resume current game with new hand)
+DONE * Implemented 'CommunityCard' (for when not enough cards to full deal last round of cards)
+DONE * Create lobby data for when player joins or admin reopens lobby
+DONE * If only one player left in at end of hand, don't reveal their hand in the game results
+DONE * If not enough cards to fully deal round 7, deal a community card (everyone gets the same last card)
+DONE * Don't allow someone to reveal if they have already revealed (allowing for reveal in both modes)
+DONE * Remove card details from the HandCommentary
+DONE * Handle the section at the end of a hand where players reveal their hands (or folder) in turn
+DONE * Fix double display in some StatusMessages
+DONE * Add a new StatusMessage field which summarises LastEvent and NextAction
 DONE * Make each player's player-centric view show them as the first player 
 DONE * Remove all references to indexes in the player-centric views
 DONE * Add 'Open' command that enables administrator to reopen the lobby at the end of a hand

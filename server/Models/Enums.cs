@@ -2,18 +2,30 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SevenStuds.Models
+namespace SocialPokerClub.Models
 {
+    /// <summary>
+    /// GameModeEnum: Defines the mode that the game is currently in
+    /// </summary>
+    public enum UserStatusEnum
+    {
+        WaitingInLobby = 0,
+        ActiveInGame = 1,
+        LeavingGame = 2,
+        LeftGame = 3,
+        Spectator = 4
+    }
+
     /// <summary>
     /// GameModeEnum: Defines the mode that the game is currently in
     /// </summary>
     public enum GameModeEnum
     {
         LobbyOpen = 0,
-        HandInProgress = 1,
-        HandsBeingRevealed = 2,
-        HandCompleted = 3
-    }    
+        HandInProgress = 1, // betting is still in progress
+        HandsBeingRevealed = 2, // final betting is completed, players are in turn either revealing their hands or folding
+        HandCompleted = 3 // the hand result is establishied, players are able to reveal hands if desired (for fun or effect)
+    }
     /// <summary>
     /// ActionEnum: Enumeration values are used to communicate actions between client and server
     /// </summary>
@@ -25,8 +37,11 @@ namespace SevenStuds.Models
         Rejoin = 2,
         Leave = 3,
         Start = 4, // Starts the first or subsequent hand for an open or started game
-        Finish = 5,
-        Reveal = 6, // only allowed between hands (i.e. game is started and a hand has just completed)
+        Continue = 5,
+        Reveal = 6, // only allowed between hands (i.e. game is started and a hand has just completed) or if player is playing blind
+        Spectate = 7,
+        BlindIntent = 8, // Allows player to register or deregister their intent to play blind in the NEXT hand
+        BlindReveal = 9, // Allows a player who is playing blind to reveal their face-down cards to themselves and so no longer be playing blind
         // Hand-level actions, available only to one player at any one time
         Check = 10,
         Call = 11,
@@ -36,9 +51,14 @@ namespace SevenStuds.Models
         // Admin or test functions not intended for general use
         GetState = 20,
         GetLog = 21,
-        Replay = 22
+        Replay = 22,
+        GetMyState = 23,
+        AdHocQuery = 24,
+        Undefined = 25, // Used to indicate that no action is applicable (this is for use in 'LastActionInThisHand' when no action has been taken by the player yet)
+        ReplaySetup = 26,
+        // Room (or lobby) level actions
+        UpdateLobbySettings = 30
     }
-   
 
     /// <summary>
     /// ActionResponseTypeEnum: defines what data should be pass back to the server
@@ -47,11 +67,14 @@ namespace SevenStuds.Models
     {
         PlayerCentricGameState = 0,
         OverallGameState = 1,
-        GameLog = 2
+        GameLog = 2,
+        ConfirmToPlayerLeavingAndUpdateRemainingPlayers = 3, // this is a bit of a messy mix of ResponseType and Audience
+        AdHocServerQuery = 4,
+        ReplayReport = 5, // Used to return details of a replayed game to the game being used to control the replay
     }
 
     /// <summary>
-    /// ActionResponseAudienceEnum: 
+    /// ActionResponseAudienceEnum:
     /// </summary>
     public enum ActionResponseAudienceEnum : int
     {
@@ -59,7 +82,7 @@ namespace SevenStuds.Models
         CurrentPlayer = 1, // All of the clients that the current player has used to join the game (e.g. laptop AND phone)
         AllPlayers = 2, // All of the clients for all of the players who have joined the game
         Admin = 3 // The administrator (currently thinking this will be the first person to have joined the game)
-    }    
+    }
 
 
     /// <summary>
@@ -71,9 +94,50 @@ namespace SevenStuds.Models
         ActivePlayerOnly = 1,
         AnyRegisteredPlayer = 2,
         AnyUnregisteredPlayer = 3,
-        AdministratorOnly = 4
+        AdministratorOnly = 4,
+        AnyUnrevealedRegisteredPlayer = 5
     }
-   
+
+    /// <summary>
+    /// PotResultReasonEnum: shows why a player won or lost a given pot
+    /// </summary>
+    public enum PotResultReasonEnum : int
+    {
+        PlayerFolded = 0,
+        ViaHandComparisons = 1,
+        NoOneElseLeft = 2,
+        PlayerWasNotInThisPot = 3
+    }
+
+    public enum ReplayModeEnum : int
+    {
+        NewGameLog = 0,
+        AdvanceOneStep = 1,
+        AdvanceToNamedStep = 2
+    }
+
+    public enum PlayerStatusEnum : int
+    {
+        // Note that higher numbers sort first
+        Spectator = 0,
+        QueuingForNextGame = 1,
+        PartOfMostRecentGame = 2
+    }
+
+    public enum DatabaseConnectionStatusEnum : int
+    {
+        ConnectionNotAttempted = 0,
+        ConnectionFailed = 1,
+        ConnectionEstablished = 2
+    }
+    public enum DatabaseModeEnum : int
+    {
+        NoDatabase = 0,     // Does not attempt to establish a DB connection and operates in-memory only
+        Recoverability = 1, // Records game state on completion of an action and can recover from a server crash/restart
+        Stateless = 2       // Records game state on completion of an action and reloads game state from DB on processing next action
+    }
+
+
     /// <summary>
     /// Enumeration values are used to calculate hand rank keys
     /// </summary>
@@ -114,4 +178,23 @@ namespace SevenStuds.Models
         HandDescription
     }
 
+    public enum SpcExceptionCodes
+    {
+        RoomNameIsAlwaysRequired = 0,
+        RoomAlreadyExists = 1,
+        RoomDoesNotExist = 2,
+        RoomNotAcceptingNewPlayers = 3,
+        RoomNotAcceptingSpectators = 4,
+        RoomIsFull = 5,
+        CannotJoinGameInProgress = 6,
+        CurrentGameLimitExceeded = 7
+    }
+
+    public enum LimitGameRaiseOptions
+    {
+        BringIn = 0,
+        CompleteSmallBet = 1,
+        SmallBet = 2,
+        BigBet = 3
+    }
 }

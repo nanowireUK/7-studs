@@ -1,0 +1,15 @@
+Startup.cs - if env var APPINSIGHTS_INSTRUMENTATIONKEY exists, will call services.AddApplicationInsightsTelemetry();
+
+    - ServerState.cs 
+        - creates a singleton MetricsSummary object which will be kept updated with latest metrics
+        - creates a new MetricsManager object and a timer that calls MetricsManager.GatherAndEmitStatistics every minute
+
+        - MetricsManager.cs
+            - GatherAndEmitStatistics creates a new MetricsSnapshot, then calls EmitStatistics()
+            - EmitStatistics()
+                - compares recent MetricsSnapshot objects then updates the MetricsSummary object 
+                - prints the current MetricsSummary
+                - (eventually) emit the stats to Azure Monitor once I work out how to emit custom fields
+
+
+

@@ -14,7 +14,7 @@ function logError (err) {
     return console.error(err.toString());
 }
 
-function getGameId() {
+function getRoomId() {
     return document.getElementById("userInputGameId").value; // Was "7Studs Main Event" ... we'll look at setting this from the URL at a later date
 }
 
@@ -26,12 +26,17 @@ function getUser() {
     return document.getElementById("userInput").value;
 }
 
+function getLeaverCount() {
+    return document.getElementById("leaverCount").value;
+}
+
 // -------------------------------------------------------------------------------------------------------------
 // Functions that the server can call and that we have to handle
 
-connection.on("ReceiveMyGameState", 
+connection.on("ReceiveMyGameState",
     function (gameState) {
-        var msg = gameState.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        var game = JSON.parse(gameState);
+        document.getElementById("leaverCount").value = game.CountOfLeavers;
         var encodedMsg = "Game state from my perspective is currently: \n" + gameState;
         var pre = document.createElement("pre");
         pre.textContent = encodedMsg;
@@ -39,9 +44,8 @@ connection.on("ReceiveMyGameState",
     }
 );
 
-connection.on("ReceiveGameLog", 
+connection.on("ReceiveGameLog",
     function (gameLog) {
-        var msg = gameLog.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
         var encodedMsg = "Game log: \n" + gameLog;
         var pre = document.createElement("pre");
         pre.textContent = encodedMsg;
@@ -49,9 +53,8 @@ connection.on("ReceiveGameLog",
     }
 );
 
-connection.on("ReceiveOverallGameState", 
+connection.on("ReceiveOverallGameState",
     function (gameState) {
-        var msg = gameState.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
         var encodedMsg = "Overall game state: \n" + gameState;
         var pre = document.createElement("pre");
         pre.textContent = encodedMsg;
@@ -59,71 +62,156 @@ connection.on("ReceiveOverallGameState",
     }
 );
 
-connection.start().then(
-    function () {
-        // actionJoin.disabled = false;
-        // actionCall.disabled = false;
-        // actionRaise.disabled = false;
-        // actionFold.disabled = false;
-        // actionCover.disabled = false;
+connection.on("ReceiveLeavingConfirmation",
+    function (gameState) {
+        var encodedMsg = "Leaving confirmation: \n" + gameState;
+        var pre = document.createElement("pre");
+        pre.textContent = encodedMsg;
+        appendToMessagesList(pre);
     }
-).catch(logError);
+);
+
+connection.on("ReceiveAdHocServerData",
+    function (serverData) {
+        var encodedMsg = "Ad hoc server data: \n" + serverData;
+        var pre = document.createElement("pre");
+        pre.textContent = encodedMsg;
+        appendToMessagesList(pre);
+    }
+);
+
+connection.start().catch(logError);
 
 // -------------------------------------------------------------------------------------------------------------
 // Client-side actions that we want to pass to the server
 
+// --------------- CREATE and JOIN new room
+
+document.getElementById("actionCreateAndJoinRoom").addEventListener("click",
+    function (event) {
+        var roomId = getRoomId();
+        var user = getUser();
+        connection.invoke("UserClickedCreateAndJoinRoom", roomId, user).catch(logError);
+        event.preventDefault();
+    }
+);
+
+// --------------- JOIN existing room
+
+document.getElementById("actionJoinExistingRoom").addEventListener("click",
+    function (event) {
+        var roomId = getRoomId();
+        var user = getUser();
+        connection.invoke("UserClickedJoinExistingRoom", roomId, user).catch(logError);
+        event.preventDefault();
+    }
+);
+
+// --------------- Update settings whilst game is in the lobby
+
+document.getElementById("actionUpdateLobbySettings").addEventListener("click",
+    function (event) {
+        var roomId = getRoomId();
+        var user = getUser();
+        var settingsAsJson = getModifiers();
+        connection.invoke("UserClickedUpdateLobbySettings", roomId, user, settingsAsJson).catch(logError);
+        event.preventDefault();
+    }
+);
+
 // --------------- OPEN
 
-document.getElementById("actionOpen").addEventListener("click", 
+document.getElementById("actionOpen").addEventListener("click",
     function (event) {
-        var gameId = getGameId();    
+        var roomId = getRoomId();
         var user = getUser();
-        connection.invoke("UserClickedOpen", gameId, user).catch(logError);
+        var leaverCount = getLeaverCount();
+        connection.invoke("UserClickedOpen", roomId, user, leaverCount).catch(logError);
         event.preventDefault();
     }
 );
 
 // --------------- JOIN
 
-document.getElementById("actionJoin").addEventListener("click", 
+document.getElementById("actionJoin").addEventListener("click",
     function (event) {
-        var gameId = getGameId();    
+        var roomId = getRoomId();
         var user = getUser();
-        connection.invoke("UserClickedJoin", gameId, user).catch(logError);
+        var leaverCount = getLeaverCount();
+        connection.invoke("UserClickedJoin", roomId, user).catch(logError);
+        event.preventDefault();
+    }
+);
+
+// --------------- SPECTATE
+
+document.getElementById("actionSpectate").addEventListener("click",
+    function (event) {
+        var roomId = getRoomId();
+        var user = getUser();
+        var leaverCount = getLeaverCount();
+        connection.invoke("UserClickedSpectate", roomId, user).catch(logError);
+        event.preventDefault();
+    }
+);
+
+// --------------- LEAVE
+
+document.getElementById("actionLeave").addEventListener("click",
+    function (event) {
+        var roomId = getRoomId();
+        var user = getUser();
+        var leaverCount = getLeaverCount();
+        connection.invoke("UserClickedLeave", roomId, user).catch(logError);
         event.preventDefault();
     }
 );
 
 // --------------- REJOIN
 
-document.getElementById("actionRejoin").addEventListener("click", 
+document.getElementById("actionRejoin").addEventListener("click",
     function (event) {
-        var gameId = getGameId();    
+        var roomId = getRoomId();
         var user = getUser();
+        var leaverCount = getLeaverCount();
         var rejoinCode = getModifiers();
-        connection.invoke("UserClickedRejoin", gameId, user, rejoinCode).catch(logError);
+        connection.invoke("UserClickedRejoin", roomId, user, rejoinCode).catch(logError);
         event.preventDefault();
     }
 );
 
 // --------------- START
 
-document.getElementById("actionStart").addEventListener("click", 
+document.getElementById("actionStart").addEventListener("click",
     function (event) {
-        var gameId = getGameId();    
+        var roomId = getRoomId();
         var user = getUser();
-        connection.invoke("UserClickedStart", gameId, user).catch(logError);
+        var leaverCount = getLeaverCount();
+        connection.invoke("UserClickedStart", roomId, user, leaverCount).catch(logError);
+        event.preventDefault();
+    }
+);
+
+// --------------- CONTINUE
+
+document.getElementById("actionContinue").addEventListener("click",
+    function (event) {
+        var roomId = getRoomId();
+        var user = getUser();
+        var leaverCount = getLeaverCount();
+        connection.invoke("UserClickedContinue", roomId, user, leaverCount).catch(logError);
         event.preventDefault();
     }
 );
 
 // --------------- REVEAL HAND
 
-document.getElementById("actionReveal").addEventListener("click", 
+document.getElementById("actionReveal").addEventListener("click",
     function (event) {
-        var gameId = getGameId();    
+        var roomId = getRoomId();
         var user = getUser();
-        connection.invoke("UserClickedReveal", gameId, user).catch(logError);
+        var leaverCount = getLeaverCount();
+        connection.invoke("UserClickedReveal", roomId, user, leaverCount).catch(logError);
         event.preventDefault();
     }
 );
@@ -131,29 +219,32 @@ document.getElementById("actionReveal").addEventListener("click",
 // --------------- CHECK
 
 document.getElementById("actionCheck").addEventListener("click", function (event) {
-    var gameId = getGameId();    
+    var roomId = getRoomId();
     var user = getUser();
-    connection.invoke("UserClickedCheck", gameId, user).catch(logError);
+    var leaverCount = getLeaverCount();
+    connection.invoke("UserClickedCheck", roomId, user, leaverCount).catch(logError);
     event.preventDefault();
 });
 
 // --------------- CALL
 
 document.getElementById("actionCall").addEventListener("click", function (event) {
-    var gameId = getGameId();    
+    var roomId = getRoomId();
     var user = getUser();
-    connection.invoke("UserClickedCall", gameId, user).catch(logError);
+    var leaverCount = getLeaverCount();
+    connection.invoke("UserClickedCall", roomId, user, leaverCount).catch(logError);
     event.preventDefault();
 });
 
 // --------------- RAISE
 
-document.getElementById("actionRaise").addEventListener("click", 
+document.getElementById("actionRaise").addEventListener("click",
     function (event) {
-        var gameId = getGameId();    
+        var roomId = getRoomId();
         var user = getUser();
         var raiseAmount = getModifiers();
-        connection.invoke("UserClickedRaise", gameId, user, raiseAmount).catch(logError);
+        var leaverCount = getLeaverCount();
+        connection.invoke("UserClickedRaise", roomId, user, leaverCount, raiseAmount).catch(logError);
         event.preventDefault();
     }
 );
@@ -161,53 +252,115 @@ document.getElementById("actionRaise").addEventListener("click",
 // --------------- COVER
 
 document.getElementById("actionCover").addEventListener("click", function (event) {
-    var gameId = getGameId();    
+    var roomId = getRoomId();
     var user = getUser();
-    connection.invoke("UserClickedActionCover", gameId, user).catch(logError);
+    var leaverCount = getLeaverCount();
+    connection.invoke("UserClickedCover", roomId, user, leaverCount).catch(logError);
     event.preventDefault();
 });
 
 // --------------- FOLD
 
 document.getElementById("actionFold").addEventListener("click", function (event) {
-    var gameId = getGameId();    
+    var roomId = getRoomId();
     var user = getUser();
-    connection.invoke("UserClickedFold", gameId, user).catch(logError);
+    var leaverCount = getLeaverCount();
+    connection.invoke("UserClickedFold", roomId, user, leaverCount).catch(logError);
+    event.preventDefault();
+});
+
+// --------------- BLIND INTENT (toggle intention to play blind next hand)
+
+document.getElementById("actionBlindIntent").addEventListener("click", function (event) {
+    var roomId = getRoomId();
+    var user = getUser();
+    var leaverCount = getLeaverCount();
+    connection.invoke("UserClickedBlindIntent", roomId, user, leaverCount).catch(logError);
+    event.preventDefault();
+});
+
+// --------------- BLIND REVEAL (open up your blind hind)
+
+document.getElementById("actionBlindReveal").addEventListener("click", function (event) {
+    var roomId = getRoomId();
+    var user = getUser();
+    var leaverCount = getLeaverCount();
+    connection.invoke("UserClickedBlindReveal", roomId, user, leaverCount).catch(logError);
     event.preventDefault();
 });
 
 // --------------- Get Game State (test feature)
 
 document.getElementById("actionGetState").addEventListener("click", function (event) {
-    var gameId = getGameId();    
-    var user = getUser(); 
-    connection.invoke("UserClickedGetState", gameId, user).catch(logError);
+    var roomId = getRoomId();
+    var user = getUser();
+    var leaverCount = getLeaverCount();
+    connection.invoke("UserClickedGetState", roomId, user, leaverCount).catch(logError);
     event.preventDefault();
 });
 
 // --------------- Get Game Log (test feature)
 
 document.getElementById("actionGetLog").addEventListener("click", function (event) {
-    var gameId = getGameId();    
-    var user = getUser();  
-    connection.invoke("UserClickedGetLog", gameId, user).catch(logError);
+    var gameId = getModifiers();
+    connection.invoke("UserClickedGetLog", gameId).catch(logError);
+    event.preventDefault();
+});
+
+// --------------- Run an ad hoc query (test feature)
+
+document.getElementById("actionAdHocQuery").addEventListener("click", function (event) {
+    var roomId = getRoomId();
+    var user = getUser();
+    var leaverCount = getLeaverCount();
+    var queryNum = getModifiers();
+    connection.invoke("UserClickedAdHocQuery", roomId, user, leaverCount, queryNum).catch(logError);
     event.preventDefault();
 });
 
 // --------------- Replay game from game log (test feature)
 
 document.getElementById("actionReplay").addEventListener("click", function (event) {
-    var gameId = getGameId();    
+    var gameLog = getModifiers();
+    connection.invoke("UserClickedReplaySetup", gameLog).catch(logError);
+    event.preventDefault();
+});
+
+// --------------- Step through a game that is being replayed (same replay command but with no game log as a parameter)
+
+document.getElementById("actionStep").addEventListener("click", function (event) {
+    var roomId = getRoomId();
     var user = getUser();
-    var gameLog = getModifiers();   
-    connection.invoke("UserClickedReplay", gameId, user, gameLog).catch(logError);
+    var leaverCount = getLeaverCount();
+    connection.invoke("UserClickedReplay", roomId, user, leaverCount, "").catch(logError);
+    event.preventDefault();
+});
+
+// --------------- Step through a game that is being replayed (same replay command but with no game log as a parameter)
+
+document.getElementById("actionAdvance").addEventListener("click", function (event) {
+    var roomId = getRoomId();
+    var user = getUser();
+    var leaverCount = getLeaverCount();
+    var targetStep = getModifiers();
+    connection.invoke("UserClickedReplay", roomId, user, leaverCount, targetStep).catch(logError);
+    event.preventDefault();
+});
+
+// --------------- Get My Game State (test feature)
+
+document.getElementById("actionGetMyState").addEventListener("click", function (event) {
+    var roomId = getRoomId();
+    var user = getUser();
+    var leaverCount = getLeaverCount();
+    connection.invoke("UserClickedGetMyState", roomId, user, leaverCount).catch(logError);
     event.preventDefault();
 });
 
 // --------------- Test button (used for experimentation)
 
 document.getElementById("jdTest").addEventListener("click", function (event) {
-    var gameLog = getModifiers();  
+    var gameLog = getModifiers();
     var msg = "Length of modifiers field is "+gameLog.length
     var escapedMsg = msg.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
     var pre = document.createElement("pre");
@@ -215,5 +368,3 @@ document.getElementById("jdTest").addEventListener("click", function (event) {
     appendToMessagesList(pre);
     event.preventDefault();
 });
-
-jdTest

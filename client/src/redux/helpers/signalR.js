@@ -14,15 +14,18 @@ import {
     disconnected,
     reconnecting,
     awaitingResponse,
-    setRejoinCode, } from '../slices/hub';
+    setRejoinCode,
+    setRoomId,
+    setLeaverCount,
+} from '../slices/hub';
 
 import {
-    serverUrl
+    serverUrl,
 } from '../../config';
+import { setLobbySettings } from '../slices/lobby';
 
 export const connection = new HubConnectionBuilder()
     .configureLogging(LogLevel.Debug)
-    //TODO parameterise this connection
     .withUrl(`${serverUrl}/chatHub`, {
         skipNegotiation: true,
         transport: HttpTransportType.WebSockets,
@@ -33,15 +36,31 @@ export const connection = new HubConnectionBuilder()
 
 export default (store) => {
     connection.on('ReceiveMyGameState', (msg) => {
-        const { MyRejoinCode: rejoinCode, ...game } = JSON.parse(msg);
+        const game = JSON.parse(msg);
+        const {
+            MyRejoinCode, CountOfLeavers, RoomId, LobbySettings,
+        } = game;
 
-        console.log(rejoinCode);
+        localStorage.setItem('rejoinCode', MyRejoinCode);
 
-        localStorage.setItem('rejoinCode', rejoinCode);
-
-        store.dispatch(setRejoinCode(rejoinCode));
+        store.dispatch(setRejoinCode(MyRejoinCode));
+        store.dispatch(setRoomId(RoomId));
+        store.dispatch(setLeaverCount(CountOfLeavers));
+        store.dispatch(setLobbySettings(LobbySettings));
         store.dispatch(updateGame(game));
         store.dispatch(awaitingResponse(false));
+    });
+
+    connection.on('ReceiveLeavingConfirmation', (msg) => {
+        console.log('Received leave confirmation');
+        console.log(msg);
+
+        localStorage.setItem('rejoinCode', '');
+
+        store.dispatch(setRejoinCode(''));
+        store.dispatch(updateGame(null));
+        connection.stop();
+        window.location.reload();
     });
 
     connection

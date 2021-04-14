@@ -1,0 +1,6 @@
+Async method hierarchy
+
+- ChatHub.cs: UserClickedJoin()
+  - ChatHub.cs: UserClickedActionButton()
+    - ActionXXX.cs: ProcessActionAndReturnRoomReference();
+      - ActionXXX.cs: ProcessAction()

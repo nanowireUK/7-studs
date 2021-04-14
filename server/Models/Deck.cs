@@ -2,162 +2,120 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
 
-namespace SevenStuds.Models
+namespace SocialPokerClub.Models
 {
-    public class Deck : Stack<Card>
+    public class Deck
     {
-
-    /// <summary>
-    /// A deck of playing cards.
-    /// </summary>
-    /// <remarks>This class represents a standard deck of 52 playing cards.</remarks>
+        /// <summary>
+        /// A deck of 52 playing cards.
+        /// </summary>
+        /// <remarks>
+        /// Objects of this class represent a standard deck of 52 playing cards.
+        /// The deck be be shuffled on creation, and it will be depleted as cards are dealt,.
+        /// </remarks>
 
         /// <summary>
         /// Initializes the Deck.
         /// </summary>
         /// <param name="Shuffled">Optional. If True, Deck will be shuffled after it is initialized.</param>
         /// <remarks>Creates a new Deck with 52 standard playing cards.</remarks>
-        public Deck()
+
+        public string CardList { get; set; }
+        public int DeckNumber { get; set; }
+        public Stack<Card> Cards { get; set; }
+        private bool WasInitialisedFromStack { get; set; }
+        public Deck() // parameterless constructor is required for the JSON deserialiser
         {
-            this.Clear(); // used by JSON deserialiser
+            CardList = "";
+            Cards = new Stack<Card>();
+            WasInitialisedFromStack = false; // Assume we were initialised the proper way
         }
-        public Deck(bool shuffle = true)
+        public Deck(int deckNo, bool shuffle = true)
         {
+            WasInitialisedFromStack = false; // Assume we were initialised the proper way
+            CardList = "2c3c4c5c6c7c8c9cTcJcQcKcAc2d3d4d5d6d7d8d9dTdJdQdKdAd2h3h4h5h6h7h8h9hThJhQhKhAh2s3s4s5s6s7s8s9sTsJsQsKsAs";
+            DeckNumber = deckNo;
             if (shuffle)
             {
                 Shuffle();
             }
-            else
-            {
-                InitDeck();
-            }
+            Cards = NewCardStackFromCardList(); // This deck was created from a string of cards ... create an equivalent stack of cards
         }
-
-        /// <summary>
-        /// Adds standard 52 playing cards to the deck.
-        /// </summary>
-        /// <remarks>Cards will be in order, just like in a 
-        /// new box of cards from the store. 
-        /// Deck has 52 Cards (no Jokers).</remarks>
-        private void InitDeck()
+        public Deck(int deckNo, string sourceDeck)
         {
-            this.Clear();
-
-            this.Push(new Card(CardEnum.Two, SuitEnum.Spades));
-            this.Push(new Card(CardEnum.Three, SuitEnum.Spades));
-            this.Push(new Card(CardEnum.Four, SuitEnum.Spades));
-            this.Push(new Card(CardEnum.Five, SuitEnum.Spades));
-            this.Push(new Card(CardEnum.Six, SuitEnum.Spades));
-            this.Push(new Card(CardEnum.Seven, SuitEnum.Spades));
-            this.Push(new Card(CardEnum.Eight, SuitEnum.Spades));
-            this.Push(new Card(CardEnum.Nine, SuitEnum.Spades));
-            this.Push(new Card(CardEnum.Ten, SuitEnum.Spades));
-            this.Push(new Card(CardEnum.Jack, SuitEnum.Spades));
-            this.Push(new Card(CardEnum.Queen, SuitEnum.Spades));
-            this.Push(new Card(CardEnum.King, SuitEnum.Spades));
-            this.Push(new Card(CardEnum.Ace, SuitEnum.Spades));
-
-            this.Push(new Card(CardEnum.Two, SuitEnum.Hearts));
-            this.Push(new Card(CardEnum.Three, SuitEnum.Hearts));
-            this.Push(new Card(CardEnum.Four, SuitEnum.Hearts));
-            this.Push(new Card(CardEnum.Five, SuitEnum.Hearts));
-            this.Push(new Card(CardEnum.Six, SuitEnum.Hearts));
-            this.Push(new Card(CardEnum.Seven, SuitEnum.Hearts));
-            this.Push(new Card(CardEnum.Eight, SuitEnum.Hearts));
-            this.Push(new Card(CardEnum.Nine, SuitEnum.Hearts));
-            this.Push(new Card(CardEnum.Ten, SuitEnum.Hearts));
-            this.Push(new Card(CardEnum.Jack, SuitEnum.Hearts));
-            this.Push(new Card(CardEnum.Queen, SuitEnum.Hearts));
-            this.Push(new Card(CardEnum.King, SuitEnum.Hearts));
-            this.Push(new Card(CardEnum.Ace, SuitEnum.Hearts));
-
-            this.Push(new Card(CardEnum.Two, SuitEnum.Clubs));
-            this.Push(new Card(CardEnum.Three, SuitEnum.Clubs));
-            this.Push(new Card(CardEnum.Four, SuitEnum.Clubs));
-            this.Push(new Card(CardEnum.Five, SuitEnum.Clubs));
-            this.Push(new Card(CardEnum.Six, SuitEnum.Clubs));
-            this.Push(new Card(CardEnum.Seven, SuitEnum.Clubs));
-            this.Push(new Card(CardEnum.Eight, SuitEnum.Clubs));
-            this.Push(new Card(CardEnum.Nine, SuitEnum.Clubs));
-            this.Push(new Card(CardEnum.Ten, SuitEnum.Clubs));
-            this.Push(new Card(CardEnum.Jack, SuitEnum.Clubs));
-            this.Push(new Card(CardEnum.Queen, SuitEnum.Clubs));
-            this.Push(new Card(CardEnum.King, SuitEnum.Clubs));
-            this.Push(new Card(CardEnum.Ace, SuitEnum.Clubs));
-
-            this.Push(new Card(CardEnum.Two, SuitEnum.Diamonds));
-            this.Push(new Card(CardEnum.Three, SuitEnum.Diamonds));
-            this.Push(new Card(CardEnum.Four, SuitEnum.Diamonds));
-            this.Push(new Card(CardEnum.Five, SuitEnum.Diamonds));
-            this.Push(new Card(CardEnum.Six, SuitEnum.Diamonds));
-            this.Push(new Card(CardEnum.Seven, SuitEnum.Diamonds));
-            this.Push(new Card(CardEnum.Eight, SuitEnum.Diamonds));
-            this.Push(new Card(CardEnum.Nine, SuitEnum.Diamonds));
-            this.Push(new Card(CardEnum.Ten, SuitEnum.Diamonds));
-            this.Push(new Card(CardEnum.Jack, SuitEnum.Diamonds));
-            this.Push(new Card(CardEnum.Queen, SuitEnum.Diamonds));
-            this.Push(new Card(CardEnum.King, SuitEnum.Diamonds));
-            this.Push(new Card(CardEnum.Ace, SuitEnum.Diamonds));
-
+            WasInitialisedFromStack = false; // Assume we were initialised the proper way
+            DeckNumber = deckNo;
+            CardList = sourceDeck;
+            Cards = NewCardStackFromCardList(); // This deck was created from a string of cards ... create an equivalent stack of cards
         }
-        /// <summary>
-        /// Shuffles the cards in the Deck.
-        /// </summary>
-        /// <remarks>If the Deck is not full (Count=52) then the Deck will be reinitialized with 52 Cards and shuffled.</remarks>
-        public void Shuffle()
+        private void Shuffle()
         {
-            //Collection<Card> col = new Collection<Card>();
-            List<Card> lst = new List<Card>();
-            Random r = new Random();
-            Card c;
-            int j;
-
-            if (this.Count != 52)
-            {
-                //cards have been dealt (popped from stack), 
-                //or the deck has not been created yet, 
-                //so lets start fresh.
-                //NEVER shuffle a partial deck.
-                InitDeck();
-            }
-
-            for (int i = 0; i < 52; i++)
-            {
-                c = this.Pop();
-                lst.Add(c);
-            }
-
-            for (int i = 0; i < 52; i++)
-            {
-                j = r.Next(0, 52 - i);
-                c = lst[j];
-                lst.RemoveAt(j);
-                this.Push(c);
+            Random r = ServerState.ServerLevelRandomNumberGenerator;
+            int startCard;
+            int cardsToMove;
+            for (int i = 0; i < 200; i++) {
+                // Take random block of cards from anywhere in the pack and move it to the front
+                // (simulates manual shuffle action ... probably pointless but fun to know that it does it)
+                startCard = r.Next(2, 53); // returns value from 2 to 52 (not 53)
+                cardsToMove = r.Next(1, 52-startCard+1); // decide how many cards to move
+                string blockToMove = CardList.Substring((startCard-1)*2, cardsToMove*2);
+                CardList = CardList.Remove((startCard-1)*2, cardsToMove*2);
+                CardList = CardList.Insert(0,blockToMove);
             }
         }
-        /// <summary>
-        /// Removes and returns the card at the top of the deck. 
-        /// </summary>
-        /// <returns>The top Card object from the top of the deck.</returns>
-        /// <remarks>This function should be called to "Deal" the next card from the deck.
-        /// This function will reduce the deck "Count" by 1.</remarks>
+        private Stack<Card> NewCardStackFromCardList()
+        {
+            Stack<Card> s = new Stack<Card>();
+            for (int cardNum = (CardList.Length / 2); cardNum > 0; cardNum-- ) {
+                string cardCode = CardList.Substring((cardNum-1)*2, 2);
+                s.Push(new Card(cardCode));
+            }
+            return s;
+        }
         public Card NextCard()
         {
-            return this.Pop();
+            EnsureCardListHasBeenInitialisedFollowingDeserialisation();
+            string dealtCard = CardList.Substring(0,2); // First card in card list
+            Card nextCard = new Card(dealtCard);
+            CardList = CardList.Remove(0,2);
+            if ( WasInitialisedFromStack ) {
+                Card popCard = Cards.Pop();
+                if ( popCard.ToString(CardToStringFormatEnum.ShortCardName) != dealtCard) {
+                    Console.WriteLine("Error: card dealt from stack '" + popCard.ToString(CardToStringFormatEnum.ShortCardName)
+                        + "' does not match card dealt from string'"+dealtCard+"'");
+                }
+            }
+            return nextCard;
         }
-
+        public void EnsureCardListHasBeenInitialisedFollowingDeserialisation() {
+            // This is to allow for the possibility of the Deck having been created by deserialisation of a JSON file that does not yet have the Cardlist field in it
+            // (i.e. only the 'Stack<Card> Cards' element was deserialised so we now need to populate CardList from that)
+            if ( this.CardList != "" ) {
+                return;
+            }
+            WasInitialisedFromStack = true;
+            Card[] cardsAsArray = this.Cards.ToArray();
+            for ( int i = 0; i < cardsAsArray.Length; i++ ) {
+                CardList += cardsAsArray[i].ToString(CardToStringFormatEnum.ShortCardName);
+            }
+        }
         public Deck Clone()
         {
-            // Create a copy of the deck (ideally before any cards are dealt from it)
-            Deck myClone = new Deck(false);
-            while ( myClone.Count > 0 ) {
-                myClone.Pop(); // remove cards until all gone (thought Clear() would do this but not convinced)
-            }            
-            Card[] cards = this.ToArray();
-            for ( int i = 0; i < cards.Length; i++ ) {
-                myClone.Push(cards[i]);
-            }
+            // Clone the current deck, keeping the same deck id
+            return this.Clone(this.DeckNumber);
+        }
+        public Deck Clone(int deckNo)
+        {
+            EnsureCardListHasBeenInitialisedFollowingDeserialisation();
+            // Clone the current deck, but using the supplied deck id
+            Deck myClone = new Deck(deckNo, this.CardList);
             return myClone;
+        }
+
+        public override string ToString() {
+            EnsureCardListHasBeenInitialisedFollowingDeserialisation();
+            return this.CardList;
+
         }
     }
 }

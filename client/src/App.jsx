@@ -1,19 +1,37 @@
 import React from 'react';
-import { Grommet } from 'grommet';
 import { useSelector } from 'react-redux';
 
-import { selectGame } from './redux/slices/game';
-import theme from './theme';
+import { selectGame, selectInLobby } from './redux/slices/game';
+import { selectConnectionState, ConnectionState } from './redux/slices/hub';
+import { selectCurrentView, Views } from './redux/slices/views';
 
-import Game from './Game';
-import Welcome from './Welcome';
+import Game from './views/Game';
+import WelcomeView from './views/Welcome';
+import Disconnected from './views/Disconnected';
+import Lobby from './views/Lobby';
+import CreateRoomView from './views/CreateRoom';
+import JoinRoomView from './views/JoinRoom';
 
 function App() {
     const game = useSelector(selectGame);
+    const connectionState = useSelector(selectConnectionState);
+    const inLobby = useSelector(selectInLobby);
+    const currentView = useSelector(selectCurrentView);
 
-    return <Grommet theme={theme}>
-        {game === null ? <Welcome /> : <Game />}
-    </Grommet>;
+    if (connectionState === ConnectionState.DISCONNECTED) return <Disconnected />;
+    if (game === null) {
+        switch (currentView) {
+        case Views.WELCOME:
+            return <WelcomeView />;
+        case Views.CREATE_ROOM:
+            return <CreateRoomView />;
+        case Views.JOIN_ROOM:
+            return <JoinRoomView />;
+        default:
+        }
+    }
+    if (inLobby) return <Lobby />;
+    return <Game />;
 }
 
 export default App;

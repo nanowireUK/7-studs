@@ -1,31 +1,28 @@
-namespace SevenStuds.Models
-{  
-    /// <summary>  
-    /// The 'ActionOpen' Class: to initially open a game lobby, or to return to the lobby at the end of a hand  
-    /// </summary>  
+using System.Threading.Tasks;
+
+namespace SocialPokerClub.Models
+{
+    /// <summary>
+    /// The 'ActionOpen' Class: to return to the lobby at the end of a hand
+    /// </summary>
     public class ActionOpen : Action
-    {  
-        public ActionOpen(string connectionId, ActionEnum actionType, string gameId, string user) : base(connectionId, actionType, gameId, user)
+    {
+        public ActionOpen(string connectionId, ActionEnum actionType, Game ourGame, string user, string leavers)
+            : base(connectionId, actionType, ourGame, user, leavers)
         {
         }
 
-        public override void ProcessAction()
+        public override async Task ProcessAction()
         {
-            // Note that this command can be used to open a new game lobby or for the administrator to reopen the lobby at the end of a hand
-            if ( G.Participants.Count == 0 ) {
-                // This is someone opening the game lobby for the first time
-                Participant p = new Participant(this.UserName);
-                G.Participants.Add(p);
-                p.IsGameAdministrator = true; // First player to join becomes the administrator (may need to find ways of changing this later)
-                p.NoteConnectionId(this.ConnectionId);
-                G.RecordLastEvent(this.UserName + " created the game and opened the lobby");
-                G.NextAction = "Await new player or start the game";
-            }
-            else {
-                G.RecordLastEvent(this.UserName + " reopened the game lobby to allow joining/leaving");
-                G.NextAction = "Await players leaving/joining, or restart the game";
-            }
+            // Note that this command is used to reopen the lobby at the end of a hand
+            G.RecordLastEvent(this.UserName + " reopened the game lobby");
+            G.NextAction = "Await players leaving/joining, or continue the game, or start a new one";
             G.GameMode = GameModeEnum.LobbyOpen;
+            G.RemoveDisconnectedPlayersFromGameState(); // clear out disconnected players
+            G.ClearRemnantsFromLastGame(); // reset pots, hands etc.
+            G.LobbyData = new LobbyData(G); // Update the lobby data
+
+            await Task.FromResult(0); // Just to work around compiler warning "This async method lacks 'await' operators and will run synchronously"
         }
-    }     
-}  
+    }
+}

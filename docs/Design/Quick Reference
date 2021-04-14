@@ -3,3 +3,12 @@ SignalR resources:
 
 VS Code keyboard shortcuts:
     Ctrl-Shift-P    - command pallette
+
+To merge a branch back into the main (develop) branch:
+- Check everything in to the sub-branch
+- Switch to the develop branch
+- Use Ctrl-Shift-P to select Merge Branch, and select the sub-branch you want to bring in
+- Use Ctrl-Shift-G (source control view) to help resolve on any resulting conflicts 
+
+To see which elements of the game- or player-state JSON is used by the client:
+- See /client/src/redux/slices/game.js or hub.js

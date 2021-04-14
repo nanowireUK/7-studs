@@ -3,7 +3,7 @@
         <div class="row">&nbsp;</div>
         <div class="row">
             <div class="col-2">Game</div>
-            <div class="col-auto"><input type="text" id="userInputGameId" value="7Studs Main Event"/> We'll want to show a game invite URL here</div>
+            <div class="col-auto"><input type="text" id="userInputGameId" value="7Studs Main Event"/></div>
         </div>  
         <div class="row">&nbsp;</div>
         <div class="row">
@@ -19,12 +19,23 @@
         <div class="row">
             <div class="col-2">Game-Level Actions</div>
             <div class="col-auto">
-                <input type="button" id="actionJoin" value="Join This Game" />
-                <input type="button" id="actionStart" value="Start This Game or Next Hand" />
-                <input type="button" id="actionRejoin" value="Rejoin This Game" />
-                <input type="button" id="actionOpen" value="Reopen Game Lobby" />                
+                <input type="button" id="actionCreateAndJoinRoom" value="Create And Join Room" />
+                <input type="button" id="actionJoinExistingRoom" value="Join Existing Room" />
+                <input type="button" id="actionJoin" value="Join This Room (deprecated)" />
+                <input type="button" id="actionSpectate" value="Join as Spectator" />
+                <input type="button" id="actionUpdateLobbySettings" value="Update Lobby Settings" />
             </div>
         </div>  
+        <div class="row">
+            <div class="col-2">(Leavers = <output type="text" id="leaverCount" value="">)</output></div>
+            <div class="col-auto">
+                <input type="button" id="actionStart" value="Start New Game" />
+                <input type="button" id="actionContinue" value="Continue With Next Hand" />                
+                <input type="button" id="actionRejoin" value="Rejoin This Game" />
+                <input type="button" id="actionLeave" value="Leave This Game" />
+                <input type="button" id="actionOpen" value="Reopen Game Lobby" /> 
+            </div>
+        </div>         
         <div class="row">&nbsp;</div>
         <div class="row">
             <div class="col-2">Hand-Level Actions</div>
@@ -35,18 +46,29 @@
                 <input type="button" id="actionCover" value="Cover" />                   
                 <input type="button" id="actionFold" value="Fold" />
                 <input type="button" id="actionReveal" value="Reveal Hand" />
+                <input type="button" id="actionBlindIntent" value="Blind Intent" />
+                <input type="button" id="actionBlindReveal" value="Blind Reveal" />
             </div>
         </div>
         <div class="row">&nbsp;</div>     
         <div class="row">
-            <div class="col-2">Test Actions</div>            
+            <div class="col-2">Test</div>            
             <div class="col-auto">
                 <input type="button" id="actionGetState" value="Get Game State" />
                 <input type="button" id="actionGetLog" value="Get Game Log" />
-                <input type="button" id="actionReplay" value="Replay Game From Log" />
+                <input type="button" id="actionGetMyState" value="Get My Game State" />
+                <input type="button" id="actionAdHocQuery" value="Ad Hoc Query" />
                 <input type="button" id="jdTest" value="Test" />
             </div> 
-        </div>        
+        </div>  
+        <div class="row">
+            <div class="col-2">Actions</div>
+            <div class="col-auto">
+                <input type="button" id="actionReplay" value="Replay Game From Log" />
+                <input type="button" id="actionStep" value="Advance 1 Action" />
+                <input type="button" id="actionAdvance" value="Advance to Action n" />
+            </div>
+        </div>               
     </div>
     <div class="row">
         <div class="col-auto">

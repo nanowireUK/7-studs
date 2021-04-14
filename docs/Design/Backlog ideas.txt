@@ -1,7 +1,37 @@
-Notes:
+New, unsorted:
+- Start player in first round of betting based on lowest card first (including suits)
+- I need to cycle the DB keys
+- Game log needs to record game options for replay (and replay needs to set correct defaults to support historical games)
+- Player rename (make name an attribute of a player object)
+- Room expiry, 24 hours if game had not returned to lobby, 2 hours if in lobby?
+- From 15 Jan 21:
+  - Siren on demand (majority vote ... not necessarily easy, would require new server actions)
+  - Klaxon (whhop whoop) for all-in
+  - Klaxon on win
+  - Improve UI for phone
+  - Notes should explain the way we order bankruptcies (the principle is the later you put all your funds at risk the better)
+- Test various-way ties (joint first, joint second, multi-way, etc.)
+- Remove GetLog option?
+- Blind players need to be more obvious
+- Increase hooter time as rounds progress
+- Nigel: make game reports downloadable?
+- Document versioning to allow different code paths to import documents of any old versioning
+  - i.e. support old versions feeding into same object structures
+  - are there standard approaches to doing this?
+- Metrics 
+- Jupyter notebooks for SQL queries
+- Bug check from 12/12/20: Adam left with cash left during a hand and disappeared from lobby; Jon left with 0 and was still in lobby (probably sorted?)
+- Admin can fold someone who's not available (when it's their turn)
+- Admin can kick someone out of the game (at any time)
+- Find a way for someone to take over adminship
+- Game settings for auto-fold on time out(30 secs?)
+- WebRTC (or Google Meeting) for integrating player video or avatars
+- Game graphic (casino)?
+- Keep stats on how long each player took in total for their moves
 
-- Hierarchy is Game > Deal (or hand) > Betting Round (or card(s) dealt)
-- Could add Session above Game but don't see need at moment
+Notes:
+- Hierarchy is Room > Game > Deal (or hand) > Betting Round (or card(s) dealt)
+- Could add Session above Game (to track player results over a whole session as per my spreadsheet)
 
 Backlog ideas
 -------------
@@ -68,3 +98,5 @@ UI
 - Talk to Chris Jones? He was part of a poker site development team at one time
 
 -- https://techeplanet.com/json-example/
+
+- Client: TABS  for e.g. previous hand results; game options

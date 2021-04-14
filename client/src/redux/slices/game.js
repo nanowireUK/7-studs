@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { awaitingResponse, setRejoinCode } from './hub';
+import { sendServerAction, sendServerActionWithLeaverCount } from './hub';
 
 export const gameSlice = createSlice({
     name: 'game',
@@ -13,116 +13,150 @@ export const {
     updateGame,
 } = gameSlice.actions;
 
+export const start = () => sendServerActionWithLeaverCount('UserClickedStart');
+export const proceed = () => sendServerActionWithLeaverCount('UserClickedContinue');
+export const open = () => sendServerActionWithLeaverCount('UserClickedOpen');
+export const leave = () => sendServerAction('UserClickedLeave');
 
-export const start = () => (dispatch, getState, connection) => {
-    const { gameId, username } = getState().hub;
-    dispatch(awaitingResponse(true));
-    connection
-        .invoke('UserClickedStart', gameId, username)
-        .then(console.log)
-        .catch(console.log);
-}
-
-export const leave = () => (dispatch) => {
-    localStorage.setItem('rejoinCode', '');
-    dispatch(setRejoinCode(''));
-    dispatch(updateGame(null));
-}
-
-export const raise = (raiseAmount) => (dispatch, getState, connection) => {
-    const { gameId, username } = getState().hub;
-    dispatch(awaitingResponse(true));
-    connection
-        .invoke('UserClickedRaise', gameId, username, raiseAmount)
-        .then(console.log)
-        .catch(console.log);
-}
-
-export const check = () => (dispatch, getState, connection) => {
-    const { gameId, username } = getState().hub;
-    dispatch(awaitingResponse(true));
-    connection
-        .invoke('UserClickedCheck', gameId, username)
-        .then(console.log)
-        .catch(console.log);
-};
-
-export const fold = () => (dispatch, getState, connection) => {
-    const { gameId, username } = getState().hub;
-    dispatch(awaitingResponse(true));
-    connection
-        .invoke('UserClickedFold', gameId, username)
-        .then(console.log)
-        .catch(console.log);
-};
-
-export const cover = () => (dispatch, getState, connection) => {
-    const { gameId, username } = getState().hub;
-    dispatch(awaitingResponse(true));
-    connection
-        .invoke("UserClickedCover", gameId, username)
-        .then(console.log)
-        .catch(console.log);
-};
-
-export const call = () => (dispatch, getState, connection) => {
-    const { gameId, username } = getState().hub;
-    dispatch(awaitingResponse(true));
-    connection
-        .invoke("UserClickedCall", gameId, username)
-        .then(console.log)
-        .catch(console.log);
-};
-
-export const reveal = () => (dispatch, getState, connection) => {
-    const { gameId, username } = getState().hub;
-    dispatch(awaitingResponse(true));
-    connection
-        .invoke("UserClickedReveal", gameId, username)
-        .then(console.log)
-        .catch(console.log);
-};
+export const raise = (raiseAmount) => sendServerActionWithLeaverCount('UserClickedRaise', raiseAmount);
+export const check = () => sendServerActionWithLeaverCount('UserClickedCheck');
+export const cover = () => sendServerActionWithLeaverCount('UserClickedCover');
+export const call = () => sendServerActionWithLeaverCount('UserClickedCall');
+export const fold = () => sendServerActionWithLeaverCount('UserClickedFold');
+export const reveal = () => sendServerActionWithLeaverCount('UserClickedReveal');
+export const goBlind = () => sendServerActionWithLeaverCount('UserClickedBlindIntent');
+export const revealBlind = () => sendServerActionWithLeaverCount('UserClickedBlindReveal');
 
 export const selectGame = (state) => state.game;
 
-export const selectInLobby = (state) =>
-    state.game !== null && state.game.GameMode === 'LobbyOpen';
-export const selectHandInProgress = (state) =>
-    state.game !== null && state.game.GameMode === 'HandInProgress';
-export const selectHandsBeingRevealed = (state) =>
-    state.game !== null && state.game.GameMode === 'HandsBeingRevealed';
-export const selectHandCompleted = (state) =>
-    state.game !== null && state.game.GameMode === 'HandCompleted';
+export const selectMyHandDescription = (state) => state.game.MyHandDescription;
 
-export const selectIsAdmin = (state) =>
-    state.game !== null && state.game.IAmAdministrator;
+export const selectCurrentGameStandings = (state) => (state.game !== null ? state.game.LobbyData.CurrentGameStandings : []).map(
+    ({
+        PlayerName: name,
+        HasLeftRoom: hasLeftRoom,
+        Status: status,
+        RemainingFunds: remainingFunds,
+        LeaderBoardPosition: leaderboardPosition,
+        LeaderBoardPositionIsTied: leaderboardPositionIsTied,
+        TrophiesWon: trophiesWon,
+    }) => ({
+        name,
+        hasLeftRoom,
+        status,
+        remainingFunds,
+        leaderboardPosition,
+        leaderboardPositionIsTied,
+        trophiesWon,
+    }),
+);
 
-export const selectPlayers = (state) =>
-           (state.game !== null ? state.game.PlayerViewOfParticipants : []).map(
-               (
-                   { Name: name, UncommittedChips: chips, Cards: cards, IsCurrentPlayer: isCurrentPlayer, IsMe: isMe, IsAdmin: isAdmin, IsDealer: isDealer, VisibleHandDescription: handDescription },
-               ) => ({
-                   name,
-                   chips,
-                   cards,
-                   handDescription,
-                   isMe,
-                   isCurrentPlayer,
-                   isDealer,
-                   isAdmin,
-               })
-           );
+export const selectInLobby = (state) => state.game !== null && state.game.GameMode === 'LobbyOpen';
+export const selectHandInProgress = (state) => state.game !== null && state.game.GameMode === 'HandInProgress';
+export const selectHandsBeingRevealed = (state) => state.game !== null && state.game.GameMode === 'HandsBeingRevealed';
+export const selectHandCompleted = (state) => state.game !== null && state.game.GameMode === 'HandCompleted';
+
+export const selectIsAdmin = (state) => state.game !== null && state.game.IAmAdministrator;
+
+export const selectIntendsToPlayBlind = (state) => state.game !== null && state.game.IIntendToPlayBlindInNextHand;
+
+export const selectPlayingBlind = (state) => state.game !== null && state.game.IAmPlayingBlindInCurrentHand;
+
+export const selectRaiseOptions = (state) => state.game !== null && state.game.MyRaiseOptions;
+
+export const selectPlayers = (state) => {
+    if (state.game === null) return [];
+
+    const dealerIndex = state.game.PlayerViewOfParticipants.findIndex(({ IsDealer }) => IsDealer);
+    const numPlayersInRound = state.game.PlayerViewOfParticipants.filter(({ IsOutOfThisGame }) => !IsOutOfThisGame).length;
+
+    const roundNumber = state.game.RoundNumberIfCardsJustDealt;
+
+    return state.game.PlayerViewOfParticipants.map(
+        (
+            {
+                Name: name,
+                UncommittedChips: chips,
+                Cards: cards,
+                IsCurrentPlayer: isCurrentPlayer,
+                IsMe: isMe,
+                IsAdmin: isAdmin,
+                IsDealer: isDealer,
+                IsOutOfThisGame: isOutOfThisGame,
+                HasFolded: hasFolded,
+                VisibleHandDescription: handDescription,
+                IsSharingHandDetails: isSharingHandDetails,
+                GainOrLossInLastHand: gainOrLossInLastHand,
+                HandsWon: handsWon,
+                LastActionInThisHand: lastActionInHand,
+                LastActionAmount: lastActionAmount,
+                RoundNumberOfLastAction: roundNumberOfLastAction,
+                IsPlayingBlindInCurrentHand: isPlayingBlind,
+            },
+            playerIndex,
+        ) => {
+            const dealIndex = (playerIndex - dealerIndex + numPlayersInRound - 1) % numPlayersInRound;
+
+            return {
+                name,
+                chips,
+                cards: cards.map(([value, suit], index) => ({
+                    value,
+                    suit,
+                    cardIndex: roundNumber === -1 || (roundNumber > 3 && (1 + index) < roundNumber) ? -1 : dealIndex + ((roundNumber === 3) ? index : (index - roundNumber + 1)) * numPlayersInRound,
+                })),
+                handDescription,
+                isMe,
+                isCurrentPlayer,
+                isDealer,
+                isAdmin,
+                isOutOfThisGame,
+                hasFolded,
+                isSharingHandDetails,
+                gainOrLossInLastHand,
+                handsWon,
+                lastActionInHand: roundNumberOfLastAction === state.game.RoundNumber ? lastActionInHand : '',
+                lastActionAmount: roundNumberOfLastAction === state.game.RoundNumber ? lastActionAmount : 0,
+                isPlayingBlind,
+            };
+        },
+    );
+};
+
+export const selectAdminName = (state) => selectPlayers(state).find(({ isAdmin }) => isAdmin).name;
 
 export const selectPots = (state) => state.game.Pots;
 
+export const selectLastHandResult = (state) => (state.game.MostRecentHandResult || [])
+    .map((potResult) => potResult.map(({
+        AmountWonOrLost: takeaway,
+        PlayerName: name,
+        Result: resultDescription,
+        Stake: stake,
+    }) => ({
+        name,
+        resultDescription,
+        takeaway,
+        stake,
+    })));
+
 export const selectGameStatus = (state) => state.game.StatusMessage;
 
-export const selectCanDoAction = (action) => (state) =>
-    state.game !== null && state.game.AvailableActions.includes(action);
+export const selectCanDoAction = (action) => (state) => state.game !== null && state.game.AvailableActions.includes(action);
 
 export const selectAnte = (state) => state.game.Ante;
 
 export const selectMaxRaise = (state) => state.game.MyMaxRaise;
+
+export const selectCallAmount = (state) => state.game.MyCallAmount;
+
+export const selectCommunityCard = (state) => state.game.CommunityCard;
+
+export const selectActionReference = (state) => `${state.game.RoomId}-${state.game.GameNumber}.${state.game.HandsPlayedIncludingCurrent}.${state.game.ActionNumber}`;
+
+export const selectHandId = (state) => `${state.game.GameNumber}-${state.game.HandsPlayedIncludingCurrent}`;
+
+export const selectIsMyTurn = (state) => state.game.IsMyTurn;
 
 export const PlayerActions = Object.freeze({
     START: 'Start',
@@ -131,7 +165,17 @@ export const PlayerActions = Object.freeze({
     COVER: 'Cover',
     RAISE: 'Raise',
     FOLD: 'Fold',
-    REVEAL: 'Reveal'
+    REVEAL: 'Reveal',
+    CONINUE: 'Continue',
+    BLIND_INTENT: 'BlindIntent',
+    BLIND_REVEAL: 'BlindReveal',
+});
+
+export const GameModes = Object.freeze({
+    LOBBY_OPEN: 'LobbyOpen',
+    HAND_IN_PROGRESS: 'HandInProgress',
+    HANDS_BEING_REVEALED: 'HandsBeingRevealed',
+    HAND_COMPLETED: 'HandCompleted',
 });
 
 export default gameSlice.reducer;

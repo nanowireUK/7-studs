@@ -1,26 +1,31 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
+import { Grommet } from 'grommet';
 import store from './redux/store';
 import * as serviceWorker from './serviceWorker';
 
+import theme from './theme';
+
 const render = () => {
-    const App = require('./App').default
+    const App = require('./App').default;
 
     ReactDOM.render(
         <React.StrictMode>
             <Provider store={store}>
-                <App />
+                <Grommet theme={theme}>
+                    <App />
+                </Grommet>
             </Provider>
         </React.StrictMode>,
-        document.getElementById('root')
+        document.getElementById('root'),
     );
-}
+};
 
-render()
+render();
 
 if (process.env.NODE_ENV === 'development' && module.hot) {
-    module.hot.accept('./App', render)
+    module.hot.accept('./App', render);
 }
 
 // If you want your app to work offline and load faster, you can change
