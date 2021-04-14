@@ -1,31 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useState, useLayoutEffect } from 'react';
+import useResizeObserver from '@react-hook/resize-observer'
 
-export const useContainerDimensions = (ref) => {
+export const useContainerDimensions = (target) => {
     const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
-    useEffect(() => {
-        const getDimensions = () => ({
-            width: ref.current.offsetWidth,
-            height: ref.current.offsetHeight,
-        });
+    useLayoutEffect(() => {
+        setDimensions(target.current.getBoundingClientRect())
+    }, [target])
 
-        const handleResize = () => {
-            setDimensions(getDimensions());
-        };
-
-        // const resizeObserver = new ResizeObserver(handleResize);
-        // const currentRef = ref.current;
-
-        if (ref.current) handleResize();
-
-        window.addEventListener('resize', handleResize);
-        // resizeObserver.observe(currentRef);
-
-        return () => {
-            window.removeEventListener('resize', handleResize);
-            // resizeObserver.unobserve(currentRef);
-        };
-    }, [ref]);
-
+    useResizeObserver(target, (entry) => setDimensions(entry.contentRect))
     return dimensions;
 };
