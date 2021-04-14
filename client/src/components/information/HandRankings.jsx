@@ -22,8 +22,8 @@ function Ranking({ handName, probability, exampleCards }) {
                 <Text>{handName}</Text>
                 <Text>{probability}%</Text>
             </Box>
-            <Box height="35px" gap="xxsmall" direction="row">
-                {exampleCards.map(([face, suit], index) => <PokerCard key={index} face={face} suit={suit} />)}
+            <Box gap="xxsmall" direction="row">
+                {exampleCards.map(([face, suit], index) => <PokerCard key={index} face={face} suit={suit} size={50} />)}
             </Box>
         </Box>
     );
