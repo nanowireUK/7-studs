@@ -1,16 +1,12 @@
-import React, { useRef } from 'react';
+import React from 'react';
 
 import { Box } from 'grommet';
-
-import { animated, useSpring } from 'react-spring';
 
 import { ReactComponent as Heart } from '../assets/images/suit-hearts.svg';
 import { ReactComponent as Club } from '../assets/images/suit-clubs.svg';
 import { ReactComponent as Diamond } from '../assets/images/suit-diamonds.svg';
 import { ReactComponent as Spade } from '../assets/images/suit-spades.svg';
 import CardBack from '../assets/images/card-back.svg';
-
-import { useContainerDimensions } from '../utils/hooks';
 
 function generateTitle(suit, face) {
     const suits = {
@@ -38,35 +34,64 @@ function generateTitle(suit, face) {
     return `${faces[face.toUpperCase()]} of ${suits[suit.toUpperCase()]}`;
 }
 
-function Face({ face = '', suit = '', invisibleToOthers = false }) {
+function Face({ face = '', suit = '', opacity = null }) {
     const color = ['H', 'D'].includes(suit.toUpperCase()) ? '#d40000' : 'black';
     return (
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18" version="1.0">
-            <text x="50%" y="80%" textAnchor="middle" fontFamily="Bellota Text" fontWeight="700" fill={color} opacity={invisibleToOthers ? '50%' : null}>{face === 'T' ? '10' : face}</text>
+            <text x="50%" y="80%" textAnchor="middle" fontFamily="Bellota Text" fontWeight="700" fill={color} opacity={opacity}>{face === 'T' ? '10' : face}</text>
         </svg>
     );
 }
 
-function Suit({ suit, invisibleToOthers = false }) {
+function Suit({ suit, opacity = null }) {
     if (suit) {
         switch (suit.toUpperCase()) {
-        case 'S': return <Spade opacity={invisibleToOthers ? '50%' : null} />;
-        case 'D': return <Diamond opacity={invisibleToOthers ? '50%' : null} />;
-        case 'H': return <Heart opacity={invisibleToOthers ? '50%' : null} />;
-        case 'C': return <Club opacity={invisibleToOthers ? '50%' : null} />;
+        case 'S': return <Spade opacity={opacity} />;
+        case 'D': return <Diamond opacity={opacity} />;
+        case 'H': return <Heart opacity={opacity} />;
+        case 'C': return <Club opacity={opacity} />;
         default: break;
         }
     }
-    return <Face invisibleToOthers={invisibleToOthers} face="?" suit={suit} />;
+    return <Face opacity={opacity} face="?" suit={suit} />;
 }
 
-const AnimatedBox = animated(Box);
+// const AnimatedBox = animated(Box);
 
 export default function PokerCard({
-    face, suit, invisibleToOthers = false, cardIndex = -1, availableDimensions,
+    face, suit, invisibleToOthers = false, cardIndex = -1, size,
 }) {
-    const cardRef = useRef(null);
-    const { height } = useContainerDimensions(cardRef);
+    const hiddenCard = face === '?' || suit === '?';
+
+    return (
+        <Box
+            flex={false}
+            style={{
+                height: `${size}px`,
+                width: `${size}px`,
+            }}
+            direction="row"
+            elevation="xsmall"
+            round="xsmall"
+            border
+            title={hiddenCard ? 'Hidden' : generateTitle(suit, face)}
+            background={hiddenCard ? {
+                image: `url(${CardBack})`,
+                size: '115%',
+            } : 'none'}
+            gap={face==='T' ? 'xsmall' : 'none'}
+            pad={size <= 50 ? 'xxsmall' : 'xsmall'}
+        >
+            {!hiddenCard && <Face opacity={invisibleToOthers ? '50%' : null} face={face} suit={suit} />}
+            {!hiddenCard && <Suit opacity={invisibleToOthers ? '50%' : null} face={face} suit={suit} />}
+        </Box>
+    );
+}
+
+
+
+
+
 
     /*
     const props = useSpring({
@@ -91,32 +116,3 @@ export default function PokerCard({
             </Box>
         )}
     </AnimatedBox> */
-
-    return (
-        <Box fill="vertical" ref={cardRef}>
-            {face === '?' || suit === '?' ? (
-                <Box
-                    fill="vertical"
-                    direction="row"
-                    title="Hidden"
-                    elevation="xsmall"
-                    pad="xsmall"
-                    border
-                    round="xsmall"
-                    gap="xsmall"
-                    background={{
-                        image: `url(${CardBack})`,
-                        size: '115%',
-                    }}
-                >
-                    <Box pad="xsmall" direction="column" align="center" justify="around" width={`${height + 2}px`} testborder={{ color: 'blue', style: 'dashed' }} />
-                </Box>
-            ) : (
-                <Box fill="vertical" direction="row" title={generateTitle(suit, face)} elevation="xsmall" pad="xsmall" border round="xsmall" gap="2px" background="white">
-                    <Box direction="column" align="center" justify="around" width={`${height / 2}px`} testborder={{ color: 'blue', style: 'dashed' }}><Face invisibleToOthers={invisibleToOthers} face={face} suit={suit} /></Box>
-                    <Box direction="column" align="center" justify="around" width={`${height / 2}px`} testborder={{ color: 'red', style: 'dashed' }}><Suit invisibleToOthers={invisibleToOthers} suit={suit} /></Box>
-                </Box>
-            )}
-        </Box>
-    );
-}
